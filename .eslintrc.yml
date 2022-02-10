@@ -1,0 +1,35 @@
+root: true
+env:
+  browser: true
+  es2021: true
+extends:
+  - eslint:recommended
+  - google
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:vue/recommended
+  - plugin:prettier-vue/recommended
+  - prettier
+  - eslint-config-prettier
+plugins:
+  - vue
+  - prettier
+  - '@typescript-eslint'
+  - eslint-plugin-tsdoc
+  - vuejs-accessibility
+parser: vue-eslint-parser
+parserOptions:
+  ecmaVersion: latest
+  parser: '@typescript-eslint/parser'
+  sourceType: module
+  createDefaultProgram: true
+  project: ./tsconfig.json
+rules:
+  new-cap: off
+  no-invalid-this: off
+  no-unused-vars: warn
+  prettier/prettier: error
+  require-jsdoc: warn
+  tsdoc/syntax: warn
+  valid-jsdoc: off
+  vue/html-self-closing: [error, html: { void: always }]
+  vue/multi-word-component-names: warn
