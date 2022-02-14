@@ -48,10 +48,16 @@ const config: UserConfig = {
       fileName: format => `vue-codemirror6.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', '@codemirror/lint', '@codemirror/language'],
+      external: [
+        'vue',
+        '@codemirror/view',
+        '@codemirror/lint',
+        '@codemirror/language',
+      ],
       output: {
         globals: {
           vue: 'Vue',
+          '@codemirror/view': 'view',
         },
       },
     },

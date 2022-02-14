@@ -1,29 +1,33 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "compilerOptions": {
-    "allowJs": false,
-    "esModuleInterop": true,
-    "emitDeclarationOnly": true,
-    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "./types",
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["esnext", "dom"],
+    "declarationDir": "dist/types",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "newLine": "lf",
     "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
+    ],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "types": ["vite/client", "node"],
-    "useDefineForClassFields": false
+    "types": ["vite/client", "node", "vue"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "exclude": ["node_modules", "dist"]
 }

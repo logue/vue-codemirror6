@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Codemirror6 for vue",
   "author": {
     "name": "Logue",
@@ -31,10 +31,12 @@
   "types": "./types/entry.d.ts",
   "files": [
     "/dist",
-    "/types"
+    "/types",
+    "/src/components/CodeMirror.vue"
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "vite",
     "build": "tsc && vite build",
     "build:clean": "rimraf dist && rimraf types",
     "lint": "eslint . --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint && prettier . --write",
