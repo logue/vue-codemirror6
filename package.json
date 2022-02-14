@@ -22,6 +22,9 @@
   "license": "MIT",
   "main": "./dist/vue-codemirror6.umd.js",
   "module": "./dist/vue-codemirror6.es.js",
+  "browser": {
+    "./sfc": "./src/components/CodeMirror.vue"
+  },
   "exports": {
     ".": {
       "import": "./dist/vue-codemirror6.es.js",

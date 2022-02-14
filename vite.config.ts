@@ -48,16 +48,10 @@ const config: UserConfig = {
       fileName: format => `vue-codemirror6.${format}.js`,
     },
     rollupOptions: {
-      external: [
-        'vue',
-        '@codemirror/view',
-        '@codemirror/lint',
-        '@codemirror/language',
-      ],
+      external: ['vue', '@codemirror/lint', '@codemirror/language'],
       output: {
         globals: {
           vue: 'Vue',
-          '@codemirror/view': 'view',
         },
       },
     },
@@ -79,8 +73,10 @@ const config: UserConfig = {
 };
 
 // Export vite config
+export default defineConfig(config);
+/*
 export default defineConfig(async ({ command }): Promise<UserConfig> => {
-  /*
+
   // Hook production build.
   if (command === 'build') {
     // Write meta data.
@@ -97,7 +93,6 @@ export default meta;
 `
     );
   }
-  */
-
   return config;
 });
+*/
