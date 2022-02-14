@@ -3,7 +3,11 @@
   "compilerOptions": {
     "allowJs": false,
     "esModuleInterop": true,
+    "emitDeclarationOnly": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./types",
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["esnext", "dom"],

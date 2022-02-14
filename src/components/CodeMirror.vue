@@ -11,6 +11,7 @@ import type { Diagnostic } from '@codemirror/lint';
 import type { LanguageSupport } from '@codemirror/language';
 
 import merge from 'lodash/merge';
+import type { StyleSpec } from 'style-mod';
 
 @Component
 /** CodeMirror Component */
@@ -20,7 +21,7 @@ export default class CodeMirror extends Vue {
 
   /** Theme */
   @Prop({ type: Object })
-  readonly theme;
+  readonly theme!: { [selector: string]: StyleSpec };
 
   /** Dark Mode */
   @Prop({ type: Boolean, default: false })

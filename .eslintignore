@@ -1,6 +1,4 @@
-index.html
-components.d.ts
 .husky/
 .vscode/
 dist/
-public/
+types/
