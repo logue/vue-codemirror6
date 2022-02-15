@@ -4,7 +4,7 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unlike 
 
 ## Usage
 
-When using as a Markdown editor on Vuetify.
+When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
 
 ```vue
 <template>
@@ -14,6 +14,7 @@ When using as a Markdown editor on Vuetify.
     :phrases="phreses"
     :extensions="extensions"
     :dark="$vuetify.theme.dark"
+    @update="onCmUpdate"
   />
 </template>
 
@@ -25,8 +26,10 @@ import CodeMirror from 'vue-codemirror6';
 
 // CodeMirror extensions
 import { basicSetup } from '@codemirror/basic-setup';
-import { LanguageSupport } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
+import type { ViewUpdate } from '@codemirror/view';
+import type { Extension } from '@codemirror/state';
+import type { LanguageSupport } from '@codemirror/language';
 
 @Component({ components: { CodeMirror } })
 export default class Home extends Vue {
@@ -81,10 +84,21 @@ export default class Home extends Vue {
    *
    * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension|Extending Editor State}
    */
-  extensions: [
+  extensions: Extension[] = [
     /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup|basic-setup} */
     basicSetup
   ]
+
+  /**
+   * CodeMirror Hook View update event
+   *
+   * @param update View Update
+   *
+   * @see {@link https://codemirror.net/6/docs/ref/#view.ViewUpdate|class ViewUpdate}
+   */
+  onCmUpdate(update: ViewUpdate) {
+    console.log(update)
+  }
 }
 ```
 
