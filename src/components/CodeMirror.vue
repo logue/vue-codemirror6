@@ -5,15 +5,18 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { EditorState, Extension, Transaction } from '@codemirror/state';
-import { EditorView, ViewUpdate } from '@codemirror/view';
-import type { Diagnostic } from '@codemirror/lint';
-import type { LanguageSupport } from '@codemirror/language';
-
+import { EditorState } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
 import merge from 'lodash/merge';
+import type { ViewUpdate } from '@codemirror/view';
+import type { Diagnostic } from '@codemirror/lint';
+import type { Extension, Transaction } from '@codemirror/state';
+import type { LanguageSupport } from '@codemirror/language';
 import type { StyleSpec } from 'style-mod';
 
-@Component
+@Component({
+  name: 'CodeMirror',
+})
 /** CodeMirror Component */
 export default class CodeMirror extends Vue {
   /** Editor */

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Vue CodeMirror6 Test</h1>
-    <code-mirror v-model="value" />
+    <code-mirror v-model="value" :extensions="extensions" />
     <hr />
     <h2>CodeMirror Value</h2>
     <p v-text="value" />
@@ -10,7 +10,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CodeMirror from '../src/components/CodeMirror.vue';
+import CodeMirror from '@/components/CodeMirror.vue';
+
+import { basicSetup } from '@codemirror/basic-setup';
 
 export default Vue.extend({
   components: {
@@ -18,6 +20,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      extensions: [basicSetup],
       value: 'The quick brown fox jumps over the lazy dog.',
     };
   },

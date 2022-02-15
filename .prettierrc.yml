@@ -9,6 +9,6 @@ bracketSameLine: false
 arrowParens: avoid
 htmlWhitespaceSensitivity: ignore
 endOfLine: lf
-# plugins:
-#   - prettier-plugin-jsdoc
-#   - prettier-plugin-md-nocjsp
+plugins:
+  - prettier-plugin-jsdoc
+  - prettier-plugin-md-nocjsp

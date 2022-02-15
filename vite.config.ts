@@ -16,6 +16,15 @@ const config: UserConfig = {
           './node_modules/vue/dist/vue.runtime.esm.js'
         ),
       },
+      {
+        // vue @ shortcut fix
+        find: '@/',
+        replacement: `${path.resolve(__dirname, './src')}/`,
+      },
+      {
+        find: 'src/',
+        replacement: `${path.resolve(__dirname, './src')}/`,
+      },
     ],
     // External
     dedupe: ['vue'],
@@ -43,15 +52,25 @@ const config: UserConfig = {
   // https://vitejs.dev/config/#build-options
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/entry.ts'),
-      name: 'VueCodeMirror6',
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'CodeMirror',
       fileName: format => `vue-codemirror6.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', '@codemirror/lint', '@codemirror/language'],
+      external: [
+        'vue',
+        'vue-property-decorator',
+        '@codemirror/state',
+        '@codemirror/view',
+        '@codemirror/lint',
+        '@codemirror/language',
+      ],
       output: {
         globals: {
           vue: 'Vue',
+          'vue-property-decorator': 'vuePropertyDecorator',
+          '@codemirror/state': 'state',
+          '@codemirror/view': 'view',
         },
       },
     },
