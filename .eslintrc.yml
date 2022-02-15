@@ -5,7 +5,9 @@ env:
 extends:
   - eslint:recommended
   - google
+  - plugin:import/recommended
   - plugin:@typescript-eslint/eslint-recommended
+  - plugin:import/typescript
   - plugin:vue/recommended
   - plugin:prettier-vue/recommended
   - prettier
@@ -33,3 +35,15 @@ rules:
   valid-jsdoc: off
   vue/html-self-closing: [error, html: { void: always }]
   vue/multi-word-component-names: warn
+settings:
+  import/resolver:
+    typescript: {}
+    alias:
+      map:
+        - ['@', './src']
+      extensions:
+        - .js
+        - .ts
+        - .jsx
+        - .tsx
+        - .vue

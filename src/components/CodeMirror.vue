@@ -5,25 +5,23 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-import { EditorState } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
-import merge from 'lodash/merge';
-import type { ViewUpdate } from '@codemirror/view';
-import type { Diagnostic } from '@codemirror/lint';
 import type { Extension, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
+import type { ViewUpdate } from '@codemirror/view';
+import type { Diagnostic } from '@codemirror/lint';
+import { EditorState } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
 import type { StyleSpec } from 'style-mod';
+import merge from 'lodash/merge';
 
-@Component({
-  name: 'CodeMirror',
-})
+@Component({ name: 'CodeMirror' })
 /** CodeMirror Component */
 export default class CodeMirror extends Vue {
   /** Editor */
-  editor!: EditorView;
+  private editor!: EditorView;
 
   /** Theme */
-  @Prop({ type: Object })
+  @Prop({ type: Object, default: () => {} })
   readonly theme!: { [selector: string]: StyleSpec };
 
   /** Dark Mode */
@@ -77,12 +75,15 @@ export default class CodeMirror extends Vue {
   get extension(): Extension[] {
     /** Default extension */
     const ext = [
-      EditorState.phrases.of(this.phrases),
       EditorView.updateListener.of((update: ViewUpdate) =>
         this.$emit('update', update)
       ),
       EditorView.theme(this.theme, { dark: this.dark }),
     ];
+
+    if (this.phrases) {
+      ext.push(EditorState.phrases.of(this.phrases));
+    }
 
     if (this.lang) {
       ext.push(this.lang);

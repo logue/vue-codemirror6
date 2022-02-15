@@ -12,3 +12,4 @@ endOfLine: lf
 plugins:
   - prettier-plugin-jsdoc
   - prettier-plugin-md-nocjsp
+  - prettier-plugin-sort-imports

@@ -1,5 +1,5 @@
-import { defineConfig, UserConfig } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
+import { defineConfig, UserConfig } from 'vite';
 import eslintPlugin from 'vite-plugin-eslint';
 import path from 'path';
 
