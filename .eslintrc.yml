@@ -14,9 +14,8 @@ extends:
   - eslint-config-prettier
 plugins:
   - vue
-  - prettier
-  - '@typescript-eslint'
   - eslint-plugin-tsdoc
+  - '@typescript-eslint'
   - vuejs-accessibility
 parser: vue-eslint-parser
 parserOptions:
@@ -29,12 +28,13 @@ rules:
   new-cap: off
   no-invalid-this: off
   no-unused-vars: warn
-  prettier/prettier: error
   require-jsdoc: warn
   tsdoc/syntax: warn
   valid-jsdoc: off
   vue/html-self-closing: [error, html: { void: always }]
   vue/multi-word-component-names: warn
+  import/no-named-as-default: off
+  import/no-named-as-default-member: off
 settings:
   import/resolver:
     typescript: {}

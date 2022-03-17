@@ -4,6 +4,20 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unlike 
 
 ## Usage
 
+This component can handle bidirectional binding by `v-model` like a general Vue component.
+
+Other options are currently as follows:
+
+| attribute  | information                                                                                                                      |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| lang       | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                     |
+| phrases    | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/> |
+| extensions | Includes enhancements to extend CodeMirror. Such as [@codemirror/basic-setup](https://github.com/codemirror/basic-setup).        |
+| dark       | Toggle Darkmode.                                                                                                                 |
+| linter     | Set Linter. see example <https://codesandbox.io/s/f6nb0?file=/src/index.js>                                                      |
+
+## Example
+
 When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
 
 ```vue
@@ -39,14 +53,14 @@ export default class Home extends Vue {
   /**
    * CodeMirror Language
    *
-   * @see {@link https://codemirror.net/6/docs/ref/#language|@codemirror/language}
+   * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
    */
   lang: LanguageSupport = markdown();
 
   /**
-   * Internationalization Config
+   * Internationalization Config. In this example, the display language is Japanese.
    *
-   * @see {@link https://codemirror.net/6/examples/translate/|Example: Internationalization}
+   * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
    */
   phrases: Record<string, string> = {
     // @codemirror/view
@@ -82,10 +96,10 @@ export default class Home extends Vue {
   /**
    * CodeMirror Extensions
    *
-   * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension|Extending Editor State}
+   * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
    */
   extensions: Extension[] = [
-    /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup|basic-setup} */
+    /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup | basic-setup} */
     basicSetup
   ]
 

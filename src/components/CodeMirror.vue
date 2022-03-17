@@ -1,18 +1,24 @@
 <template>
-  <div ref="editor" />
+  <div ref="editor">
+    <template v-if="!$slots.default"><slot /></template>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import type { VNode } from 'vue';
 
-import type { Extension, Transaction } from '@codemirror/state';
+import {
+  EditorState,
+  type Extension,
+  type Transaction,
+} from '@codemirror/state';
+import { EditorView, type ViewUpdate } from '@codemirror/view';
 import type { LanguageSupport } from '@codemirror/language';
-import type { ViewUpdate } from '@codemirror/view';
 import type { Diagnostic } from '@codemirror/lint';
-import { EditorState } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
 import type { StyleSpec } from 'style-mod';
-import merge from 'lodash/merge';
+
+import { compact, merge } from 'lodash';
 
 @Component({ name: 'CodeMirror' })
 /** CodeMirror Component */
@@ -20,7 +26,11 @@ export default class CodeMirror extends Vue {
   /** Editor */
   private editor!: EditorView;
 
-  /** Theme */
+  /**
+   * Theme
+   *
+   * @see {@link https://codemirror.net/6/examples/styling/ | Example: Styling}
+   */
   @Prop({ type: Object, default: () => {} })
   readonly theme!: { [selector: string]: StyleSpec };
 
@@ -28,29 +38,52 @@ export default class CodeMirror extends Vue {
   @Prop({ type: Boolean, default: false })
   readonly dark!: boolean;
 
-  /** Language Phreses */
+  /**
+   * Language Phreses
+   *
+   * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
+   */
   @Prop({ type: Object })
   readonly phrases!: Record<string, string>;
 
-  /** Additional Extension */
+  /**
+   * Additional Extension
+   *
+   * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
+   */
   @Prop({ type: Array, default: () => [] })
   readonly extensions!: Extension[];
 
-  /** CodeMirror Language */
+  /**
+   * CodeMirror Language
+   *
+   * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
+   */
   @Prop({ type: Object })
   readonly lang!: LanguageSupport;
 
-  /** CodeMirror Linter */
+  /**
+   * CodeMirror Linter
+   *
+   * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
+   */
   @Prop({ type: Array, default: () => [] })
   readonly linter!: Diagnostic[];
 
   /** Input */
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, default: '' })
   readonly value!: string;
 
-  /** Input value changed */
+  /**
+   * Input value changed
+   *
+   * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
+   */
   @Watch('value')
   onValueChanged() {
+    /** Previous cursor location */
+    const previous = this.editor.state.selection;
+    /*
     this.editor.dispatch({
       changes: {
         from: 0,
@@ -58,6 +91,14 @@ export default class CodeMirror extends Vue {
         insert: this.value,
       },
     });
+    */
+    this.editor.setState(
+      EditorState.create({
+        doc: this.value,
+        extensions: this.extension,
+        selection: previous,
+      })
+    );
   }
 
   /** Darkmode */
@@ -74,37 +115,46 @@ export default class CodeMirror extends Vue {
   /** CodeMirror Extension */
   get extension(): Extension[] {
     /** Default extension */
-    const ext = [
+    const ext: Extension[] = compact([
+      // ViewUpdate event listener
       EditorView.updateListener.of((update: ViewUpdate) =>
         this.$emit('update', update)
       ),
+      // Toggle light/dark mode.
       EditorView.theme(this.theme, { dark: this.dark }),
-    ];
-
-    if (this.phrases) {
-      ext.push(EditorState.phrases.of(this.phrases));
-    }
-
-    if (this.lang) {
-      ext.push(this.lang);
-    }
+      // locale settings
+      this.phrases ? EditorState.phrases.of(this.phrases) : undefined,
+      // Parser language setting
+      this.lang ? this.lang : undefined,
+    ]);
 
     if (this.linter.length !== 0) {
+      // Append Linter settings
       merge(ext, this.linter);
     }
 
     if (this.extensions.length !== 0) {
+      // Append Extensions (such as basic-setup)
       merge(ext, this.extensions);
     }
+
+    console.debug('[CodeMirror.vue] Loaded extensions:', ext);
+
     return ext;
   }
 
   /** When loaded */
   mounted() {
+    let value = this.value;
+    if (!this.value && this.$slots.default !== undefined) {
+      // override text node
+      value = this.getChildrenTextContent(this.$slots.default);
+    }
+
     // Register Codemirror
     this.editor = new EditorView({
       state: EditorState.create({
-        doc: this.value,
+        doc: value,
         extensions: this.extension,
       }),
       parent: this.$refs.editor as Element,
@@ -112,7 +162,7 @@ export default class CodeMirror extends Vue {
         this.editor.update([tr]);
 
         if (tr.changes.empty) return;
-        // Binding
+        // to parent binding
         this.$emit('input', this.editor.state.doc.toString());
       },
     });
@@ -121,6 +171,17 @@ export default class CodeMirror extends Vue {
   /** Destroy */
   beforeDestroy() {
     this.editor.destroy();
+  }
+
+  /** Vue node to plain text */
+  private getChildrenTextContent(children: VNode[]): string {
+    return children
+      .map((node: VNode) =>
+        node.children
+          ? this.getChildrenTextContent(node.children)
+          : node.text || '\n'
+      )
+      .join('');
   }
 }
 </script>
