@@ -5,7 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "types",
+    "declarationDir": "dist",
     "esModuleInterop": true,
     "emitDeclarationOnly": true,
     "experimentalDecorators": true,

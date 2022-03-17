@@ -60,6 +60,7 @@ const config: UserConfig = {
       external: [
         'vue',
         'vue-property-decorator',
+        'lodash',
         '@codemirror/state',
         '@codemirror/view',
         '@codemirror/lint',
@@ -68,6 +69,7 @@ const config: UserConfig = {
       output: {
         globals: {
           vue: 'Vue',
+          _: 'lodash',
           'vue-property-decorator': 'vuePropertyDecorator',
           '@codemirror/state': 'state',
           '@codemirror/view': 'view',

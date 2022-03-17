@@ -9,6 +9,58 @@
       <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
       .
     </p>
+    Markup:
+    <pre class="bg-light text-dark m-3 p-3">
+&lt;code-mirror v-model="demo" :lang="cmLang" :extensions="cmExtensions" /&gt;</pre
+    >
+    Script:
+    <pre class="pre-scrollable bg-light text-dark m-3 p-3">
+import { markdown } from '@codemirror/lang-markdown';
+import Vue from 'vue';
+
+import CodeMirror from '@/components/CodeMirror.vue';
+
+import { markdown } from '@codemirror/lang-markdown';
+import { basicSetup } from '@codemirror/basic-setup';
+import type { ViewUpdate } from '@codemirror/view';
+
+export default Vue.extend({
+  components: {
+    CodeMirror,
+  },
+  data() {
+    return {
+      demo: '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      markdown: '',
+    };
+  },
+  computed: {
+    cmExtensions: {
+      get() {
+        return [basicSetup];
+      },
+    },
+    cmLang: {
+      get() {
+        return markdown();
+      },
+    },
+  },
+  watch: {
+    demo() {
+      window['markdown'].ready.then(markdown => {
+        this.markdown = markdown.parse(this.demo);
+      });
+    },
+  },
+  created() {
+    // Initialize markdown
+    window['markdown'].ready.then(markdown => {
+      this.markdown = markdown.parse(this.demo);
+    });
+  },
+    </pre>
+    Sample:
     <div class="row">
       <div class="col">
         <code-mirror v-model="demo" :lang="cmLang" :extensions="cmExtensions" />
@@ -24,13 +76,16 @@
       tag to make it the initial string. On the Vue side, it is evaluated as a
       DOM node and only the text node is used as the value.
     </p>
-    <div class="row">
-      <div class="col">
-        <code-mirror :extensions="cmExtensions">
-          How razorback-jumping frogs can level six piqued gymnasts!
-        </code-mirror>
-      </div>
-    </div>
+    Markup:
+    <pre class="bg-light text-dark m-3 p-3">
+&lt;code-mirror :extensions="cmExtensions"&gt;
+  How razorback-jumping frogs can level six piqued gymnasts!
+&lt;/code-mirror&gt;</pre
+    >
+    Sample:
+    <code-mirror :extensions="cmExtensions">
+      How razorback-jumping frogs can level six piqued gymnasts!
+    </code-mirror>
   </div>
 </template>
 

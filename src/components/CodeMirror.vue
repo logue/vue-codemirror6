@@ -49,7 +49,7 @@ export default class CodeMirror extends Vue {
   /**
    * Additional Extension
    *
-   * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
+   * @see {@link https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
    */
   @Prop({ type: Array, default: () => [] })
   readonly extensions!: Extension[];
