@@ -1,28 +1,129 @@
 # vue-codemirror6
 
-A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unlike [surmon-china's vue-codemirror](https://github.com/surmon-china/vue-codemirror), it is for CodeMirror6.
+[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
+[![NPM Downloads](https://img.shields.io/npm/dm/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/vue-codemirror6)
+[![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/vue-codemirror6/file/README.md)
+[![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/@uiw/react-codemirror)
+[![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
+
+A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelated to [surmon-china's vue-codemirror](https://github.com/surmon-china/vue-codemirror), it is for CodeMirror6.
 
 ## Usage
 
 This component can handle bidirectional binding by `v-model` like a general Vue component.
 
-Other options are currently as follows:
+### Props
 
-| attribute  | information                                                                                                                      |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| lang       | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                     |
-| phrases    | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/> |
-| extensions | Includes enhancements to extend CodeMirror. Such as [@codemirror/basic-setup](https://github.com/codemirror/basic-setup).        |
-| dark       | Toggle Darkmode.                                                                                                                 |
-| linter     | Set Linter. see example <https://codesandbox.io/s/f6nb0?file=/src/index.js>                                                      |
+| Props      | Type                              | Information                                                                                                                                                      |
+| ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value      | string?                           | Initial text value.                                                                                                                                              |
+| dark       | boolean                           | Toggle Darkmode. If you use Vuetify, I recommend that you enter `$vuetify.theme.dark`.                                                                           |
+| theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop. |
+| readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                        |
+| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                         |
+| lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                     |
+| phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                 |
+| extensions | Extension[]                       | Includes enhancements to extend CodeMirror. Such as [@codemirror/basic-setup](https://github.com/codemirror/basic-setup).                                        |
+| linter     | Diagnostic[]                      | Set Linter. see example <https://codesandbox.io/s/f6nb0?file=/src/index.js>                                                                                      |
+
+Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
+
+### Events
+
+| name   | Information                                                                           |
+| ------ | ------------------------------------------------------------------------------------- |
+| input  | When value changed.                                                                   |
+| update | CodeMirror ViewUpdate event. see <https://codemirror.net/6/docs/ref/#view.ViewUpdate> |
+
+### Support Languages
+
+- [`@codemirror/lang-cpp`](https://www.npmjs.com/package/@codemirror/lang-cpp)
+- [`@codemirror/lang-html`](https://www.npmjs.com/package/@codemirror/lang-html)
+- [`@codemirror/lang-java`](https://www.npmjs.com/package/@codemirror/lang-java)
+- [`@codemirror/lang-javascript`](https://www.npmjs.com/package/@codemirror/lang-javascript)
+- [`@codemirror/lang-json`](https://www.npmjs.com/package/@codemirror/lang-json)
+- [`@codemirror/lang-lezer`](https://www.npmjs.com/package/@codemirror/lang-lezer)
+- [`@codemirror/lang-markdown`](https://www.npmjs.com/package/@codemirror/lang-markdown)
+- [`@codemirror/lang-php`](https://www.npmjs.com/package/@codemirror/lang-php)
+- [`@codemirror/lang-python`](https://www.npmjs.com/package/@codemirror/lang-python)
+- [`@codemirror/lang-rust`](https://www.npmjs.com/package/@codemirror/lang-rust)
+- [`@codemirror/lang-sql`](https://www.npmjs.com/package/@codemirror/lang-sql)
+- [`@codemirror/lang-xml`](https://www.npmjs.com/package/@codemirror/lang-xml)
+
+### Supported Themes
+
+- [`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one-dark)
+- [`upleveled/theme-vs-code-dark-plus`](https://github.com/upleveled/theme-vs-code-dark-plus)
 
 ## Example
+
+Mark up as follows to make it work at a minimum.
+
+```vue
+<template>
+  <code-mirror v-model="value" />
+</template>
+
+<script>
+import Vue from 'vue';
+
+import CodeMirror from '@/components/CodeMirror.vue';
+
+export default Vue.extend({
+  components: {
+    CodeMirror,
+  },
+  data() {
+    return {
+      value: 'The quick brown fox jumps over the lazy dog.',
+    };
+  },
+});
+</script>
+```
+
+### Example using Slots
+
+The contents of the slot will overwrite the existing `value`. For this reason, it is recommended to use it when simply displaying with a `readonly` prop without using `v-model` or `value`.
+
+Also, insert a `<pre>` tag to prevent the text in the slot from being automatically formatted.
+
+```vue
+<template>
+  <code-mirror :lang="lang" :editable="false">
+    <pre>
+{
+  "key": "value"
+}</pre
+    >
+  </code-mirror>
+</template>
+
+<script>
+import { Component, Vue } from 'vue-property-decorator';
+
+import { json } from '@codemirror/lang-json';
+
+export default Vue.extend({
+  components: {
+    CodeMirror,
+  },
+  data() {
+    return {
+      lang: json(),
+    };
+  },
+});
+</script>
+```
+
+### Full Example
 
 When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
 
 ```vue
 <template>
-  <codemirror
+  <code-mirror
     v-model="value"
     :lang="lang"
     :phrases="phreses"
@@ -39,11 +140,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import CodeMirror from 'vue-codemirror6';
 
 // CodeMirror extensions
-import { basicSetup } from '@codemirror/basic-setup';
-import { markdown } from '@codemirror/lang-markdown';
-import type { ViewUpdate } from '@codemirror/view';
-import type { Extension } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
+import { markdown } from '@codemirror/lang-markdown';
+import { basicSetup } from '@codemirror/basic-setup';
+import type { Extension } from '@codemirror/state';
+import type { ViewUpdate } from '@codemirror/view';
 
 @Component({ components: { CodeMirror } })
 export default class Home extends Vue {
@@ -58,7 +159,8 @@ export default class Home extends Vue {
   lang: LanguageSupport = markdown();
 
   /**
-   * Internationalization Config. In this example, the display language is Japanese.
+   * Internationalization Config.
+   * In this example, the display language to Japanese.
    *
    * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
    */
@@ -91,7 +193,7 @@ export default class Home extends Vue {
     // @codemirror/lint
     Diagnostics: 'エラー',
     'No diagnostics': 'エラーなし',
-  }
+  };
 
   /**
    * CodeMirror Extensions
@@ -100,20 +202,21 @@ export default class Home extends Vue {
    */
   extensions: Extension[] = [
     /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup | basic-setup} */
-    basicSetup
-  ]
+    basicSetup,
+  ];
 
   /**
    * CodeMirror Hook View update event
    *
-   * @param update View Update
+   * @param update - View Update
    *
    * @see {@link https://codemirror.net/6/docs/ref/#view.ViewUpdate|class ViewUpdate}
    */
   onCmUpdate(update: ViewUpdate) {
-    console.log(update)
+    console.log(update);
   }
 }
+</script>
 ```
 
 ## LICENSE

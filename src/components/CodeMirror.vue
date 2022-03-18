@@ -1,7 +1,7 @@
 <template>
-  <div ref="editor">
+  <pre ref="editor">
     <template v-if="!$slots.default"><slot /></template>
-  </div>
+  </pre>
 </template>
 
 <script lang="ts">
@@ -103,15 +103,6 @@ export default class CodeMirror extends Vue {
     }
     /** Previous cursor location */
     const previous = this.editor.state.selection;
-    /*
-    this.editor.dispatch({
-      changes: {
-        from: 0,
-        to: this.editor.state.doc.length,
-        insert: this.value,
-      },
-    });
-    */
     this.editor.setState(
       EditorState.create({
         doc: this.value,
@@ -121,7 +112,7 @@ export default class CodeMirror extends Vue {
     );
   }
 
-  /** Darkmode */
+  /** Toggle Dark mode */
   @Watch('dark')
   onToggleDarkMode() {
     this.editor.setState(
@@ -172,6 +163,7 @@ export default class CodeMirror extends Vue {
     let value = this.value;
     if (!this.value && this.$slots.default !== undefined) {
       // override text node
+      // console.log(this.$slots.default);
       value = this.getChildrenTextContent(this.$slots.default);
     }
 

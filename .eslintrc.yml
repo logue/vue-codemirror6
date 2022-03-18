@@ -29,7 +29,6 @@ rules:
   no-invalid-this: off
   no-unused-vars: warn
   require-jsdoc: warn
-  tsdoc/syntax: warn
   valid-jsdoc: off
   vue/html-self-closing: [error, html: { void: always }]
   vue/multi-word-component-names: warn
@@ -47,3 +46,7 @@ settings:
         - .jsx
         - .tsx
         - .vue
+  prettier-vue:
+    SFCBlocks:
+      customBlocks:
+        code-mirror: false

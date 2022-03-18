@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "CodeMirror6 Component for vue2",
   "keywords": [
     "vuejs",
@@ -90,7 +90,7 @@
     "eslint-plugin-vue": "^8.5.0",
     "eslint-plugin-vuejs-accessibility": "^1.1.1",
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.6",
+    "lint-staged": "^12.3.7",
     "prettier": "^2.6.0",
     "prettier-plugin-jsdoc": "^0.3.31",
     "prettier-plugin-md-nocjsp": "^1.2.0",
