@@ -39,6 +39,22 @@ export default class CodeMirror extends Vue {
   readonly dark!: boolean;
 
   /**
+   * Readonly
+   *
+   * @see {@link https://codemirror.net/6/docs/ref/#state.EditorState%5EreadOnly | readOnly}
+   */
+  @Prop({ type: Boolean, default: false })
+  readonly readonly!: boolean;
+
+  /**
+   * Editable
+   *
+   * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
+   */
+  @Prop({ type: Boolean, default: true })
+  readonly editable!: boolean;
+
+  /**
    * Language Phreses
    *
    * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
@@ -81,6 +97,10 @@ export default class CodeMirror extends Vue {
    */
   @Watch('value')
   onValueChanged() {
+    if (this.editor.composing) {
+      // IME fix
+      return;
+    }
     /** Previous cursor location */
     const previous = this.editor.state.selection;
     /*
@@ -126,6 +146,10 @@ export default class CodeMirror extends Vue {
       this.phrases ? EditorState.phrases.of(this.phrases) : undefined,
       // Parser language setting
       this.lang ? this.lang : undefined,
+      // Readonly option
+      EditorState.readOnly.of(this.readonly),
+      // Editable option
+      EditorView.editable.of(this.editable),
     ]);
 
     if (this.linter.length !== 0) {
