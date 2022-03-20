@@ -16,7 +16,9 @@ import {
   onMounted,
   onUnmounted,
   useSlots,
+  Ref,
 } from 'vue-demi';
+
 import {
   EditorState,
   type Extension,
@@ -79,8 +81,6 @@ interface Props {
    * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
    */
   linter?: Diagnostic[];
-  /** Placeholder */
-  placeholder?: string;
 }
 
 /** Props */
@@ -94,7 +94,6 @@ const props = withDefaults(defineProps<Props>(), {
   phrases: undefined,
   lang: undefined,
   linter: undefined,
-  placeholder: '',
 });
 
 /** Emit Interface */
@@ -107,13 +106,13 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 /** Editor DOM */
-const editor = ref<Element>();
+const editor: Ref<Element | undefined> = ref<Element>();
 
 /** Internal value */
-const value = ref(props.modelValue);
+const value: Ref<string> = ref(props.modelValue);
 
 /** Dark mode */
-const dark = ref(props.dark);
+const dark: Ref<boolean> = ref(props.dark);
 
 /** CodeMirror Editor View */
 let view!: EditorView;
@@ -181,7 +180,6 @@ const extension: ComputedRef<Extension[]> = computed(() => {
   }
 
   console.debug('[CodeMirror.vue] Loaded extensions:', ext);
-
   return ext;
 });
 

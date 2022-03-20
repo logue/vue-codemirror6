@@ -29,8 +29,8 @@ Notice: `lang` and `linter` can also be set together in `extensions`. This is de
 
 ### Events
 
-| name   | Information                                                                           |
-| ------ | ------------------------------------------------------------------------------------- |
+| name       | Information                                                                           |
+| ---------- | ------------------------------------------------------------------------------------- |
 | viewupdate | CodeMirror ViewUpdate event. see <https://codemirror.net/6/docs/ref/#view.ViewUpdate> |
 
 ### Support Languages
