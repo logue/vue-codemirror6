@@ -96,63 +96,43 @@ export default Vue.extend({
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script setup>
+import { ref, reactive, watch } from 'vue';
 
 import CodeMirror from '@/components/CodeMirror.vue';
 
+import { markdown as md } from '@codemirror/lang-markdown';
 import { javascript } from '@codemirror/lang-javascript';
-import { markdown } from '@codemirror/lang-markdown';
 import { basicSetup } from '@codemirror/basic-setup';
-import type { ViewUpdate } from '@codemirror/view';
 import { html } from '@codemirror/lang-html';
 
-export default Vue.extend({
-  components: {
-    CodeMirror,
-  },
-  data() {
-    return {
-      demoLang: markdown(),
-      demo: '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      extensions: [basicSetup],
-      markdown: '',
-      markupLang: html(),
-      scriptLang: javascript(),
-    };
-  },
-  watch: {
-    demo() {
-      console.log('value changed');
-      window['markdown'].ready.then(markdown => {
-        this.markdown = markdown.parse(this.demo);
-      });
-    },
-  },
-  async beforeCreate() {
-    // Load Bootstrap style
-    const link = document.createElement('link');
-    link.href =
-      'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  },
-  created() {
-    // Initialize markdown
-    window['markdown'].ready.then(markdown => {
-      this.markdown = markdown.parse(this.demo);
-    });
-  },
-
-  methods: {
-    /**
-     * Hook codemirror view update event
-     *
-     * @param update - view update
-     */
-    onCmUpdate(update: ViewUpdate) {
-      console.log(update);
-    },
-  },
+// Load Bootstrap style
+const link = document.createElement('link');
+link.href =
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css';
+link.rel = 'stylesheet';
+document.head.appendChild(link);
+// Initialize markdown
+window['markdown'].ready.then(markdown => {
+  markdown.value = markdown.parse(demo.value);
 });
+
+const demoLang = ref(md());
+const demo = reactive(
+  '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+);
+const extensions = [basicSetup];
+const markdown = ref('');
+const markupLang = ref(html());
+const scriptLang = ref(javascript());
+
+watch(
+  () => demo,
+  () => {
+    console.log('value changed');
+    window['markdown'].ready.then(markdown => {
+      markdown.value = markdown.parse(demo.value);
+    });
+  }
+);
 </script>
