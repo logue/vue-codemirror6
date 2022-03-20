@@ -1,7 +1,7 @@
 <template>
-  <pre ref="editor">
-    <template v-if="!slots.default"><slot /></template>
-  </pre>
+  <div ref="editor">
+    <div v-show="slots.defatlt"><slot /></div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -12,10 +12,10 @@ import {
   defineEmits,
   ref,
   watch,
-  useSlots,
   withDefaults,
   onMounted,
   onUnmounted,
+  useSlots,
 } from 'vue-demi';
 import {
   EditorState,
@@ -28,15 +28,13 @@ import type { Diagnostic } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
 
 import { compact, merge } from 'lodash';
-/** Slots */
+
 const slots = useSlots();
 
 /** Prop Interface */
 interface Props {
   /** Model value */
   modelValue?: string;
-  /** Value (for compatibility) */
-  value?: string;
   /**
    * Theme
    *
@@ -88,11 +86,10 @@ interface Props {
 /** Props */
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  value: '',
   theme: undefined,
   dark: false,
   readonly: false,
-  editable: false,
+  editable: true,
   extensions: undefined,
   phrases: undefined,
   lang: undefined,
@@ -102,8 +99,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 /** Emit Interface */
 interface Emits {
-  (e: 'input', value: string): void;
-  (e: 'update', value: ViewUpdate): void;
+  (e: 'update:modelValue', value: string): void;
+  (e: 'viewupdate', value: ViewUpdate): void;
 }
 
 /** Emit */
@@ -113,7 +110,10 @@ const emit = defineEmits<Emits>();
 const editor = ref<Element>();
 
 /** Internal value */
-const value = ref<string>(props.value ? props.value : props.modelValue);
+const value = ref(props.modelValue);
+
+/** Dark mode */
+const dark = ref(props.dark);
 
 /** CodeMirror Editor View */
 let view!: EditorView;
@@ -123,47 +123,40 @@ let view!: EditorView;
  *
  * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
  */
-watch(
-  () => value,
-  current => {
-    if (view.composing) {
-      // IME fix
-      return;
-    }
-
-    /** Previous cursor location */
-    const previous = view.state.selection;
-    view.setState(
-      EditorState.create({
-        doc: current.value,
-        extensions: extension.value,
-        selection: previous,
-      })
-    );
+watch(value, current => {
+  if (view.composing) {
+    // IME fix
+    return;
   }
-);
+
+  /** Previous cursor location */
+  const previous = view.state.selection;
+  view.setState(
+    EditorState.create({
+      doc: current,
+      extensions: extension.value,
+      selection: previous,
+    })
+  );
+});
 
 /** Toggle Dark mode */
-watch(
-  () => props.dark,
-  () => {
-    view.setState(
-      EditorState.create({
-        doc: value.value,
-        extensions: extension.value,
-      })
-    );
-  }
-);
+watch(dark, () => {
+  view.setState(
+    EditorState.create({
+      doc: value.value,
+      extensions: extension.value,
+    })
+  );
+});
 
 /** CodeMirror Extension */
 const extension: ComputedRef<Extension[]> = computed(() => {
-  // console.log(props, slots.default);
   /** Default extension */
   const ext: Extension[] = compact([
     // ViewUpdate event listener
     EditorView.updateListener.of((update: ViewUpdate) =>
-      emit('update', update)
+      emit('viewupdate', update)
     ),
     // Toggle light/dark mode.
     EditorView.theme(props.theme || {}, { dark: props.dark }),
@@ -172,9 +165,9 @@ const extension: ComputedRef<Extension[]> = computed(() => {
     // Parser language setting
     props.lang,
     // Readonly option
-    props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
+    EditorState.readOnly.of(props.readonly),
     // Editable option
-    props.editable ? EditorView.editable.of(props.editable) : undefined,
+    EditorView.editable.of(props.editable),
   ]);
 
   if (props.linter) {
@@ -187,13 +180,17 @@ const extension: ComputedRef<Extension[]> = computed(() => {
     merge(ext, props.extensions);
   }
 
-  // console.debug('[CodeMirror.vue] Loaded extensions:', ext);
+  console.debug('[CodeMirror.vue] Loaded extensions:', ext);
 
   return ext;
 });
 
 /** When loaded */
 onMounted(() => {
+  if (!value.value && editor.value) {
+    value.value = (editor.value.childNodes[0] as HTMLDivElement).innerText;
+  }
+
   // Register Codemirror
   view = new EditorView({
     state: EditorState.create({
@@ -206,21 +203,12 @@ onMounted(() => {
 
       if (tr.changes.empty) return;
       // to parent binding
-      emit('input', view.state.doc.toString());
+      value.value = view.state.doc.toString();
+      emit('update:modelValue', value.value);
     },
   });
 });
 
 /** Destroy */
 onUnmounted(() => view.destroy());
-
-/** Vue node to plain text
-const getChildrenTextContent = (children): string => {
-  return children
-    .map(node =>
-      node.children ? getChildrenTextContent(node.children) : node.text || '\n'
-    )
-    .join('');
-};
- */
 </script>
