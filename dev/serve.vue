@@ -96,8 +96,8 @@ export default Vue.extend({
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue';
+<script>
+import { ref, watch, defineComponent } from 'vue-demi';
 
 import CodeMirror from '@/components/CodeMirror.vue';
 
@@ -106,31 +106,47 @@ import { javascript } from '@codemirror/lang-javascript';
 import { basicSetup } from '@codemirror/basic-setup';
 import { html } from '@codemirror/lang-html';
 
-/** Markdown demo */
-const demoLang = ref(md());
-/** Markdown demo source */
-const demo = ref(
-  '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-);
-/** Markdown outputs */
-const output = ref('');
-/** Default extensions */
-const extensions = [basicSetup];
-/** HTML lang */
-const markupLang = ref(html());
-/** JavaScript Lang */
-const scriptLang = ref(javascript());
+export default defineComponent({
+  components: {
+    CodeMirror,
+  },
+  setup() {
+    /** Markdown demo */
+    const demoLang = ref(md());
+    /** Markdown demo source */
+    const demo = ref(
+      '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    );
+    /** Markdown outputs */
+    const output = ref('');
+    /** Default extensions */
+    const extensions = [basicSetup];
+    /** HTML lang */
+    const markupLang = ref(html());
+    /** JavaScript Lang */
+    const scriptLang = ref(javascript());
 
-// Initialize markdown
-window['markdown'].ready.then(markdown => {
-  output.value = markdown.parse(demo.value);
-});
+    // Initialize markdown
+    window['markdown'].ready.then(markdown => {
+      output.value = markdown.parse(demo.value);
+    });
 
-// Realtime convert Markdown
-watch(demo, current => {
-  console.log('value changed', current);
-  window['markdown'].ready.then(markdown => {
-    output.value = markdown.parse(current);
-  });
+    // Realtime convert Markdown
+    watch(demo, current => {
+      console.log('value changed', current);
+      window['markdown'].ready.then(markdown => {
+        output.value = markdown.parse(current);
+      });
+    });
+
+    return {
+      demoLang,
+      demo,
+      output,
+      extensions,
+      markupLang,
+      scriptLang,
+    };
+  },
 });
 </script>
