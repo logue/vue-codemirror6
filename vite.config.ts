@@ -1,6 +1,6 @@
 // import { createVuePlugin } from 'vite-plugin-vue2';
+import eslintPlugin from '@modyqyw/vite-plugin-eslint';
 import { defineConfig, UserConfig } from 'vite';
-// import eslintPlugin from 'vite-plugin-eslint';
 import Vue from '@vitejs/plugin-vue';
 import path from 'path';
 
@@ -33,12 +33,11 @@ const config: UserConfig = {
     Vue(),
     // createVuePlugin({ target: 'esnext' }),
     // eslint
-    // https://github.com/gxmari007/vite-plugin-eslint
-    /*
+    // https://github.com/ModyQyW/vite-plugin-eslint
+
     eslintPlugin({
       fix: true,
     }),
-    */
   ],
   optimizeDeps: {
     exclude: ['vue-demi'],

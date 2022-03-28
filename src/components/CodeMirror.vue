@@ -1,5 +1,5 @@
 <template>
-  <div ref="editor">
+  <div ref="editor" class="vue-codemirror">
     <div v-show="context.slots.defatlt"><slot /></div>
   </div>
 </template>
@@ -32,7 +32,14 @@ import { compact, merge } from 'lodash';
 
 /** CodeMirror Component */
 export default defineComponent({
+  /** Component Name */
   name: 'CodeMirror',
+  /** Model Definition */
+  model: {
+    prop: 'modelValue',
+    event: 'update:modelValue',
+  },
+  /** Props Definition */
   props: {
     /** Model value */
     modelValue: { type: String, default: '' },
@@ -86,11 +93,6 @@ export default defineComponent({
      * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
      */
     linter: { type: Array as () => Diagnostic[], default: undefined },
-  },
-  /** Emits */
-  model: {
-    prop: 'modelValue',
-    event: 'update:modelValue',
   },
   /**
    * Setup
