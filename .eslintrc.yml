@@ -8,7 +8,7 @@ extends:
   - plugin:import/recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:import/typescript
-  - plugin:vue/recommended
+  - plugin:vue/vue3-recommended
   - plugin:prettier-vue/recommended
   - prettier
   - eslint-config-prettier

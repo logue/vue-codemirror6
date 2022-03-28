@@ -16,7 +16,6 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 
 | Props      | Type                              | Information                                                                                                                                                      |
 | ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value      | string?                           | Initial text value.                                                                                                                                              |
 | dark       | boolean                           | Toggle Darkmode. If you use Vuetify, I recommend that you enter `$vuetify.theme.dark`.                                                                           |
 | theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop. |
 | readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                        |
@@ -30,10 +29,9 @@ Notice: `lang` and `linter` can also be set together in `extensions`. This is de
 
 ### Events
 
-| name   | Information                                                                           |
-| ------ | ------------------------------------------------------------------------------------- |
-| input  | When value changed.                                                                   |
-| update | CodeMirror ViewUpdate event. see <https://codemirror.net/6/docs/ref/#view.ViewUpdate> |
+| name       | Information                                                                           |
+| ---------- | ------------------------------------------------------------------------------------- |
+| viewupdate | CodeMirror ViewUpdate event. see <https://codemirror.net/6/docs/ref/#view.ViewUpdate> |
 
 ### Support Languages
 

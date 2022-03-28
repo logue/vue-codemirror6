@@ -1,6 +1,7 @@
-import { createVuePlugin } from 'vite-plugin-vue2';
+// import { createVuePlugin } from 'vite-plugin-vue2';
 import { defineConfig, UserConfig } from 'vite';
-import eslintPlugin from 'vite-plugin-eslint';
+// import eslintPlugin from 'vite-plugin-eslint';
+import Vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -8,14 +9,6 @@ const config: UserConfig = {
   resolve: {
     // https://vitejs.dev/config/#resolve-alias
     alias: [
-      // make vue external
-      {
-        find: 'vue',
-        replacement: path.resolve(
-          __dirname,
-          './node_modules/vue/dist/vue.runtime.esm.js'
-        ),
-      },
       {
         // vue @ shortcut fix
         find: '@/',
@@ -26,8 +19,6 @@ const config: UserConfig = {
         replacement: `${path.resolve(__dirname, './src')}/`,
       },
     ],
-    // External
-    dedupe: ['vue'],
   },
   // https://vitejs.dev/config/#server-options
   server: {
@@ -37,17 +28,21 @@ const config: UserConfig = {
     },
   },
   plugins: [
-    // Vue2
+    // Vue3
     // https://github.com/underfin/vite-plugin-vue2
-    createVuePlugin({
-      target: 'esnext',
-    }),
+    Vue(),
+    // createVuePlugin({ target: 'esnext' }),
     // eslint
     // https://github.com/gxmari007/vite-plugin-eslint
+    /*
     eslintPlugin({
       fix: true,
     }),
+    */
   ],
+  optimizeDeps: {
+    exclude: ['vue-demi'],
+  },
   // Build Options
   // https://vitejs.dev/config/#build-options
   build: {
@@ -59,7 +54,6 @@ const config: UserConfig = {
     rollupOptions: {
       external: [
         'vue',
-        'vue-property-decorator',
         'lodash',
         '@codemirror/state',
         '@codemirror/view',
@@ -70,7 +64,6 @@ const config: UserConfig = {
         globals: {
           vue: 'Vue',
           lodash: 'lodash',
-          'vue-property-decorator': 'vuePropertyDecorator',
           '@codemirror/state': 'state',
           '@codemirror/view': 'view',
         },

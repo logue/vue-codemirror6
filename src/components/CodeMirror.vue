@@ -1,12 +1,23 @@
 <template>
-  <pre ref="editor">
-    <template v-if="!$slots.default"><slot /></template>
-  </pre>
+  <div ref="editor">
+    <div v-show="context.slots.defatlt"><slot /></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import type { VNode } from 'vue';
+import {
+  computed,
+  type ComputedRef,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+  type Ref,
+  defineComponent,
+} from 'vue-demi';
+
+import type CodeMirrorPropsInterface from '@/interfaces/CodeMirrorPropsInterface';
+import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
 import {
   EditorState,
@@ -17,187 +28,189 @@ import { EditorView, type ViewUpdate } from '@codemirror/view';
 import type { LanguageSupport } from '@codemirror/language';
 import type { Diagnostic } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
-
 import { compact, merge } from 'lodash';
 
-@Component({ name: 'CodeMirror' })
 /** CodeMirror Component */
-export default class CodeMirror extends Vue {
-  /** Editor */
-  private editor!: EditorView;
-
+export default defineComponent({
+  name: 'CodeMirror',
+  props: {
+    /** Model value */
+    modelValue: { type: String, default: '' },
+    /**
+     * Theme
+     *
+     * @see {@link https://codemirror.net/6/examples/styling/ | Example: Styling}
+     */
+    theme: {
+      type: Object as () => { [selector: string]: StyleSpec },
+      default: undefined,
+    },
+    /** Dark Mode */
+    dark: { type: Boolean, default: false },
+    /**
+     * Readonly
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#state.EditorState%5EreadOnly | readOnly}
+     */
+    readonly: { type: Boolean, default: false },
+    /**
+     * Editable
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
+     */
+    editable: { type: Boolean, default: true },
+    /**
+     * Additional Extension
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
+     */
+    extensions: { type: Array as () => Extension[], default: undefined },
+    /**
+     * Language Phreses
+     *
+     * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
+     */
+    phrases: {
+      type: Object as () => Record<string, string>,
+      default: undefined,
+    },
+    /**
+     * CodeMirror Language
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
+     */
+    lang: { type: Object as () => LanguageSupport, default: undefined },
+    /**
+     * CodeMirror Linter
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
+     */
+    linter: { type: Array as () => Diagnostic[], default: undefined },
+  },
+  /** Emits */
+  model: {
+    prop: 'modelValue',
+    event: 'update:modelValue',
+  },
   /**
-   * Theme
-   *
-   * @see {@link https://codemirror.net/6/examples/styling/ | Example: Styling}
+   * Setup
+   * @param props  - Props
+   * @param context - Context
    */
-  @Prop({ type: Object, default: () => {} })
-  readonly theme!: { [selector: string]: StyleSpec };
+  setup(props: CodeMirrorPropsInterface, context) {
+    /** Editor DOM */
+    const editor: Ref<Element | undefined> = ref<Element>();
 
-  /** Dark Mode */
-  @Prop({ type: Boolean, default: false })
-  readonly dark!: boolean;
+    /** Model */
+    const modelValue: Ref<string> = ref(props.modelValue);
 
-  /**
-   * Readonly
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#state.EditorState%5EreadOnly | readOnly}
-   */
-  @Prop({ type: Boolean, default: false })
-  readonly readonly!: boolean;
+    /** Dark mode */
+    const dark: Ref<boolean | undefined> = ref(props.dark);
 
-  /**
-   * Editable
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
-   */
-  @Prop({ type: Boolean, default: true })
-  readonly editable!: boolean;
+    /** CodeMirror Editor View */
+    let view!: EditorView;
 
-  /**
-   * Language Phreses
-   *
-   * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
-   */
-  @Prop({ type: Object })
-  readonly phrases!: Record<string, string>;
+    /** Emits */
+    const emit = context.emit as CodeMirrorEmitsInterface;
 
-  /**
-   * Additional Extension
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
-   */
-  @Prop({ type: Array, default: () => [] })
-  readonly extensions!: Extension[];
+    /**
+     * Input value changed
+     *
+     * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
+     */
+    watch(modelValue, current => {
+      if (view.composing) {
+        // IME fix
+        return;
+      }
 
-  /**
-   * CodeMirror Language
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
-   */
-  @Prop({ type: Object })
-  readonly lang!: LanguageSupport;
-
-  /**
-   * CodeMirror Linter
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
-   */
-  @Prop({ type: Array, default: () => [] })
-  readonly linter!: Diagnostic[];
-
-  /** Input */
-  @Prop({ type: String, default: '' })
-  readonly value!: string;
-
-  /**
-   * Input value changed
-   *
-   * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
-   */
-  @Watch('value')
-  onValueChanged() {
-    if (this.editor.composing) {
-      // IME fix
-      return;
-    }
-    /** Previous cursor location */
-    const previous = this.editor.state.selection;
-    this.editor.setState(
-      EditorState.create({
-        doc: this.value,
-        extensions: this.extension,
-        selection: previous,
-      })
-    );
-  }
-
-  /** Toggle Dark mode */
-  @Watch('dark')
-  onToggleDarkMode() {
-    this.editor.setState(
-      EditorState.create({
-        doc: this.value,
-        extensions: this.extension,
-      })
-    );
-  }
-
-  /** CodeMirror Extension */
-  get extension(): Extension[] {
-    /** Default extension */
-    const ext: Extension[] = compact([
-      // ViewUpdate event listener
-      EditorView.updateListener.of((update: ViewUpdate) =>
-        this.$emit('update', update)
-      ),
-      // Toggle light/dark mode.
-      EditorView.theme(this.theme, { dark: this.dark }),
-      // locale settings
-      this.phrases ? EditorState.phrases.of(this.phrases) : undefined,
-      // Parser language setting
-      this.lang ? this.lang : undefined,
-      // Readonly option
-      EditorState.readOnly.of(this.readonly),
-      // Editable option
-      EditorView.editable.of(this.editable),
-    ]);
-
-    if (this.linter.length !== 0) {
-      // Append Linter settings
-      merge(ext, this.linter);
-    }
-
-    if (this.extensions.length !== 0) {
-      // Append Extensions (such as basic-setup)
-      merge(ext, this.extensions);
-    }
-
-    console.debug('[CodeMirror.vue] Loaded extensions:', ext);
-
-    return ext;
-  }
-
-  /** When loaded */
-  mounted() {
-    let value = this.value;
-    if (!this.value && this.$slots.default !== undefined) {
-      // override text node
-      // console.log(this.$slots.default);
-      value = this.getChildrenTextContent(this.$slots.default);
-    }
-
-    // Register Codemirror
-    this.editor = new EditorView({
-      state: EditorState.create({
-        doc: value,
-        extensions: this.extension,
-      }),
-      parent: this.$refs.editor as Element,
-      dispatch: (tr: Transaction) => {
-        this.editor.update([tr]);
-
-        if (tr.changes.empty) return;
-        // to parent binding
-        this.$emit('input', this.editor.state.doc.toString());
-      },
+      /** Previous cursor location */
+      const previous = view.state.selection;
+      view.setState(
+        EditorState.create({
+          doc: current,
+          extensions: extension.value,
+          selection: previous,
+        })
+      );
     });
-  }
 
-  /** Destroy */
-  beforeDestroy() {
-    this.editor.destroy();
-  }
+    /** Toggle Dark mode */
+    watch(dark, () => {
+      view.setState(
+        EditorState.create({
+          doc: modelValue.value,
+          extensions: extension.value,
+        })
+      );
+    });
 
-  /** Vue node to plain text */
-  private getChildrenTextContent(children: VNode[]): string {
-    return children
-      .map((node: VNode) =>
-        node.children
-          ? this.getChildrenTextContent(node.children)
-          : node.text || '\n'
-      )
-      .join('');
-  }
-}
+    /** CodeMirror Extension */
+    const extension: ComputedRef<Extension[]> = computed(() => {
+      /** Default extension */
+      const ext: Extension[] = compact([
+        // ViewUpdate event listener
+        EditorView.updateListener.of((update: ViewUpdate) =>
+          emit('viewupdate', update)
+        ),
+        // Toggle light/dark mode.
+        EditorView.theme(props.theme || {}, { dark: props.dark }),
+        // locale settings
+        props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
+        // Parser language setting
+        props.lang,
+        // Readonly option
+        props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
+        // Editable option
+        props.editable ? EditorView.editable.of(props.editable) : undefined,
+      ]);
+
+      if (props.linter) {
+        // Append Linter settings
+        merge(ext, props.linter);
+      }
+
+      if (props.extensions) {
+        // Append Extensions (such as basic-setup)
+        merge(ext, props.extensions);
+      }
+
+      console.debug('[CodeMirror.vue] Loaded extensions:', ext);
+      return ext;
+    });
+
+    /** When loaded */
+    onMounted(() => {
+      let v = modelValue.value;
+      if (!v && editor.value) {
+        v = (editor.value.childNodes[0] as HTMLDivElement).innerText;
+      }
+
+      // Register Codemirror
+      view = new EditorView({
+        state: EditorState.create({
+          doc: v,
+          extensions: extension.value,
+        }),
+        parent: editor.value,
+        dispatch: (tr: Transaction) => {
+          view.update([tr]);
+
+          if (tr.changes.empty) return;
+          // to parent binding
+          modelValue.value = view.state.doc.toString();
+          emit('update:modelValue', modelValue.value);
+        },
+      });
+    });
+
+    /** Destroy */
+    onUnmounted(() => view.destroy());
+
+    return {
+      context,
+      editor,
+    };
+  },
+});
 </script>
