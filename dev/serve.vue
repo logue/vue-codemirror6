@@ -12,7 +12,11 @@
     Markup:
     <code-mirror :extensions="extensions" :lang="markupLang" readonly>
       <pre>
-&lt;code-mirror v-model="demo" :lang="demoLang" :extensions="demoExtension" /&gt;</pre
+&lt;code-mirror
+  v-model="demo"
+  :lang="demoLang"
+  :extensions="demoExtension"
+/&gt;</pre
       >
     </code-mirror>
     Script:
@@ -33,7 +37,12 @@ export default Vue.extend({
   },
   data() {
     return {
-      demo: '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      demo: `# The quick brown fox jumps over the lazy dog.
+
+[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
       markdown: '',
     };
   },
@@ -68,7 +77,12 @@ export default Vue.extend({
     Sample:
     <div class="row">
       <div class="col">
-        <code-mirror v-model="demo" :lang="demoLang" :extensions="extensions" />
+        <code-mirror
+          v-model="demo"
+          :lang="demoLang"
+          :extensions="extensions"
+          @update="onViewUpdate"
+        />
       </div>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="col p-3 m-2 bg-light text-dark" v-html="output" />
@@ -115,7 +129,12 @@ export default defineComponent({
     const demoLang = ref(md());
     /** Markdown demo source */
     const demo = ref(
-      '# The quick brown fox jumps over the lazy dog.\n\n[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+      `# The quick brown fox jumps over the lazy dog.
+
+[Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
     );
     /** Markdown outputs */
     const output = ref('');
@@ -133,11 +152,16 @@ export default defineComponent({
 
     // Realtime convert Markdown
     watch(demo, current => {
-      console.log('value changed', current);
+      // console.log('value changed', current);
       window['markdown'].ready.then(markdown => {
         output.value = markdown.parse(current);
       });
     });
+
+    // Methods
+    const onViewUpdate = update => {
+      console.log(update);
+    };
 
     return {
       demoLang,
@@ -146,6 +170,7 @@ export default defineComponent({
       extensions,
       markupLang,
       scriptLang,
+      onViewUpdate,
     };
   },
 });

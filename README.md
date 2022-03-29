@@ -27,13 +27,7 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 
 Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
 
-### Events
-
-| name       | Information                                                                           |
-| ---------- | ------------------------------------------------------------------------------------- |
-| viewupdate | CodeMirror ViewUpdate event. see <https://codemirror.net/6/docs/ref/#view.ViewUpdate> |
-
-### Support Languages
+### Supported Languages
 
 - [`@codemirror/lang-cpp`](https://www.npmjs.com/package/@codemirror/lang-cpp)
 - [`@codemirror/lang-html`](https://www.npmjs.com/package/@codemirror/lang-html)
@@ -63,18 +57,24 @@ Mark up as follows to make it work at a minimum.
 </template>
 
 <script>
-import Vue from 'vue';
+import { ref, defineComponent } from 'vue';
 
 import CodeMirror from '@/components/CodeMirror.vue';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     CodeMirror,
   },
-  data() {
-    return {
-      value: 'The quick brown fox jumps over the lazy dog.',
-    };
+  setup() {
+    const value = ref(
+      `# The quick brown fox jumps over the lazy dog.
+
+      [Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+    );
+    return { value };
   },
 });
 </script>
@@ -82,7 +82,7 @@ export default Vue.extend({
 
 ### Example using Slots
 
-The contents of the slot will overwrite the existing `value`. For this reason, it is recommended to use it when simply displaying with a `readonly` prop without using `v-model` or `value`.
+The contents of the slot will overwrite the existing `v-model`. For this reason, it is recommended to use it when simply displaying with a `readonly` prop without using `v-model`.
 
 Also, insert a `<pre>` tag to prevent the text in the slot from being automatically formatted.
 
@@ -98,18 +98,19 @@ Also, insert a `<pre>` tag to prevent the text in the slot from being automatica
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
+import { ref, defineComponent } from 'vue';
 
 import { json } from '@codemirror/lang-json';
 
-export default Vue.extend({
+import CodeMirror from '@/components/CodeMirror.vue';
+
+export default defineComponent({
   components: {
     CodeMirror,
   },
-  data() {
-    return {
-      lang: json(),
-    };
+  setup() {
+    const lang = ref(json());
+    return { lang };
   },
 });
 </script>
@@ -127,12 +128,11 @@ When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
     :phrases="phreses"
     :extensions="extensions"
     :dark="$vuetify.theme.dark"
-    @update="onCmUpdate"
   />
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { ref, type Ref, defineComponent } from 'vue';
 
 // Load component
 import CodeMirror from 'vue-codemirror6';
@@ -144,76 +144,76 @@ import { basicSetup } from '@codemirror/basic-setup';
 import type { Extension } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 
-@Component({ components: { CodeMirror } })
-export default class Home extends Vue {
-  /** text */
-  value: string;
+export default defineComponent({
+  components: {
+    CodeMirror,
+  },
+  setup() {
+    /** text */
+    const value: Ref<string> = ref('');
 
-  /**
-   * CodeMirror Language
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
-   */
-  lang: LanguageSupport = markdown();
+    /**
+     * CodeMirror Language
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
+     */
+    const lang: Ref<LanguageSupport> = ref(markdown());
 
-  /**
-   * Internationalization Config.
-   * In this example, the display language to Japanese.
-   *
-   * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
-   */
-  phrases: Record<string, string> = {
-    // @codemirror/view
-    'Control character': '制御文字',
-    // @codemirror/fold
-    'Folded lines': '折り畳まれた行',
-    'Unfolded lines': '折り畳める行',
-    to: '行き先',
-    'folded code': '折り畳まれたコード',
-    unfold: '折り畳む解除',
-    'Fold line': '行を折り畳む',
-    'Unfold line': '行の折り畳む解除',
-    // @codemirror/search
-    'Go to line': '行き先の行',
-    go: 'OK',
-    Find: '検索',
-    Replace: '置き換え',
-    next: '▼',
-    previous: '▲',
-    all: 'すべて',
-    'match case': '一致条件',
-    regexp: '正規表現',
-    replace: '置き換え',
-    'replace all': 'すべてを置き換え',
-    close: '閉じる',
-    'current match': '現在の一致',
-    'on line': 'した行',
-    // @codemirror/lint
-    Diagnostics: 'エラー',
-    'No diagnostics': 'エラーなし',
-  };
+    /**
+     * Internationalization Config.
+     * In this example, the display language to Japanese.
+     *
+     * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
+     */
+    const phrases: Ref<Record<string, string>> = ref({
+      // @codemirror/view
+      'Control character': '制御文字',
+      // @codemirror/fold
+      'Folded lines': '折り畳まれた行',
+      'Unfolded lines': '折り畳める行',
+      to: '行き先',
+      'folded code': '折り畳まれたコード',
+      unfold: '折り畳む解除',
+      'Fold line': '行を折り畳む',
+      'Unfold line': '行の折り畳む解除',
+      // @codemirror/search
+      'Go to line': '行き先の行',
+      go: 'OK',
+      Find: '検索',
+      Replace: '置き換え',
+      next: '▼',
+      previous: '▲',
+      all: 'すべて',
+      'match case': '一致条件',
+      regexp: '正規表現',
+      replace: '置き換え',
+      'replace all': 'すべてを置き換え',
+      close: '閉じる',
+      'current match': '現在の一致',
+      'on line': 'した行',
+      // @codemirror/lint
+      Diagnostics: 'エラー',
+      'No diagnostics': 'エラーなし',
+    });
 
-  /**
-   * CodeMirror Extensions
-   *
-   * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
-   */
-  extensions: Extension[] = [
-    /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup | basic-setup} */
-    basicSetup,
-  ];
+    /**
+     * CodeMirror Extensions
+     *
+     * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
+     */
+    const extensions: Ref<Extension[]> = ref([
+      /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup | basic-setup} */
+      basicSetup,
+    ]);
 
-  /**
-   * CodeMirror Hook View update event
-   *
-   * @param update - View Update
-   *
-   * @see {@link https://codemirror.net/6/docs/ref/#view.ViewUpdate|class ViewUpdate}
-   */
-  onCmUpdate(update: ViewUpdate) {
-    console.log(update);
-  }
-}
+    return {
+      value,
+      lang,
+      phrases,
+      extensions,
+    };
+  },
+});
 </script>
 ```
 

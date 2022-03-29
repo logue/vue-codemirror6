@@ -14,6 +14,9 @@ import {
   onUnmounted,
   type Ref,
   defineComponent,
+  type PropType,
+  type SetupContext,
+  EmitsOptions,
 } from 'vue-demi';
 
 import type CodeMirrorPropsInterface from '@/interfaces/CodeMirrorPropsInterface';
@@ -42,43 +45,58 @@ export default defineComponent({
   /** Props Definition */
   props: {
     /** Model value */
-    modelValue: { type: String, default: '' },
+    modelValue: {
+      type: String,
+      default: '',
+    },
     /**
      * Theme
      *
      * @see {@link https://codemirror.net/6/examples/styling/ | Example: Styling}
      */
     theme: {
-      type: Object as () => { [selector: string]: StyleSpec },
+      type: Object as PropType<{ [selector: string]: StyleSpec }>,
       default: undefined,
     },
     /** Dark Mode */
-    dark: { type: Boolean, default: false },
+    dark: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * Readonly
      *
      * @see {@link https://codemirror.net/6/docs/ref/#state.EditorState%5EreadOnly | readOnly}
      */
-    readonly: { type: Boolean, default: false },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * Editable
      *
      * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
      */
-    editable: { type: Boolean, default: true },
+    editable: {
+      type: Boolean,
+      default: true,
+    },
     /**
      * Additional Extension
      *
      * @see {@link https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
      */
-    extensions: { type: Array as () => Extension[], default: undefined },
+    extensions: {
+      type: Array as PropType<Extension[]>,
+      default: undefined,
+    },
     /**
      * Language Phreses
      *
      * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
      */
     phrases: {
-      type: Object as () => Record<string, string>,
+      type: Object as PropType<Record<string, string>>,
       default: undefined,
     },
     /**
@@ -86,20 +104,28 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
      */
-    lang: { type: Object as () => LanguageSupport, default: undefined },
+    lang: {
+      type: Object as PropType<LanguageSupport>,
+      default: undefined,
+    },
     /**
      * CodeMirror Linter
      *
      * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
      */
-    linter: { type: Array as () => Diagnostic[], default: undefined },
+    linter: {
+      type: Array as PropType<Diagnostic[]>,
+      default: undefined,
+    },
   },
+  /** Emits */
+  emits: ['update:modelValue', 'update'],
   /**
    * Setup
    * @param props  - Props
    * @param context - Context
    */
-  setup(props: CodeMirrorPropsInterface, context) {
+  setup(props: CodeMirrorPropsInterface, context: SetupContext<EmitsOptions>) {
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref<Element>();
 
@@ -109,11 +135,45 @@ export default defineComponent({
     /** Dark mode */
     const dark: Ref<boolean | undefined> = ref(props.dark);
 
-    /** CodeMirror Editor View */
-    let view!: EditorView;
-
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
+
+    /** CodeMirror Extension */
+    const extensions: ComputedRef<Extension[]> = computed(() => {
+      /** Default extension */
+      const ext = [
+        // ViewUpdate event listener
+        EditorView.updateListener.of((update: ViewUpdate) => {
+          emit('update', update);
+        }),
+        // Toggle light/dark mode.
+        EditorView.theme(props.theme || {}, { dark: props.dark }),
+        // locale settings
+        props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
+        // Parser language setting
+        props.lang,
+        // Readonly option
+        props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
+        // Editable option
+        props.editable ? EditorView.editable.of(props.editable) : undefined,
+      ];
+
+      if (props.linter) {
+        // Append Linter settings
+        merge(ext, props.linter);
+      }
+
+      if (props.extensions) {
+        // Append Extensions (such as basic-setup)
+        merge(ext, props.extensions);
+      }
+
+      // console.debug('[CodeMirror.vue] Loaded extensions:', ext, compact(ext));
+      return compact(ext);
+    });
+
+    /** CodeMirror Editor View */
+    let view!: EditorView;
 
     /**
      * Input value changed
@@ -131,7 +191,7 @@ export default defineComponent({
       view.setState(
         EditorState.create({
           doc: current,
-          extensions: extension.value,
+          extensions: extensions.value,
           selection: previous,
         })
       );
@@ -142,57 +202,24 @@ export default defineComponent({
       view.setState(
         EditorState.create({
           doc: modelValue.value,
-          extensions: extension.value,
+          extensions: extensions.value,
         })
       );
     });
 
-    /** CodeMirror Extension */
-    const extension: ComputedRef<Extension[]> = computed(() => {
-      /** Default extension */
-      const ext: Extension[] = compact([
-        // ViewUpdate event listener
-        EditorView.updateListener.of((update: ViewUpdate) =>
-          emit('viewupdate', update)
-        ),
-        // Toggle light/dark mode.
-        EditorView.theme(props.theme || {}, { dark: props.dark }),
-        // locale settings
-        props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
-        // Parser language setting
-        props.lang,
-        // Readonly option
-        props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
-        // Editable option
-        props.editable ? EditorView.editable.of(props.editable) : undefined,
-      ]);
-
-      if (props.linter) {
-        // Append Linter settings
-        merge(ext, props.linter);
-      }
-
-      if (props.extensions) {
-        // Append Extensions (such as basic-setup)
-        merge(ext, props.extensions);
-      }
-
-      console.debug('[CodeMirror.vue] Loaded extensions:', ext);
-      return ext;
-    });
-
     /** When loaded */
     onMounted(() => {
-      let v = modelValue.value;
-      if (!v && editor.value) {
-        v = (editor.value.childNodes[0] as HTMLDivElement).innerText;
-      }
+      /** Value */
+      const value =
+        !modelValue.value && editor.value
+          ? (editor.value.childNodes[0] as HTMLDivElement).innerText
+          : modelValue.value;
 
       // Register Codemirror
       view = new EditorView({
         state: EditorState.create({
-          doc: v,
-          extensions: extension.value,
+          doc: value,
+          extensions: extensions.value,
         }),
         parent: editor.value,
         dispatch: (tr: Transaction) => {

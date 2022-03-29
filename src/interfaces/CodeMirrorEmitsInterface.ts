@@ -5,5 +5,5 @@ export default interface CodeMirrorEmitsInterface {
   /** Model Update */
   (e: 'update:modelValue', value: string): void;
   /** CodeMirror ViewUpdate */
-  (e: 'viewupdate', value: ViewUpdate): void;
+  (e: 'update', value: ViewUpdate): void;
 }
