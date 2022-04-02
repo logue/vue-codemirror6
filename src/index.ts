@@ -7,15 +7,13 @@
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
 
-// iife/cjs usage extends esm default export - so import it all
-import component, * as namedExports from './index.esm';
+import CodeMirror from './components/CodeMirror.vue';
+import { install, App } from 'vue-demi';
 
-// Attach named exports directly to component. IIFE/CJS will
-// only expose one global var, with named exports exposed as properties of
-// that global var (eg. plugin.namedExport)
-Object.entries(namedExports).forEach(([exportName, exported]) => {
-  if (exportName !== 'default') component[exportName] = exported;
-});
+install();
 
-export default component as typeof component &
-  Exclude<typeof namedExports, 'default'>;
+const installCodeMirror = (app: App) => {
+  app.component('CodeMirror', CodeMirror);
+};
+
+export { CodeMirror, installCodeMirror as install };

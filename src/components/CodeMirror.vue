@@ -1,37 +1,32 @@
 <template>
   <div ref="editor" class="vue-codemirror">
-    <div v-show="context.slots.defatlt"><slot /></div>
+    <div v-show="!context.slots.default"><slot /></div>
   </div>
 </template>
 
 <script lang="ts">
 import {
   computed,
-  type ComputedRef,
   ref,
   watch,
   onMounted,
   onUnmounted,
-  type Ref,
   defineComponent,
-  type PropType,
-  type SetupContext,
-  EmitsOptions,
 } from 'vue-demi';
+import { EditorState } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
+import { compact, merge } from 'lodash';
+
+import type { ComputedRef, Ref, PropType, SetupContext } from 'vue-demi';
 
 import type CodeMirrorPropsInterface from '@/interfaces/CodeMirrorPropsInterface';
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
-import {
-  EditorState,
-  type Extension,
-  type Transaction,
-} from '@codemirror/state';
-import { EditorView, type ViewUpdate } from '@codemirror/view';
+import type { Extension, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
+import type { ViewUpdate } from '@codemirror/view';
 import type { Diagnostic } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
-import { compact, merge } from 'lodash';
 
 /** CodeMirror Component */
 export default defineComponent({
@@ -125,7 +120,7 @@ export default defineComponent({
    * @param props  - Props
    * @param context - Context
    */
-  setup(props: CodeMirrorPropsInterface, context: SetupContext<EmitsOptions>) {
+  setup(props: CodeMirrorPropsInterface, context: SetupContext) {
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref<Element>();
 
@@ -147,7 +142,7 @@ export default defineComponent({
           emit('update', update);
         }),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme || {}, { dark: props.dark }),
+        EditorView.theme(props.theme || {}, { dark: dark.value }),
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Parser language setting
@@ -209,7 +204,7 @@ export default defineComponent({
 
     /** When loaded */
     onMounted(() => {
-      /** Value */
+      /** Initial Value */
       const value =
         !modelValue.value && editor.value
           ? (editor.value.childNodes[0] as HTMLDivElement).innerText

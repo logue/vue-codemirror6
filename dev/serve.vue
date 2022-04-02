@@ -5,24 +5,19 @@
     <p>
       This is an example of simply pouring text into CodeMirror using
       <code>v-model</code>
-      . Here, the input text is converted to Markdown in real time using
-      <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
       .
     </p>
-    Markup:
     <code-mirror :extensions="extensions" :lang="markupLang" readonly>
       <pre>
-&lt;code-mirror
-  v-model="demo"
-  :lang="demoLang"
-  :extensions="demoExtension"
-/&gt;</pre
-      >
-    </code-mirror>
-    Script:
-    <code-mirror :extensions="extensions" :lang="scriptLang" readonly>
-      <pre class="pre-scrollable">
-import { markdown } from '@codemirror/lang-markdown';
+&lt;template&gt;
+  &lt;code-mirror
+    v-model="demo"
+    :lang="demoLang"
+    :extensions="demoExtension"
+  /&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
 import Vue from 'vue';
 
 import CodeMirror from '@/components/CodeMirror.vue';
@@ -71,7 +66,9 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       this.markdown = markdown.parse(this.demo);
     });
   },
-});</pre
+});
+&lt;/script&gt;
+</pre
       >
     </code-mirror>
     Sample:
@@ -84,8 +81,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
           @update="onViewUpdate"
         />
       </div>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="col p-3 m-2 bg-light text-dark" v-html="output" />
+      <div class="col">
+        Here, the input text is converted to Markdown in real time using
+        <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
+        .
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="p-3 m-2 bg-light text-dark" v-html="output" />
+      </div>
     </div>
     <hr />
     <h2>Slot Method</h2>
