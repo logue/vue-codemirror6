@@ -1,6 +1,6 @@
 <template>
   <div ref="editor" class="vue-codemirror">
-    <div v-show="!context.slots.default"><slot /></div>
+    <aside v-show="!context.slots.default"><slot /></aside>
   </div>
 </template>
 

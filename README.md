@@ -3,7 +3,7 @@
 [![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
 [![NPM Downloads](https://img.shields.io/npm/dm/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/vue-codemirror6)
 [![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/vue-codemirror6/file/README.md)
-[![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/@uiw/react-codemirror)
+[![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/vue-codemirror6)
 [![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
 
 A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelated to [surmon-china's vue-codemirror](https://github.com/surmon-china/vue-codemirror), it is for CodeMirror6.
@@ -11,6 +11,7 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelat
 ## Usage
 
 This component can handle bidirectional binding by `v-model` like a general Vue component.
+When using with Vue2, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
 
 ### Props
 
@@ -59,21 +60,15 @@ Mark up as follows to make it work at a minimum.
 <script>
 import { ref, defineComponent } from 'vue';
 
-import CodeMirror from '@/components/CodeMirror.vue';
+import CodeMirror from 'vue-codeMirror6';
 
 export default defineComponent({
   components: {
     CodeMirror,
   },
   setup() {
-    const value = ref(
-      `# The quick brown fox jumps over the lazy dog.
+    const value = ref('Cozy lummox gives smart squid who asks for job pen.');
 
-      [Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
-    );
     return { value };
   },
 });

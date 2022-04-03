@@ -27,6 +27,7 @@ parserOptions:
 rules:
   new-cap: off
   no-invalid-this: off
+  no-irregular-whitespace: off
   no-unused-vars: warn
   require-jsdoc: warn
   valid-jsdoc: off

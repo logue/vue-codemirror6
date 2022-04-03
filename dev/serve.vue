@@ -18,53 +18,56 @@
 &lt;/template&gt;
 
 &lt;script&gt;
-import Vue from 'vue';
+import { defineComponent } from 'vue';
+// for vue2
+// import { defineComponent } from '@vue/composition-api';
 
-import CodeMirror from '@/components/CodeMirror.vue';
+import CodeMirror from 'vue-codemirror6';
 
 import { markdown } from '@codemirror/lang-markdown';
 import { basicSetup } from '@codemirror/basic-setup';
-import type { ViewUpdate } from '@codemirror/view';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     CodeMirror,
   },
-  data() {
-    return {
-      demo: `# The quick brown fox jumps over the lazy dog.
+  setup() {
+    /** Demo text */
+    const demo = ref(`# The quick brown fox jumps over the lazy dog.
 
 [Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-      markdown: '',
-    };
-  },
-  computed: {
-    cmExtensions: {
-      get() {
-        return [basicSetup];
-      },
-    },
-    cmLang: {
-      get() {
-        return markdown();
-      },
-    },
-  },
-  watch: {
-    demo() {
-      window['markdown'].ready.then(markdown => {
-        this.markdown = markdown.parse(this.demo);
-      });
-    },
-  },
-  created() {
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`);
+
+    /** Result Text */
+    const markdown = ref('');
+
+    /** CodeMirror Extensions */
+    const cmExtensions = ref([basicSetup]);
+
+    /** CodeMirror Language */
+    const cmLang = ref(markdown());
+
     // Initialize markdown
     window['markdown'].ready.then(markdown => {
-      this.markdown = markdown.parse(this.demo);
+      markdown.value = markdown.parse(demo.value);
     });
+
+    // Realtime convert Markdown
+    watch(demo, current => {
+      // console.log('value changed', current);
+      window['markdown'].ready.then(markdown => {
+        markdown.value = markdown.parse(demo.value);
+      });
+    });
+
+    return {
+      demo,
+      markdown,
+      cmExtensions,
+      cmLang,
+    };
   },
 });
 &lt;/script&gt;
@@ -101,13 +104,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     <code-mirror :extensions="extensions" :lang="markupLang" readonly>
       <pre>
 &lt;code-mirror readonly&gt;
-  How razorback-jumping frogs can level six piqued gymnasts!
+  &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
 &lt;/code-mirror&gt;</pre
       >
     </code-mirror>
     Sample:
     <code-mirror readonly>
-      How razorback-jumping frogs can level six piqued gymnasts!
+      <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
     </code-mirror>
   </div>
 </template>
@@ -115,7 +118,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 <script>
 import { ref, watch, defineComponent } from 'vue-demi';
 
-import CodeMirror from '@/components/CodeMirror.vue';
+import { CodeMirror } from '@/index';
 
 import { markdown as md } from '@codemirror/lang-markdown';
 import { javascript } from '@codemirror/lang-javascript';
@@ -142,6 +145,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     const output = ref('');
     /** Default extensions */
     const extensions = [basicSetup];
+    /** Markdown Lang*/
     /** HTML lang */
     const markupLang = ref(html());
     /** JavaScript Lang */

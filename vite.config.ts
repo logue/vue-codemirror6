@@ -1,7 +1,6 @@
 import eslintPlugin from '@modyqyw/vite-plugin-eslint';
 import { defineConfig, UserConfig } from 'vite';
 import Vue from '@vitejs/plugin-vue';
-import { isVue2 } from 'vue-demi';
 import path from 'path';
 
 // https://vitejs.dev/config/
