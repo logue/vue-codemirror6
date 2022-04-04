@@ -1,6 +1,6 @@
 import eslintPlugin from '@modyqyw/vite-plugin-eslint';
 import { defineConfig, UserConfig } from 'vite';
-import Vue from '@vitejs/plugin-vue';
+import { isVue3 } from 'vue-demi';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -27,8 +27,9 @@ const config: UserConfig = {
     },
   },
   plugins: [
-    // Vue3
-    Vue(),
+    isVue3
+      ? require('@vitejs/plugin-vue')
+      : require('vite-plugin-vue2').createVuePlugin(),
     // createVuePlugin({ target: 'esnext' }),
     // eslint
     // https://github.com/ModyQyW/vite-plugin-eslint

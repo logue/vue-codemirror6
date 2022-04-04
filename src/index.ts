@@ -17,3 +17,4 @@ const installCodeMirror = (app: App) => {
 };
 
 export { CodeMirror, installCodeMirror as install };
+export default CodeMirror;

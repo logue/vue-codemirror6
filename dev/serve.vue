@@ -118,7 +118,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 <script>
 import { ref, watch, defineComponent } from 'vue-demi';
 
-import { CodeMirror } from '@/index';
+import CodeMirror from '@/';
 
 import { markdown as md } from '@codemirror/lang-markdown';
 import { javascript } from '@codemirror/lang-javascript';

@@ -19,7 +19,6 @@ import { compact, merge } from 'lodash';
 
 import type { ComputedRef, Ref, PropType, SetupContext } from 'vue-demi';
 
-import type CodeMirrorPropsInterface from '@/interfaces/CodeMirrorPropsInterface';
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
 import type { Extension, Transaction } from '@codemirror/state';
@@ -120,7 +119,7 @@ export default defineComponent({
    * @param props  - Props
    * @param context - Context
    */
-  setup(props: CodeMirrorPropsInterface, context: SetupContext) {
+  setup(props, context: SetupContext) {
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref<Element>();
 

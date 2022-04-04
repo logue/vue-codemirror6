@@ -60,7 +60,7 @@ Mark up as follows to make it work at a minimum.
 <script>
 import { ref, defineComponent } from 'vue';
 
-import CodeMirror from 'vue-codeMirror6';
+import CodeMirror from 'vue-codemirror6';
 
 export default defineComponent({
   components: {
@@ -97,7 +97,7 @@ import { ref, defineComponent } from 'vue';
 
 import { json } from '@codemirror/lang-json';
 
-import CodeMirror from '@/components/CodeMirror.vue';
+import CodeMirror from 'vue-codemirror6';
 
 export default defineComponent({
   components: {
