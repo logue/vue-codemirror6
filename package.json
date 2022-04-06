@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "0.3.2",
-  "description": "CodeMirror6 Component for vue3",
+  "version": "0.1.2",
+  "description": "CodeMirror6 Component for vue2",
   "keywords": [
     "vuejs",
     "vue",
@@ -11,7 +11,6 @@
     "code-editor",
     "text-editor",
     "vue2",
-    "vue3",
     "web-editor",
     "vue-plugin",
     "vue-component",
@@ -68,6 +67,8 @@
     "vue-demi": "latest"
   },
   "peerDependencies": {
+    "@codemirror/state": "^0.19.9",
+    "@codemirror/view": "^0.19.48",
     "@vue/composition-api": "^1.4.9",
     "vue": "^2.6.14 || ^3.2.31"
   },
@@ -81,13 +82,11 @@
     "@codemirror/lang-markdown": "^0.19.6",
     "@codemirror/language": "^0.19.10",
     "@codemirror/lint": "^0.19.6",
-    "@codemirror/view": "^0.19.48",
     "@modyqyw/vite-plugin-eslint": "^1.2.0",
     "@types/lodash": "^4.14.181",
     "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
-    "@vitejs/plugin-vue": "^2.3.1",
     "@vue/composition-api": "^1.4.9",
     "@vue/eslint-config-typescript": "^10.0.0",
     "eslint": "^8.12.0",
@@ -95,7 +94,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "^2.7.1",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-tsdoc": "^0.2.14",
@@ -115,8 +114,7 @@
     "vue": "^2.6.14",
     "vue-eslint-parser": "^8.3.0",
     "vue-template-compiler": "^2.6.14",
-    "vue-tsc": "^0.33.9",
-    "vue3": "npm:vue@3.2.31"
+    "vue-tsc": "^0.33.9"
   },
   "husky": {
     "hooks": {
