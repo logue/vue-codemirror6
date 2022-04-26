@@ -118,12 +118,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 <script>
 import { ref, watch, defineComponent } from 'vue-demi';
 
-import CodeMirror from '@/';
-
 import { markdown as md } from '@codemirror/lang-markdown';
 import { javascript } from '@codemirror/lang-javascript';
 import { basicSetup } from '@codemirror/basic-setup';
 import { html } from '@codemirror/lang-html';
+
+// import CodeMirror from './vue-codemirror6.es';
+import CodeMirror from '@/';
 
 export default defineComponent({
   components: {
