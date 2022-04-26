@@ -1,5 +1,5 @@
 import { createApp, isVue3, Vue2 } from 'vue-demi';
-import Dev from './serve.vue';
+import Dev from './DemoPage.vue';
 
 if (isVue3) {
   console.info('ℹ Running as Vue3.');

@@ -56,33 +56,16 @@ const config: UserConfig = {
         '@codemirror/lint',
         '@codemirror/language',
       ],
-      output: [
-        {
-          format: 'es',
-          esModule: true,
-          exports: 'named',
-          globals: {
-            vue: 'Vue',
-            lodash: 'lodash',
-            '@codemirror/state': 'state',
-            '@codemirror/view': 'view',
-            'vue-demi': 'VueDemi',
-          },
+      output: {
+        exports: 'named',
+        globals: {
+          vue: 'Vue',
+          lodash: 'lodash',
+          '@codemirror/state': 'state',
+          '@codemirror/view': 'view',
+          'vue-demi': 'VueDemi',
         },
-        {
-          format: 'umd',
-          inlineDynamicImports: true,
-          interop: 'esModule',
-          exports: 'named',
-          globals: {
-            vue: 'Vue',
-            lodash: 'lodash',
-            '@codemirror/state': 'state',
-            '@codemirror/view': 'view',
-            'vue-demi': 'VueDemi',
-          },
-        },
-      ],
+      },
     },
     target: 'es2021',
     /*
