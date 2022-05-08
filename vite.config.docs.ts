@@ -5,6 +5,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 const config: UserConfig = {
+  base: './',
   // Resolver
   resolve: {
     // https://vitejs.dev/config/#resolve-alias
