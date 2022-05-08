@@ -81,6 +81,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
           v-model="demo"
           :lang="demoLang"
           :extensions="extensions"
+          :theme="cmTheme"
           @update="onViewUpdate"
         />
       </div>
@@ -151,6 +152,12 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     /** JavaScript Lang */
     const scriptLang = ref(javascript());
 
+    const cmTheme = ref({
+      '.cm-lineWrapping': {
+        wordBreak: 'break-all',
+      },
+    });
+
     // Initialize markdown
     window['markdown'].ready.then(markdown => {
       output.value = markdown.parse(demo.value);
@@ -165,9 +172,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     });
 
     // Methods
-    const onViewUpdate = update => {
-      console.log(update);
-    };
+    const onViewUpdate = update => console.log(update);
 
     return {
       demoLang,
@@ -176,6 +181,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       extensions,
       markupLang,
       scriptLang,
+      cmTheme,
       onViewUpdate,
     };
   },

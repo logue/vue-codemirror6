@@ -12,6 +12,7 @@ import {
   onMounted,
   onUnmounted,
   defineComponent,
+  nextTick,
 } from 'vue-demi';
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
@@ -50,7 +51,7 @@ export default defineComponent({
      */
     theme: {
       type: Object as PropType<{ [selector: string]: StyleSpec }>,
-      default: undefined,
+      default: () => {},
     },
     /** Dark Mode */
     dark: {
@@ -121,7 +122,7 @@ export default defineComponent({
    */
   setup(props, context: SetupContext) {
     /** Editor DOM */
-    const editor: Ref<Element | undefined> = ref<Element>();
+    const editor: Ref<Element | undefined> = ref();
 
     /** Model */
     const modelValue: Ref<string> = ref(props.modelValue);
@@ -137,11 +138,11 @@ export default defineComponent({
       /** Default extension */
       const ext = [
         // ViewUpdate event listener
-        EditorView.updateListener.of((update: ViewUpdate) => {
-          emit('update', update);
-        }),
+        EditorView.updateListener.of((update: ViewUpdate) =>
+          emit('update', update)
+        ),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme || {}, { dark: dark.value }),
+        EditorView.theme(props.theme, { dark: dark.value }),
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Parser language setting
@@ -191,15 +192,21 @@ export default defineComponent({
       );
     });
 
-    /** Toggle Dark mode */
-    watch(dark, () => {
-      view.setState(
-        EditorState.create({
-          doc: modelValue.value,
-          extensions: extensions.value,
-        })
-      );
-    });
+    /** Apply extensions */
+    watch(
+      extensions,
+      value => {
+        view.setState(
+          EditorState.create({
+            doc: modelValue.value,
+            extensions: value,
+          })
+        );
+        console.log(extensions.value);
+        nextTick();
+      },
+      { deep: true }
+    );
 
     /** When loaded */
     onMounted(() => {
@@ -223,6 +230,7 @@ export default defineComponent({
           // to parent binding
           modelValue.value = view.state.doc.toString();
           emit('update:modelValue', modelValue.value);
+          nextTick();
         },
       });
     });

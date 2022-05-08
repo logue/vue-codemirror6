@@ -1,4 +1,4 @@
 .husky/
 .vscode/
 dist/
-types/
+docs/
