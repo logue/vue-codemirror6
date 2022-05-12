@@ -214,6 +214,38 @@ export default defineComponent({
 </script>
 ```
 
+## Recommendations
+
+Since CodeMirror has a relatively large capacity, when using vite, it is recommended to set it to output as a separate file using the [`manualChunks`](https://vitejs.dev/guide/build.html#chunking-strategy) option at build time as shown below.
+
+```ts
+const config: UserConfig = {
+  // ...
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // ...
+          codemirror: [
+            // Split CodeMirror code.
+            'vue-codemirror6',
+            '@codemirror/state',
+            '@codemirror/view',
+            // Add the following as needed.
+            '@codemirror/basic-setup',
+            '@codemirror/lang-html',
+            '@codemirror/lang-javascript',
+            '@codemirror/lang-markdown',
+          ],
+          // ...
+        },
+      },
+    },
+  },
+  // ...
+};
+```
+
 ## LICENSE
 
 [MIT](LICENSE)

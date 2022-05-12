@@ -47,8 +47,6 @@ const config: UserConfig = {
             '@codemirror/state',
             '@codemirror/view',
             '@codemirror/basic-setup',
-          ],
-          codemirrorLanguage: [
             '@codemirror/lang-html',
             '@codemirror/lang-javascript',
             '@codemirror/lang-markdown',

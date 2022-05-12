@@ -13,12 +13,14 @@ import {
   onUnmounted,
   defineComponent,
   nextTick,
+  type ComputedRef,
+  type Ref,
+  type PropType,
+  type SetupContext,
 } from 'vue-demi';
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { compact, merge } from 'lodash';
-
-import type { ComputedRef, Ref, PropType, SetupContext } from 'vue-demi';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
@@ -195,21 +197,20 @@ export default defineComponent({
     /** Apply extensions */
     watch(
       extensions,
-      value => {
+      async value => {
         view.setState(
           EditorState.create({
             doc: modelValue.value,
             extensions: value,
           })
         );
-        console.log(extensions.value);
-        nextTick();
+        await nextTick();
       },
       { deep: true }
     );
 
     /** When loaded */
-    onMounted(() => {
+    onMounted(async () => {
       /** Initial Value */
       const value =
         !modelValue.value && editor.value
@@ -230,9 +231,9 @@ export default defineComponent({
           // to parent binding
           modelValue.value = view.state.doc.toString();
           emit('update:modelValue', modelValue.value);
-          nextTick();
         },
       });
+      await nextTick();
     });
 
     /** Destroy */
