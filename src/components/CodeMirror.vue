@@ -12,12 +12,15 @@ import {
   onMounted,
   onUnmounted,
   defineComponent,
+  nextTick,
+  type ComputedRef,
+  type Ref,
+  type PropType,
+  type SetupContext,
 } from 'vue-demi';
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { compact, merge } from 'lodash';
-
-import type { ComputedRef, Ref, PropType, SetupContext } from 'vue-demi';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
@@ -137,9 +140,9 @@ export default defineComponent({
       /** Default extension */
       const ext = [
         // ViewUpdate event listener
-        EditorView.updateListener.of((update: ViewUpdate) => {
-          emit('update', update);
-        }),
+        EditorView.updateListener.of((update: ViewUpdate) =>
+          emit('update', update)
+        ),
         // Toggle light/dark mode.
         EditorView.theme(props.theme || {}, { dark: dark.value }),
         // locale settings
@@ -202,7 +205,7 @@ export default defineComponent({
     });
 
     /** When loaded */
-    onMounted(() => {
+    onMounted(async () => {
       /** Initial Value */
       const value =
         !modelValue.value && editor.value
@@ -225,6 +228,7 @@ export default defineComponent({
           emit('update:modelValue', modelValue.value);
         },
       });
+      await nextTick();
     });
 
     /** Destroy */

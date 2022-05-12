@@ -8,7 +8,7 @@
  */
 
 import CodeMirror from './components/CodeMirror.vue';
-import { install, App } from 'vue-demi';
+import { install, type App } from 'vue-demi';
 
 install();
 
