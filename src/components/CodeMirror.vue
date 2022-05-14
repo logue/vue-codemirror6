@@ -18,9 +18,10 @@ import {
   type PropType,
   type SetupContext,
 } from 'vue-demi';
+
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
-import { compact, merge } from 'lodash';
+import { compact, merge, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
@@ -53,10 +54,17 @@ export default defineComponent({
      */
     theme: {
       type: Object as PropType<{ [selector: string]: StyleSpec }>,
-      default: () => {},
+      default: () => {
+        return {};
+      },
     },
     /** Dark Mode */
     dark: {
+      type: Boolean,
+      default: false,
+    },
+    /** Line wrapping */
+    wrap: {
       type: Boolean,
       default: false,
     },
@@ -129,9 +137,6 @@ export default defineComponent({
     /** Model */
     const modelValue: Ref<string> = ref(props.modelValue);
 
-    /** Dark mode */
-    const dark: Ref<boolean | undefined> = ref(props.dark);
-
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
@@ -144,7 +149,9 @@ export default defineComponent({
           emit('update', update)
         ),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme, { dark: dark.value }),
+        EditorView.theme(props.theme, { dark: props.dark }),
+        // Toggle line wrapping
+        props.wrap ? EditorView.lineWrapping : undefined,
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Parser language setting
@@ -165,12 +172,12 @@ export default defineComponent({
         merge(ext, props.extensions);
       }
 
-      // console.debug('[CodeMirror.vue] Loaded extensions:', ext, compact(ext));
+      // console.debug('[CodeMirror.vue] Loaded extensions:', compact(ext));
       return compact(ext);
     });
 
     /** CodeMirror Editor View */
-    let view!: EditorView;
+    let view: EditorView;
 
     /**
      * Input value changed
@@ -197,11 +204,11 @@ export default defineComponent({
     /** Apply extensions */
     watch(
       extensions,
-      async value => {
+      async () => {
         view.setState(
           EditorState.create({
             doc: modelValue.value,
-            extensions: value,
+            extensions: extensions.value,
           })
         );
         await nextTick();
@@ -214,7 +221,7 @@ export default defineComponent({
       /** Initial Value */
       const value =
         !modelValue.value && editor.value
-          ? (editor.value.childNodes[0] as HTMLDivElement).innerText
+          ? trim((editor.value.childNodes[0] as HTMLDivElement).innerText)
           : modelValue.value;
 
       // Register Codemirror

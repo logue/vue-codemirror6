@@ -14,6 +14,7 @@
     v-model="demo"
     :lang="demoLang"
     :extensions="demoExtension"
+    wrap
   /&gt;
 &lt;/template&gt;
 
@@ -74,7 +75,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 </pre
       >
     </code-mirror>
-    Sample:
+    <h3>Sample</h3>
+    <p>
+      The actual execution result is as follows. In this sample, the markdwon
+      entered in the form on the left is reflected on the right side in real
+      time using
+      <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
+      .
+    </p>
     <div class="row">
       <div class="col">
         <code-mirror
@@ -82,15 +90,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
           :lang="demoLang"
           :extensions="extensions"
           :theme="cmTheme"
+          wrap
           @update="onViewUpdate"
         />
       </div>
       <div class="col">
-        Here, the input text is converted to Markdown in real time using
-        <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
-        .
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="p-3 m-2 bg-light text-dark" v-html="output" />
+        <div class="p-3 bg-light text-dark" v-html="output" />
       </div>
     </div>
     <hr />
@@ -104,13 +110,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     Markup:
     <code-mirror :extensions="extensions" :lang="markupLang" readonly>
       <pre>
-&lt;code-mirror readonly&gt;
+&lt;code-mirror readonly dark&gt;
   &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
 &lt;/code-mirror&gt;</pre
       >
     </code-mirror>
     Sample:
-    <code-mirror readonly>
+    <code-mirror readonly dark>
       <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
     </code-mirror>
   </div>
