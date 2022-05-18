@@ -7,7 +7,12 @@
       <code>v-model</code>
       .
     </p>
-    <code-mirror :extensions="extensions" :lang="markupLang" readonly>
+    <code-mirror
+      :extensions="extensions"
+      :lang="markupLang"
+      readonly
+      :dark="dark"
+    >
       <pre>
 &lt;template&gt;
   &lt;code-mirror
@@ -90,6 +95,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
           :lang="demoLang"
           :extensions="extensions"
           :theme="cmTheme"
+          :dark="dark"
           wrap
           @update="onViewUpdate"
         />
@@ -108,15 +114,20 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       DOM node and only the text node is used as the value.
     </p>
     Markup:
-    <code-mirror :extensions="extensions" :lang="markupLang" readonly>
+    <code-mirror
+      :extensions="extensions"
+      :lang="markupLang"
+      readonly
+      :dark="dark"
+    >
       <pre>
-&lt;code-mirror readonly dark&gt;
+&lt;code-mirror readonly&gt;
   &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
 &lt;/code-mirror&gt;</pre
       >
     </code-mirror>
     Sample:
-    <code-mirror readonly dark>
+    <code-mirror readonly :dark="dark">
       <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
     </code-mirror>
   </div>
@@ -135,6 +146,9 @@ import { html } from '@codemirror/lang-html';
 export default defineComponent({
   components: {
     CodeMirror,
+  },
+  props: {
+    dark: { type: Boolean, default: false },
   },
   setup() {
     /** Markdown demo */

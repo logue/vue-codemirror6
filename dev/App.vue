@@ -41,17 +41,34 @@
                 </svg>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="dark = !dark">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-circle-half"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"
+                  />
+                </svg>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
   </header>
 
-  <main role="main" class="flex-shrink-0 mt-4">
+  <main role="main" class="flex-shrink-0 pt-4 bg-white">
     <div class="container">
-      <demo-page />
+      <demo-page :dark="dark" />
     </div>
   </main>
+
   <footer class="footer mt-auto py-3 mb-0 bg-light">
     <address class="container mb-0">
       <a href="//logue.dev/">Logue</a>
@@ -63,7 +80,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue-demi';
+import { defineComponent, ref, watch } from 'vue-demi';
 
 import DemoPage from './DemoPage.vue';
 
@@ -71,6 +88,34 @@ import DemoPage from './DemoPage.vue';
 export default defineComponent({
   components: {
     DemoPage,
+  },
+  setup() {
+    const dark = ref(false);
+
+    watch(dark, () => {
+      const navbar = document.querySelector('.navbar').classList;
+      const main = document.querySelector('main').classList;
+      const footer = document.querySelector('.footer').classList;
+      if (dark.value) {
+        navbar.remove('navbar-dark', 'bg-dark');
+        navbar.add('navbar-light', 'bg-light');
+        main.remove('bg-white', 'text-dark');
+        main.add('bg-black', 'text-light');
+        footer.remove('bg-light', 'text-dark');
+        footer.add('bg-dark', 'text-light');
+      } else {
+        navbar.add('navbar-dark', 'bg-dark');
+        navbar.remove('navbar-light', 'bg-light');
+        main.add('bg-white', 'text-dark');
+        main.remove('bg-black', 'text-light');
+        footer.add('bg-light', 'text-dark');
+        footer.remove('bg-dark', 'text-light');
+      }
+    });
+
+    return {
+      dark,
+    };
   },
 });
 </script>
