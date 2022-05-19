@@ -7,18 +7,13 @@
       <code>v-model</code>
       .
     </p>
-    <code-mirror
-      :extensions="extensions"
-      :lang="markupLang"
-      readonly
-      :dark="dark"
-    >
+    <code-mirror :lang="cmLangHtml" readonly :dark="dark" basic>
       <pre>
 &lt;template&gt;
   &lt;code-mirror
     v-model="demo"
     :lang="demoLang"
-    :extensions="demoExtension"
+    basic
     wrap
   /&gt;
 &lt;/template&gt;
@@ -31,7 +26,6 @@ import { defineComponent } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 import { markdown } from '@codemirror/lang-markdown';
-import { basicSetup } from '@codemirror/basic-setup';
 
 export default defineComponent({
   components: {
@@ -48,9 +42,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     /** Result Text */
     const markdown = ref('');
-
-    /** CodeMirror Extensions */
-    const cmExtensions = ref([basicSetup]);
 
     /** CodeMirror Language */
     const cmLang = ref(markdown());
@@ -71,7 +62,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     return {
       demo,
       markdown,
-      cmExtensions,
       cmLang,
     };
   },
@@ -92,11 +82,12 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       <div class="col">
         <code-mirror
           v-model="demo"
-          :lang="demoLang"
-          :extensions="extensions"
+          :lang="cmLangMd"
           :theme="cmTheme"
           :dark="dark"
           wrap
+          basic
+          tab
           @update="onViewUpdate"
         />
       </div>
@@ -114,12 +105,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       DOM node and only the text node is used as the value.
     </p>
     Markup:
-    <code-mirror
-      :extensions="extensions"
-      :lang="markupLang"
-      readonly
-      :dark="dark"
-    >
+    <code-mirror :lang="cmLangHtml" readonly basic :dark="dark">
       <pre>
 &lt;code-mirror readonly&gt;
   &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
@@ -127,7 +113,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       >
     </code-mirror>
     Sample:
-    <code-mirror readonly :dark="dark">
+    <code-mirror readonly basic :dark="dark">
       <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
     </code-mirror>
   </div>
@@ -139,8 +125,6 @@ import { ref, watch, defineComponent } from 'vue-demi';
 import CodeMirror from '@/';
 
 import { markdown as md } from '@codemirror/lang-markdown';
-import { javascript } from '@codemirror/lang-javascript';
-import { basicSetup } from '@codemirror/basic-setup';
 import { html } from '@codemirror/lang-html';
 
 export default defineComponent({
@@ -151,8 +135,6 @@ export default defineComponent({
     dark: { type: Boolean, default: false },
   },
   setup() {
-    /** Markdown demo */
-    const demoLang = ref(md());
     /** Markdown demo source */
     const demo = ref(
       `# The quick brown fox jumps over the lazy dog.
@@ -164,13 +146,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     );
     /** Markdown outputs */
     const output = ref('');
-    /** Default extensions */
-    const extensions = [basicSetup];
     /** Markdown Lang*/
+    const cmLangMd = ref(md());
     /** HTML lang */
-    const markupLang = ref(html());
-    /** JavaScript Lang */
-    const scriptLang = ref(javascript());
+    const cmLangHtml = ref(html());
 
     const cmTheme = ref({
       '.cm-lineWrapping': {
@@ -195,12 +174,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     const onViewUpdate = update => console.log(update);
 
     return {
-      demoLang,
       demo,
       output,
-      extensions,
-      markupLang,
-      scriptLang,
+      cmLangMd,
+      cmLangHtml,
       cmTheme,
       onViewUpdate,
     };

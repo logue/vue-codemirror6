@@ -12,6 +12,7 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  toRaw,
   toRefs,
   watch,
   type ComputedRef,
@@ -20,7 +21,7 @@ import {
   type SetupContext,
 } from 'vue-demi';
 
-import { EditorSelection, EditorState, type Text } from '@codemirror/state';
+import { EditorSelection, EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from '@codemirror/basic-setup';
 import { indentWithTab } from '@codemirror/commands';
@@ -29,7 +30,7 @@ import { compact, merge, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
-import type { Extension, Transaction } from '@codemirror/state';
+import type { Extension, Text, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
 import type { ViewUpdate } from '@codemirror/view';
 import type { Diagnostic } from '@codemirror/lint';
@@ -184,26 +185,26 @@ export default defineComponent({
     const exts: ComputedRef<Extension[]> = computed(() => {
       /** Default extension */
       const ext = [
+        // Toggle basic setup
+        props.basic ? basicSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate) =>
           emit('update', update)
         ),
         // Toggle light/dark mode.
         EditorView.theme(props.theme, { dark: dark.value }),
-        // Toggle basic setup
-        props.basic ? basicSetup : undefined,
         // Toggle line wrapping
         props.wrap ? EditorView.lineWrapping : undefined,
         // Indent with tab
         props.tab ? keymap.of([indentWithTab]) : undefined,
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
-        // Parser language setting
-        props.lang,
         // Readonly option
         props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
         // Editable option
         props.editable ? EditorView.editable.of(props.editable) : undefined,
+        // Lang
+        props.lang ? toRaw(props.lang) : undefined,
       ];
 
       if (props.linter) {
