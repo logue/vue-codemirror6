@@ -8,10 +8,10 @@
  */
 
 import CodeMirror from './components/CodeMirror.vue';
-import { install, isVue2, Vue2 } from 'vue-demi';
+import { install, isVue2 } from 'vue-demi';
 
 const installCodeMirror = isVue2
-  ? (app: typeof Vue2) => {
+  ? app => {
       app.component('CodeMirror', CodeMirror);
     }
   : install();

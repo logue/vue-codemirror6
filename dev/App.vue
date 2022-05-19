@@ -46,6 +46,22 @@
                   </svg>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" @click="dark = !dark">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-circle-half"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"
+                    />
+                  </svg>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -81,7 +97,8 @@ export default defineComponent({
     DemoPage,
   },
   setup() {
-    const dark = ref(false);
+    /** Dark mode */
+    const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
     watch(dark, () => {
       const navbar = document.querySelector('.navbar').classList;
