@@ -8,13 +8,12 @@
  */
 
 import CodeMirror from './components/CodeMirror.vue';
-import { install, type App } from 'vue-demi';
+import { install, isVue2, App } from 'vue-demi';
 
-install();
+const installCodeMirror = isVue2
+  ? (app: App) => {
+      app.component('CodeMirror', CodeMirror);
+    }
+  : install();
 
-const installCodeMirror = (app: App) => {
-  app.component('CodeMirror', CodeMirror);
-};
-
-export { CodeMirror, installCodeMirror as install };
-export default CodeMirror;
+export { CodeMirror as default, installCodeMirror as install };

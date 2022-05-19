@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div class="container">
     <h1>Vue CodeMirror6 Markdown Editor Demo</h1>
     <h2>Normal Method</h2>
     <p>
@@ -7,13 +7,14 @@
       <code>v-model</code>
       .
     </p>
-    <code-mirror :extensions="extensions" :lang="markupLang" readonly>
+    <code-mirror :lang="cmLangHtml" readonly :dark="dark" basic>
       <pre>
 &lt;template&gt;
   &lt;code-mirror
     v-model="demo"
     :lang="demoLang"
-    :extensions="demoExtension"
+    basic
+    wrap
   /&gt;
 &lt;/template&gt;
 
@@ -25,7 +26,6 @@ import { defineComponent } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 import { markdown } from '@codemirror/lang-markdown';
-import { basicSetup } from '@codemirror/basic-setup';
 
 export default defineComponent({
   components: {
@@ -42,9 +42,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     /** Result Text */
     const markdown = ref('');
-
-    /** CodeMirror Extensions */
-    const cmExtensions = ref([basicSetup]);
 
     /** CodeMirror Language */
     const cmLang = ref(markdown());
@@ -65,7 +62,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     return {
       demo,
       markdown,
-      cmExtensions,
       cmLang,
     };
   },
@@ -74,22 +70,30 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 </pre
       >
     </code-mirror>
-    Sample:
+    <h3>Sample</h3>
+    <p>
+      The actual execution result is as follows. In this sample, the markdwon
+      entered in the form on the left is reflected on the right side in real
+      time using
+      <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
+      .
+    </p>
     <div class="row">
       <div class="col">
         <code-mirror
           v-model="demo"
-          :lang="demoLang"
-          :extensions="extensions"
+          :lang="cmLangMd"
+          :theme="cmTheme"
+          :dark="dark"
+          wrap
+          basic
+          tab
           @update="onViewUpdate"
         />
       </div>
       <div class="col">
-        Here, the input text is converted to Markdown in real time using
-        <a href="https://github.com/rsms/markdown-wasm">markdown-wasm</a>
-        .
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="p-3 m-2 bg-light text-dark" v-html="output" />
+        <div class="p-3 bg-light text-dark" v-html="output" />
       </div>
     </div>
     <hr />
@@ -101,7 +105,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       DOM node and only the text node is used as the value.
     </p>
     Markup:
-    <code-mirror :extensions="extensions" :lang="markupLang" readonly>
+    <code-mirror :lang="cmLangHtml" readonly basic :dark="dark">
       <pre>
 &lt;code-mirror readonly&gt;
   &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
@@ -109,7 +113,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       >
     </code-mirror>
     Sample:
-    <code-mirror readonly>
+    <code-mirror readonly basic :dark="dark">
       <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
     </code-mirror>
   </div>
@@ -118,21 +122,19 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 <script>
 import { ref, watch, defineComponent } from 'vue-demi';
 
-import { markdown as md } from '@codemirror/lang-markdown';
-import { javascript } from '@codemirror/lang-javascript';
-import { basicSetup } from '@codemirror/basic-setup';
-import { html } from '@codemirror/lang-html';
-
-// import CodeMirror from './vue-codemirror6.es';
 import CodeMirror from '@/';
+
+import { markdown as md } from '@codemirror/lang-markdown';
+import { html } from '@codemirror/lang-html';
 
 export default defineComponent({
   components: {
     CodeMirror,
   },
+  props: {
+    dark: { type: Boolean, default: false },
+  },
   setup() {
-    /** Markdown demo */
-    const demoLang = ref(md());
     /** Markdown demo source */
     const demo = ref(
       `# The quick brown fox jumps over the lazy dog.
@@ -144,13 +146,16 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     );
     /** Markdown outputs */
     const output = ref('');
-    /** Default extensions */
-    const extensions = [basicSetup];
     /** Markdown Lang*/
+    const cmLangMd = ref(md());
     /** HTML lang */
-    const markupLang = ref(html());
-    /** JavaScript Lang */
-    const scriptLang = ref(javascript());
+    const cmLangHtml = ref(html());
+
+    const cmTheme = ref({
+      '.cm-lineWrapping': {
+        wordBreak: 'break-all',
+      },
+    });
 
     // Initialize markdown
     window['markdown'].ready.then(markdown => {
@@ -166,17 +171,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     });
 
     // Methods
-    const onViewUpdate = update => {
-      console.log(update);
-    };
+    const onViewUpdate = update => console.log(update);
 
     return {
-      demoLang,
       demo,
       output,
-      extensions,
-      markupLang,
-      scriptLang,
+      cmLangMd,
+      cmLangHtml,
+      cmTheme,
       onViewUpdate,
     };
   },

@@ -7,24 +7,30 @@
 <script lang="ts">
 import {
   computed,
-  ref,
-  watch,
-  onMounted,
-  onUnmounted,
   defineComponent,
   nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  toRaw,
+  toRefs,
+  watch,
   type ComputedRef,
-  type Ref,
   type PropType,
+  type Ref,
   type SetupContext,
 } from 'vue-demi';
-import { EditorState } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
-import { compact, merge } from 'lodash';
+
+import { EditorSelection, EditorState } from '@codemirror/state';
+import { EditorView, keymap } from '@codemirror/view';
+import { basicSetup } from '@codemirror/basic-setup';
+import { indentWithTab } from '@codemirror/commands';
+
+import { compact, merge, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 
-import type { Extension, Transaction } from '@codemirror/state';
+import type { Extension, Text, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
 import type { ViewUpdate } from '@codemirror/view';
 import type { Diagnostic } from '@codemirror/lint';
@@ -43,8 +49,19 @@ export default defineComponent({
   props: {
     /** Model value */
     modelValue: {
-      type: String,
+      type: String as PropType<string | Text>,
       default: '',
+    },
+    /**
+     * Selection
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#state.EditorSelection | EditorSelection}
+     */
+    selection: {
+      type: Object as PropType<
+        EditorSelection | { anchor: number; head?: number }
+      >,
+      default: undefined,
     },
     /**
      * Theme
@@ -53,10 +70,39 @@ export default defineComponent({
      */
     theme: {
       type: Object as PropType<{ [selector: string]: StyleSpec }>,
-      default: undefined,
+      default: () => {
+        return {};
+      },
     },
     /** Dark Mode */
     dark: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Use Basic Setup
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#basic-setup | basic-setup}
+     */
+    basic: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Line wrapping
+     *
+     * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5ElineWrapping | LineWrapping}
+     */
+    wrap: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Tab handling
+     *
+     * @see {@link https://codemirror.net/6/examples/tab/ | Tab Handling}
+     */
+    tab: {
       type: Boolean,
       default: false,
     },
@@ -124,35 +170,41 @@ export default defineComponent({
    */
   setup(props, context: SetupContext) {
     /** Editor DOM */
-    const editor: Ref<Element | undefined> = ref<Element>();
+    const editor: Ref<Element | undefined> = ref();
 
-    /** Model */
-    const modelValue: Ref<string> = ref(props.modelValue);
+    /** Internal value */
+    const doc: Ref<string | Text | undefined> = ref(props.modelValue);
 
     /** Dark mode */
-    const dark: Ref<boolean | undefined> = ref(props.dark);
+    const { dark } = toRefs(props);
 
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
     /** CodeMirror Extension */
-    const extensions: ComputedRef<Extension[]> = computed(() => {
+    const exts: ComputedRef<Extension[]> = computed(() => {
       /** Default extension */
       const ext = [
+        // Toggle basic setup
+        props.basic ? basicSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate) =>
           emit('update', update)
         ),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme || {}, { dark: dark.value }),
+        EditorView.theme(props.theme, { dark: dark.value }),
+        // Toggle line wrapping
+        props.wrap ? EditorView.lineWrapping : undefined,
+        // Indent with tab
+        props.tab ? keymap.of([indentWithTab]) : undefined,
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
-        // Parser language setting
-        props.lang,
         // Readonly option
         props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
         // Editable option
         props.editable ? EditorView.editable.of(props.editable) : undefined,
+        // Lang
+        props.lang ? toRaw(props.lang) : undefined,
       ];
 
       if (props.linter) {
@@ -165,19 +217,19 @@ export default defineComponent({
         merge(ext, props.extensions);
       }
 
-      // console.debug('[CodeMirror.vue] Loaded extensions:', ext, compact(ext));
+      // console.debug('[CodeMirror.vue] Loaded extensions:', compact(ext));
       return compact(ext);
     });
 
     /** CodeMirror Editor View */
-    let view!: EditorView;
+    let view: EditorView;
 
     /**
      * Input value changed
      *
      * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
      */
-    watch(modelValue, current => {
+    watch(doc, current => {
       if (view.composing) {
         // IME fix
         return;
@@ -188,18 +240,17 @@ export default defineComponent({
       view.setState(
         EditorState.create({
           doc: current,
-          extensions: extensions.value,
+          extensions: exts.value,
           selection: previous,
         })
       );
     });
 
-    /** Toggle Dark mode */
     watch(dark, () => {
       view.setState(
         EditorState.create({
-          doc: modelValue.value,
-          extensions: extensions.value,
+          doc: doc.value,
+          extensions: exts.value,
         })
       );
     });
@@ -207,16 +258,16 @@ export default defineComponent({
     /** When loaded */
     onMounted(async () => {
       /** Initial Value */
-      const value =
-        !modelValue.value && editor.value
-          ? (editor.value.childNodes[0] as HTMLDivElement).innerText
-          : modelValue.value;
+      if (doc.value == '' && editor.value) {
+        doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+      }
 
       // Register Codemirror
       view = new EditorView({
         state: EditorState.create({
-          doc: value,
-          extensions: extensions.value,
+          doc: doc.value,
+          selection: props.selection,
+          extensions: exts.value,
         }),
         parent: editor.value,
         dispatch: (tr: Transaction) => {
@@ -224,8 +275,8 @@ export default defineComponent({
 
           if (tr.changes.empty) return;
           // to parent binding
-          modelValue.value = view.state.doc.toString();
-          emit('update:modelValue', modelValue.value);
+          doc.value = view.state.doc.toString();
+          emit('update:modelValue', doc.value);
         },
       });
       await nextTick();
