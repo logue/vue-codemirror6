@@ -5,15 +5,12 @@ env:
 extends:
   - eslint:recommended
   - google
+  - plugin:jsdoc/recommended
   - plugin:import/recommended
-  - plugin:@typescript-eslint/eslint-recommended
   - plugin:import/typescript
-  - plugin:vue/vue3-recommended
-  - plugin:prettier-vue/recommended
-  - prettier
-  - eslint-config-prettier
+  - plugin:vue/recommended
+  - '@vue/eslint-config-prettier'
 plugins:
-  - vue
   - eslint-plugin-tsdoc
   - '@typescript-eslint'
   - vuejs-accessibility
@@ -27,14 +24,18 @@ parserOptions:
 rules:
   new-cap: off
   no-invalid-this: off
-  no-irregular-whitespace: off
   no-unused-vars: warn
   require-jsdoc: warn
+  tsdoc/syntax: warn
+  jsdoc/require-param: ['off', { enableRootFixer: false }]
+  jsdoc/require-param-type: off
+  jsdoc/require-returns: off
+  jsdoc/require-returns-type: off
+  jsdoc/require-returns-description: off
   valid-jsdoc: off
+  import/no-named-as-default: off
   vue/html-self-closing: [error, html: { void: always }]
   vue/multi-word-component-names: warn
-  import/no-named-as-default: off
-  import/no-named-as-default-member: off
 settings:
   import/resolver:
     typescript: {}
@@ -47,7 +48,3 @@ settings:
         - .jsx
         - .tsx
         - .vue
-  prettier-vue:
-    SFCBlocks:
-      customBlocks:
-        code-mirror: false

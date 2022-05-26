@@ -19,13 +19,16 @@ When using with Vue2, [@vue/composition-api](https://www.npmjs.com/package/@vue/
 
 | Props      | Type                              | Information                                                                                                                                                      |
 | ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dark       | boolean                           | Toggle Darkmode. If you use Vuetify, I recommend that you enter `$vuetify.theme.dark`.                                                                           |
+| basic      | boolean                           | Use [basic-setup](https://codemirror.net/6/docs/ref/#basic-setup).                                                                                               |
+| dark       | boolean                           | Toggle Darkmode. It can be changed in real time, but the input value will return to the initial value.                                                           |
+| wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                         |
+| tab        | boolean                           | Enables tab indentation.                                                                                                                                         |
 | theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop. |
 | readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                        |
 | editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                         |
 | lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                     |
 | phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                 |
-| extensions | Extension[]                       | Includes enhancements to extend CodeMirror. Such as [@codemirror/basic-setup](https://github.com/codemirror/basic-setup).                                        |
+| extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                      |
 | linter     | Diagnostic[]                      | Set Linter. see example <https://codesandbox.io/s/f6nb0?file=/src/index.js>                                                                                      |
 
 Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
@@ -121,23 +124,22 @@ When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
 <template>
   <code-mirror
     v-model="value"
+    basic
+    :dark="dark"
     :lang="lang"
     :phrases="phreses"
-    :extensions="extensions"
-    :dark="$vuetify.theme.dark"
   />
 </template>
 
 <script lang="ts">
-import { ref, type Ref, defineComponent } from 'vue';
+import { ref, defineComponent, type Ref } from 'vue';
 
 // Load component
 import CodeMirror from 'vue-codemirror6';
 
 // CodeMirror extensions
 import type { LanguageSupport } from '@codemirror/language';
-import { markdown } from '@codemirror/lang-markdown';
-import { basicSetup } from '@codemirror/basic-setup';
+import { markdown as md } from '@codemirror/lang-markdown';
 import type { Extension } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 
@@ -146,6 +148,12 @@ export default defineComponent({
     CodeMirror,
   },
   setup() {
+    /**
+     * Get Vuetify instance
+     * @see {@link https://github.com/logue/vite-vue2-vuetify-ts-starter | vite-vue2-vuetify-ts-starter}
+     */
+    const vuetify = useVuetify();
+
     /** text */
     const value: Ref<string> = ref('');
 
@@ -154,7 +162,13 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
      */
-    const lang: Ref<LanguageSupport> = ref(markdown());
+    const lang: Ref<LanguageSupport> = ref(md());
+
+    /** Dark mode **/
+    const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    /** When dark value changed, sync vuetify's dark mode */
+    watch(dark, v => (vuetify.theme.dark = v));
 
     /**
      * Internationalization Config.
@@ -193,21 +207,11 @@ export default defineComponent({
       'No diagnostics': 'エラーなし',
     });
 
-    /**
-     * CodeMirror Extensions
-     *
-     * @see {@link:https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
-     */
-    const extensions: Ref<Extension[]> = ref([
-      /** @see {@link:https://codemirror.net/6/docs/ref/#basic-setup | basic-setup} */
-      basicSetup,
-    ]);
-
     return {
+      dark,
       value,
       lang,
       phrases,
-      extensions,
     };
   },
 });
@@ -231,8 +235,8 @@ const config: UserConfig = {
             'vue-codemirror6',
             '@codemirror/state',
             '@codemirror/view',
-            // Add the following as needed.
             '@codemirror/basic-setup',
+            // Add the following as needed.
             '@codemirror/lang-html',
             '@codemirror/lang-javascript',
             '@codemirror/lang-markdown',
