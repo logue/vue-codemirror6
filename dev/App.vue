@@ -99,7 +99,6 @@ export default defineComponent({
   setup() {
     /** Dark mode */
     const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
     watch(dark, () => {
       const navbar = document.querySelector('.navbar').classList;
       const main = document.querySelector('main').classList;

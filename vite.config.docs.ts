@@ -1,5 +1,5 @@
-import eslintPlugin from '@modyqyw/vite-plugin-eslint';
 import { defineConfig, type UserConfig } from 'vite';
+import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
 import path from 'path';
 
@@ -30,9 +30,9 @@ const config: UserConfig = {
   },
   plugins: [
     Vue(),
-    // eslint
-    // https://github.com/ModyQyW/vite-plugin-eslint
-    eslintPlugin(),
+    // vite-plugin-checker
+    // https://github.com/fi3ework/vite-plugin-checker
+    checker({ typescript: true, vueTsc: true }),
   ],
   // Build Options
   // https://vitejs.dev/config/#build-options

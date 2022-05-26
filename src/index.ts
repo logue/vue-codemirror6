@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Vue CodeMirror6 Component
  *
@@ -11,9 +12,7 @@ import CodeMirror from './components/CodeMirror.vue';
 import { install, isVue2 } from 'vue-demi';
 
 const installCodeMirror = isVue2
-  ? app => {
-      app.component('CodeMirror', CodeMirror);
-    }
+  ? app => app.component('CodeMirror', CodeMirror)
   : install();
 
 export { CodeMirror as default, installCodeMirror as install };

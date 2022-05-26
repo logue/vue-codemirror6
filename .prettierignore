@@ -1,4 +1,6 @@
 .husky/
 .vscode/
-docs/
+.yarn/
 dist/
+docs/
+public/assets/

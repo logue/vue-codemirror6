@@ -61,7 +61,7 @@ export default defineComponent({
       type: Object as PropType<
         EditorSelection | { anchor: number; head?: number }
       >,
-      default: undefined,
+      default: () => undefined,
     },
     /**
      * Theme
@@ -131,7 +131,9 @@ export default defineComponent({
      */
     extensions: {
       type: Array as PropType<Extension[]>,
-      default: undefined,
+      default: () => {
+        return [];
+      },
     },
     /**
      * Language Phreses
@@ -140,7 +142,7 @@ export default defineComponent({
      */
     phrases: {
       type: Object as PropType<Record<string, string>>,
-      default: undefined,
+      default: () => undefined,
     },
     /**
      * CodeMirror Language
@@ -149,7 +151,7 @@ export default defineComponent({
      */
     lang: {
       type: Object as PropType<LanguageSupport>,
-      default: undefined,
+      default: () => undefined,
     },
     /**
      * CodeMirror Linter
@@ -158,13 +160,14 @@ export default defineComponent({
      */
     linter: {
       type: Array as PropType<Diagnostic[]>,
-      default: undefined,
+      default: () => undefined,
     },
   },
   /** Emits */
   emits: ['update:modelValue', 'update'],
   /**
    * Setup
+   *
    * @param props  - Props
    * @param context - Context
    */
@@ -257,7 +260,7 @@ export default defineComponent({
 
     /** When loaded */
     onMounted(async () => {
-      /** Initial Value */
+      // overwrite initial value
       if (doc.value == '' && editor.value) {
         doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
       }

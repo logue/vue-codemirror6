@@ -1,6 +1,5 @@
-import eslintPlugin from '@modyqyw/vite-plugin-eslint';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, UserConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -31,12 +30,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     },
     plugins: [
       Vue(),
-      // createVuePlugin({ target: 'esnext' }),
-      // eslint
-      // https://github.com/ModyQyW/vite-plugin-eslint
-      eslintPlugin({
-        // fix: true,
-      }),
       // vite-plugin-checker
       // https://github.com/fi3ework/vite-plugin-checker
       checker({ typescript: true, vueTsc: true }),
