@@ -69,9 +69,7 @@
     </header>
 
     <main role="main" class="flex-shrink-0 pt-4 bg-white">
-      <div class="container">
-        <demo-page :dark="dark" />
-      </div>
+      <demo-page :dark="dark" />
     </main>
 
     <footer class="footer mt-auto py-3 mb-0 bg-light">

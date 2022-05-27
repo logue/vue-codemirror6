@@ -1,10 +1,3 @@
-<template>
-  <div ref="editor" class="vue-codemirror">
-    <aside v-show="!context.slots.default"><slot /></aside>
-  </div>
-</template>
-
-<script lang="ts">
 import {
   computed,
   defineComponent,
@@ -29,6 +22,7 @@ import { indentWithTab } from '@codemirror/commands';
 import { compact, merge, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
+import h, { slot } from '@/helpers/h-demi';
 
 import type { Extension, Text, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
@@ -293,5 +287,21 @@ export default defineComponent({
       editor,
     };
   },
+  render() {
+    // <template>
+    //   <div ref="editor" class="vue-codemirror">
+    //     <aside v-show="!context.slots.default"><slot /></aside>
+    //   </div>
+    // </template>
+    return h(
+      'div',
+      {
+        ref: 'editor',
+        class: 'vue-codemirror',
+      },
+      this.$slots.default
+        ? h('aside', { style: 'display: none;' }, slot(this.$slots.default))
+        : undefined
+    );
+  },
 });
-</script>

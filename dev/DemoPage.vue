@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>Vue CodeMirror6 Markdown Editor Demo</h1>
     <p>
       A rough demo of Vue Codemirror in action. You can switch between dark

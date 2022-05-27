@@ -43,7 +43,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       lib: {
         entry: path.resolve(__dirname, 'src/index.ts'),
         name: 'CodeMirror',
-        fileName: format => `vue-codemirror6.${format}.js`,
+        fileName: format => `index.${format}.js`,
       },
       rollupOptions: {
         plugins: [

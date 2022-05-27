@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "0.3.7",
-  "description": "CodeMirror6 Component for vue3",
+  "version": "0.5.0",
+  "description": "CodeMirror6 Component for vue2 and vue3",
   "keywords": [
     "vuejs",
     "vue",
@@ -10,6 +10,7 @@
     "vue-codemirror",
     "code-editor",
     "text-editor",
+    "vue2",
     "vue3",
     "web-editor",
     "vue-plugin",
@@ -35,16 +36,17 @@
     "node": ">=16.15.0",
     "yarn": ">=1.22.4"
   },
+  "packageManager": "yarn@3.2.1",
   "license": "MIT",
-  "main": "./dist/vue-codemirror6.umd.js",
-  "module": "./dist/vue-codemirror6.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "browser": {
     "./sfc": "./src/components/CodeMirror.vue"
   },
   "exports": {
     ".": {
-      "import": "./dist/vue-codemirror6.es.js",
-      "require": "./dist/vue-codemirror6.umd.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
     }
   },
   "types": "./dist/index.d.ts",
@@ -67,12 +69,13 @@
     "postinstall": "npx vue-demi-fix"
   },
   "dependencies": {
-    "vue-demi": ">=0.12.5"
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/state": "^0.20.0",
+    "@codemirror/view": "^0.20.6",
+    "vue-demi": "^0.12.5"
   },
   "peerDependencies": {
-    "@codemirror/basic-setup": ">=0.20",
-    "@codemirror/state": ">=0.20",
-    "@codemirror/view": ">=0.20",
+    "@vue/composition-api": "^1.6.2",
     "vue": "^2.6.14 || ^3.2.36"
   },
   "peerDependenciesMeta": {
@@ -81,7 +84,6 @@
     }
   },
   "devDependencies": {
-    "@codemirror/basic-setup": "^0.20.0",
     "@codemirror/lang-markdown": "^0.20.1",
     "@types/lodash": "^4.14.182",
     "@types/node": "^17.0.35",

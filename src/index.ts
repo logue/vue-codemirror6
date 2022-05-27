@@ -8,11 +8,9 @@
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
 
-import CodeMirror from './components/CodeMirror.vue';
-import { install, isVue2 } from 'vue-demi';
+import CodeMirror from './components/CodeMirror';
 
-const installCodeMirror = isVue2
-  ? app => app.component('CodeMirror', CodeMirror)
-  : install();
+// TODO: Move phrases props to option.
+const installCodeMirror = app => app.component('CodeMirror', CodeMirror);
 
 export { CodeMirror as default, installCodeMirror as install };
