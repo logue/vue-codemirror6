@@ -24,19 +24,19 @@ yarn add vue-codemirror6 @vue/composition-api
 
 ### Props
 
-| Props      | Type                              | Information                                                                                                                                                      |
-| ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| basic      | boolean                           | Use [basic-setup](https://codemirror.net/6/docs/ref/#basic-setup).                                                                                               |
-| dark       | boolean                           | Toggle Darkmode. It can be changed in real time, but the input value will return to the initial value.                                                           |
-| wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                         |
-| tab        | boolean                           | Enables tab indentation.                                                                                                                                         |
-| theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop. |
-| readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                        |
-| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                         |
-| lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                     |
-| phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                 |
-| extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                      |
-| linter     | Diagnostic[]                      | Set Linter. see example <https://codesandbox.io/s/f6nb0?file=/src/index.js>                                                                                      |
+| Props      | Type                              | Information                                                                                                                                                                                                                      |
+| ---------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| basic      | boolean                           | Use [basic-setup](https://codemirror.net/6/docs/ref/#basic-setup).                                                                                                                                                               |
+| dark       | boolean                           | Toggle Darkmode. It can be changed in real time, but the input value will return to the initial value.                                                                                                                           |
+| wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                         |
+| tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                         |
+| theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                                 |
+| readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                                                                                        |
+| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                                                                                         |
+| lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                                                                                     |
+| phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                                                                                 |
+| extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                                                                                      |
+| linter     | LintSource                        | Set Linter. Enter a linter (eg `esLint([arbitrary rule])` function for `@codemirror / lang-javascript`, `jsonParseLinter()`function for`@codemirror/json`). See the sources for various language libraries for more information. |
 
 Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
 
@@ -95,7 +95,7 @@ Also, insert a `<pre>` tag to prevent the text in the slot from being automatica
 
 ```vue
 <template>
-  <code-mirror :lang="lang" :editable="false">
+  <code-mirror :lang="lang" :linter="linter">
     <pre>
 {
   "key": "value"
@@ -107,7 +107,7 @@ Also, insert a `<pre>` tag to prevent the text in the slot from being automatica
 <script>
 import { ref, defineComponent } from 'vue';
 
-import { json } from '@codemirror/lang-json';
+import { json, jsonParseLinter } from '@codemirror/lang-json';
 
 import CodeMirror from 'vue-codemirror6';
 
@@ -116,8 +116,9 @@ export default defineComponent({
     CodeMirror,
   },
   setup() {
-    const lang = ref(json());
-    return { lang };
+    const lang = json();
+    const linter = jsonParseLinter();
+    return { lang, linter };
   },
 });
 </script>
@@ -125,7 +126,7 @@ export default defineComponent({
 
 ### Full Example
 
-When using as a Markdown editor on [Vuetify](https://vuetifyjs.com/).
+When using as a Markdown editor on [vite-vue2-vuetify-ts-starter](https://github.com/logue/vite-vue2-vuetify-ts-starter ).
 
 ```vue
 <template>
@@ -169,7 +170,7 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
      */
-    const lang: Ref<LanguageSupport> = ref(md());
+    const lang: LanguageSupport = md();
 
     /** Dark mode **/
     const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -180,6 +181,7 @@ export default defineComponent({
     /**
      * Internationalization Config.
      * In this example, the display language to Japanese.
+     * Must be reactive when used in combination with vue-i18n.
      *
      * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
      */
@@ -239,10 +241,12 @@ const config: UserConfig = {
           // ...
           codemirror: [
             // Split CodeMirror code.
-            'vue-codemirror6',
-            '@codemirror/state',
-            '@codemirror/view',
-            '@codemirror/basic-setup',
+            '@codemirror/basic-setup': 'basicSetup',
+            '@codemirror/commands': 'commands',
+            '@codemirror/language': 'language',
+            '@codemirror/lint': 'lint',
+            '@codemirror/state': 'state',
+            '@codemirror/view': 'view',
             // Add the following as needed.
             '@codemirror/lang-html',
             '@codemirror/lang-javascript',

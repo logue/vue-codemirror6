@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "CodeMirror6 Component for vue2 and vue3",
   "keywords": [
     "vuejs",
@@ -65,14 +65,15 @@
     "lint": "eslint --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint && prettier . -w -u",
     "lint:markup": "vue-tsc --noEmit",
     "preview": "vite preview --config vite.config.docs.ts",
-    "prepare": "husky install",
-    "postinstall": "npx vue-demi-fix"
+    "prepare": "husky install"
   },
   "dependencies": {
-    "@codemirror/basic-setup": "^0.20.0",
-    "@codemirror/state": "^0.20.0",
-    "@codemirror/view": "^0.20.6",
-    "vue-demi": "^0.12.5"
+    "@codemirror/basic-setup": "latest",
+    "@codemirror/commands": "latest",
+    "@codemirror/lint": "latest",
+    "@codemirror/state": "latest",
+    "@codemirror/view": "latest",
+    "vue-demi": "latest"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.6.2",
@@ -84,9 +85,10 @@
     }
   },
   "devDependencies": {
+    "@codemirror/lang-javascript": "^0.20.0",
     "@codemirror/lang-markdown": "^0.20.1",
     "@types/lodash": "^4.14.182",
-    "@types/node": "^17.0.35",
+    "@types/node": "^17.0.36",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
     "@vitejs/plugin-vue": "^2.3.3",
@@ -101,6 +103,7 @@
     "eslint-plugin-tsdoc": "^0.2.16",
     "eslint-plugin-vue": "^9.0.1",
     "eslint-plugin-vuejs-accessibility": "^1.1.1",
+    "eslint4b-prebuilt": "^6.7.2",
     "husky": "^8.0.1",
     "lint-staged": "^12.4.2",
     "lodash": "^4.17.21",
@@ -115,7 +118,7 @@
     "vite-plugin-checker": "^0.4.6",
     "vue": "^3.2.36",
     "vue-eslint-parser": "^9.0.2",
-    "vue-tsc": "^0.34.16"
+    "vue-tsc": "^0.34.17"
   },
   "husky": {
     "hooks": {

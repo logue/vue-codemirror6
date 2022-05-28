@@ -16,6 +16,7 @@ import {
 
 import { EditorSelection, EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
+import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup } from '@codemirror/basic-setup';
 import { indentWithTab } from '@codemirror/commands';
 
@@ -27,7 +28,7 @@ import h, { slot } from '@/helpers/h-demi';
 import type { Extension, Text, Transaction } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
 import type { ViewUpdate } from '@codemirror/view';
-import type { Diagnostic } from '@codemirror/lint';
+import type { LintSource } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
 
 /** CodeMirror Component */
@@ -153,7 +154,7 @@ export default defineComponent({
      * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
      */
     linter: {
-      type: Array as PropType<Diagnostic[]>,
+      type: Object as PropType<LintSource>,
       default: () => undefined,
     },
   },
@@ -202,12 +203,10 @@ export default defineComponent({
         props.editable ? EditorView.editable.of(props.editable) : undefined,
         // Lang
         props.lang ? toRaw(props.lang) : undefined,
-      ];
-
-      if (props.linter) {
         // Append Linter settings
-        merge(ext, props.linter);
-      }
+        props.linter ? linter(props.linter) : undefined,
+        props.linter ? lintGutter() : undefined,
+      ];
 
       if (props.extensions) {
         // Append Extensions (such as basic-setup)
