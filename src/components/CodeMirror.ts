@@ -20,7 +20,7 @@ import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup } from '@codemirror/basic-setup';
 import { indentWithTab } from '@codemirror/commands';
 
-import { compact, merge, trim } from 'lodash';
+import { compact, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 import h, { slot } from '@/helpers/h-demi';
@@ -154,7 +154,7 @@ export default defineComponent({
      * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
      */
     linter: {
-      type: Object as PropType<LintSource>,
+      type: Function as PropType<LintSource>,
       default: () => undefined,
     },
   },
@@ -180,9 +180,8 @@ export default defineComponent({
     const emit = context.emit as CodeMirrorEmitsInterface;
 
     /** CodeMirror Extension */
-    const exts: ComputedRef<Extension[]> = computed(() => {
-      /** Default extension */
-      const ext = [
+    const exts: ComputedRef<Extension[]> = computed(() =>
+      compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // ViewUpdate event listener
@@ -206,16 +205,10 @@ export default defineComponent({
         // Append Linter settings
         props.linter ? linter(props.linter) : undefined,
         props.linter ? lintGutter() : undefined,
-      ];
-
-      if (props.extensions) {
         // Append Extensions (such as basic-setup)
-        merge(ext, props.extensions);
-      }
-
-      // console.debug('[CodeMirror.vue] Loaded extensions:', compact(ext));
-      return compact(ext);
-    });
+        ...props.extensions,
+      ])
+    );
 
     /** CodeMirror Editor View */
     let view: EditorView;
