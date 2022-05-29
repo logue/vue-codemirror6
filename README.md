@@ -241,12 +241,12 @@ const config: UserConfig = {
           // ...
           codemirror: [
             // Split CodeMirror code.
-            '@codemirror/basic-setup': 'basicSetup',
-            '@codemirror/commands': 'commands',
-            '@codemirror/language': 'language',
-            '@codemirror/lint': 'lint',
-            '@codemirror/state': 'state',
-            '@codemirror/view': 'view',
+            '@codemirror/basic-setup',
+            '@codemirror/commands',
+            '@codemirror/language',
+            '@codemirror/lint',
+            '@codemirror/state',
+            '@codemirror/view',
             // Add the following as needed.
             '@codemirror/lang-html',
             '@codemirror/lang-javascript',
