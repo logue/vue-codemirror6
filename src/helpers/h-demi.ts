@@ -1,11 +1,11 @@
 import { h as hDemi, isVue2 } from 'vue-demi';
 
 interface Options {
+  class?: string;
   domProps?: Record<any, any>;
   on?: Record<any, any>;
   props?: Record<any, any>;
   ref?: string;
-  class?: string;
   style?: string;
 }
 
@@ -24,16 +24,17 @@ const h = (
   chidren?: any
 ) => {
   if (isVue2) return hDemi(type, options, chidren);
-
   const { props, domProps, on, ...extraOptions } = options;
-
   const ons = on ? adaptOnsV3(on) : {};
-  const params = { ...extraOptions, ...props, ...domProps, ...ons };
-  return hDemi(type, params, chidren);
+
+  return hDemi(
+    type,
+    { ...extraOptions, ...props, ...domProps, ...ons },
+    chidren
+  );
 };
 
-const slot = (defaultSlots: any) => {
-  if (typeof defaultSlots == 'function') return defaultSlots();
-  return defaultSlots;
-};
+const slot = (defaultSlots: any) =>
+  typeof defaultSlots == 'function' ? defaultSlots() : defaultSlots;
+
 export { slot, h as default };

@@ -247,7 +247,12 @@ export default defineComponent({
     /** When loaded */
     onMounted(async () => {
       // overwrite initial value
-      if (doc.value == '' && editor.value) {
+      if (1editor.value && editor.value.childNodes[0]) {
+        if (doc.value !== '') {
+          console.warn(
+            '[CodeMirror.vue] The CodeMirror tag contains child elements that overwrite the model values.'
+          );
+        }
         doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
       }
 
