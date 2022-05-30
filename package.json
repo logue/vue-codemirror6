@@ -40,9 +40,6 @@
   "license": "MIT",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
-  "browser": {
-    "./sfc": "./src/components/CodeMirror.vue"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
@@ -51,8 +48,7 @@
   },
   "types": "./dist/index.d.ts",
   "files": [
-    "/dist",
-    "/src/components/CodeMirror.vue"
+    "/dist"
   ],
   "sideEffects": false,
   "scripts": {
@@ -105,7 +101,7 @@
     "eslint-plugin-vuejs-accessibility": "^1.1.1",
     "eslint4b-prebuilt": "^6.7.2",
     "husky": "^8.0.1",
-    "lint-staged": "^12.4.2",
+    "lint-staged": "^12.4.3",
     "lodash": "^4.17.21",
     "prettier": "^2.6.2",
     "prettier-plugin-jsdoc": "^0.3.38",
@@ -118,7 +114,7 @@
     "vite-plugin-checker": "^0.4.6",
     "vue": "^3.2.36",
     "vue-eslint-parser": "^9.0.2",
-    "vue-tsc": "^0.35.0"
+    "vue-tsc": "^0.35.2"
   },
   "husky": {
     "hooks": {

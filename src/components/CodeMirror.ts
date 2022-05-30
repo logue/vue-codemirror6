@@ -20,7 +20,7 @@ import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup } from '@codemirror/basic-setup';
 import { indentWithTab } from '@codemirror/commands';
 
-import { compact, trim } from 'lodash';
+import { clone, compact, trim } from 'lodash';
 
 import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 import h, { slot } from '@/helpers/h-demi';
@@ -155,7 +155,7 @@ export default defineComponent({
      */
     linter: {
       type: Function as PropType<LintSource>,
-      default: () => undefined,
+      default: undefined,
     },
     /** Show Gutter */
     lintGutter: {
@@ -175,18 +175,18 @@ export default defineComponent({
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref();
 
-    /** Internal value */
-    const doc: Ref<string | Text | undefined> = ref(props.modelValue);
-
     /** Dark mode */
     const { dark } = toRefs(props);
+
+    /** Internal value */
+    const doc: Ref<string | Text> = ref(clone(props.modelValue));
 
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
     /** CodeMirror Extension */
-    const exts: ComputedRef<Extension[]> = computed(() =>
-      compact([
+    const exts: ComputedRef<Extension[]> = computed(() => {
+      return compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // ViewUpdate event listener
@@ -213,8 +213,8 @@ export default defineComponent({
         props.linter && props.lintGutter ? lintGutter() : undefined,
         // Append Extensions (such as basic-setup)
         ...props.extensions,
-      ])
-    );
+      ]);
+    });
 
     /** CodeMirror Editor View */
     let view: EditorView;
@@ -253,28 +253,31 @@ export default defineComponent({
     /** When loaded */
     onMounted(async () => {
       // overwrite initial value
+      let text = doc.value;
       if (editor.value && editor.value.childNodes[0]) {
-        if (doc.value !== '') {
+        if (text !== '') {
           console.warn(
-            '[CodeMirror.vue] The CodeMirror tag contains child elements that overwrite the model values.'
+            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
           );
         }
-        doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+        text = trim((editor.value.childNodes[0] as HTMLElement).innerText);
       }
 
       // Register Codemirror
       view = new EditorView({
         state: EditorState.create({
-          doc: doc.value,
+          doc: text,
           selection: props.selection,
           extensions: exts.value,
         }),
         parent: editor.value,
         dispatch: (tr: Transaction) => {
           view.update([tr]);
+          console.log(view.state.doc.toString(), tr);
 
-          if (tr.changes.empty) return;
           // to parent binding
+          if (tr.changes.empty) return;
+
           doc.value = view.state.doc.toString();
           emit('update:modelValue', doc.value);
         },
