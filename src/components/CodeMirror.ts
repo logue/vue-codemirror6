@@ -157,6 +157,11 @@ export default defineComponent({
       type: Function as PropType<LintSource>,
       default: () => undefined,
     },
+    /** Show Gutter */
+    lintGutter: {
+      type: Boolean,
+      defalt: false,
+    },
   },
   /** Emits */
   emits: ['update:modelValue', 'update'],
@@ -204,7 +209,8 @@ export default defineComponent({
         props.lang ? toRaw(props.lang) : undefined,
         // Append Linter settings
         props.linter ? linter(props.linter) : undefined,
-        props.linter ? lintGutter() : undefined,
+        // Show 🔴 to error line when linter enabled.
+        props.linter && props.lintGutter ? lintGutter() : undefined,
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ])
@@ -247,7 +253,7 @@ export default defineComponent({
     /** When loaded */
     onMounted(async () => {
       // overwrite initial value
-      if (1editor.value && editor.value.childNodes[0]) {
+      if (editor.value && editor.value.childNodes[0]) {
         if (doc.value !== '') {
           console.warn(
             '[CodeMirror.vue] The CodeMirror tag contains child elements that overwrite the model values.'

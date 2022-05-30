@@ -178,12 +178,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     </section>
     <section class="mb-5">
       <h2>Linter</h2>
+      <p>This is a sample using JavaScript and linter.</p>
       <p>
-        This is a sample using JavaScript and linter. 🔴 is displayed on the
-        line with the error.
-      </p>
-      <p>
-        If you click this 🔴 or press a
+        When using
+        <code>lintGutter</code>
+        prop, 🔴 is displayed on the line with the error.
+        <br />
+        Click 🔴 or press a
         <kbd>Ctrl</kbd>
         -
         <kbd>Shift</kbd>
@@ -213,6 +214,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     v-model="value"
     :lang="cmLang"
     :linter="cmLinter"
+    lintGutter
     basic
   &gt;
   &lt;pre&gt;
@@ -260,7 +262,13 @@ export default defineComponent({
       </code-mirror>
       <h3>Sample</h3>
       <p>Make sure you see 🔴 when you change the value to get an error.</p>
-      <code-mirror :lang="cmLangJs" :linter="cmLintJs" :dark="dark" basic>
+      <code-mirror
+        :lang="cmLangJs"
+        :linter="cmLintJs"
+        :dark="dark"
+        lintGutter
+        basic
+      >
         <pre>
 document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'))

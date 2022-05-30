@@ -37,6 +37,7 @@ yarn add vue-codemirror6 @vue/composition-api
 | phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                                                                                 |
 | extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                                                                                      |
 | linter     | LintSource                        | Set Linter. Enter a linter (eg `esLint([arbitrary rule])` function for `@codemirror / lang-javascript`, `jsonParseLinter()`function for`@codemirror/json`). See the sources for various language libraries for more information. |
+| lintGutter | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                      |
 
 Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
 
@@ -126,7 +127,7 @@ export default defineComponent({
 
 ### Full Example
 
-When using as a Markdown editor on [vite-vue2-vuetify-ts-starter](https://github.com/logue/vite-vue2-vuetify-ts-starter ).
+When using as a Markdown editor on [vite-vue2-vuetify-ts-starter](https://github.com/logue/vite-vue2-vuetify-ts-starter).
 
 ```vue
 <template>
