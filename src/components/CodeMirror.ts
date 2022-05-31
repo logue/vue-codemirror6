@@ -18,11 +18,16 @@ import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup } from '@codemirror/basic-setup';
 import { indentWithTab } from '@codemirror/commands';
 
-import { clone, compact, trim } from 'lodash';
+import { compact, trim } from 'lodash';
 
 import h, { slot } from '@/helpers/h-demi';
 
-import type { Extension, Text, Transaction } from '@codemirror/state';
+import type {
+  Extension,
+  SelectionRange,
+  Text,
+  Transaction,
+} from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
 import type { ViewUpdate } from '@codemirror/view';
 import type { LintSource } from '@codemirror/lint';
@@ -51,17 +56,6 @@ export default defineComponent({
     modelValue: {
       type: String as PropType<string | Text>,
       default: '',
-    },
-    /**
-     * Selection
-     *
-     * @see {@link https://codemirror.net/6/docs/ref/#state.EditorSelection | EditorSelection}
-     */
-    selection: {
-      type: Object as PropType<
-        EditorSelection | { anchor: number; head?: number }
-      >,
-      default: () => undefined,
     },
     /**
      * Theme
@@ -184,7 +178,7 @@ export default defineComponent({
     const { dark } = toRefs(props);
 
     /** Internal value */
-    const doc: Ref<string | Text> = ref(clone(props.modelValue));
+    const doc: Ref<string | Text> = ref(props.modelValue);
 
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
@@ -197,24 +191,35 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
      */
-    watch(doc, current => {
+    watch(doc, value => {
       if (view.composing) {
         // IME fix
         return;
       }
-
       /** Previous cursor location */
       const previous = view.state.selection;
+
+      // TODO: Since history etc. may not work, change to implementation using dispatch
       view.setState(
         EditorState.create({
-          doc: current,
+          doc: value,
           extensions: getExtensions(),
           selection: previous,
         })
       );
     });
 
+    // for parent-to-child binding.
+    watch(
+      () => props.modelValue,
+      v =>
+        view.setState(
+          EditorState.create({ doc: v, extensions: getExtensions() })
+        )
+    );
+
     // Toggle Dark mode
+    // TODO: Since the input value is reset, change to the implementation using dispatch
     watch(dark, () => {
       view.setState(
         EditorState.create({
@@ -240,7 +245,6 @@ export default defineComponent({
       view = new EditorView({
         state: EditorState.create({
           doc: doc.value,
-          selection: props.selection,
           extensions: getExtensions(),
         }),
         parent: editor.value,
@@ -296,9 +300,76 @@ export default defineComponent({
       return extensions;
     };
 
+    /** Get editor selection */
+    const selection = (): EditorSelection => view.state.selection;
+
+    // Bellow is experimental.
+
+    // Getting the Document and Selection
+    const getRange = (a?: number, b?: number): string =>
+      view.state.sliceDoc(a, b);
+    const getLine = (n: number): string => view.state.doc.line(n + 1).text;
+    const lineCount = (): number => view.state.doc.lines;
+    const getCursor = (): number => selection().main.head;
+    const listSelections = (): readonly SelectionRange[] => selection().ranges;
+    const getSelection = (): string =>
+      view.state.sliceDoc(selection().main.from, selection().main.to);
+    const getSelections = (): string[] =>
+      selection().ranges.map(r => view.state.sliceDoc(r.from, r.to));
+    const somethingSelected = (): boolean =>
+      selection().ranges.some(r => !r.empty);
+
+    // Making Changes
+    const replaceRange = (text: string | Text, from: number, to: number) =>
+      view.dispatch({
+        changes: { from, to, insert: text },
+      });
+    const replaceSelection = (text: string | Text) =>
+      view.dispatch(view.state.replaceSelection(text));
+    const setCursor = (pos: number) =>
+      view.dispatch({ selection: { anchor: pos } });
+    const setSelection = (anchor: number, head: number) =>
+      view.dispatch({ selection: { anchor, head } });
+    const setSelections = (
+      ranges: readonly SelectionRange[],
+      mainIndex?: number | undefined
+    ) =>
+      view.dispatch({
+        selection: EditorSelection.create(ranges, mainIndex),
+      });
+
+    const extendSelectionsBy = f =>
+      view.dispatch({
+        selection: EditorSelection.create(
+          selection().ranges.map(r => r.extend(f(r)))
+        ),
+      });
+
+    // DOM Structure
+    const focus = () => view.focus();
+    const hasFocus = (): boolean => view.hasFocus;
+
     return {
       context,
       editor,
+      selection,
+      // Bellow is CodeMirror5's function
+      getRange,
+      getLine,
+      lineCount,
+      getCursor,
+      listSelections,
+      getSelection,
+      getSelections,
+      somethingSelected,
+      replaceRange,
+      replaceSelection,
+      setCursor,
+      setSelection,
+      setSelections,
+      extendSelectionsBy,
+      focus,
+      hasFocus,
     };
   },
   render() {

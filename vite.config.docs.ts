@@ -32,7 +32,14 @@ const config: UserConfig = {
     Vue(),
     // vite-plugin-checker
     // https://github.com/fi3ework/vite-plugin-checker
-    checker({ typescript: true, vueTsc: true }),
+    checker({
+      typescript: true,
+      vueTsc: true,
+      eslint: {
+        lintCommand:
+          'eslint dev --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint', // for example, lint .ts & .tsx
+      },
+    }),
   ],
   // Build Options
   // https://vitejs.dev/config/#build-options

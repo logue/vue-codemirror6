@@ -1,4 +1,4 @@
 {
   "upgrade": true,
-  "reject": ["vue2"]
+  "reject": ["vue", "vue-router", "vuex"]
 }

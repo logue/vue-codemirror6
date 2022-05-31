@@ -163,6 +163,11 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         tag to make it the initial string. On the Vue side, it is evaluated as a
         DOM node and only the text node is used as the value.
       </p>
+      <p>
+        It's just for simple syntax highlighting. Do not use with
+        <code>v-model</code>
+        .
+      </p>
       <h3>Markup</h3>
       <code-mirror :lang="cmLangHtml" readonly basic :dark="dark">
         <pre>
@@ -176,8 +181,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
       </code-mirror>
     </section>
-    <section class="mb-5">
-      <h2>Linter</h2>
+    <section>
+      <h2>Linter and cross binding demo</h2>
       <p>This is a sample using JavaScript and linter.</p>
       <p>
         When using
@@ -210,19 +215,21 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       <code-mirror :lang="cmLangHtml" readonly :dark="dark" basic>
         <pre>
 &lt;template&gt;
-  &lt;code-mirror
-    v-model="value"
-    :lang="cmLang"
-    :linter="cmLinter"
-    lintGutter
-    basic
-  &gt;
-  &lt;pre&gt;
-document.querySelectorAll('.btn').forEach(
-  element => ああああelement.addEventListner('click', alert('あああああ'))
-);
-  &lt;/pre&gt;
-  &lt;/code-mirror&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-6"&gt;
+      &lt;code-mirror
+        v-model="value"
+        :lang="cmLangJs"
+        :linter="cmLintJs"
+        :dark="dark"
+        lintGutter
+        basic
+      /&gt;
+    &lt;/div&gt;
+    &lt;div class="col-6"&gt;
+      &lt;textarea v-model="value" rows="3" class="form-control"&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/template&gt;
 
 &lt;script&gt;
@@ -240,8 +247,12 @@ export default defineComponent({
     CodeMirror,
   },
   setup() {
-    /** Result Text */
-    const value = ref('');
+    /** Value Text */
+    const value = ref(
+`document.querySelectorAll('.btn').forEach(
+  element => ああああelement.addEventListner('click', alert('あああああ'));
+);`
+    );
 
     /** CodeMirror Language */
     const cmLang = javascript();
@@ -249,8 +260,7 @@ export default defineComponent({
     const cmLinter = esLint(new Linter());
 
     return {
-      input,
-      output,
+      value,
       cmLang,
       cmLinter,
     };
@@ -262,19 +272,22 @@ export default defineComponent({
       </code-mirror>
       <h3>Sample</h3>
       <p>Make sure you see 🔴 when you change the value to get an error.</p>
-      <code-mirror
-        :lang="cmLangJs"
-        :linter="cmLintJs"
-        :dark="dark"
-        lintGutter
-        basic
-      >
-        <pre>
-document.querySelectorAll('.btn').forEach(
-  element => ああああelement.addEventListner('click', alert('あああああ'))
-);
-        </pre>
-      </code-mirror>
+      <div class="row">
+        <div class="col-6">
+          <code-mirror
+            v-model="demo2"
+            :lang="cmLangJs"
+            :linter="cmLintJs"
+            :dark="dark"
+            lintGutter
+            basic
+          />
+        </div>
+        <div class="col-6">
+          <textarea v-model="demo2" rows="3" class="form-control" />
+        </div>
+      </div>
+      <p>Also, make sure that changing either value reflects that value.</p>
     </section>
   </div>
 </template>
@@ -306,6 +319,12 @@ export default defineComponent({
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+    );
+
+    const demo2 = ref(
+      `document.querySelectorAll('.btn').forEach(
+  element => ああああelement.addEventListner('click', alert('あああああ'));
+);`
     );
     /** Markdown outputs */
     const output = ref('');
@@ -342,6 +361,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     return {
       demo,
+      demo2,
       output,
       cmLangMd,
       cmLangHtml,
