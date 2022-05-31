@@ -1,5 +1,4 @@
 import {
-  computed,
   defineComponent,
   nextTick,
   onMounted,
@@ -8,7 +7,6 @@ import {
   toRaw,
   toRefs,
   watch,
-  type ComputedRef,
   type PropType,
   type Ref,
   type SetupContext,
@@ -184,8 +182,81 @@ export default defineComponent({
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
-    /** CodeMirror Extension */
-    const exts: ComputedRef<Extension[]> = computed(() => {
+    /** CodeMirror Editor View */
+    let view: EditorView;
+
+    /**
+     * Input value changed
+     *
+     * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
+     */
+    watch(doc, current => {
+      if (view.composing) {
+        // IME fix
+        return;
+      }
+
+      /** Previous cursor location */
+      const previous = view.state.selection;
+      view.setState(
+        EditorState.create({
+          doc: current,
+          extensions: getExtensions(),
+          selection: previous,
+        })
+      );
+    });
+
+    // Toggle Dark mode
+    watch(dark, () => {
+      view.setState(
+        EditorState.create({
+          doc: doc.value,
+          extensions: getExtensions(),
+        })
+      );
+    });
+
+    /** When loaded */
+    onMounted(async () => {
+      // overwrite initial value
+      if (editor.value && editor.value.childNodes[0]) {
+        if (doc.value !== '') {
+          console.warn(
+            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
+          );
+        }
+        doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+      }
+
+      // Register Codemirror
+      view = new EditorView({
+        state: EditorState.create({
+          doc: doc.value,
+          selection: props.selection,
+          extensions: getExtensions(),
+        }),
+        parent: editor.value,
+        dispatch: (tr: Transaction) => {
+          view.update([tr]);
+          // TODO: Emit lint error event
+          // console.log(view.state.doc.toString(), tr);
+
+          // to parent binding
+          if (tr.changes.empty) return;
+
+          doc.value = view.state.doc.toString();
+          emit('update:modelValue', doc.value);
+        },
+      });
+      await nextTick();
+    });
+
+    /** Destroy */
+    onUnmounted(() => view.destroy());
+
+    /** Get CodeMirror Extension */
+    const getExtensions = (): Extension[] => {
       return compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
@@ -214,79 +285,7 @@ export default defineComponent({
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ]);
-    });
-
-    /** CodeMirror Editor View */
-    let view: EditorView;
-
-    /**
-     * Input value changed
-     *
-     * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
-     */
-    watch(doc, current => {
-      if (view.composing) {
-        // IME fix
-        return;
-      }
-
-      /** Previous cursor location */
-      const previous = view.state.selection;
-      view.setState(
-        EditorState.create({
-          doc: current,
-          extensions: exts.value,
-          selection: previous,
-        })
-      );
-    });
-
-    watch(dark, () => {
-      view.setState(
-        EditorState.create({
-          doc: doc.value,
-          extensions: exts.value,
-        })
-      );
-    });
-
-    /** When loaded */
-    onMounted(async () => {
-      // overwrite initial value
-      let text = doc.value;
-      if (editor.value && editor.value.childNodes[0]) {
-        if (text !== '') {
-          console.warn(
-            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
-          );
-        }
-        text = trim((editor.value.childNodes[0] as HTMLElement).innerText);
-      }
-
-      // Register Codemirror
-      view = new EditorView({
-        state: EditorState.create({
-          doc: text,
-          selection: props.selection,
-          extensions: exts.value,
-        }),
-        parent: editor.value,
-        dispatch: (tr: Transaction) => {
-          view.update([tr]);
-          console.log(view.state.doc.toString(), tr);
-
-          // to parent binding
-          if (tr.changes.empty) return;
-
-          doc.value = view.state.doc.toString();
-          emit('update:modelValue', doc.value);
-        },
-      });
-      await nextTick();
-    });
-
-    /** Destroy */
-    onUnmounted(() => view.destroy());
+    };
 
     return {
       context,

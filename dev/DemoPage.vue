@@ -155,7 +155,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         .
       </p>
     </section>
-    <section class="mb-5">
+    <section>
       <h2>Slot Method</h2>
       <p>
         In this sample, the text is put directly inside the
