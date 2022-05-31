@@ -20,7 +20,6 @@ import { indentWithTab } from '@codemirror/commands';
 
 import { clone, compact, trim } from 'lodash';
 
-import type CodeMirrorEmitsInterface from '@/interfaces/CodeMirrorEmitsInterface';
 import h, { slot } from '@/helpers/h-demi';
 
 import type { Extension, Text, Transaction } from '@codemirror/state';
@@ -28,6 +27,14 @@ import type { LanguageSupport } from '@codemirror/language';
 import type { ViewUpdate } from '@codemirror/view';
 import type { LintSource } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
+
+/** Emit Interface */
+export interface CodeMirrorEmitsInterface {
+  /** Model Update */
+  (e: 'update:modelValue', value: string | Text): void;
+  /** CodeMirror ViewUpdate */
+  (e: 'update', value: ViewUpdate): void;
+}
 
 /** CodeMirror Component */
 export default defineComponent({
@@ -257,7 +264,7 @@ export default defineComponent({
 
     /** Get CodeMirror Extension */
     const getExtensions = (): Extension[] => {
-      return compact([
+      const extensions = compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // ViewUpdate event listener
@@ -285,6 +292,8 @@ export default defineComponent({
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ]);
+      console.debug('[CodeMirror.vue] Loaded extensions: ', extensions);
+      return extensions;
     };
 
     return {
