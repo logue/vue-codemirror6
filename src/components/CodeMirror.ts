@@ -212,10 +212,10 @@ export default defineComponent({
     // for parent-to-child binding.
     watch(
       () => props.modelValue,
-      v =>
-        view.setState(
-          EditorState.create({ doc: v, extensions: getExtensions() })
-        )
+      text =>
+        view.dispatch({
+          changes: { from: 0, to: view.state.doc.length, insert: text },
+        })
     );
 
     // Toggle Dark mode
