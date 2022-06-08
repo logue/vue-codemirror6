@@ -301,7 +301,7 @@ export default defineComponent({
     };
 
     /** Get editor selection */
-    const selection = (): EditorSelection => view.state.selection;
+    const selection = () => view.state.selection;
 
     // Bellow is experimental.
 
