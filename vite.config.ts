@@ -69,7 +69,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           'vue',
           'lodash',
           'vue-demi',
-          '@codemirror/basic-setup',
+          'codemirror',
           '@codemirror/commands',
           '@codemirror/language',
           '@codemirror/lint',
@@ -79,7 +79,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         output: {
           exports: 'named',
           globals: {
-            '@codemirror/basic-setup': 'basicSetup',
+            codemirror: 'codemirror',
             '@codemirror/commands': 'commands',
             '@codemirror/language': 'language',
             '@codemirror/lint': 'lint',

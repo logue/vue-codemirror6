@@ -228,6 +228,28 @@ export default defineComponent({
 </script>
 ```
 
+## Methods
+
+| Methods                                                             | Description                                                                                      |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| selection()                                                         | Get the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance.      |
+| getRange(from?: number, to?: number)                                | Get the text between the given points in the editor.                                             |
+| getLine(number: number)                                             | Get the content of line.                                                                         |
+| lineCount()                                                         | Get the number of lines in the editor.                                                           |
+| getCursor()                                                         | Retrieve one end of the primary selection.                                                       |
+| listSelections()                                                    | Retrieves a list of all current selections.                                                      |
+| getSelection()                                                      | Get the currently selected code.                                                                 |
+| getSelections()                                                     | The length of the given array should be the same as the number of active selections.             |
+| somethingSelected()                                                 | Return true if any text is selected.                                                             |
+| replaceRange(replacement: string \| Text, from: number, to: number) | Replace the part of the document between from and to with the given string.                      |
+| replaceSelection(replacement: string \| Text)                       | Replace the selection(s) with the given string.                                                  |
+| setCursor(position: number)                                         | Set the cursor position.                                                                         |
+| setSelection(anchor: number, head?: number)                         | Set a single selection range.                                                                    |
+| setSelections(ranges: readonly SelectionRange[], primary?: number)  | Sets a new set of selections.                                                                    |
+| extendSelectionsBy(f: Function)                                     | Applies the given function to all existing selections, and calls extendSelections on the result. |
+| focus()                                                             | Set focus                                                                                        |
+| hasFocus()                                                          | is Focused                                                                                       |
+
 ## Recommendations
 
 Since CodeMirror has a relatively large capacity, when using vite, it is recommended to set it to output as a separate file using the [`manualChunks`](https://vitejs.dev/guide/build.html#chunking-strategy) option at build time as shown below.
@@ -242,11 +264,13 @@ const config: UserConfig = {
           // ...
           codemirror: [
             // Split CodeMirror code.
-            '@codemirror/basic-setup',
+            'codemirror',
+            'vue-codemirror6'
             '@codemirror/commands',
             '@codemirror/language',
             '@codemirror/lint',
             '@codemirror/state',
+            '@codemirror/search',
             '@codemirror/view',
             // Add the following as needed.
             '@codemirror/lang-html',

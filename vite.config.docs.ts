@@ -51,7 +51,7 @@ const config: UserConfig = {
           vue: ['vue', 'vue-demi'],
           lodash: ['lodash'],
           codemirror: [
-            '@codemirror/basic-setup',
+            'codemirror',
             '@codemirror/commands',
             '@codemirror/language',
             '@codemirror/lint',

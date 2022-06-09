@@ -231,6 +231,7 @@ export default defineComponent({
 
     /** When loaded */
     onMounted(async () => {
+      let value = doc.value;
       // overwrite initial value
       if (editor.value && editor.value.childNodes[0]) {
         if (doc.value !== '') {
@@ -238,12 +239,12 @@ export default defineComponent({
             '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
           );
         }
-        doc.value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+        value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
       }
 
       // Register Codemirror
       view = new EditorView({
-        doc: doc.value,
+        doc: value,
         extensions: getExtensions(),
         parent: editor.value,
         dispatch: (tr: Transaction) => {
@@ -294,57 +295,115 @@ export default defineComponent({
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ]);
-      console.debug('[CodeMirror.vue] Loaded extensions: ', extensions);
+      // console.debug('[CodeMirror.vue] Loaded extensions: ', extensions);
       return extensions;
     };
 
-    /** Get editor selection */
-    const selection = () => view.state.selection;
+    /** Get editor Selection Object */
+    const selection = (): EditorSelection => view.state.selection;
 
     // Bellow is experimental.
 
-    // Getting the Document and Selection
-    const getRange = (a?: number, b?: number): string =>
-      view.state.sliceDoc(a, b);
-    const getLine = (n: number): string => view.state.doc.line(n + 1).text;
+    /**
+     * Get the text between the given points in the editor.
+     *
+     * @param from - start line number
+     * @param to - end line number
+     */
+    const getRange = (from?: number, to?: number): string =>
+      view.state.sliceDoc(from, to);
+    /**
+     * Get the content of line.
+     *
+     * @param number - line number
+     */
+    const getLine = (number: number): string =>
+      view.state.doc.line(number + 1).text;
+    /** Get the number of lines in the editor. */
     const lineCount = (): number => view.state.doc.lines;
+    /** Retrieve one end of the primary selection. */
     const getCursor = (): number => selection().main.head;
+    /** Retrieves a list of all current selections. */
     const listSelections = (): readonly SelectionRange[] => selection().ranges;
+    /** Get the currently selected code. */
     const getSelection = (): string =>
       view.state.sliceDoc(selection().main.from, selection().main.to);
+    /**
+     * The length of the given array should be the same as the number of active selections.
+     * Replaces the content of the selections with the strings in the array.
+     */
     const getSelections = (): string[] =>
       selection().ranges.map(r => view.state.sliceDoc(r.from, r.to));
+    /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
       selection().ranges.some(r => !r.empty);
 
-    // Making Changes
-    const replaceRange = (text: string | Text, from: number, to: number) =>
-      view.dispatch({
-        changes: { from, to, insert: text },
-      });
-    const replaceSelection = (text: string | Text) =>
-      view.dispatch(view.state.replaceSelection(text));
-    const setCursor = (pos: number) =>
-      view.dispatch({ selection: { anchor: pos } });
-    const setSelection = (anchor: number, head: number) =>
-      view.dispatch({ selection: { anchor, head } });
-    const setSelections = (
-      ranges: readonly SelectionRange[],
-      mainIndex?: number | undefined
+    /**
+     * Replace the part of the document between from and to with the given string.
+     *
+     * @param replacement - replacement text
+     * @param from - start string at position
+     * @param to -  insert the string at position
+     */
+    const replaceRange = (
+      replacement: string | Text,
+      from: number,
+      to: number
     ) =>
       view.dispatch({
-        selection: EditorSelection.create(ranges, mainIndex),
+        changes: { from, to, insert: replacement },
       });
-
-    const extendSelectionsBy = f =>
+    /**
+     * Replace the selection(s) with the given string.
+     * By default, the new selection ends up after the inserted text.
+     *
+     * @param replacement - replacement text
+     */
+    const replaceSelection = (replacement: string | Text) =>
+      view.dispatch(view.state.replaceSelection(replacement));
+    /**
+     * Set the cursor position.
+     *
+     * @param position - position.
+     */
+    const setCursor = (position: number) =>
+      view.dispatch({ selection: { anchor: position } });
+    /**
+     * Set a single selection range.
+     *
+     * @param anchor - anchor position
+     * @param head -
+     */
+    const setSelection = (anchor: number, head?: number) =>
+      view.dispatch({ selection: { anchor, head } });
+    /**
+     * Sets a new set of selections. There must be at least one selection in the given array.
+     *
+     * @param ranges - Selection range
+     * @param primary -
+     */
+    const setSelections = (
+      ranges: readonly SelectionRange[],
+      primary?: number
+    ) =>
+      view.dispatch({
+        selection: EditorSelection.create(ranges, primary),
+      });
+    /**
+     * Applies the given function to all existing selections, and calls extendSelections on the result.
+     *
+     * @param f - function
+     */
+    const extendSelectionsBy = (f: Function) =>
       view.dispatch({
         selection: EditorSelection.create(
           selection().ranges.map(r => r.extend(f(r)))
         ),
       });
 
-    // DOM Structure
+    /** Set focus */
     const focus = () => view.focus();
+    /** is Focused */
     const hasFocus = (): boolean => view.hasFocus;
 
     return {
