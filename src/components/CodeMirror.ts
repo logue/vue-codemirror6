@@ -203,7 +203,7 @@ export default defineComponent({
       view.setState(
         EditorState.create({
           doc: value,
-          extensions: getExtensions(),
+          // extensions: getExtensions(),
           selection: previous,
         })
       );
@@ -224,7 +224,7 @@ export default defineComponent({
       view.setState(
         EditorState.create({
           doc: doc.value,
-          extensions: getExtensions(),
+          // extensions: getExtensions(),
         })
       );
     });
@@ -243,10 +243,8 @@ export default defineComponent({
 
       // Register Codemirror
       view = new EditorView({
-        state: EditorState.create({
-          doc: doc.value,
-          extensions: getExtensions(),
-        }),
+        doc: doc.value,
+        extensions: getExtensions(),
         parent: editor.value,
         dispatch: (tr: Transaction) => {
           view.update([tr]);
