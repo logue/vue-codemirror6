@@ -26,7 +26,8 @@ yarn add vue-codemirror6 @vue/composition-api
 
 | Props      | Type                              | Information                                                                                                                                                                                                                      |
 | ---------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| basic      | boolean                           | Use [basic-setup](https://codemirror.net/6/docs/ref/#basic-setup).                                                                                                                                                               |
+| basic      | boolean                           | Use [basicSetup](https://codemirror.net/docs/ref/#codemirror.basicSetup).                                                                                                                                                        |
+| minimal    | boolean                           | Use [miniSetup](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If a `basic` prop is also specified, that setting will take precedence.                                                                               |
 | dark       | boolean                           | Toggle Darkmode. It can be changed in real time, but the input value will return to the initial value.                                                                                                                           |
 | wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                         |
 | tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                         |
@@ -264,13 +265,14 @@ const config: UserConfig = {
           // ...
           codemirror: [
             // Split CodeMirror code.
-            'codemirror',
             'vue-codemirror6'
+            'codemirror',
+            '@codemirror/autocomplete',
             '@codemirror/commands',
             '@codemirror/language',
             '@codemirror/lint',
-            '@codemirror/state',
             '@codemirror/search',
+            '@codemirror/state',
             '@codemirror/view',
             // Add the following as needed.
             '@codemirror/lang-html',

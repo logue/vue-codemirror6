@@ -12,10 +12,10 @@ import {
   type SetupContext,
 } from 'vue-demi';
 
-import { EditorSelection, EditorState } from '@codemirror/state';
+import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { linter, lintGutter } from '@codemirror/lint';
-import { basicSetup } from 'codemirror';
+import { basicSetup, minimalSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
 
 import { compact, trim } from 'lodash';
@@ -76,9 +76,18 @@ export default defineComponent({
     /**
      * Use Basic Setup
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#basic-setup | basic-setup}
+     * @see {@link https://codemirror.net/docs/ref/#codemirror.basicSetup | basicSetup}
      */
     basic: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Use Minimal Setup (The basic setting has priority.)
+     *
+     * @see {@link https://codemirror.net/docs/ref/#codemirror.minimalSetup | minimalSetup}
+     */
+    minimal: {
       type: Boolean,
       default: false,
     },
@@ -199,11 +208,13 @@ export default defineComponent({
       /** Previous cursor location */
       const previous = view.state.selection;
 
-      // TODO: Since history etc. may not work, change to implementation using dispatch
+      // TODO: Since history etc. may not work, change to implementation using dispatch.
+      // However, there is a problem that the cursor position returns to the beginning when inputting using IME,
+      // so it is the current implementation.
       view.setState(
         EditorState.create({
           doc: value,
-          // extensions: getExtensions(),
+          extensions: getExtensions(),
           selection: previous,
         })
       );
@@ -219,14 +230,13 @@ export default defineComponent({
     );
 
     // Toggle Dark mode
-    // TODO: Since the input value is reset, change to the implementation using dispatch
     watch(dark, () => {
-      view.setState(
-        EditorState.create({
-          doc: doc.value,
-          // extensions: getExtensions(),
-        })
-      );
+      // TODO: There is a bug that the dark mode setting is not canceled when changing from the initial state and returning again.
+      view.dispatch({
+        effects: StateEffect.appendConfig.of(
+          EditorView.theme(props.theme, { dark: dark.value })
+        ),
+      });
     });
 
     /** When loaded */
@@ -251,11 +261,10 @@ export default defineComponent({
           view.update([tr]);
           // TODO: Emit lint error event
           // console.log(view.state.doc.toString(), tr);
-
-          // to parent binding
           if (tr.changes.empty) return;
 
           doc.value = view.state.doc.toString();
+          // child-to-parent binding
           emit('update:modelValue', doc.value);
         },
       });
@@ -270,6 +279,8 @@ export default defineComponent({
       const extensions = compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
+        // Toggle minimal setup
+        props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate) =>
           emit('update', update)
