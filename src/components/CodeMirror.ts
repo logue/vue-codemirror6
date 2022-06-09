@@ -15,7 +15,7 @@ import {
 import { EditorSelection, EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { linter, lintGutter } from '@codemirror/lint';
-import { basicSetup } from '@codemirror/basic-setup';
+import { basicSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
 
 import { compact, trim } from 'lodash';
