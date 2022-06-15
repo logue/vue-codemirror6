@@ -1,4 +1,5 @@
 import {
+  computed,
   defineComponent,
   nextTick,
   onMounted,
@@ -189,6 +190,12 @@ export default defineComponent({
     /** Internal value */
     const doc: Ref<string | Text> = ref(props.modelValue);
 
+    /** Cursor Position */
+    const cursor: Ref<number> = computed({
+      get: () => view.state.selection.main.head,
+      set: p => view.dispatch({ selection: { anchor: p } }),
+    });
+
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
@@ -205,19 +212,10 @@ export default defineComponent({
         // IME fix
         return;
       }
-      /** Previous cursor location */
-      const previous = view.state.selection;
-
-      // TODO: Since history etc. may not work, change to implementation using dispatch.
-      // However, there is a problem that the cursor position returns to the beginning when inputting using IME,
-      // so it is the current implementation.
-      view.setState(
-        EditorState.create({
-          doc: value,
-          extensions: getExtensions(),
-          selection: previous,
-        })
-      );
+      view.dispatch({
+        changes: { from: 0, to: value.length, insert: value },
+        selection: { anchor: cursor.value },
+      });
     });
 
     // for parent-to-child binding.
@@ -226,6 +224,7 @@ export default defineComponent({
       text =>
         view.dispatch({
           changes: { from: 0, to: view.state.doc.length, insert: text },
+          selection: { anchor: cursor.value },
         })
     );
 
@@ -333,7 +332,7 @@ export default defineComponent({
     /** Get the number of lines in the editor. */
     const lineCount = (): number => view.state.doc.lines;
     /** Retrieve one end of the primary selection. */
-    const getCursor = (): number => selection().main.head;
+    const getCursor = (): number => cursor.value;
     /** Retrieves a list of all current selections. */
     const listSelections = (): readonly SelectionRange[] => selection().ranges;
     /** Get the currently selected code. */
@@ -377,8 +376,7 @@ export default defineComponent({
      *
      * @param position - position.
      */
-    const setCursor = (position: number) =>
-      view.dispatch({ selection: { anchor: position } });
+    const setCursor = (position: number) => (cursor.value = position);
     /**
      * Set a single selection range.
      *
@@ -420,6 +418,7 @@ export default defineComponent({
     return {
       context,
       editor,
+      cursor,
       selection,
       // Bellow is CodeMirror5's function
       getRange,
