@@ -61,6 +61,7 @@ Notice: `lang` and `linter` can also be set together in `extensions`. This is de
 
 - [`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one-dark)
 - [`upleveled/theme-vs-code-dark-plus`](https://github.com/upleveled/theme-vs-code-dark-plus)
+- ['codemirror6-bootstrap-theme'](https://github.com/logue/codemirror6-bootstrap-theme)
 
 ## Example
 

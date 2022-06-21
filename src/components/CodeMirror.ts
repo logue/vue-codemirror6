@@ -6,7 +6,6 @@ import {
   onUnmounted,
   ref,
   toRaw,
-  toRefs,
   watch,
   type PropType,
   type Ref,
@@ -72,7 +71,7 @@ export default defineComponent({
     /** Dark Mode */
     dark: {
       type: Boolean,
-      default: false,
+      default: window.matchMedia('(prefers-color-scheme: dark)').matches,
     },
     /**
      * Use Basic Setup
@@ -184,9 +183,6 @@ export default defineComponent({
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref();
 
-    /** Dark mode */
-    const { dark } = toRefs(props);
-
     /** Internal value */
     const doc: Ref<string | Text> = ref(props.modelValue);
 
@@ -229,14 +225,14 @@ export default defineComponent({
     );
 
     // Toggle Dark mode
-    watch(dark, () => {
-      // TODO: There is a bug that the dark mode setting is not canceled when changing from the initial state and returning again.
-      view.dispatch({
-        effects: StateEffect.appendConfig.of(
-          EditorView.theme(props.theme, { dark: dark.value })
-        ),
-      });
-    });
+    watch(
+      () => props.dark,
+      () => {
+        view.dispatch({
+          effects: StateEffect.reconfigure.of(getExtensions()),
+        });
+      }
+    );
 
     /** When loaded */
     onMounted(async () => {
@@ -285,7 +281,7 @@ export default defineComponent({
           emit('update', update)
         ),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme, { dark: dark.value }),
+        EditorView.theme(props.theme, { dark: props.dark }),
         // Toggle line wrapping
         props.wrap ? EditorView.lineWrapping : undefined,
         // Indent with tab
@@ -452,7 +448,11 @@ export default defineComponent({
         class: 'vue-codemirror',
       },
       this.$slots.default
-        ? h('aside', { style: 'display: none;' }, slot(this.$slots.default))
+        ? h(
+            'aside',
+            { style: 'display: none;', 'aria-hidden': 'true' },
+            slot(this.$slots.default)
+          )
         : undefined
     );
   },

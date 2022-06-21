@@ -7,6 +7,7 @@ interface Options {
   props?: Record<any, any>;
   ref?: string;
   style?: string;
+  'aria-hidden'?: string;
 }
 
 const adaptOnsV3 = (ons: Object) => {
