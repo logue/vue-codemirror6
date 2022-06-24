@@ -4491,7 +4491,7 @@ __metadata:
     vite-plugin-checker: ^0.4.6
     vue: ^3.2.37
     vue-demi: latest
-    vue-eslint-parser: ^9.0.2
+    vue-eslint-parser: ^9.0.3
     vue-tsc: ^0.38.1
   peerDependencies:
     "@vue/composition-api": ^1.6.2
@@ -4518,7 +4518,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-eslint-parser@npm:^9.0.1, vue-eslint-parser@npm:^9.0.2":
+"vue-eslint-parser@npm:^9.0.1":
   version: 9.0.2
   resolution: "vue-eslint-parser@npm:9.0.2"
   dependencies:
@@ -4532,6 +4532,23 @@ __metadata:
   peerDependencies:
     eslint: ">=6.0.0"
   checksum: 0160bb4dc742f3fea410223074d813969eae87825afe536a4b7de7a9d3ca35169cdee2d821494805e1c5dd337aae3178e1485d945a26432a69a281180887fb4d
+  languageName: node
+  linkType: hard
+
+"vue-eslint-parser@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "vue-eslint-parser@npm:9.0.3"
+  dependencies:
+    debug: ^4.3.4
+    eslint-scope: ^7.1.1
+    eslint-visitor-keys: ^3.3.0
+    espree: ^9.3.1
+    esquery: ^1.4.0
+    lodash: ^4.17.21
+    semver: ^7.3.6
+  peerDependencies:
+    eslint: ">=6.0.0"
+  checksum: 61248eb504b8d0cbc95ed3f7ec6b11b72782cd76e4049798626f9c09031d620691a967231985c79d8ece8b04864797e465b7f47bcf91828e18344ae3691d9066
   languageName: node
   linkType: hard
 
