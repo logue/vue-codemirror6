@@ -7,10 +7,16 @@
  * @copyright 2022 Masashi Yoshikawa {@link https://logue.dev/} All rights reserved.
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
-
 import CodeMirror from './components/CodeMirror';
 
 // TODO: Move phrases props to option.
 const installCodeMirror = app => app.component('CodeMirror', CodeMirror);
 
 export { CodeMirror as default, installCodeMirror as install };
+
+// For CDN. (Maybe Vue2 only)
+// @ts-ignore
+if (typeof window !== 'undefined' && window.Vue) {
+  // @ts-ignore
+  window.Vue.use(CodeMirror);
+}

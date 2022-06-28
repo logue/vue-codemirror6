@@ -279,12 +279,17 @@ export default defineComponent({
             :lang="cmLangJs"
             :linter="cmLintJs"
             :dark="dark"
-            lintGutter
+            lint-gutter
             basic
           />
         </div>
         <div class="col-6">
-          <textarea v-model="demo2" rows="3" class="form-control" />
+          <textarea
+            v-model="demo2"
+            aria-label="two way bind test"
+            rows="3"
+            class="form-control"
+          />
         </div>
       </div>
       <p>Also, make sure that changing either value reflects that value.</p>

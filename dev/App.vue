@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/anchor-has-content -->
 <template>
   <div>
     <header>
@@ -68,7 +69,7 @@
       </nav>
     </header>
 
-    <main role="main" class="flex-shrink-0 pt-4 bg-white">
+    <main class="flex-shrink-0 pt-4 bg-white">
       <demo-page :dark="dark" />
     </main>
 

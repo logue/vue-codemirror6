@@ -186,6 +186,9 @@ export default defineComponent({
     /** Internal value */
     const doc: Ref<string | Text> = ref(props.modelValue);
 
+    /** CodeMirror Editor View */
+    let view: EditorView;
+
     /** Cursor Position */
     const cursor: Ref<number> = computed({
       get: () => view.state.selection.main.head,
@@ -194,25 +197,6 @@ export default defineComponent({
 
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
-
-    /** CodeMirror Editor View */
-    let view: EditorView;
-
-    /**
-     * Input value changed
-     *
-     * @see {@link https://codemirror.net/6/docs/migration/#making-changes | Making Changes}
-     */
-    watch(doc, value => {
-      if (view.composing) {
-        // IME fix
-        return;
-      }
-      view.dispatch({
-        changes: { from: 0, to: value.length, insert: value },
-        selection: { anchor: cursor.value },
-      });
-    });
 
     // for parent-to-child binding.
     watch(
@@ -438,7 +422,7 @@ export default defineComponent({
   render() {
     // <template>
     //   <div ref="editor" class="vue-codemirror">
-    //     <aside v-show="!context.slots.default"><slot /></aside>
+    //     <aside v-show="!context.slots.default" aria-hidden><slot /></aside>
     //   </div>
     // </template>
     return h(
