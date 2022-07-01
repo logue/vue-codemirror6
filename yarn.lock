@@ -117,6 +117,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codemirror/lang-javascript@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@codemirror/lang-javascript@npm:6.0.1"
+  dependencies:
+    "@codemirror/autocomplete": ^6.0.0
+    "@codemirror/language": ^6.0.0
+    "@codemirror/lint": ^6.0.0
+    "@codemirror/state": ^6.0.0
+    "@codemirror/view": ^6.0.0
+    "@lezer/common": ^1.0.0
+    "@lezer/javascript": ^1.0.0
+  checksum: 630573877ec3f2fdaedf3c7bf3bf9a8a7645f76bde52ad2d4c51cb1e173b49ccda5d7944f98521ff5f723ec12ae196c03a9f044fe91e50a5bf615d3b867966cf
+  languageName: node
+  linkType: hard
+
 "@codemirror/lang-markdown@npm:^6.0.0":
   version: 6.0.0
   resolution: "@codemirror/lang-markdown@npm:6.0.0"
@@ -1103,9 +1118,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"codemirror@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "codemirror@npm:6.0.0"
+"codemirror@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "codemirror@npm:6.0.1"
   dependencies:
     "@codemirror/autocomplete": ^6.0.0
     "@codemirror/commands": ^6.0.0
@@ -1114,7 +1129,7 @@ __metadata:
     "@codemirror/search": ^6.0.0
     "@codemirror/state": ^6.0.0
     "@codemirror/view": ^6.0.0
-  checksum: 42fb2b5ac5d4b8616a733de5efd7913764c1d13dcc27f732af5ed5e98f657a53ab5549437b53d73ed89d004423141ee65612a5e54c451538ef6d75afed4cd3e2
+  checksum: 1a78f7077ac5801bdbff162aa0c61bf2b974603c7e9a477198c3ce50c789af674a061d7c293c58b73807eda345c2b5228c38ad2aabb9319d552d5486f785cbef
   languageName: node
   linkType: hard
 
@@ -1464,13 +1479,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.9.3":
-  version: 5.9.3
-  resolution: "enhanced-resolve@npm:5.9.3"
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.10.0
+  resolution: "enhanced-resolve@npm:5.10.0"
   dependencies:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
-  checksum: 64c2dbbdd608d1a4df93b6e60786c603a1faf3b2e66dfd051d62cf4cfaeeb5e800166183685587208d62e9f7afff3f78f3d5978e32cd80125ba0c83b59a79d78
+  checksum: 0bb9830704db271610f900e8d79d70a740ea16f251263362b0c91af545576d09fe50103496606c1300a05e588372d6f9780a9bc2e30ce8ef9b827ec8f44687ff
   languageName: node
   linkType: hard
 
@@ -1831,13 +1846,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "eslint-import-resolver-typescript@npm:3.1.1"
+"eslint-import-resolver-typescript@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "eslint-import-resolver-typescript@npm:3.1.2"
   dependencies:
     debug: ^4.3.4
-    enhanced-resolve: ^5.9.3
-    get-tsconfig: ^4.0.6
+    enhanced-resolve: ^5.10.0
+    get-tsconfig: ^4.1.0
     globby: ^13.1.2
     is-core-module: ^2.9.0
     is-glob: ^4.0.3
@@ -1845,7 +1860,7 @@ __metadata:
   peerDependencies:
     eslint: "*"
     eslint-plugin-import: "*"
-  checksum: 83a9a8edffebb2a0b8445117750da54669257ab23faa368cfcd91249e529afd059b5ec0f04abb5b232ede08c2a9fbcd1bf53a3eaf7b557d9e217724cd92b7e75
+  checksum: 932a3f1b29e868a5f7d91aed008a284670efbcb6e13dfb5fc168222e797a4ed8b93c6b00b21b724f720ef465f50ce4644884201cb3bb57c752deff6955d3beb9
   languageName: node
   linkType: hard
 
@@ -2364,10 +2379,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.0.6":
-  version: 4.0.7
-  resolution: "get-tsconfig@npm:4.0.7"
-  checksum: 44c2f60fa397e7606e08052465247461301e3bbf4681f104ea7b710813f5b03c47a1c15db05dc1a2d8bd1fc117b118caf03d96e2f2813dd96386ead9824b50ae
+"get-tsconfig@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "get-tsconfig@npm:4.1.0"
+  checksum: a1a29cdf53609a1e9e111bf863ea209494c03e425964ed2603e3a2657ed1d38213d4a8e3efbfd945f2ec908fe99b76d3ee87422fac5d8ec4fdd858bbb502efbf
   languageName: node
   linkType: hard
 
@@ -4552,7 +4567,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue-codemirror6@workspace:."
   dependencies:
-    "@codemirror/lang-javascript": ^6.0.0
+    "@codemirror/lang-javascript": ^6.0.1
     "@codemirror/lang-markdown": ^6.0.0
     "@types/lodash": ^4.14.182
     "@types/node": ^18.0.0
@@ -4560,12 +4575,12 @@ __metadata:
     "@typescript-eslint/parser": ^5.30.0
     "@vitejs/plugin-vue": ^2.3.3
     "@vue/eslint-config-prettier": ^7.0.0
-    codemirror: ^6.0.0
+    codemirror: ^6.0.1
     eslint: ^8.18.0
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^8.5.0
     eslint-import-resolver-alias: ^1.1.2
-    eslint-import-resolver-typescript: ^3.1.1
+    eslint-import-resolver-typescript: ^3.1.2
     eslint-plugin-html: ^6.2.0
     eslint-plugin-import: ^2.26.0
     eslint-plugin-jsdoc: ^39.3.3
@@ -4588,7 +4603,7 @@ __metadata:
     vue-eslint-parser: ^9.0.3
     vue-tsc: ^0.38.2
   peerDependencies:
-    "@vue/composition-api": ^1.6.2
+    "@vue/composition-api": ^1.6.3
     vue: ^2.6.14 || ^3.2.37
   peerDependenciesMeta:
     "@vue/composition-api":

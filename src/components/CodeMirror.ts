@@ -12,15 +12,16 @@ import {
   type SetupContext,
 } from 'vue-demi';
 
+// Helpers
+import h, { slot } from '@/helpers/h-demi';
+import { compact, trim } from 'lodash';
+
+// CodeMirror
 import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup, minimalSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
-
-import { compact, trim } from 'lodash';
-
-import h, { slot } from '@/helpers/h-demi';
 
 import type {
   Extension,
@@ -71,7 +72,7 @@ export default defineComponent({
     /** Dark Mode */
     dark: {
       type: Boolean,
-      default: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      default: false,
     },
     /**
      * Use Basic Setup
@@ -163,7 +164,7 @@ export default defineComponent({
      */
     linter: {
       type: Function as PropType<LintSource>,
-      default: undefined,
+      default: () => undefined,
     },
     /** Show Gutter */
     lintGutter: {
@@ -172,7 +173,7 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: ['update:modelValue', 'update'],
+  emits: ['update:modelValue', 'update:view'],
   /**
    * Setup
    *
@@ -191,7 +192,7 @@ export default defineComponent({
 
     /** Cursor Position */
     const cursor: Ref<number> = computed({
-      get: () => view.state.selection.main.head,
+      get: () => view.state.selection.main.head || 0,
       set: p => view.dispatch({ selection: { anchor: p } }),
     });
 
@@ -201,11 +202,20 @@ export default defineComponent({
     // for parent-to-child binding.
     watch(
       () => props.modelValue,
-      text =>
+      text => {
+        if (view.composing) {
+          // IME fix
+          return;
+        }
+        /** Previous cursor location */
+        const previous = view.state.selection;
+
+        // Update
         view.dispatch({
           changes: { from: 0, to: view.state.doc.length, insert: text },
-          selection: { anchor: cursor.value },
-        })
+          selection: previous,
+        });
+      }
     );
 
     // Toggle Dark mode
@@ -241,10 +251,8 @@ export default defineComponent({
           // TODO: Emit lint error event
           // console.log(view.state.doc.toString(), tr);
           if (tr.changes.empty) return;
-
-          doc.value = view.state.doc.toString();
           // child-to-parent binding
-          emit('update:modelValue', doc.value);
+          emit('update:modelValue', view.state.doc.toString());
         },
       });
       await nextTick();
