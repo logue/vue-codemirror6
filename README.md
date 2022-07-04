@@ -16,11 +16,13 @@ yarn add vue-codemirror6
 
 This component can handle bidirectional binding by `v-model` like a general Vue component.
 
-When using with Vue2, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
+When using with Vue 2.6, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
 
 ```sh
 yarn add vue-codemirror6 @vue/composition-api
 ```
+
+For Vue 2.7 or later, import vue directly like Vue3.
 
 ### Props
 

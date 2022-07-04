@@ -2,7 +2,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, type UserConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
+import banner from 'vite-plugin-banner';
 import path from 'path';
+const pkg = require('./package.json');
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
@@ -39,6 +41,19 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           lintCommand: 'eslint',
         },
       }),
+      // vite-plugin-banner
+      // https://github.com/chengpeiquan/vite-plugin-banner
+      banner(`/**
+ * ${pkg.name}
+ *
+ * @description ${pkg.description}
+ * @author ${pkg.author.name} <${pkg.author.email}>
+ * @copyright 2022 By Masashi Yoshikawa All rights reserved.
+ * @license ${pkg.license}
+ * @version ${pkg.version}
+ * @see {@link ${pkg.homepage}}
+ */
+`),
     ],
     optimizeDeps: {
       exclude: ['vue-demi'],

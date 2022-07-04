@@ -234,7 +234,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
 &lt;script&gt;
 import { defineComponent } from 'vue';
-// for vue2
+// for less than vue 2.6.x
 // import { defineComponent } from '@vue/composition-api';
 
 import CodeMirror from 'vue-codemirror6';
