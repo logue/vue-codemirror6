@@ -139,7 +139,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
             wrap
             basic
             tab
-            @update="onViewUpdate"
+            @update:view="onViewUpdate"
           />
         </div>
         <div class="col">

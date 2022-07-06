@@ -1,4 +1,4 @@
-import { h as hDemi, isVue2 } from 'vue-demi';
+import { h as hDemi, isVue2, VNode, Vue2 } from 'vue-demi';
 
 interface Options {
   class?: string;
@@ -11,7 +11,7 @@ interface Options {
 }
 
 const adaptOnsV3 = (ons: Object) => {
-  if (!ons) return null;
+  if (!ons) return {};
   return Object.entries(ons).reduce((ret, [key, handler]) => {
     key = key.charAt(0).toUpperCase() + key.slice(1);
     key = `on${key}`;
@@ -23,8 +23,12 @@ const h = (
   type: string | Record<any, any>,
   options: Options = {},
   chidren?: any
-) => {
-  if (isVue2) return hDemi(type, options, chidren);
+): VNode => {
+  if (isVue2 && parseInt(Vue2.version) < 2.7) {
+    // Makeshift support :(
+    // Since Vue2.7 includes the Composition API, the functions in vue-demi are not used.
+    return hDemi(type, options, chidren);
+  }
   const { props, domProps, on, ...extraOptions } = options;
   const ons = on ? adaptOnsV3(on) : {};
 

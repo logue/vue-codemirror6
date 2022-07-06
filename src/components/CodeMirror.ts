@@ -39,7 +39,7 @@ export interface CodeMirrorEmitsInterface {
   /** Model Update */
   (e: 'update:modelValue', value: string | Text): void;
   /** CodeMirror ViewUpdate */
-  (e: 'update', value: ViewUpdate): void;
+  (e: 'update:view', value: ViewUpdate): void;
 }
 
 /** CodeMirror Component */
@@ -164,7 +164,7 @@ export default defineComponent({
      */
     linter: {
       type: Function as PropType<LintSource>,
-      default: () => undefined,
+      default: undefined,
     },
     /** Show Gutter */
     lintGutter: {
@@ -190,10 +190,16 @@ export default defineComponent({
     /** CodeMirror Editor View */
     let view: EditorView;
 
+    /** Selection */
+    const selection: Ref<EditorSelection> = computed({
+      get: () => view.state.selection,
+      set: s => view.dispatch({ selection: s }),
+    });
+
     /** Cursor Position */
     const cursor: Ref<number> = computed({
-      get: () => view.state.selection.main.head || 0,
-      set: p => view.dispatch({ selection: { anchor: p } }),
+      get: () => selection.value.main.head || 0,
+      set: a => view.dispatch({ selection: { anchor: a } }),
     });
 
     /** Emits */
@@ -270,7 +276,7 @@ export default defineComponent({
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate) =>
-          emit('update', update)
+          emit('update:view', update)
         ),
         // Toggle light/dark mode.
         EditorView.theme(props.theme, { dark: props.dark }),
@@ -297,9 +303,6 @@ export default defineComponent({
       return extensions;
     };
 
-    /** Get editor Selection Object */
-    const selection = (): EditorSelection => view.state.selection;
-
     // Bellow is experimental.
 
     /**
@@ -322,19 +325,23 @@ export default defineComponent({
     /** Retrieve one end of the primary selection. */
     const getCursor = (): number => cursor.value;
     /** Retrieves a list of all current selections. */
-    const listSelections = (): readonly SelectionRange[] => selection().ranges;
+    const listSelections = (): readonly SelectionRange[] =>
+      view.state.selection.ranges;
     /** Get the currently selected code. */
     const getSelection = (): string =>
-      view.state.sliceDoc(selection().main.from, selection().main.to);
+      view.state.sliceDoc(
+        view.state.selection.main.from,
+        view.state.selection.main.to
+      );
     /**
      * The length of the given array should be the same as the number of active selections.
      * Replaces the content of the selections with the strings in the array.
      */
     const getSelections = (): string[] =>
-      selection().ranges.map(r => view.state.sliceDoc(r.from, r.to));
+      view.state.selection.ranges.map(r => view.state.sliceDoc(r.from, r.to));
     /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
-      selection().ranges.some(r => !r.empty);
+      view.state.selection.ranges.some(r => !r.empty);
 
     /**
      * Replace the part of the document between from and to with the given string.
@@ -394,7 +401,7 @@ export default defineComponent({
     const extendSelectionsBy = (f: Function) =>
       view.dispatch({
         selection: EditorSelection.create(
-          selection().ranges.map(r => r.extend(f(r)))
+          selection.value.ranges.map(r => r.extend(f(r)))
         ),
       });
 
