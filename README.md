@@ -238,6 +238,8 @@ export default defineComponent({
 | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | selection                                                           | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
 | cursor                                                              | Get and set the cursor location.                                                                    |
+| state                                                               | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
+| focus                                                               | Get and set focus.                                                                                  |
 | getRange(from?: number, to?: number)                                | Get the text between the given points in the editor.                                                |
 | getLine(number: number)                                             | Get the content of line.                                                                            |
 | lineCount()                                                         | Get the number of lines in the editor.                                                              |
@@ -252,8 +254,6 @@ export default defineComponent({
 | setSelection(anchor: number, head?: number)                         | Set a single selection range.                                                                       |
 | setSelections(ranges: readonly SelectionRange[], primary?: number)  | Sets a new set of selections.                                                                       |
 | extendSelectionsBy(f: Function)                                     | Applies the given function to all existing selections, and calls extendSelections on the result.    |
-| focus()                                                             | Set focus                                                                                           |
-| hasFocus()                                                          | is Focused                                                                                          |
 
 ## Recommendations
 

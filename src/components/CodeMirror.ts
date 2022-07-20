@@ -202,13 +202,28 @@ export default defineComponent({
       set: a => view.dispatch({ selection: { anchor: a } }),
     });
 
+    /** Editor State */
+    const state: Ref<EditorState> = computed({
+      get: () => view.state,
+      set: s => view.setState(s),
+    });
+
+    /** Focus */
+    const focus: Ref<boolean> = computed({
+      get: () => view.hasFocus,
+      set: f => {
+        if (f) {
+          view.focus();
+        }
+      },
+    });
+
     /** Emits */
     const emit = context.emit as CodeMirrorEmitsInterface;
 
-    // for parent-to-child binding.
-    watch(
-      () => props.modelValue,
-      text => {
+    // props changed.
+    watch(props, p => {
+      if (p.modelValue) {
         if (view.composing) {
           // IME fix
           return;
@@ -218,21 +233,14 @@ export default defineComponent({
 
         // Update
         view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: text },
+          changes: { from: 0, to: view.state.doc.length, insert: p.modelValue },
           selection: previous,
         });
       }
-    );
-
-    // Toggle Dark mode
-    watch(
-      () => props.dark,
-      () => {
-        view.dispatch({
-          effects: StateEffect.reconfigure.of(getExtensions()),
-        });
-      }
-    );
+      view.dispatch({
+        effects: StateEffect.reconfigure.of(getExtensions()),
+      });
+    });
 
     /** When loaded */
     onMounted(async () => {
@@ -405,16 +413,13 @@ export default defineComponent({
         ),
       });
 
-    /** Set focus */
-    const focus = () => view.focus();
-    /** is Focused */
-    const hasFocus = (): boolean => view.hasFocus;
-
     return {
       context,
       editor,
       cursor,
       selection,
+      state,
+      focus,
       // Bellow is CodeMirror5's function
       getRange,
       getLine,
@@ -430,8 +435,6 @@ export default defineComponent({
       setSelection,
       setSelections,
       extendSelectionsBy,
-      focus,
-      hasFocus,
     };
   },
   render() {
