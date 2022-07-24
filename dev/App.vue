@@ -21,16 +21,6 @@
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  aria-current="page"
-                  href="https://logue.dev/"
-                >
-                  Home
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a
-                  class="nav-link"
                   href="https://github.com/logue/vue-codemirror6"
                 >
                   <svg

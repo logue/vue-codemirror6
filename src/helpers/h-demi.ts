@@ -1,4 +1,4 @@
-import { h as hDemi, isVue2, VNode, Vue2 } from 'vue-demi';
+import { h as hDemi, isVue2, type VNode, Vue2 } from 'vue-demi';
 
 interface Options {
   class?: string;

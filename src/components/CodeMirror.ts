@@ -277,7 +277,7 @@ export default defineComponent({
 
     /** Get CodeMirror Extension */
     const getExtensions = (): Extension[] => {
-      const extensions = compact([
+      return compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // Toggle minimal setup
@@ -307,8 +307,6 @@ export default defineComponent({
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ]);
-      // console.debug('[CodeMirror.vue] Loaded extensions: ', extensions);
-      return extensions;
     };
 
     // Bellow is experimental.

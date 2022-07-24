@@ -1,10 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
+  "extends": "@vue/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "composite": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node"
+    "newLine": "lf",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "composite": true
   },
-  "include": ["vite.config.ts", "vite.config.docs.ts"]
+  "include": ["vite.config.ts"]
 }
