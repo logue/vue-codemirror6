@@ -223,23 +223,25 @@ export default defineComponent({
 
     // props changed.
     watch(props, p => {
+      /** Transaction Spec */
+      const spec: any = {
+        effects: StateEffect.reconfigure.of(getExtensions()),
+      };
       if (p.modelValue) {
         if (view.composing) {
           // IME fix
           return;
         }
-        /** Previous cursor location */
-        const previous = view.state.selection;
 
         // Update
-        view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: p.modelValue },
-          selection: previous,
-        });
+        spec.changes = {
+          from: 0,
+          to: view.state.doc.length,
+          insert: p.modelValue,
+        };
+        spec.selection = view.state.selection;
       }
-      view.dispatch({
-        effects: StateEffect.reconfigure.of(getExtensions()),
-      });
+      view.dispatch(spec);
     });
 
     /** When loaded */
