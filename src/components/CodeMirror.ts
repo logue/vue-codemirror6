@@ -7,6 +7,7 @@ import {
   ref,
   toRaw,
   watch,
+  type ComputedRef,
   type PropType,
   type Ref,
   type SetupContext,
@@ -218,68 +219,9 @@ export default defineComponent({
       },
     });
 
-    /** Emits */
-    const emit = context.emit as CodeMirrorEmitsInterface;
-
-    // props changed.
-    watch(props, p => {
-      /** Transaction Spec */
-      const spec: any = {
-        effects: StateEffect.reconfigure.of(getExtensions()),
-      };
-      if (p.modelValue) {
-        if (view.composing) {
-          // IME fix
-          return;
-        }
-
-        // Update
-        spec.changes = {
-          from: 0,
-          to: view.state.doc.length,
-          insert: p.modelValue,
-        };
-        spec.selection = view.state.selection;
-      }
-      view.dispatch(spec);
-    });
-
-    /** When loaded */
-    onMounted(async () => {
-      let value = doc.value;
-      // overwrite initial value
-      if (editor.value && editor.value.childNodes[0]) {
-        if (doc.value !== '') {
-          console.warn(
-            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
-          );
-        }
-        value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
-      }
-
-      // Register Codemirror
-      view = new EditorView({
-        doc: value,
-        extensions: getExtensions(),
-        parent: editor.value,
-        dispatch: (tr: Transaction) => {
-          view.update([tr]);
-          // TODO: Emit lint error event
-          // console.log(view.state.doc.toString(), tr);
-          if (tr.changes.empty) return;
-          // child-to-parent binding
-          emit('update:modelValue', view.state.doc.toString());
-        },
-      });
-      await nextTick();
-    });
-
-    /** Destroy */
-    onUnmounted(() => view.destroy());
-
     /** Get CodeMirror Extension */
-    const getExtensions = (): Extension[] => {
-      return compact([
+    const extensions: ComputedRef<Extension[]> = computed(() =>
+      compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // Toggle minimal setup
@@ -308,8 +250,71 @@ export default defineComponent({
         props.linter && props.lintGutter ? lintGutter() : undefined,
         // Append Extensions (such as basic-setup)
         ...props.extensions,
-      ]);
-    };
+      ])
+    );
+
+    /** Emits */
+    const emit = context.emit as CodeMirrorEmitsInterface;
+
+    // for parent-to-child binding.
+    watch(
+      () => props.modelValue,
+      text => {
+        if (view.composing) {
+          // IME fix
+          return;
+        }
+        /** Previous cursor location */
+        const previous = view.state.selection;
+
+        // Update
+        view.dispatch({
+          changes: { from: 0, to: view.state.doc.length, insert: text },
+          selection: previous,
+        });
+      }
+    );
+
+    // Extension (mostly props) Changed
+    watch(extensions, e => {
+      // TODO: Reduce unchanched value
+      view.dispatch({
+        effects: StateEffect.reconfigure.of(e),
+      });
+    });
+
+    /** When loaded */
+    onMounted(async () => {
+      let value = doc.value;
+      // overwrite initial value
+      if (editor.value && editor.value.childNodes[0]) {
+        if (doc.value !== '') {
+          console.warn(
+            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
+          );
+        }
+        value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+      }
+
+      // Register Codemirror
+      view = new EditorView({
+        doc: value,
+        extensions: extensions.value,
+        parent: editor.value,
+        dispatch: (tr: Transaction) => {
+          view.update([tr]);
+          // TODO: Emit lint error event
+          // console.log(view.state.doc.toString(), tr);
+          if (tr.changes.empty) return;
+          // child-to-parent binding
+          emit('update:modelValue', view.state.doc.toString());
+        },
+      });
+      await nextTick();
+    });
+
+    /** Destroy */
+    onUnmounted(() => view.destroy());
 
     // Bellow is experimental.
 

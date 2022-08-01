@@ -1,7 +1,9 @@
+<!-- eslint-disable no-irregular-whitespace -->
+<!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <div class="container">
     <section class="mb-5">
-      <h1>Vue CodeMirror6 Markdown Editor Demo</h1>
+      <h1>Vue CodeMirror6 Demo</h1>
       <p>
         A rough demo of Vue Codemirror in action. You can switch between dark
         modes from the
@@ -19,7 +21,7 @@
       </p>
     </section>
     <section class="mb-5">
-      <h2>Normal Method</h2>
+      <h2>Markdown Editor Demo</h2>
       <p>
         This is an example of simply pouring text into CodeMirror using
         <code>v-model</code>
@@ -294,11 +296,33 @@ export default defineComponent({
       </div>
       <p>Also, make sure that changing either value reflects that value.</p>
     </section>
+    <section class="mb-3">
+      <h2>Toggle Readonly demo</h2>
+      <div class="form-check form-switch">
+        <input
+          id="readonly"
+          v-model="isReadonly"
+          type="checkbox"
+          class="form-check-input"
+          role="switch"
+          :aria-checked="isReadonly"
+        />
+        <label class="form-check-label" for="readonly">Readonly</label>
+      </div>
+      <code-mirror :dark="dark" basic :readonly="isReadonly">
+        <pre>
+色は匂へど　散りぬるを
+我が世誰そ　常ならむ
+有為の奥山　今日越えて
+浅き夢見じ　酔ひもせず</pre
+        >
+      </code-mirror>
+    </section>
   </div>
 </template>
 
 <script>
-import { ref, watch, defineComponent } from 'vue-demi';
+import { ref, watch, defineComponent, onMounted } from 'vue-demi';
 
 import CodeMirror from '@/';
 
@@ -348,21 +372,21 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       },
     });
 
-    // Initialize markdown
-    window['markdown'].ready.then(markdown => {
-      output.value = markdown.parse(demo.value);
-    });
+    const isEditable = ref(true);
+    const isReadonly = ref(false);
 
     // Realtime convert Markdown
-    watch(demo, current => {
-      // console.log('value changed', current);
-      window['markdown'].ready.then(markdown => {
-        output.value = markdown.parse(current);
-      });
+    watch(demo, async current => {
+      output.value = window.markdown.parse(current);
     });
 
     // Methods
-    const onViewUpdate = update => console.log(update);
+    const onViewUpdate = update => console.log('onViewUpdate Event: ', update);
+
+    onMounted(async () => {
+      await window.markdown.ready;
+      output.value = window.markdown.parse(demo.value);
+    });
 
     return {
       demo,
@@ -374,6 +398,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       cmLintJs,
       cmTheme,
       onViewUpdate,
+      isEditable,
+      isReadonly,
     };
   },
 });
