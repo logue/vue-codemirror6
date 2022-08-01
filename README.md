@@ -30,7 +30,7 @@ For Vue 2.7 or later, import vue directly like Vue3.
 | ---------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | basic      | boolean                           | Use [basicSetup](https://codemirror.net/docs/ref/#codemirror.basicSetup).                                                                                                                                                        |
 | minimal    | boolean                           | Use [miniSetup](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If a `basic` prop is also specified, that setting will take precedence.                                                                               |
-| dark       | boolean                           | Toggle Darkmode. It can be changed in real time, but the input value will return to the initial value.                                                                                                                           |
+| dark       | boolean                           | Toggle Darkmode.                                                                                                                                                                                                                 |
 | wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                         |
 | tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                         |
 | theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                                 |
@@ -170,18 +170,17 @@ export default defineComponent({
     /** text */
     const value: Ref<string> = ref('');
 
+    /** Dark mode **/
+    const dark: Ref<boolean> = ref(
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    );
+
     /**
      * CodeMirror Language
      *
      * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
      */
     const lang: LanguageSupport = md();
-
-    /** Dark mode **/
-    const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    /** When dark value changed, sync vuetify's dark mode */
-    watch(dark, v => (vuetify.theme.dark = v));
 
     /**
      * Internationalization Config.
@@ -220,6 +219,9 @@ export default defineComponent({
       Diagnostics: 'エラー',
       'No diagnostics': 'エラーなし',
     });
+
+    /** When dark value changed, sync vuetify's dark mode */
+    watch(dark, v => (vuetify.theme.dark = v));
 
     return {
       dark,
@@ -295,3 +297,5 @@ const config: UserConfig = {
 ## LICENSE
 
 [MIT](LICENSE)
+
+&copy; 2022 by Logue.
