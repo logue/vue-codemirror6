@@ -3,10 +3,8 @@
   "extends": "@vue/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "newLine": "lf",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
+    "paths": { "@/*": ["./src/*"] },
     "composite": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "vite.config.docs.ts"]
 }

@@ -62,6 +62,7 @@
     :lang="cmLang"
     basic
     wrap
+    @ready="onReady"
     @update="onViewUpdate"
   /&gt;
   &lt;div v-html="output" /&gt;
@@ -95,17 +96,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     /** CodeMirror Language */
     const cmLang = md();
 
-    // Initialize markdown
-    window['markdown'].ready.then(markdown => {
-      output.value = markdown.parse(input.value);
-    });
-
     // Realtime convert Markdown
-    watch(demo, current => {
-      // console.log('value changed', current);
-      window['markdown'].ready.then(markdown => {
-        output.value = markdown.parse(input.value);
-      });
+    const onReady = async () =>
+      await markdown.ready;
+      output.value = markdown.parse(input.value);
     });
 
     /** Get ViewUpdate */
@@ -115,6 +109,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       input,
       output,
       cmLang,
+      onReady,
       onViewUpdate,
     };
   },
@@ -141,7 +136,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
             wrap
             basic
             tab
-            @update:view="onViewUpdate"
+            @ready="onReady"
+            @update="onViewUpdate"
           />
         </div>
         <div class="col">
@@ -173,13 +169,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       <h3>Markup</h3>
       <code-mirror :lang="cmLangHtml" readonly basic :dark="dark">
         <pre>
-&lt;code-mirror readonly&gt;
+&lt;code-mirror :editable="false"&gt;
   &lt;pre&gt;How razorback-jumping frogs can level six piqued gymnasts!&lt;/pre&gt;
 &lt;/code-mirror&gt;</pre
         >
       </code-mirror>
       <h3>Sample</h3>
-      <code-mirror readonly :dark="dark">
+      <code-mirror :editable="false" :dark="dark">
         <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
       </code-mirror>
     </section>
@@ -297,7 +293,33 @@ export default defineComponent({
       <p>Also, make sure that changing either value reflects that value.</p>
     </section>
     <section class="mb-3">
-      <h2>Toggle Readonly demo</h2>
+      <h2>
+        Toggle
+        <a
+          href="https://codemirror.net/docs/ref/#state.EditorState^readOnly"
+          target="_blank"
+        >
+          <code>readonly</code>
+        </a>
+        and
+        <a
+          href="https://codemirror.net/docs/ref/#state.EditorState^readOnly"
+          target="_blank"
+        >
+          <code>editable</code>
+        </a>
+        a demo
+      </h2>
+      <p>
+        <code>readonly</code>
+        specifies whether the state is rewritable or not. Similar to
+        <code>editable</code>
+        , except that it is focusable. In short, set
+        <code>editable</code>
+        to
+        <code>false</code>
+        if you want to use it as a simple syntax highlighter.
+      </p>
       <div class="form-check form-switch">
         <input
           id="readonly"
@@ -309,7 +331,23 @@ export default defineComponent({
         />
         <label class="form-check-label" for="readonly">Readonly</label>
       </div>
-      <code-mirror :dark="dark" basic :readonly="isReadonly">
+      <div class="form-check form-switch">
+        <input
+          id="editable"
+          v-model="isEditable"
+          type="checkbox"
+          class="form-check-input"
+          role="switch"
+          :aria-checked="isEditable"
+        />
+        <label class="form-check-label" for="editable">Editable</label>
+      </div>
+      <code-mirror
+        :dark="dark"
+        basic
+        :readonly="isReadonly"
+        :editable="isEditable"
+      >
         <pre>
 色は匂へど　散りぬるを
 我が世誰そ　常ならむ
@@ -322,7 +360,7 @@ export default defineComponent({
 </template>
 
 <script>
-import { ref, watch, defineComponent, onMounted } from 'vue-demi';
+import { ref, watch, defineComponent } from 'vue-demi';
 
 import CodeMirror from '@/';
 
@@ -372,8 +410,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       },
     });
 
+    /** Readonly */
+    const isReadonly = ref(true);
+    /** Editable */
     const isEditable = ref(true);
-    const isReadonly = ref(false);
 
     // Realtime convert Markdown
     watch(demo, async current => {
@@ -383,10 +423,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     // Methods
     const onViewUpdate = update => console.log('onViewUpdate Event: ', update);
 
-    onMounted(async () => {
+    const onReady = async () => {
       await window.markdown.ready;
       output.value = window.markdown.parse(demo.value);
-    });
+    };
 
     return {
       demo,
@@ -398,8 +438,9 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       cmLintJs,
       cmTheme,
       onViewUpdate,
-      isEditable,
+      onReady,
       isReadonly,
+      isEditable,
     };
   },
 });

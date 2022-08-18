@@ -234,9 +234,18 @@ export default defineComponent({
 </script>
 ```
 
+## Events
+
+| Event   | Description                                                                        |
+| ------- | ---------------------------------------------------------------------------------- |
+| ready   | When CodeMirror loaded.                                                            |
+| focus   | When focus changed.                                                                |
+| update  | When CodeMirror state changed                                                      |
+| changed | Value changed. (Please implement with `v-model` unless there is a special reason.) |
+
 ## Methods
 
-| Methods                                                             | Description                                                                                         |
+| Method                                                              | Description                                                                                         |
 | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | selection                                                           | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
 | cursor                                                              | Get and set the cursor location.                                                                    |

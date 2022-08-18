@@ -6,10 +6,9 @@
     "declarationMap": true,
     "declarationDir": "dist",
     "newLine": "lf",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["vite/client", "node", "vue"]
+    "paths": { "@/*": ["./src/*"] },
+    "lib": ["ES2022", "DOM"],
+    "types": ["vite/client", "vue"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "dist"],

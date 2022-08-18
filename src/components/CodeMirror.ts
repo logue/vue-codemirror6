@@ -5,12 +5,15 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  shallowRef,
   toRaw,
   watch,
   type ComputedRef,
+  type ObjectEmitsOptions,
   type PropType,
   type Ref,
   type SetupContext,
+  type ShallowRef,
 } from 'vue-demi';
 
 // Helpers
@@ -36,11 +39,24 @@ import type { LintSource } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
 
 /** Emit Interface */
-export interface CodeMirrorEmitsInterface {
+export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
   /** Model Update */
   (e: 'update:modelValue', value: string | Text): void;
   /** CodeMirror ViewUpdate */
-  (e: 'update:view', value: ViewUpdate): void;
+  (e: 'update', value: ViewUpdate): void;
+  /** CodeMirror onFocus */
+  (e: 'focus', value: boolean): void;
+  /** CodeMirror onReady */
+  (
+    e: 'ready',
+    value: {
+      view: EditorView;
+      state: EditorState;
+      container: HTMLDivElement;
+    }
+  ): void;
+  /** onChanged (same as update:modelValue) */
+  (e: 'changed', value: string | Text): void;
 }
 
 /** CodeMirror Component */
@@ -174,14 +190,14 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: ['update:modelValue', 'update:view'],
+  emits: ['update:modelValue', 'update', 'ready', 'focus', 'changed'],
   /**
    * Setup
    *
    * @param props  - Props
    * @param context - Context
    */
-  setup(props, context: SetupContext) {
+  setup(props, context: SetupContext<CodeMirrorEmitsOptions>) {
     /** Editor DOM */
     const editor: Ref<Element | undefined> = ref();
 
@@ -189,38 +205,39 @@ export default defineComponent({
     const doc: Ref<string | Text> = ref(props.modelValue);
 
     /** CodeMirror Editor View */
-    let view: EditorView;
+    const view: ShallowRef<EditorView> = shallowRef(new EditorView());
 
     /** Selection */
     const selection: Ref<EditorSelection> = computed({
-      get: () => view.state.selection,
-      set: s => view.dispatch({ selection: s }),
+      get: () => view.value.state.selection,
+      set: s => view.value.dispatch({ selection: s }),
     });
 
     /** Cursor Position */
     const cursor: Ref<number> = computed({
       get: () => selection.value.main.head || 0,
-      set: a => view.dispatch({ selection: { anchor: a } }),
+      set: a => view.value.dispatch({ selection: { anchor: a } }),
     });
 
     /** Editor State */
     const state: Ref<EditorState> = computed({
-      get: () => view.state,
-      set: s => view.setState(s),
+      get: () => view.value.state,
+      set: s => view.value.setState(s),
     });
 
     /** Focus */
     const focus: Ref<boolean> = computed({
-      get: () => view.hasFocus,
+      get: () => view.value.hasFocus,
       set: f => {
         if (f) {
-          view.focus();
+          view.value.focus();
         }
       },
     });
 
     /** Get CodeMirror Extension */
     const extensions: ComputedRef<Extension[]> = computed(() =>
+      // TODO: Ignore previous prop was not changed.
       compact([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
@@ -228,7 +245,7 @@ export default defineComponent({
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate) =>
-          emit('update:view', update)
+          context.emit('update', update)
         ),
         // Toggle light/dark mode.
         EditorView.theme(props.theme, { dark: props.dark }),
@@ -239,9 +256,9 @@ export default defineComponent({
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Readonly option
-        props.readonly ? EditorState.readOnly.of(props.readonly) : undefined,
+        EditorState.readOnly.of(props.readonly),
         // Editable option
-        props.editable ? EditorView.editable.of(props.editable) : undefined,
+        EditorView.editable.of(props.editable),
         // Lang
         props.lang ? toRaw(props.lang) : undefined,
         // Append Linter settings
@@ -253,41 +270,43 @@ export default defineComponent({
       ])
     );
 
-    /** Emits */
-    const emit = context.emit as CodeMirrorEmitsInterface;
-
     // for parent-to-child binding.
     watch(
       () => props.modelValue,
       text => {
-        if (view.composing) {
+        if (!view.value || view.value.composing) {
           // IME fix
           return;
         }
-        /** Previous cursor location */
-        const previous = view.state.selection;
 
         // Update
-        view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: text },
-          selection: previous,
+        view.value.dispatch({
+          changes: { from: 0, to: view.value.state.doc.length, insert: text },
+          selection: selection.value,
         });
-      }
+      },
+      { immediate: true }
     );
 
     // Extension (mostly props) Changed
     watch(extensions, e => {
       // TODO: Reduce unchanched value
-      view.dispatch({
+      view.value.dispatch({
         effects: StateEffect.reconfigure.of(e),
       });
     });
 
+    // focus changed
+    watch(focus, isFocus => {
+      context.emit('focus', isFocus);
+    });
+
     /** When loaded */
     onMounted(async () => {
-      let value = doc.value;
-      // overwrite initial value
+      /** Initial value */
+      let value: string | Text = doc.value;
       if (editor.value && editor.value.childNodes[0]) {
+        // when slot mode, overwrite initial value
         if (doc.value !== '') {
           console.warn(
             '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
@@ -297,24 +316,31 @@ export default defineComponent({
       }
 
       // Register Codemirror
-      view = new EditorView({
+      view.value = new EditorView({
         doc: value,
         extensions: extensions.value,
         parent: editor.value,
         dispatch: (tr: Transaction) => {
-          view.update([tr]);
+          view.value.update([tr]);
           // TODO: Emit lint error event
           // console.log(view.state.doc.toString(), tr);
           if (tr.changes.empty) return;
           // child-to-parent binding
-          emit('update:modelValue', view.state.doc.toString());
+          const v = view.value.state.doc.toString();
+          context.emit('update:modelValue', v);
+          context.emit('changed', v);
         },
       });
       await nextTick();
+      context.emit('ready', {
+        view: view,
+        state: state.value,
+        container: editor.value,
+      });
     });
 
     /** Destroy */
-    onUnmounted(() => view.destroy());
+    onUnmounted(() => view.value.destroy());
 
     // Bellow is experimental.
 
@@ -325,36 +351,40 @@ export default defineComponent({
      * @param to - end line number
      */
     const getRange = (from?: number, to?: number): string =>
-      view.state.sliceDoc(from, to);
+      view.value.state.sliceDoc(from, to);
     /**
      * Get the content of line.
      *
      * @param number - line number
      */
     const getLine = (number: number): string =>
-      view.state.doc.line(number + 1).text;
+      view.value.state.doc.line(number + 1).text;
     /** Get the number of lines in the editor. */
-    const lineCount = (): number => view.state.doc.lines;
+    const lineCount = (): number => view.value.state.doc.lines;
     /** Retrieve one end of the primary selection. */
     const getCursor = (): number => cursor.value;
     /** Retrieves a list of all current selections. */
     const listSelections = (): readonly SelectionRange[] =>
-      view.state.selection.ranges;
+      view.value.state.selection.ranges;
     /** Get the currently selected code. */
     const getSelection = (): string =>
-      view.state.sliceDoc(
-        view.state.selection.main.from,
-        view.state.selection.main.to
+      view.value.state.sliceDoc(
+        view.value.state.selection.main.from,
+        view.value.state.selection.main.to
       );
     /**
      * The length of the given array should be the same as the number of active selections.
      * Replaces the content of the selections with the strings in the array.
      */
     const getSelections = (): string[] =>
-      view.state.selection.ranges.map(r => view.state.sliceDoc(r.from, r.to));
+      view.value.state.selection.ranges.map((r: { from: number; to: number }) =>
+        view.value.state.sliceDoc(r.from, r.to)
+      );
     /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
-      view.state.selection.ranges.some(r => !r.empty);
+      view.value.state.selection.ranges.some(
+        (r: { empty: boolean }) => !r.empty
+      );
 
     /**
      * Replace the part of the document between from and to with the given string.
@@ -368,7 +398,7 @@ export default defineComponent({
       from: number,
       to: number
     ) =>
-      view.dispatch({
+      view.value.dispatch({
         changes: { from, to, insert: replacement },
       });
     /**
@@ -378,7 +408,7 @@ export default defineComponent({
      * @param replacement - replacement text
      */
     const replaceSelection = (replacement: string | Text) =>
-      view.dispatch(view.state.replaceSelection(replacement));
+      view.value.dispatch(view.value.state.replaceSelection(replacement));
     /**
      * Set the cursor position.
      *
@@ -392,7 +422,7 @@ export default defineComponent({
      * @param head -
      */
     const setSelection = (anchor: number, head?: number) =>
-      view.dispatch({ selection: { anchor, head } });
+      view.value.dispatch({ selection: { anchor, head } });
     /**
      * Sets a new set of selections. There must be at least one selection in the given array.
      *
@@ -403,7 +433,7 @@ export default defineComponent({
       ranges: readonly SelectionRange[],
       primary?: number
     ) =>
-      view.dispatch({
+      view.value.dispatch({
         selection: EditorSelection.create(ranges, primary),
       });
     /**
@@ -412,7 +442,7 @@ export default defineComponent({
      * @param f - function
      */
     const extendSelectionsBy = (f: Function) =>
-      view.dispatch({
+      view.value.dispatch({
         selection: EditorSelection.create(
           selection.value.ranges.map(r => r.extend(f(r)))
         ),
