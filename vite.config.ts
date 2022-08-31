@@ -7,7 +7,7 @@ import path from 'path';
 const pkg = require('./package.json');
 
 // https://vitejs.dev/config/
-export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
   const config: UserConfig = {
     resolve: {
       // https://vitejs.dev/config/#resolve-alias
@@ -15,10 +15,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         {
           // vue @ shortcut fix
           find: '@/',
-          replacement: `${path.resolve(__dirname, './src')}/`,
-        },
-        {
-          find: 'src/',
           replacement: `${path.resolve(__dirname, './src')}/`,
         },
       ],
@@ -64,7 +60,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       lib: {
         entry: path.resolve(__dirname, 'src/index.ts'),
         name: 'CodeMirror',
-        formats: ['umd', 'es'],
+        formats: ['umd', 'es', 'iife'],
         fileName: format => `index.${format}.js`,
       },
       rollupOptions: {
@@ -110,6 +106,10 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       },
       // Minify option
       target: 'es2021',
+      minify: 'esbuild',
+    },
+    esbuild: {
+      drop: command === 'serve' ? [] : ['console'],
     },
   };
 

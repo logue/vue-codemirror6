@@ -15,10 +15,6 @@ const config: UserConfig = {
         find: '@/',
         replacement: `${path.resolve(__dirname, './src')}/`,
       },
-      {
-        find: 'src/',
-        replacement: `${path.resolve(__dirname, './src')}/`,
-      },
     ],
   },
   // https://vitejs.dev/config/#server-options
