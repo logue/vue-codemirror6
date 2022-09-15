@@ -188,6 +188,11 @@ export default defineComponent({
       type: Boolean,
       defalt: false,
     },
+    /** Using tag */
+    tag: {
+      type: String,
+      default: 'div',
+    },
   },
   /** Emits */
   emits: ['update:modelValue', 'update', 'ready', 'focus', 'changed'],
@@ -199,7 +204,7 @@ export default defineComponent({
    */
   setup(props, context: SetupContext<CodeMirrorEmitsOptions>) {
     /** Editor DOM */
-    const editor: Ref<Element | undefined> = ref();
+    const editor: Ref<HTMLElement | undefined> = ref();
 
     /** Internal value */
     const doc: Ref<string | Text> = ref(props.modelValue);
@@ -273,16 +278,18 @@ export default defineComponent({
     // for parent-to-child binding.
     watch(
       () => props.modelValue,
-      text => {
+      value => {
         if (!view.value || view.value.composing) {
           // IME fix
           return;
         }
+        /** Previous cursor location */
+        const previous = view.value.state.selection;
 
         // Update
         view.value.dispatch({
-          changes: { from: 0, to: view.value.state.doc.length, insert: text },
-          selection: selection.value,
+          changes: { from: 0, to: view.value.state.doc.length, insert: value },
+          selection: previous,
         });
       },
       { immediate: true }
@@ -479,7 +486,7 @@ export default defineComponent({
     //   </div>
     // </template>
     return h(
-      'div',
+      this.$props.tag,
       {
         ref: 'editor',
         class: 'vue-codemirror',

@@ -7,7 +7,7 @@
     "declarationDir": "dist",
     "newLine": "lf",
     "paths": { "@/*": ["./src/*"] },
-    "lib": ["ES2022", "DOM"],
+    "lib": ["ESNext", "DOM"],
     "types": ["vite/client", "vue"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

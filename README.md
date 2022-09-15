@@ -11,12 +11,12 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelat
 ## Usage
 
 ```sh
-yarn add vue-codemirror6
+yarn add vue-codemirror6 codemirror
 ```
 
 This component can handle bidirectional binding by `v-model` like a general Vue component.
 
-When using with Vue 2.6, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
+When using with Vue <2.6, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
 
 ```sh
 yarn add vue-codemirror6 @vue/composition-api
@@ -26,21 +26,22 @@ For Vue 2.7 or later, import vue directly like Vue3.
 
 ### Props
 
-| Props      | Type                              | Information                                                                                                                                                                                                                      |
-| ---------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| basic      | boolean                           | Use [basicSetup](https://codemirror.net/docs/ref/#codemirror.basicSetup).                                                                                                                                                        |
-| minimal    | boolean                           | Use [miniSetup](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If a `basic` prop is also specified, that setting will take precedence.                                                                               |
-| dark       | boolean                           | Toggle Darkmode.                                                                                                                                                                                                                 |
-| wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                         |
-| tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                         |
-| theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                                 |
-| readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                                                                                        |
-| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                                                                                         |
-| lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                                                                                     |
-| phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                                                                                 |
-| extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                                                                                      |
-| linter     | LintSource                        | Set Linter. Enter a linter (eg `esLint([arbitrary rule])` function for `@codemirror / lang-javascript`, `jsonParseLinter()`function for`@codemirror/json`). See the sources for various language libraries for more information. |
-| lintGutter | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                      |
+| Props      | Type                              | Information                                                                                                                                                                                                                    |
+| ---------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| basic      | boolean                           | Use [basicSetup](https://codemirror.net/docs/ref/#codemirror.basicSetup).                                                                                                                                                      |
+| minimal    | boolean                           | Use [miniSetup](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If a `basic` prop is also specified, that setting will take precedence.                                                                             |
+| dark       | boolean                           | Toggle Darkmode.                                                                                                                                                                                                               |
+| wrap       | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                       |
+| tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                       |
+| theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                               |
+| readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                                                                                      |
+| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                                                                                       |
+| lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                                                                                   |
+| phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                                                                               |
+| extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                                                                                    |
+| linter     | LintSource                        | Set Linter. Enter a linter (eg `esLint([arbitrary rule])` function for `@codemirror/lang-javascript`, `jsonParseLinter()`function for`@codemirror/json`). See the sources for various language libraries for more information. |
+| lintGutter | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                    |
+| tag        | string                            | HTML tags used in the component. (Default is `div` tag.)                                                                                                                                                                       |
 
 Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
 
@@ -192,12 +193,14 @@ export default defineComponent({
     const phrases: Ref<Record<string, string>> = ref({
       // @codemirror/view
       'Control character': '制御文字',
-      // @codemirror/fold
+      // @codemirror/commands
+      'Selection deleted': '選択を削除',
+      // @codemirror/language
       'Folded lines': '折り畳まれた行',
       'Unfolded lines': '折り畳める行',
       to: '行き先',
       'folded code': '折り畳まれたコード',
-      unfold: '折り畳む解除',
+      unfold: '折り畳みを解除',
       'Fold line': '行を折り畳む',
       'Unfold line': '行の折り畳む解除',
       // @codemirror/search
@@ -209,12 +212,17 @@ export default defineComponent({
       previous: '▲',
       all: 'すべて',
       'match case': '一致条件',
+      'by word': '全文検索',
       regexp: '正規表現',
       replace: '置き換え',
       'replace all': 'すべてを置き換え',
       close: '閉じる',
       'current match': '現在の一致',
+      'replaced $ matches': '$ 件の一致を置き換え',
+      'replaced match on line $': '$ 行の一致を置き換え',
       'on line': 'した行',
+      // @codemirror/autocomplete
+      Completions: '自動補完',
       // @codemirror/lint
       Diagnostics: 'エラー',
       'No diagnostics': 'エラーなし',
@@ -236,39 +244,44 @@ export default defineComponent({
 
 ## Events
 
-| Event   | Description                                                                        |
-| ------- | ---------------------------------------------------------------------------------- |
-| ready   | When CodeMirror loaded.                                                            |
-| focus   | When focus changed.                                                                |
-| update  | When CodeMirror state changed                                                      |
-| changed | Value changed. (Please implement with `v-model` unless there is a special reason.) |
+| Event   | Description                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------- |
+| ready   | When CodeMirror loaded.                                                                                       |
+| focus   | When focus changed.                                                                                           |
+| update  | When CodeMirror state changed. Returns [ViewUpdate](https://codemirror.net/docs/ref/#view.ViewUpdate) object. |
+| changed | Value changed. (Please implement with `v-model` unless there is a special reason.)                            |
 
 ## Methods
 
-| Method                                                              | Description                                                                                         |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| selection                                                           | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
-| cursor                                                              | Get and set the cursor location.                                                                    |
-| state                                                               | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
-| focus                                                               | Get and set focus.                                                                                  |
-| getRange(from?: number, to?: number)                                | Get the text between the given points in the editor.                                                |
-| getLine(number: number)                                             | Get the content of line.                                                                            |
-| lineCount()                                                         | Get the number of lines in the editor.                                                              |
-| getCursor()                                                         | Retrieve one end of the primary selection.                                                          |
-| listSelections()                                                    | Retrieves a list of all current selections.                                                         |
-| getSelection()                                                      | Get the currently selected code.                                                                    |
-| getSelections()                                                     | The length of the given array should be the same as the number of active selections.                |
-| somethingSelected()                                                 | Return true if any text is selected.                                                                |
-| replaceRange(replacement: string \| Text, from: number, to: number) | Replace the part of the document between from and to with the given string.                         |
-| replaceSelection(replacement: string \| Text)                       | Replace the selection(s) with the given string.                                                     |
-| setCursor(position: number)                                         | Set the cursor position.                                                                            |
-| setSelection(anchor: number, head?: number)                         | Set a single selection range.                                                                       |
-| setSelections(ranges: readonly SelectionRange[], primary?: number)  | Sets a new set of selections.                                                                       |
-| extendSelectionsBy(f: Function)                                     | Applies the given function to all existing selections, and calls extendSelections on the result.    |
+| Method    | Description                                                                                         |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| selection | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
+| cursor    | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
+| state     | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
+| focus     | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
+
+The instructions below are compatible methods for those familiar with [codemirror5](https://codemirror.net/5/). Since the above method is usually sufficient, its active use is not recommended.
+
+| Method                                                              | Description                                                                                      |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| getRange(from?: number, to?: number)                                | Get the text between the given points in the editor.                                             |
+| getLine(number: number)                                             | Get the content of line.                                                                         |
+| lineCount()                                                         | Get the number of lines in the editor.                                                           |
+| getCursor()                                                         | Retrieve one end of the primary selection.                                                       |
+| listSelections()                                                    | Retrieves a list of all current selections.                                                      |
+| getSelection()                                                      | Get the currently selected code.                                                                 |
+| getSelections()                                                     | The length of the given array should be the same as the number of active selections.             |
+| somethingSelected()                                                 | Return true if any text is selected.                                                             |
+| replaceRange(replacement: string \| Text, from: number, to: number) | Replace the part of the document between from and to with the given string.                      |
+| replaceSelection(replacement: string \| Text)                       | Replace the selection(s) with the given string.                                                  |
+| setCursor(position: number)                                         | Set the cursor position.                                                                         |
+| setSelection(anchor: number, head?: number)                         | Set a single selection range.                                                                    |
+| setSelections(ranges: readonly SelectionRange[], primary?: number)  | Sets a new set of selections.                                                                    |
+| extendSelectionsBy(f: Function)                                     | Applies the given function to all existing selections, and calls extendSelections on the result. |
 
 ## Recommendations
 
-Since CodeMirror has a relatively large capacity, when using vite, it is recommended to set it to output as a separate file using the [`manualChunks`](https://vitejs.dev/guide/build.html#chunking-strategy) option at build time as shown below.
+Since CodeMirror has a relatively large capacity, when using [vite](https://vitejs.dev), it is recommended to set it to output as a separate file using the [`manualChunks`](https://vitejs.dev/guide/build.html#chunking-strategy) option at build time as shown below.
 
 ```ts
 const config: UserConfig = {
