@@ -4805,7 +4805,7 @@ __metadata:
     vue-eslint-parser: ^9.1.0
     vue-tsc: ^0.40.13
   peerDependencies:
-    "@vue/composition-api": ^1.7.0
+    "@vue/composition-api": ^1.7.1
     codemirror: ^6.0.1
     vue: ^2.6.14 || ^3.2.39
   peerDependenciesMeta:
