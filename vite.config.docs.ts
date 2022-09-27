@@ -59,7 +59,7 @@ const config: UserConfig = {
             '@codemirror/lang-javascript',
             '@codemirror/lang-markdown',
           ],
-          eslint4b: ['eslint4b-prebuilt'],
+          eslint: ['eslint-linter-browserify'],
         },
       },
     },

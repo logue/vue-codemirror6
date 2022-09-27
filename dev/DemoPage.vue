@@ -2,25 +2,7 @@
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <div class="container">
-    <section class="mb-5">
-      <h1>Vue CodeMirror6 Demo</h1>
-      <p>
-        A rough demo of Vue Codemirror in action. You can switch between dark
-        modes from the
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-circle-half"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
-        </svg>
-        icon in the upper left.
-      </p>
-    </section>
-    <section class="mb-5">
+    <section class="mb-3">
       <h2>Markdown Editor Demo</h2>
       <p>
         This is an example of simply pouring text into CodeMirror using
@@ -153,7 +135,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         .
       </p>
     </section>
-    <section>
+    <section class="mb-3">
       <h2>Slot Method</h2>
       <p>
         In this sample, the text is put directly inside the
@@ -179,7 +161,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         <pre>How razorback-jumping frogs can level six piqued gymnasts!</pre>
       </code-mirror>
     </section>
-    <section>
+    <section class="mb-3">
       <h2>Linter and cross binding demo</h2>
       <p>This is a sample using JavaScript and linter.</p>
       <p>
@@ -205,8 +187,11 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       </p>
       <p>
         This sample uses
-        <a href="https://github.com/marijnh/eslint4b-prebuilt" target="_blank">
-          eslint4b-prebuilt
+        <a
+          href="https://github.com/UziTech/eslint-linter-browserify"
+          target="_blank"
+        >
+          eslint-linter-browserify
         </a>
         for the eslint linter.
       </p>
@@ -238,7 +223,7 @@ import { defineComponent } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 import { javascript, esLint } from '@codemirror/lang-javascript';
-import Linter from "eslint4b-prebuilt";
+import eslint from 'eslint-linter-browserify';
 
 export default defineComponent({
   components: {
@@ -254,8 +239,21 @@ export default defineComponent({
 
     /** CodeMirror Language */
     const cmLang = javascript();
-    /** CodeMirror Linter */
-    const cmLinter = esLint(new Linter());
+    /** JavaScript Linter */
+    const cmLinter = esLint(
+      // eslint-disable-next-line
+      new eslint.Linter(),
+      {
+        parserOptions: {
+          ecmaVersion: 2022,
+          sourceType: 'module',
+        },
+        env: {
+          browser: true,
+          node: true,
+        },
+      }
+    );
 
     return {
       value,
@@ -278,6 +276,7 @@ export default defineComponent({
             :linter="cmLintJs"
             :dark="dark"
             lint-gutter
+            warp
             basic
           />
         </div>
@@ -292,7 +291,7 @@ export default defineComponent({
       </div>
       <p>Also, make sure that changing either value reflects that value.</p>
     </section>
-    <section class="mb-3">
+    <section>
       <h2>
         Toggle
         <a
@@ -368,7 +367,7 @@ import { javascript, esLint } from '@codemirror/lang-javascript';
 import { markdown as md } from '@codemirror/lang-markdown';
 import { html } from '@codemirror/lang-html';
 
-import Linter from 'eslint4b-prebuilt';
+import eslint from 'eslint-linter-browserify';
 
 export default defineComponent({
   components: {
@@ -402,7 +401,20 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     /** JavaScript */
     const cmLangJs = javascript();
     /** JavaScript Linter */
-    const cmLintJs = esLint(new Linter());
+    const cmLintJs = esLint(
+      // eslint-disable-next-line
+      new eslint.Linter(),
+      {
+        parserOptions: {
+          ecmaVersion: 2022,
+          sourceType: 'module',
+        },
+        env: {
+          browser: true,
+          node: true,
+        },
+      }
+    );
 
     const cmTheme = ref({
       '.cm-lineWrapping': {
