@@ -1,7 +1,7 @@
 import { defineConfig, type UserConfig } from 'vite';
+import { fileURLToPath } from 'url';
 import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
-import path from 'path';
 
 // https://vitejs.dev/config/
 const config: UserConfig = {
@@ -9,13 +9,9 @@ const config: UserConfig = {
   // Resolver
   resolve: {
     // https://vitejs.dev/config/#resolve-alias
-    alias: [
-      {
-        // vue @ shortcut fix
-        find: '@/',
-        replacement: `${path.resolve(__dirname, './src')}/`,
-      },
-    ],
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   // https://vitejs.dev/config/#server-options
   server: {
@@ -63,7 +59,7 @@ const config: UserConfig = {
         },
       },
     },
-    target: 'es2021',
+    target: 'esnext',
   },
 };
 

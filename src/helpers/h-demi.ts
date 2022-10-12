@@ -1,3 +1,9 @@
+/**
+ * h-demi - h function for Vue 2 and 3
+ *
+ * @see {@link https://github.com/vueuse/vue-demi/issues/65}
+ */
+
 import { h as hDemi, isVue2, type VNode, Vue2 } from 'vue-demi';
 
 interface Options {

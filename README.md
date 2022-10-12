@@ -5,8 +5,9 @@
 [![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/vue-codemirror6/file/README.md)
 [![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/vue-codemirror6)
 [![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
+[![Twitter Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://twitter.com/logue256)
 
-A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelated to [surmon-china's vue-codemirror](https://github.com/surmon-china/vue-codemirror), it is for CodeMirror6.
+A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. This component works in both Vue2 and Vue3.
 
 ## Usage
 
@@ -14,17 +15,15 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. Unrelat
 yarn add vue-codemirror6 codemirror
 ```
 
-This component can handle bidirectional binding by `v-model` like a general Vue component.
-
-When using with Vue <2.6, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
+For Vue 2.7 or below, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
 
 ```sh
 yarn add vue-codemirror6 @vue/composition-api
 ```
 
-For Vue 2.7 or later, import vue directly like Vue3.
+This component can handle bidirectional binding by `v-model` like a general Vue component.
 
-### Props
+## Props
 
 | Props      | Type                              | Information                                                                                                                                                                                                                    |
 | ---------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -43,7 +42,7 @@ For Vue 2.7 or later, import vue directly like Vue3.
 | lintGutter | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                    |
 | tag        | string                            | HTML tags used in the component. (Default is `div` tag.)                                                                                                                                                                       |
 
-Notice: `lang` and `linter` can also be set together in `extensions`. This is defined for usability compatibility with past CodeMirrors.
+⚠ Notice: `lang` and `linter` can also be set together in `extensions`. These are separated for compatibility with previous versions of CodeMirror settings and for typing props.
 
 ### Supported Languages
 
@@ -152,8 +151,8 @@ import { ref, defineComponent, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 // CodeMirror extensions
-import type { LanguageSupport } from '@codemirror/language';
 import { markdown as md } from '@codemirror/lang-markdown';
+import type { LanguageSupport } from '@codemirror/language';
 import type { Extension } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 
@@ -164,6 +163,7 @@ export default defineComponent({
   setup() {
     /**
      * Get Vuetify instance
+     *
      * @see {@link https://github.com/logue/vite-vue2-vuetify-ts-starter | vite-vue2-vuetify-ts-starter}
      */
     const vuetify = useVuetify();

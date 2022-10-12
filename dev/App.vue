@@ -56,7 +56,7 @@
         </div>
       </div>
     </nav>
-    <header class="bg-light">
+    <header class="header bg-light">
       <div class="container py-3">
         <h1>Vue CodeMirror6 Demo</h1>
         <p class="lead">
@@ -110,20 +110,30 @@ export default defineComponent({
     const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
     watch(dark, () => {
       const navbar = document.querySelector('.navbar').classList;
+      const header = document.querySelector('.header').classList;
+      const demo = document.querySelector('.demo').classList;
       const main = document.querySelector('main').classList;
       const footer = document.querySelector('.footer').classList;
       if (dark.value) {
         navbar.remove('navbar-dark', 'bg-dark');
         navbar.add('navbar-light', 'bg-light');
+        header.remove('bg-light', 'text-dark');
+        header.add('bg-dark', 'text-light');
         main.remove('bg-white', 'text-dark');
         main.add('bg-black', 'text-light');
+        demo.remove('bg-light', 'text-dark');
+        demo.add('bg-dark', 'text-light');
         footer.remove('bg-light', 'text-dark');
         footer.add('bg-dark', 'text-light');
       } else {
         navbar.add('navbar-dark', 'bg-dark');
         navbar.remove('navbar-light', 'bg-light');
+        header.remove('bg-dark', 'text-light');
+        header.add('bg-light', 'text-dark');
         main.add('bg-white', 'text-dark');
         main.remove('bg-black', 'text-light');
+        demo.remove('bg-dark', 'text-light');
+        demo.add('bg-light', 'text-dark');
         footer.add('bg-light', 'text-dark');
         footer.remove('bg-dark', 'text-light');
       }

@@ -124,7 +124,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         </div>
         <div class="col">
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="p-3 bg-light text-dark" v-html="output" />
+          <div class="demo p-3 bg-light text-dark" v-html="output" />
         </div>
       </div>
       <p>
@@ -285,7 +285,7 @@ export default defineComponent({
             v-model="demo2"
             aria-label="two way bind test"
             rows="3"
-            class="form-control"
+            class="demo form-control"
           />
         </div>
       </div>
