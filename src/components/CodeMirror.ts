@@ -14,6 +14,7 @@ import {
   type Ref,
   type SetupContext,
   type ShallowRef,
+  type WritableComputedRef,
 } from 'vue-demi';
 
 // Helpers
@@ -52,11 +53,11 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
     value: {
       view: EditorView;
       state: EditorState;
-      container: HTMLDivElement;
+      container: HTMLElement;
     }
   ): void;
-  /** onChanged (same as update:modelValue) */
-  (e: 'changed', value: string | Text): void;
+  /** onChange (same as update:modelValue) */
+  (e: 'change', value: string | Text): void;
 }
 
 /** CodeMirror Component */
@@ -213,25 +214,25 @@ export default defineComponent({
     const view: ShallowRef<EditorView> = shallowRef(new EditorView());
 
     /** Selection */
-    const selection: Ref<EditorSelection> = computed({
+    const selection: WritableComputedRef<EditorSelection> = computed({
       get: () => view.value.state.selection,
       set: s => view.value.dispatch({ selection: s }),
     });
 
     /** Cursor Position */
-    const cursor: Ref<number> = computed({
+    const cursor: WritableComputedRef<number> = computed({
       get: () => selection.value.main.head || 0,
       set: a => view.value.dispatch({ selection: { anchor: a } }),
     });
 
     /** Editor State */
-    const state: Ref<EditorState> = computed({
+    const state: WritableComputedRef<EditorState> = computed({
       get: () => view.value.state,
       set: s => view.value.setState(s),
     });
 
     /** Focus */
-    const focus: Ref<boolean> = computed({
+    const focus: WritableComputedRef<boolean> = computed({
       get: () => view.value.hasFocus,
       set: f => {
         if (f) {
