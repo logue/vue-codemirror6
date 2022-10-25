@@ -1,10 +1,11 @@
 import { defineConfig, type UserConfig } from 'vite';
-import { fileURLToPath } from 'url';
 import { visualizer } from 'rollup-plugin-visualizer';
 import banner from 'vite-plugin-banner';
 import checker from 'vite-plugin-checker';
-import fs from 'node:fs';
 import Vue from '@vitejs/plugin-vue';
+
+import { fileURLToPath, URL } from 'node:url';
+import fs from 'node:fs';
 
 const pkg = require('./package.json');
 

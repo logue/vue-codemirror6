@@ -9,6 +9,8 @@
 
 A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. This component works in both Vue2 and Vue3.
 
+- [CHANGELOG](./CHANGELOG.md)
+
 ## Usage
 
 ```sh
@@ -34,12 +36,12 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 | tab        | boolean                           | Enables tab indentation.                                                                                                                                                                                                       |
 | theme      | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                               |
 | readonly   | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                                                                                      |
-| editable   | boolean                           | When this is set to false, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                                                                                       |
+| disabled   | boolean                           | When this is set to true, it is similar to `readonly`, except that the cursor is not displayed like the normal pre tag.                                                                                                        |
 | lang       | LanguageSupport                   | The language you want to have syntax highlighting. see <https://codemirror.net/6/#languages>                                                                                                                                   |
 | phrases    | Record&lt;string, string&gt;      | Specify here if you want to make the displayed character string multilingual. see <https://codemirror.net/6/examples/translate/>                                                                                               |
 | extensions | Extension[]                       | Includes enhancements to extend CodeMirror.                                                                                                                                                                                    |
 | linter     | LintSource                        | Set Linter. Enter a linter (eg `esLint([arbitrary rule])` function for `@codemirror/lang-javascript`, `jsonParseLinter()`function for`@codemirror/json`). See the sources for various language libraries for more information. |
-| lintGutter | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                    |
+| gutter     | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                    |
 | tag        | string                            | HTML tags used in the component. (Default is `div` tag.)                                                                                                                                                                       |
 
 ⚠ Notice: `lang` and `linter` can also be set together in `extensions`. These are separated for compatibility with previous versions of CodeMirror settings and for typing props.
