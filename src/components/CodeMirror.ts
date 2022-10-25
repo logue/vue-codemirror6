@@ -6,7 +6,6 @@ import {
   onUnmounted,
   ref,
   shallowRef,
-  toRaw,
   watch,
   type ComputedRef,
   type ObjectEmitsOptions,
@@ -113,6 +112,7 @@ export default defineComponent({
     /**
      * Line wrapping
      *
+     * An extension that enables line wrapping in the editor (by setting CSS white-space to pre-wrap in the content).
      * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5ElineWrapping | LineWrapping}
      */
     wrap: {
@@ -120,7 +120,7 @@ export default defineComponent({
       default: false,
     },
     /**
-     * Tab handling
+     * Allow tab input.
      *
      * @see {@link https://codemirror.net/6/examples/tab/ | Tab Handling}
      */
@@ -138,13 +138,16 @@ export default defineComponent({
       default: false,
     },
     /**
-     * Editable
+     * Disable input.
+     *
+     * This is the reversed value of the CodeMirror editable.
+     * Similar to `readonly`, but setting this value to true disables dragging.
      *
      * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
      */
-    editable: {
+    disabled: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     /**
      * Additional Extension
@@ -184,10 +187,21 @@ export default defineComponent({
       type: Function as PropType<LintSource>,
       default: undefined,
     },
-    /** Show Gutter */
-    lintGutter: {
+    /**
+     * Show Linter Gutter
+     *
+     * An area to circle the lines with errors will be displayed.
+     */
+    gutter: {
       type: Boolean,
       defalt: false,
+    },
+    /**
+     * Gutter Config
+     */
+    gutterConfig: {
+      type: Object,
+      default: () => undefined,
     },
     /** Using tag */
     tag: {
@@ -264,13 +278,15 @@ export default defineComponent({
         // Readonly option
         EditorState.readOnly.of(props.readonly),
         // Editable option
-        EditorView.editable.of(props.editable),
+        EditorView.editable.of(!props.disabled),
         // Lang
-        props.lang ? toRaw(props.lang) : undefined,
+        props.lang ? props.lang : undefined,
         // Append Linter settings
         props.linter ? linter(props.linter) : undefined,
         // Show 🔴 to error line when linter enabled.
-        props.linter && props.lintGutter ? lintGutter() : undefined,
+        props.linter && props.gutter
+          ? lintGutter(props.gutterConfig)
+          : undefined,
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ])
@@ -297,17 +313,15 @@ export default defineComponent({
     );
 
     // Extension (mostly props) Changed
-    watch(extensions, e => {
+    watch(extensions, exts =>
       // TODO: Reduce unchanched value
       view.value.dispatch({
-        effects: StateEffect.reconfigure.of(e),
-      });
-    });
+        effects: StateEffect.reconfigure.of(exts),
+      })
+    );
 
     // focus changed
-    watch(focus, isFocus => {
-      context.emit('focus', isFocus);
-    });
+    watch(focus, isFocus => context.emit('focus', isFocus));
 
     /** When loaded */
     onMounted(async () => {

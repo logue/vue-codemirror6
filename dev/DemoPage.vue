@@ -275,7 +275,7 @@ export default defineComponent({
             :lang="cmLangJs"
             :linter="cmLintJs"
             :dark="dark"
-            lint-gutter
+            gutter
             warp
             basic
           />
@@ -302,10 +302,11 @@ export default defineComponent({
         </a>
         and
         <a
-          href="https://codemirror.net/docs/ref/#state.EditorState^readOnly"
+          href="https://codemirror.net/docs/ref/#view.EditorView%5Eeditable"
           target="_blank"
         >
           <code>editable</code>
+          (not disabled)
         </a>
         a demo
       </h2>
@@ -332,20 +333,20 @@ export default defineComponent({
       </div>
       <div class="form-check form-switch">
         <input
-          id="editable"
-          v-model="isEditable"
+          id="disabled"
+          v-model="isDisabled"
           type="checkbox"
           class="form-check-input"
           role="switch"
-          :aria-checked="isEditable"
+          :aria-checked="isDisabled"
         />
-        <label class="form-check-label" for="editable">Editable</label>
+        <label class="form-check-label" for="disabled">Disabled</label>
       </div>
       <code-mirror
         :dark="dark"
         basic
         :readonly="isReadonly"
-        :editable="isEditable"
+        :disabled="isDisabled"
       >
         <pre>
 色は匂へど　散りぬるを
@@ -424,8 +425,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
     /** Readonly */
     const isReadonly = ref(true);
-    /** Editable */
-    const isEditable = ref(true);
+    /** Disabled */
+    const isDisabled = ref(false);
 
     // Realtime convert Markdown
     watch(demo, async current => {
@@ -452,7 +453,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
       onViewUpdate,
       onReady,
       isReadonly,
-      isEditable,
+      isDisabled,
     };
   },
 });
