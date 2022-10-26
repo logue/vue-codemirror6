@@ -22,7 +22,7 @@ import { compact, trim } from 'lodash';
 
 // CodeMirror
 import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import { EditorView, keymap, placeholder } from '@codemirror/view';
 import { linter, lintGutter } from '@codemirror/lint';
 import { basicSetup, minimalSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
@@ -110,9 +110,17 @@ export default defineComponent({
       default: false,
     },
     /**
+     * Placeholder
+     */
+    placeholder: {
+      type: String,
+      default: undefined,
+    },
+    /**
      * Line wrapping
      *
      * An extension that enables line wrapping in the editor (by setting CSS white-space to pre-wrap in the content).
+     *
      * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5ElineWrapping | LineWrapping}
      */
     wrap: {
@@ -120,7 +128,7 @@ export default defineComponent({
       default: false,
     },
     /**
-     * Allow tab input.
+     * Allow tab key indent.
      *
      * @see {@link https://codemirror.net/6/examples/tab/ | Tab Handling}
      */
@@ -190,7 +198,8 @@ export default defineComponent({
     /**
      * Show Linter Gutter
      *
-     * An area to circle the lines with errors will be displayed.
+     * An area to 🔴 the lines with errors will be displayed.
+     * This feature is not enabled if `linter` is not specified.
      */
     gutter: {
       type: Boolean,
@@ -203,7 +212,9 @@ export default defineComponent({
       type: Object,
       default: () => undefined,
     },
-    /** Using tag */
+    /**
+     * Using tag
+     */
     tag: {
       type: String,
       default: 'div',
@@ -287,6 +298,8 @@ export default defineComponent({
         props.linter && props.gutter
           ? lintGutter(props.gutterConfig)
           : undefined,
+        // Placeholder
+        props.placeholder ? placeholder(props.placeholder) : undefined,
         // Append Extensions (such as basic-setup)
         ...props.extensions,
       ])
@@ -300,13 +313,14 @@ export default defineComponent({
           // IME fix
           return;
         }
-        /** Previous cursor location */
-        const previous = view.value.state.selection;
+        /** Current Editor State */
+        const current: EditorState = view.value.state;
 
         // Update
         view.value.dispatch({
-          changes: { from: 0, to: view.value.state.doc.length, insert: value },
-          selection: previous,
+          changes: { from: 0, to: current.doc.length, insert: value },
+          selection: current.selection,
+          scrollIntoView: true,
         });
       },
       { immediate: true }
@@ -362,7 +376,9 @@ export default defineComponent({
     });
 
     /** Destroy */
-    onUnmounted(() => view.value.destroy());
+    onUnmounted(() => {
+      view.value.destroy();
+    });
 
     // Bellow is experimental.
 
