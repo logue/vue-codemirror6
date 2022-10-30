@@ -23,7 +23,7 @@ import { compact, trim } from 'lodash';
 // CodeMirror
 import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
 import { EditorView, keymap, placeholder } from '@codemirror/view';
-import { linter, lintGutter } from '@codemirror/lint';
+import { linter, lintGutter, diagnosticCount } from '@codemirror/lint';
 import { basicSetup, minimalSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
 
@@ -57,6 +57,8 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
   ): void;
   /** onChange (same as update:modelValue) */
   (e: 'change', value: string | Text): void;
+  /** CodeMirror linter active diagnostic aount */
+  (e: 'diagnosticCount', value: number): void;
 }
 
 /** CodeMirror Component */
@@ -196,6 +198,15 @@ export default defineComponent({
       default: undefined,
     },
     /**
+     * Linter Config
+     *
+     * @see {@link https://codemirror.net/docs/ref/#lint.linter^config}
+     */
+    linterConfig: {
+      type: Object,
+      default: () => {},
+    },
+    /**
      * Show Linter Gutter
      *
      * An area to 🔴 the lines with errors will be displayed.
@@ -207,10 +218,12 @@ export default defineComponent({
     },
     /**
      * Gutter Config
+     *
+     * @see {@link https://codemirror.net/docs/ref/#lint.lintGutter^config}
      */
     gutterConfig: {
       type: Object,
-      default: () => undefined,
+      default: () => {},
     },
     /**
      * Using tag
@@ -221,7 +234,14 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: ['update:modelValue', 'update', 'ready', 'focus', 'changed'],
+  emits: [
+    'update:modelValue',
+    'update',
+    'ready',
+    'focus',
+    'changed',
+    'diagnosticCount',
+  ],
   /**
    * Setup
    *
@@ -293,7 +313,7 @@ export default defineComponent({
         // Lang
         props.lang ? props.lang : undefined,
         // Append Linter settings
-        props.linter ? linter(props.linter) : undefined,
+        props.linter ? linter(props.linter, props.linterConfig) : undefined,
         // Show 🔴 to error line when linter enabled.
         props.linter && props.gutter
           ? lintGutter(props.gutterConfig)
@@ -316,6 +336,10 @@ export default defineComponent({
         /** Current Editor State */
         const current: EditorState = view.value.state;
 
+        if (props.linter) {
+          // Lint error count.
+          context.emit('diagnosticCount', diagnosticCount(current));
+        }
         // Update
         view.value.dispatch({
           changes: { from: 0, to: current.doc.length, insert: value },
