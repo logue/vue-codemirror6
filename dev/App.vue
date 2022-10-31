@@ -92,6 +92,14 @@
         .
       </div>
     </footer>
+    <teleport to="head">
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+        integrity="sha256-IUOUHAPazai08QFs7W4MbzTlwEWFo7z/4zw8YmxEiko="
+        crossorigin="anonymous"
+      />
+    </teleport>
   </div>
 </template>
 
@@ -109,31 +117,31 @@ export default defineComponent({
     /** Dark mode */
     const dark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
     watch(dark, () => {
+      const body = document.body.classList;
       const navbar = document.querySelector('.navbar').classList;
       const header = document.querySelector('.header').classList;
-      const demo = document.querySelector('.demo').classList;
       const main = document.querySelector('main').classList;
       const footer = document.querySelector('.footer').classList;
       if (dark.value) {
+        body.remove('text-white', 'bg-black');
+        body.add('text-black', 'bg-white');
         navbar.remove('navbar-dark', 'bg-dark');
         navbar.add('navbar-light', 'bg-light');
         header.remove('bg-light', 'text-dark');
         header.add('bg-dark', 'text-light');
         main.remove('bg-white', 'text-dark');
         main.add('bg-black', 'text-light');
-        demo.remove('bg-light', 'text-dark');
-        demo.add('bg-dark', 'text-light');
         footer.remove('bg-light', 'text-dark');
         footer.add('bg-dark', 'text-light');
       } else {
+        body.remove('text-black', 'bg-white');
+        body.add('text-white', 'bg-black');
         navbar.add('navbar-dark', 'bg-dark');
         navbar.remove('navbar-light', 'bg-light');
         header.remove('bg-dark', 'text-light');
         header.add('bg-light', 'text-dark');
         main.add('bg-white', 'text-dark');
         main.remove('bg-black', 'text-light');
-        demo.remove('bg-dark', 'text-light');
-        demo.add('bg-light', 'text-dark');
         footer.add('bg-light', 'text-dark');
         footer.remove('bg-dark', 'text-light');
       }

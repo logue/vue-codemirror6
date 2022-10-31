@@ -16,6 +16,8 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       // https://vitejs.dev/config/shared-options.html#resolve-alias
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
+        // for DEMO
+        'vue-codemirror6': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
     // https://vitejs.dev/config/#server-options
@@ -60,6 +62,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
               '@codemirror/view',
               // Add the following as needed.
               '@codemirror/lang-html',
+              '@codemirror/lang-json',
               '@codemirror/lang-javascript',
               '@codemirror/lang-markdown',
             ],
@@ -88,6 +91,17 @@ const meta: MetaInterface = {
 };
 export default meta;
 `
+  );
+
+  // copy markdown-wasm
+  fs.copyFileSync(
+    fileURLToPath(
+      new URL(
+        './node_modules/markdown-wasm/dist/markdown.wasm',
+        import.meta.url
+      )
+    ),
+    fileURLToPath(new URL('./public/markdown.wasm', import.meta.url))
   );
 
   // Export vite config
