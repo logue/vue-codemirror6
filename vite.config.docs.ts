@@ -1,8 +1,9 @@
 import { defineConfig, type UserConfig } from 'vite';
-import { fileURLToPath } from 'url';
 import checker from 'vite-plugin-checker';
-import fs from 'node:fs';
 import Vue from '@vitejs/plugin-vue';
+
+import { fileURLToPath, URL } from 'node:url';
+import fs from 'node:fs';
 
 const pkg = require('./package.json');
 
@@ -39,9 +40,6 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
         },
       }),
     ],
-    optimizeDeps: {
-      exclude: ['vue-demi'],
-    },
     // Build Options
     // https://vitejs.dev/config/#build-options
     build: {
