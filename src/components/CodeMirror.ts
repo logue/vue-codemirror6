@@ -21,11 +21,16 @@ import h, { slot } from '@/helpers/h-demi';
 import { compact, trim } from 'lodash';
 
 // CodeMirror
+import { basicSetup, minimalSetup } from 'codemirror';
 import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
 import { EditorView, keymap, placeholder } from '@codemirror/view';
-import { linter, lintGutter, diagnosticCount } from '@codemirror/lint';
-import { basicSetup, minimalSetup } from 'codemirror';
 import { indentWithTab } from '@codemirror/commands';
+import {
+  diagnosticCount,
+  forceLinting,
+  linter,
+  lintGutter,
+} from '@codemirror/lint';
 
 import type {
   Extension,
@@ -34,9 +39,9 @@ import type {
   Transaction,
 } from '@codemirror/state';
 import type { LanguageSupport } from '@codemirror/language';
-import type { ViewUpdate } from '@codemirror/view';
 import type { LintSource } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
+import type { ViewUpdate } from '@codemirror/view';
 
 /** Emit Interface */
 export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
@@ -57,8 +62,6 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
   ): void;
   /** onChange (same as update:modelValue) */
   (e: 'change', value: string | Text): void;
-  /** CodeMirror linter active diagnostic aount */
-  (e: 'diagnosticCount', value: number): void;
 }
 
 /** CodeMirror Component */
@@ -80,13 +83,11 @@ export default defineComponent({
     /**
      * Theme
      *
-     * @see {@link https://codemirror.net/6/examples/styling/ | Example: Styling}
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView^theme}
      */
     theme: {
       type: Object as PropType<{ [selector: string]: StyleSpec }>,
-      default: () => {
-        return {};
-      },
+      default: () => {},
     },
     /** Dark Mode */
     dark: {
@@ -96,7 +97,7 @@ export default defineComponent({
     /**
      * Use Basic Setup
      *
-     * @see {@link https://codemirror.net/docs/ref/#codemirror.basicSetup | basicSetup}
+     * @see {@link https://codemirror.net/docs/ref/#codemirror.basicSetup}
      */
     basic: {
       type: Boolean,
@@ -105,7 +106,7 @@ export default defineComponent({
     /**
      * Use Minimal Setup (The basic setting has priority.)
      *
-     * @see {@link https://codemirror.net/docs/ref/#codemirror.minimalSetup | minimalSetup}
+     * @see {@link https://codemirror.net/docs/ref/#codemirror.minimalSetup}
      */
     minimal: {
       type: Boolean,
@@ -113,9 +114,11 @@ export default defineComponent({
     },
     /**
      * Placeholder
+     *
+     * @see {@link https://codemirror.net/docs/ref/#view.placeholder}
      */
     placeholder: {
-      type: String,
+      type: String as PropType<string | HTMLElement>,
       default: undefined,
     },
     /**
@@ -123,7 +126,7 @@ export default defineComponent({
      *
      * An extension that enables line wrapping in the editor (by setting CSS white-space to pre-wrap in the content).
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5ElineWrapping | LineWrapping}
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView%5ElineWrapping}
      */
     wrap: {
       type: Boolean,
@@ -132,16 +135,34 @@ export default defineComponent({
     /**
      * Allow tab key indent.
      *
-     * @see {@link https://codemirror.net/6/examples/tab/ | Tab Handling}
+     * @see {@link https://codemirror.net/examples/tab/}
      */
     tab: {
       type: Boolean,
       default: false,
     },
     /**
+     * Tab size
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState^tabSize}
+     */
+    tabSize: {
+      type: Number,
+      default: undefined,
+    },
+    /**
+     * Set line break (separetor) char.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState^lineSeparator}
+     */
+    lineSeparator: {
+      type: String,
+      default: undefined,
+    },
+    /**
      * Readonly
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#state.EditorState%5EreadOnly | readOnly}
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState^readOnly}
      */
     readonly: {
       type: Boolean,
@@ -153,7 +174,7 @@ export default defineComponent({
      * This is the reversed value of the CodeMirror editable.
      * Similar to `readonly`, but setting this value to true disables dragging.
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#view.EditorView%5Eeditable | editable}
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView^editable}
      */
     disabled: {
       type: Boolean,
@@ -162,7 +183,7 @@ export default defineComponent({
     /**
      * Additional Extension
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#state.Extension | Extending Editor State}
+     * @see {@link https://codemirror.net/docs/ref/#state.Extension}
      */
     extensions: {
       type: Array as PropType<Extension[]>,
@@ -173,7 +194,7 @@ export default defineComponent({
     /**
      * Language Phreses
      *
-     * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
+     * @see {@link https://codemirror.net/examples/translate/}
      */
     phrases: {
       type: Object as PropType<Record<string, string>>,
@@ -182,7 +203,7 @@ export default defineComponent({
     /**
      * CodeMirror Language
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
+     * @see {@link https://codemirror.net/docs/ref/#language}
      */
     lang: {
       type: Object as PropType<LanguageSupport>,
@@ -191,7 +212,7 @@ export default defineComponent({
     /**
      * CodeMirror Linter
      *
-     * @see {@link https://codemirror.net/6/docs/ref/#lint | @codemirror/lint}
+     * @see {@link https://codemirror.net/docs/ref/#lint.linter}
      */
     linter: {
       type: Function as PropType<LintSource>,
@@ -211,6 +232,8 @@ export default defineComponent({
      *
      * An area to 🔴 the lines with errors will be displayed.
      * This feature is not enabled if `linter` is not specified.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#lint.lintGutter}
      */
     gutter: {
       type: Boolean,
@@ -234,14 +257,7 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: [
-    'update:modelValue',
-    'update',
-    'ready',
-    'focus',
-    'changed',
-    'diagnosticCount',
-  ],
+  emits: ['update:modelValue', 'update', 'ready', 'focus', 'change'],
   /**
    * Setup
    *
@@ -255,28 +271,44 @@ export default defineComponent({
     /** Internal value */
     const doc: Ref<string | Text> = ref(props.modelValue);
 
-    /** CodeMirror Editor View */
+    /**
+     * CodeMirror Editor View
+     *
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView}
+     */
     const view: ShallowRef<EditorView> = shallowRef(new EditorView());
 
-    /** Selection */
+    /**
+     * Editor Selection
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorSelection}
+     */
     const selection: WritableComputedRef<EditorSelection> = computed({
       get: () => view.value.state.selection,
       set: s => view.value.dispatch({ selection: s }),
     });
 
-    /** Cursor Position */
-    const cursor: WritableComputedRef<number> = computed({
-      get: () => selection.value.main.head || 0,
-      set: a => view.value.dispatch({ selection: { anchor: a } }),
-    });
-
-    /** Editor State */
+    /**
+     * Editor State
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState}
+     */
     const state: WritableComputedRef<EditorState> = computed({
       get: () => view.value.state,
       set: s => view.value.setState(s),
     });
 
-    /** Focus */
+    /** Cursor Position */
+    const cursor: WritableComputedRef<number> = computed({
+      get: () => view.value.state.selection.main.head || 0,
+      set: a => view.value.dispatch({ selection: { anchor: a } }),
+    });
+
+    /**
+     * Focus
+     *
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView.hasFocus}
+     */
     const focus: WritableComputedRef<boolean> = computed({
       get: () => view.value.hasFocus,
       set: f => {
@@ -285,6 +317,11 @@ export default defineComponent({
         }
       },
     });
+
+    /** Text length */
+    const length: ComputedRef<number> = computed(
+      () => view.value.state.doc.length
+    );
 
     /** Get CodeMirror Extension */
     const extensions: ComputedRef<Extension[]> = computed(() =>
@@ -304,12 +341,18 @@ export default defineComponent({
         props.wrap ? EditorView.lineWrapping : undefined,
         // Indent with tab
         props.tab ? keymap.of([indentWithTab]) : undefined,
+        // Indent tab size
+        props.tabSize ? EditorState.tabSize.of(props.tabSize) : undefined,
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Readonly option
         EditorState.readOnly.of(props.readonly),
         // Editable option
         EditorView.editable.of(!props.disabled),
+        // Set Line break char
+        props.lineSeparator
+          ? EditorState.lineSeparator.of(props.lineSeparator)
+          : undefined,
         // Lang
         props.lang ? props.lang : undefined,
         // Append Linter settings
@@ -329,21 +372,15 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       value => {
-        if (!view.value || view.value.composing) {
+        if (view.value.composing) {
           // IME fix
           return;
         }
-        /** Current Editor State */
-        const current: EditorState = view.value.state;
 
-        if (props.linter) {
-          // Lint error count.
-          context.emit('diagnosticCount', diagnosticCount(current));
-        }
         // Update
         view.value.dispatch({
-          changes: { from: 0, to: current.doc.length, insert: value },
-          selection: current.selection,
+          changes: { from: 0, to: view.value.state.doc.length, insert: value },
+          selection: view.value.state.selection,
           scrollIntoView: true,
         });
       },
@@ -388,7 +425,7 @@ export default defineComponent({
           // child-to-parent binding
           const v = view.value.state.doc.toString();
           context.emit('update:modelValue', v);
-          context.emit('changed', v);
+          context.emit('change', v);
         },
       });
       await nextTick();
@@ -403,6 +440,13 @@ export default defineComponent({
     onUnmounted(() => {
       view.value.destroy();
     });
+
+    /**
+     * Forces any linters configured to run when the editor is idle to run right away.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
+     */
+    const lint = () => forceLinting(view.value);
 
     // Bellow is experimental.
 
@@ -517,6 +561,8 @@ export default defineComponent({
       selection,
       state,
       focus,
+      length,
+      lint,
       // Bellow is CodeMirror5's function
       getRange,
       getLine,

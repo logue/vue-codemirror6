@@ -36,7 +36,8 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
         typescript: true,
         vueTsc: true,
         eslint: {
-          lintCommand: 'eslint',
+          lintCommand:
+            'eslint --cache --cache-location ./node_modules/.vite/vite-plugin-eslint',
         },
       }),
     ],
@@ -47,8 +48,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       rollupOptions: {
         output: {
           manualChunks: {
-            vue: ['vue', 'vue-demi'],
-            lodash: ['lodash'],
+            vue: ['vue'],
             codemirror: [
               'codemirror',
               '@codemirror/autocomplete',

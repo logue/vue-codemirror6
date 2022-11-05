@@ -21,18 +21,6 @@
         Use
         <code>wrap</code>
         when you want to use columns. (Enable text wrapping)
-        <br />
-        The value of
-        <code>@update</code>
-        gets the
-        <a
-          href="https://codemirror.net/6/docs/ref/#view.ViewUpdate"
-          target="_blank"
-        >
-          ViewUpdate
-        </a>
-        object at that time when there is any update in the target form. In this
-        example, the contents are output to the console log of the browser.
       </p>
       <code-mirror
         v-model="markdownDemoSrc"
@@ -43,7 +31,10 @@
       />
       <h3>Demo</h3>
       <markdown-demo class="mb-3" :dark="dark" />
-      <div class="alert alert-warning d-flex align-items-center" role="alert">
+      <div
+        class="alert alert-warning d-flex align-items-center my-3"
+        role="alert"
+      >
         <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
           ⚠
         </div>
@@ -62,6 +53,7 @@
             <code>markdown.wasm</code>
             hard-coded, so depending on how you use it, you may need to rewrite
             <code>markdown-wasm/dist/markdown.es.js</code>
+            manually.
           </p>
         </div>
       </div>
@@ -96,22 +88,6 @@
         When using
         <code>gutter</code>
         prop, 🔴 is displayed on the line with the error.
-        <br />
-        Click 🔴 or press a
-        <kbd>Ctrl</kbd>
-        -
-        <kbd>Shift</kbd>
-        -
-        <kbd>m</kbd>
-        (
-        <kbd>Cmd</kbd>
-        -
-        <kbd>Shift</kbd>
-        -
-        <kbd>m</kbd>
-        on macOS), the error content will be displayed on the panel.
-        <kbd>F8</kbd>
-        key shows the next error.
       </p>
       <p>
         This sample uses
@@ -132,6 +108,29 @@
       />
       <h3>Sample</h3>
       <p>Make sure you see 🔴 when you change the value to get an error.</p>
+      <p>
+        The value of
+        <code>@update</code>
+        gets the
+        <a
+          href="https://codemirror.net/6/docs/ref/#view.ViewUpdate"
+          target="_blank"
+        >
+          ViewUpdate
+        </a>
+        object at that time when there is any update in the target form.
+      </p>
+      <p>
+        In this demo code, the
+        <a
+          href="https://codemirror.net/docs/ref/#lint.diagnosticCount"
+          target="_blank"
+        >
+          diagnosticCount
+        </a>
+        function is used to display the count of locations where grammatical
+        errors are found.
+      </p>
       <linter-and-cross-binding-demo :dark="dark" />
       <p>Also, make sure that changing either value reflects that value.</p>
     </section>

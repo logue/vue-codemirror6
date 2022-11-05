@@ -26,9 +26,6 @@ const onReady = async () => {
 
 watch(input, () => onReady());
 
-/** Get ViewUpdate */
-const onViewUpdate = update => console.log(update);
-
 defineProps({ dark: Boolean });
 </script>
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "description": "CodeMirror6 Component for vue2 and vue3.",
   "keywords": [
@@ -52,7 +52,7 @@
     "./sfc": "./src/components/CodeMirror.ts"
   },
   "engines": {
-    "node": ">=16.18.0",
+    "node": ">=18.12.0",
     "yarn": ">=1.22.10"
   },
   "packageManager": "yarn@3.2.4",
@@ -87,7 +87,7 @@
     "@codemirror/lang-javascript": "^6.1.1",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/lang-markdown": "6.0.2",
-    "@types/lodash": "^4.14.187",
+    "@types/lodash": "^4.14.188",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
@@ -103,7 +103,7 @@
     "eslint-linter-browserify": "^8.26.0",
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^39.5.0",
+    "eslint-plugin-jsdoc": "^39.6.2",
     "eslint-plugin-tsdoc": "^0.2.17",
     "eslint-plugin-vue": "^9.7.0",
     "eslint-plugin-vuejs-accessibility": "^2.0.0",
