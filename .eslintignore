@@ -4,3 +4,4 @@
 dist/
 public/assets/
 docs/
+dev/helpers/markdown.js
