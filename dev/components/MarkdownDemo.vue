@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 
 import CodeMirror from 'vue-codemirror6';
-import { ready, parse } from 'markdown-wasm';
+import { ready, parse } from '../helpers/markdown';
 import { markdown } from '@codemirror/lang-markdown';
 
 const lang = markdown();
@@ -39,7 +39,6 @@ defineProps({ dark: Boolean });
         wrap
         basic
         @ready="onReady"
-        @update="onViewUpdate"
       />
     </div>
     <div class="col-6">
@@ -47,10 +46,4 @@ defineProps({ dark: Boolean });
       <div v-html="output" />
     </div>
   </div>
-  <teleport to="head">
-    <component
-      :is="'script'"
-      src="https://cdn.jsdelivr.net/npm/markdown-wasm@1.2.0/dist/markdown.min.js"
-    />
-  </teleport>
 </template>

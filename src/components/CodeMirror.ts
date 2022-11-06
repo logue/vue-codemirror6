@@ -25,12 +25,7 @@ import { basicSetup, minimalSetup } from 'codemirror';
 import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
 import { EditorView, keymap, placeholder } from '@codemirror/view';
 import { indentWithTab } from '@codemirror/commands';
-import {
-  diagnosticCount,
-  forceLinting,
-  linter,
-  lintGutter,
-} from '@codemirror/lint';
+import { forceLinting, linter, lintGutter } from '@codemirror/lint';
 
 import type {
   Extension,

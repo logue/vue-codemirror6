@@ -59,13 +59,15 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "clean": "rimraf node_modules/.vite && npx vue-demi-fix",
-    "build": "vite build & vue-tsc --declaration --emitDeclarationOnly",
-    "build:analyze": "vue-tsc --noEmit & vue-tsc --declaration --emitDeclarationOnly & vite build --mode analyze",
-    "build:docs": "vite build --config vite.config.docs.ts",
+    "clean": "rimraf ./node_modules/.vite",
+    "type-check": "vue-tsc --noEmit --composite false",
+    "lint": "eslint . --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint && prettier . -w -u",
+    "lint:style": "stylelint \"./**/*.{css,sass,scss,htm,html,vue}\" --fix --cache-location ./node_modules/.vite/vite-plugin-stylelint  && prettier  \"./**/*.{css,sass,scss,htm,html,vue}\" -w -u",
+    "build": "run-p type-check build-only",
+    "build:analyze": "vite build --mode analyze",
     "build:clean": "rimraf dist",
-    "lint": "eslint --fix --cache --cache-location ./node_modules/.vite/vite-plugin-eslint && prettier . -w -u",
-    "lint:markup": "vue-tsc --noEmit",
+    "build:docs": "vite build --config vite.config.docs.ts",
+    "build-only": "vite build",
     "preview": "vite preview --config vite.config.docs.ts",
     "prepare": "husky install",
     "version": "auto-changelog -p && git add CHANGELOG.md"
@@ -86,7 +88,7 @@
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.1.1",
     "@codemirror/lang-json": "^6.0.1",
-    "@codemirror/lang-markdown": "6.0.2",
+    "@codemirror/lang-markdown": "^6.0.4",
     "@types/lodash": "^4.14.188",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
@@ -112,6 +114,7 @@
     "lint-staged": "^13.0.3",
     "lodash": "^4.17.21",
     "markdown-wasm": "^1.2.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
@@ -133,6 +136,7 @@
     "*": "prettier -w -u"
   },
   "resolutions": {
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "@codemirror/language": "<6.3.0"
   }
 }

@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "dist",
+    "composite": true,
     "newLine": "lf",
     "paths": { "@/*": ["./src/*"] },
     "lib": ["ESNext", "DOM"],
