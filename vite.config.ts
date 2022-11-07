@@ -12,6 +12,8 @@ const pkg = require('./package.json');
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
   const config: UserConfig = {
+    base: './',
+    publicDir: command === 'serve' ? 'public' : false,
     // Resolver
     resolve: {
       // https://vitejs.dev/config/shared-options.html#resolve-alias
