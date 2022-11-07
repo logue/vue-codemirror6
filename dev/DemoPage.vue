@@ -39,7 +39,7 @@
           ⚠
         </div>
         <div>
-          <p class="mb-0">
+          <p>
             The
             <a href="https://github.com/rsms/markdown-wasm" target="_blank">
               markdown-wasm
@@ -48,13 +48,16 @@
             <code>markdown.wasm</code>
             hard-coded, so depending on how you use it, you may need to rewrite
             <code>markdown-wasm/dist/markdown.es.js</code>
-            manually. See
+            manually.
+          </p>
+          <p class="mb-0">
+            Use
             <a
               href="https://github.com/logue/vue-codemirror6/tree/master/dev/helpers/markdown.js"
             >
               customized markdown-wasm
             </a>
-            .
+            when you using vite.
           </p>
         </div>
       </div>
