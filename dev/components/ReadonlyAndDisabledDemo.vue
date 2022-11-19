@@ -2,9 +2,12 @@
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
+/** Readonly */
 const isReadonly = ref(true);
+/** Disabled (Not Editable) */
 const isDisabled = ref(false);
 
+// Sync dark mode
 defineProps({ dark: Boolean });
 </script>
 

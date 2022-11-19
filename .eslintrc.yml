@@ -2,6 +2,7 @@ root: true
 env:
   browser: true
   es6: true
+  node: true
 extends:
   - eslint:recommended
   - google
@@ -11,6 +12,7 @@ extends:
   - plugin:jsdoc/recommended
   - plugin:vue/vue3-recommended
   - plugin:vuejs-accessibility/recommended
+  - plugin:yaml/recommended
   - '@vue/eslint-config-prettier'
 plugins:
   - '@typescript-eslint'
@@ -25,23 +27,32 @@ parserOptions:
   parser: '@typescript-eslint/parser'
   sourceType: module
   createDefaultProgram: true
-  project: ./tsconfig.json
+  project:
+    - ./tsconfig.json
 rules:
   new-cap: off
   no-invalid-this: off
   no-unused-vars: warn
   require-jsdoc: warn
   valid-jsdoc: off
-  import/no-named-as-default: off
   jsdoc/require-param-type: off
-  jsdoc/require-param: ['off', { enableRootFixer: false }]
+  jsdoc/require-param:
+    - off
+    - enableRootFixer: false
   jsdoc/require-returns-description: off
   jsdoc/require-returns-type: off
   jsdoc/require-returns: off
   tsdoc/syntax: warn
-  vue/html-self-closing: [error, html: { void: always }]
+  vue/html-self-closing:
+    - error
+    - html:
+        void: always
   vue/multi-word-component-names: warn
 settings:
+  import/parsers:
+    '@typescript-eslint/parser':
+      - .ts
+      - .tsx
   import/resolver:
     typescript: {}
     alias:
@@ -53,3 +64,5 @@ settings:
         - .jsx
         - .tsx
         - .vue
+    vite:
+      configPath: ./vite.config.ts

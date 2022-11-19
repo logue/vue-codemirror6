@@ -1,7 +1,7 @@
+import { checker } from 'vite-plugin-checker';
 import { defineConfig, type UserConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import banner from 'vite-plugin-banner';
-import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
 
 import { fileURLToPath, URL } from 'node:url';
@@ -79,7 +79,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
                 brotliSize: true,
               })
             : undefined,
-        ].filter(item => item !== undefined),
+        ],
         external: [
           'vue',
           'lodash',

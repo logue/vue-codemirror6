@@ -22,21 +22,29 @@ import { compact, trim } from 'lodash';
 
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
-import { EditorSelection, EditorState, StateEffect } from '@codemirror/state';
-import { EditorView, keymap, placeholder } from '@codemirror/view';
-import { indentWithTab } from '@codemirror/commands';
-import { forceLinting, linter, lintGutter } from '@codemirror/lint';
-
-import type {
-  Extension,
-  SelectionRange,
-  Text,
-  Transaction,
+import {
+  EditorSelection,
+  EditorState,
+  StateEffect,
+  type Extension,
+  type SelectionRange,
+  type Text,
 } from '@codemirror/state';
+import {
+  EditorView,
+  keymap,
+  placeholder,
+  type ViewUpdate,
+} from '@codemirror/view';
+import { indentWithTab } from '@codemirror/commands';
+import {
+  forceLinting,
+  linter,
+  lintGutter,
+  type LintSource,
+} from '@codemirror/lint';
 import type { LanguageSupport } from '@codemirror/language';
-import type { LintSource } from '@codemirror/lint';
 import type { StyleSpec } from 'style-mod';
-import type { ViewUpdate } from '@codemirror/view';
 
 /** Emit Interface */
 export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
@@ -412,7 +420,7 @@ export default defineComponent({
         doc: value,
         extensions: extensions.value,
         parent: editor.value,
-        dispatch: (tr: Transaction) => {
+        dispatch: tr => {
           view.value.update([tr]);
           // TODO: Emit lint error event
           // console.log(view.state.doc.toString(), tr);
@@ -426,7 +434,7 @@ export default defineComponent({
       await nextTick();
       context.emit('ready', {
         view: view,
-        state: state.value,
+        state: view.value.state,
         container: editor.value,
       });
     });
@@ -545,7 +553,7 @@ export default defineComponent({
     const extendSelectionsBy = (f: Function) =>
       view.value.dispatch({
         selection: EditorSelection.create(
-          selection.value.ranges.map(r => r.extend(f(r)))
+          selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
         ),
       });
 

@@ -2,15 +2,19 @@
 import CodeMirror from 'vue-codemirror6';
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 
-const lang = json();
-const linter = jsonParseLinter();
-
+// Sync Dark mode
 defineProps({ dark: Boolean });
 </script>
 
 <!-- prettier-ignore -->
 <template>
-  <code-mirror basic readonly :dark="dark" :lang="lang" :linter="linter">
+  <code-mirror
+    :dark="dark"
+    :lang="json()"
+    :linter="jsonParseLinter()"
+    basic
+    readonly
+  >
     <pre>
 {
   "@schema": "https://json.schemastore.org/jsonld.json",

@@ -1,5 +1,5 @@
+import { checker } from 'vite-plugin-checker';
 import { defineConfig, type UserConfig } from 'vite';
-import checker from 'vite-plugin-checker';
 import Vue from '@vitejs/plugin-vue';
 
 import { fileURLToPath, URL } from 'node:url';

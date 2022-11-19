@@ -2,18 +2,24 @@
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
-import { javascript, esLint } from '@codemirror/lang-javascript';
-import eslint from 'eslint-linter-browserify';
 import { diagnosticCount } from '@codemirror/lint';
+import { esLint, javascript } from '@codemirror/lang-javascript';
+import eslint from 'eslint-linter-browserify';
 
+/** Demo code */
 const value = ref(`document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'));
 );`);
 
+/** Linter Error count */
 const errorCount = ref(0);
 
-const lang = javascript();
-
+/**
+ * JavaScript language Linter Setting.
+ * Using eslint-linter-browserify
+ *
+ * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
+ */
 const linter = esLint(
   // eslint-disable-next-line
   new eslint.Linter(),
@@ -29,9 +35,10 @@ const linter = esLint(
   }
 );
 
+// Sync Dark mode
 defineProps({ dark: Boolean });
 
-/** Get ViewUpdate */
+/** Get ViewUpdate for update lint error count. */
 const onUpdate = update => (errorCount.value = diagnosticCount(update.state));
 </script>
 
@@ -42,14 +49,13 @@ const onUpdate = update => (errorCount.value = diagnosticCount(update.state));
     <div class="col-6 mb-3">
       <code-mirror
         v-model="value"
-        :lang="lang"
-        :linter="linter"
         :dark="dark"
+        :lang="javascript()"
+        :linter="linter"
+        basic
         gutter
         wrap
-        basic
         @update="onUpdate"
-        @diagnostic-count="errorCount"
       />
     </div>
     <div class="col-6 mb-3">

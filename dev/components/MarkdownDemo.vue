@@ -5,8 +5,6 @@ import CodeMirror from 'vue-codemirror6';
 import { ready, parse } from '../helpers/markdown';
 import { markdown } from '@codemirror/lang-markdown';
 
-const lang = markdown();
-
 /** Demo text */
 const input = ref(`# The quick brown fox jumps over the lazy dog.
 
@@ -26,6 +24,7 @@ const onReady = async () => {
 
 watch(input, () => onReady());
 
+// Sync dark mode
 defineProps({ dark: Boolean });
 </script>
 
@@ -35,7 +34,7 @@ defineProps({ dark: Boolean });
       <code-mirror
         v-model="input"
         :dark="dark"
-        :lang="lang"
+        :lang="markdown()"
         wrap
         basic
         @ready="onReady"
