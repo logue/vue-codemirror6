@@ -18,7 +18,8 @@ import {
 
 // Helpers
 import h, { slot } from '@/helpers/h-demi';
-import { compact, trim } from 'lodash';
+import compact from 'lodash/compact';
+import trim from 'lodash/trim';
 
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
@@ -63,8 +64,10 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
       container: HTMLElement;
     }
   ): void;
-  /** onChange (same as update:modelValue) */
-  (e: 'change', value: string | Text): void;
+  /** CodeMirror onDestroy */
+  (e: 'destroy'): void;
+  /** State Changed */
+  (e: 'change', value: EditorState): void;
 }
 
 /** CodeMirror Component */
@@ -260,7 +263,7 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: ['update:modelValue', 'update', 'ready', 'focus', 'change'],
+  emits: ['update:modelValue', 'update', 'ready', 'focus', 'change', 'destroy'],
   /**
    * Setup
    *
@@ -428,7 +431,7 @@ export default defineComponent({
           // child-to-parent binding
           const v = view.value.state.doc.toString();
           context.emit('update:modelValue', v);
-          context.emit('change', v);
+          context.emit('change', view.value.state);
         },
       });
       await nextTick();
@@ -441,7 +444,10 @@ export default defineComponent({
 
     /** Destroy */
     onUnmounted(() => {
-      view.value.destroy();
+      if (view.value) {
+        view.value.destroy();
+        context.emit('destroy');
+      }
     });
 
     /**
@@ -449,9 +455,13 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
-    const lint = () => forceLinting(view.value);
+    const lint = () => {
+      if (props.linter) {
+        forceLinting(view.value);
+      }
+    };
 
-    // Bellow is experimental.
+    /* ----- Bellow is experimental. ------ */
 
     /**
      * Get the text between the given points in the editor.
@@ -523,7 +533,7 @@ export default defineComponent({
      *
      * @param position - position.
      */
-    const setCursor = (position: number) => (cursor.value = position);
+    const setCursor = (position: number): number => (cursor.value = position);
     /**
      * Set a single selection range.
      *
@@ -557,8 +567,8 @@ export default defineComponent({
         ),
       });
 
-    return {
-      context,
+    /** Export properties and functions */
+    context.expose({
       editor,
       cursor,
       selection,
@@ -581,6 +591,10 @@ export default defineComponent({
       setSelection,
       setSelections,
       extendSelectionsBy,
+    });
+
+    return {
+      editor,
     };
   },
   render() {
@@ -596,7 +610,8 @@ export default defineComponent({
         class: 'vue-codemirror',
       },
       this.$slots.default
-        ? h(
+        ? // Hide original content
+          h(
             'aside',
             { style: 'display: none;', 'aria-hidden': 'true' },
             slot(this.$slots.default)

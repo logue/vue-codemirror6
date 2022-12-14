@@ -41,6 +41,13 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
         },
       }),
     ],
+    optimizeDeps: {
+      exclude: [
+        'vue-demi',
+        // https://github.com/codemirror/dev/issues/608
+        '@codemirror/state',
+      ],
+    },
     // Build Options
     // https://vitejs.dev/config/#build-options
     build: {

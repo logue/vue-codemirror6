@@ -15,8 +15,7 @@ defineProps({ dark: Boolean });
     basic
     readonly
   >
-    <pre>
-{
+    <pre>{
   "@schema": "https://json.schemastore.org/jsonld.json",
   "@context": "http://schema.org",
   "@type": "WebSite",

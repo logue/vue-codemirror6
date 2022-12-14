@@ -56,7 +56,11 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
 `),
     ],
     optimizeDeps: {
-      exclude: ['vue-demi'],
+      exclude: [
+        'vue-demi',
+        // https://github.com/codemirror/dev/issues/608
+        '@codemirror/state',
+      ],
     },
     // Build Options
     // https://vitejs.dev/config/#build-options
@@ -82,7 +86,8 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
         ],
         external: [
           'vue',
-          'lodash',
+          'lodash/compact',
+          'lodash/trim',
           'vue-demi',
           'codemirror',
           '@codemirror/autocomplete',
@@ -103,7 +108,8 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
             '@codemirror/state': 'state',
             '@codemirror/view': 'view',
             'vue-demi': 'VueDemi',
-            lodash: 'lodash',
+            'lodash/compact': 'compact',
+            'lodash/trim': 'trim',
             vue: 'Vue',
           },
         },
@@ -111,9 +117,6 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       // Minify option
       target: 'esnext',
       minify: false,
-    },
-    esbuild: {
-      drop: command === 'serve' ? [] : ['console'],
     },
   };
 

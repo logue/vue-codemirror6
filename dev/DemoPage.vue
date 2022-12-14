@@ -1,3 +1,28 @@
+<!-- eslint-disable import/no-duplicates -->
+<script setup>
+import CodeMirror from 'vue-codemirror6';
+
+import { html } from '@codemirror/lang-html';
+
+import MarkdownDemo from './components/MarkdownDemo.vue';
+import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
+import SlotDemo from './components/SlotDemo.vue';
+import SlotDemoSrc from './components/SlotDemo.vue?raw';
+import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
+import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
+import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
+import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
+
+defineProps({
+  dark: { type: Boolean, default: false },
+});
+
+const markdownDemoSrc = MarkdownDemoSrc.trim();
+const slotDemoSrc = SlotDemoSrc.trim();
+const readonlyAndDisabledDemoSrc = ReadonlyAndDisabledDemoSrc.trim();
+const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
+</script>
+
 <template>
   <div class="container">
     <section class="mb-5">
@@ -25,8 +50,9 @@
       <code-mirror
         v-model="markdownDemoSrc"
         :dark="dark"
-        :lang="cmLangHtml"
+        :lang="html()"
         basic
+        wrap
         readonly
       />
       <h3>Demo</h3>
@@ -36,7 +62,7 @@
         role="alert"
       >
         <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
-          ⚠
+          <i class="bi bi-exclamation-triangle" />
         </div>
         <div>
           <p>
@@ -78,8 +104,9 @@
       <code-mirror
         v-model="slotDemoSrc"
         :dark="dark"
-        :lang="cmLangHtml"
+        :lang="html()"
         basic
+        wrap
         readonly
       />
       <h3>Sample</h3>
@@ -106,8 +133,9 @@
       <code-mirror
         v-model="linterAndCrossBindingDemoSrc"
         :dark="dark"
-        :lang="cmLangHtml"
+        :lang="html()"
         basic
+        wrap
         readonly
       />
       <h3>Sample</h3>
@@ -169,8 +197,9 @@
       <code-mirror
         v-model="readonlyAndDisabledDemoSrc"
         :dark="dark"
-        :lang="cmLangHtml"
+        :lang="html()"
         basic
+        wrap
         readonly
       />
       <h3>Demo</h3>
@@ -178,46 +207,3 @@
     </section>
   </div>
 </template>
-
-<script>
-/* eslint-disable import/no-duplicates */
-import { defineComponent } from 'vue';
-
-import CodeMirror from 'vue-codemirror6';
-
-import { html } from '@codemirror/lang-html';
-
-import MarkdownDemo from './components/MarkdownDemo.vue';
-import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
-import SlotDemo from './components/SlotDemo.vue';
-import SlotDemoSrc from './components/SlotDemo.vue?raw';
-import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
-import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
-import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
-import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
-
-export default defineComponent({
-  components: {
-    MarkdownDemo,
-    SlotDemo,
-    ReadonlyAndDisabledDemo,
-    LinterAndCrossBindingDemo,
-    CodeMirror,
-  },
-  props: {
-    dark: { type: Boolean, default: false },
-  },
-  setup() {
-    /** HTML lang */
-    const cmLangHtml = html();
-
-    return {
-      markdownDemoSrc: MarkdownDemoSrc.trim(),
-      slotDemoSrc: SlotDemoSrc.trim(),
-      readonlyAndDisabledDemoSrc: ReadonlyAndDisabledDemoSrc.trim(),
-      linterAndCrossBindingDemoSrc: LinterAndCrossBindingDemoSrc.trim(),
-      cmLangHtml,
-    };
-  },
-});
-</script>

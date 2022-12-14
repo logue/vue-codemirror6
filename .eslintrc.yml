@@ -64,5 +64,5 @@ settings:
         - .jsx
         - .tsx
         - .vue
-    vite:
-      configPath: ./vite.config.ts
+  vite:
+    configPath: ./vite.config.ts

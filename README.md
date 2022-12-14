@@ -29,14 +29,15 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 
 | Props          | Type                              | Information                                                                                                                                                                                                                    |
 | -------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| model-value    | string \| Text                    | Text value. (Not `value`)                                                                                                                                                                                                      |
 | basic          | boolean                           | Use [basicSetup](https://codemirror.net/docs/ref/#codemirror.basicSetup).                                                                                                                                                      |
 | minimal        | boolean                           | Use [miniSetup](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If a `basic` prop is also specified, that setting will take precedence.                                                                             |
 | dark           | boolean                           | Toggle Darkmode.                                                                                                                                                                                                               |
-| placeholder    | string                            | Add placeholder text when blank                                                                                                                                                                                                |
+| placeholder    | string                            | Add placeholder text (or HTML DOM) when blank                                                                                                                                                                                  |
 | wrap           | boolean                           | Line text wrapping. see [lineWrapping](https://codemirror.net/6/docs/ref/#view.EditorView.lineWrapping).                                                                                                                       |
 | tab            | boolean                           | Enables tab indentation.                                                                                                                                                                                                       |
 | tab-size       | number                            | Configures the tab size to use in this state.                                                                                                                                                                                  |
-| line-separator | string                            | Set line break (separetor) char.                                                                                                                                                                                               |
+| line-separator | string                            | Set line break (separetor) char. (Default is `\n`.)                                                                                                                                                                            |
 | theme          | { [selector: string]: StyleSpec } | Specify the theme. For example, if you use [@codemirror/theme-one-dark](https://github.com/codemirror/theme-one-dark), import `oneDark` and put it in this prop.                                                               |
 | readonly       | boolean                           | Makes the cursor visible or you can drag the text but not edit the value.                                                                                                                                                      |
 | disabled       | boolean                           | This is the reversed value of the CodeMirror editable. Similar to `readonly`, but setting this value to true disables dragging.                                                                                                |
@@ -251,13 +252,12 @@ export default defineComponent({
 
 ## Events
 
-| Event           | Description                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------------------- |
-| ready           | When CodeMirror loaded.                                                                                       |
-| focus           | When focus changed.                                                                                           |
-| update          | When CodeMirror state changed. Returns [ViewUpdate](https://codemirror.net/docs/ref/#view.ViewUpdate) object. |
-| changed         | Value changed. (Please implement with `v-model` unless there is a special reason.)                            |
-| diagnosticCount | Returns the number of active lint diagnostics in the given state. (Only when `linter` prop is specified)      |
+| Event  | Description                                                                                                   |
+| ------ | ------------------------------------------------------------------------------------------------------------- |
+| ready  | When CodeMirror loaded.                                                                                       |
+| focus  | When focus changed.                                                                                           |
+| update | When CodeMirror state changed. Returns [ViewUpdate](https://codemirror.net/docs/ref/#view.ViewUpdate) object. |
+| change | Value changed. Returns [EditorState](https://codemirror.net/docs/ref/#state.EditorState)                      |
 
 ## Methods
 
@@ -267,6 +267,7 @@ export default defineComponent({
 | cursor    | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
 | state     | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
 | focus     | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
+| lint      | Force run linter (Only if `linter` prop is specified)                                               |
 
 The instructions below are compatible methods for those familiar with [codemirror5](https://codemirror.net/5/). Since the above method is usually sufficient, its active use is not recommended.
 
