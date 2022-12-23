@@ -39,7 +39,12 @@ const linter = esLint(
 defineProps({ dark: Boolean });
 
 /** Get ViewUpdate for update lint error count. */
-const onUpdate = update => (errorCount.value = diagnosticCount(update.state));
+const onUpdate = update => {
+  if (update.flags === 0) {
+    return;
+  }
+  errorCount.value = diagnosticCount(update.state);
+};
 </script>
 
 <template>

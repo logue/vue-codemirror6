@@ -72,6 +72,8 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
         fileName: format => `index.${format}.js`,
       },
       rollupOptions: {
+        makeAbsoluteExternalsRelative: true,
+        preserveEntrySignatures: 'strict',
         plugins: [
           mode === 'analyze'
             ? // rollup-plugin-visualizer
@@ -99,6 +101,12 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
           '@codemirror/view',
         ],
         output: {
+          esModule: true,
+          generatedCode: {
+            reservedNamesAsProps: false,
+          },
+          interop: 'compat',
+          systemNullSetters: false,
           exports: 'named',
           globals: {
             codemirror: 'codemirror',
@@ -132,17 +140,6 @@ const meta: MetaInterface = {
 };
 export default meta;
 `
-  );
-
-  // copy markdown-wasm
-  fs.copyFileSync(
-    fileURLToPath(
-      new URL(
-        './node_modules/markdown-wasm/dist/markdown.wasm',
-        import.meta.url
-      )
-    ),
-    fileURLToPath(new URL('./public/markdown.wasm', import.meta.url))
   );
 
   // Export vite config

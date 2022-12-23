@@ -57,34 +57,16 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
       />
       <h3>Demo</h3>
       <markdown-demo class="mb-3" :dark="dark" />
-      <div
-        class="alert alert-warning d-flex align-items-center my-3"
-        role="alert"
-      >
+      <div class="alert alert-info d-flex align-items-center my-3" role="alert">
         <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
-          <i class="bi bi-exclamation-triangle" />
+          <i class="bi bi-info-circle" />
         </div>
         <div>
-          <p>
-            The
-            <a href="https://github.com/rsms/markdown-wasm" target="_blank">
-              markdown-wasm
-            </a>
-            used in this demo has the path of
-            <code>markdown.wasm</code>
-            hard-coded, so depending on how you use it, you may need to rewrite
-            <code>markdown-wasm/dist/markdown.es.js</code>
-            manually.
-          </p>
-          <p class="mb-0">
-            Use
-            <a
-              href="https://github.com/logue/vue-codemirror6/tree/master/dev/helpers/markdown.js"
-            >
-              customized markdown-wasm
-            </a>
-            when you using vite.
-          </p>
+          The process of converting Markdown to HTML uses
+          <a href="https://github.com/logue/vue-markdown-wasm" target="_blank">
+            vue-markdown-wasm
+          </a>
+          .
         </div>
       </div>
     </section>
