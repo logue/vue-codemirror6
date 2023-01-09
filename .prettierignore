@@ -1,7 +1,0 @@
-.husky/
-.vscode/
-.yarn/
-dist/
-public/assets/
-docs/
-dev/helpers/markdown.js
