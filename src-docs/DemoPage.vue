@@ -189,3 +189,9 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
     </section>
   </div>
 </template>
+
+<style>
+.vue-codemirror * {
+  font-family: var(--bs-font-monospace);
+}
+</style>

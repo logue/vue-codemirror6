@@ -19,7 +19,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       // https://vitejs.dev/config/shared-options.html#resolve-alias
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        // for DEMO
+        '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
         'vue-codemirror6': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
@@ -48,7 +48,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
  *
  * @description ${pkg.description}
  * @author ${pkg.author.name} <${pkg.author.email}>
- * @copyright 2022 By Masashi Yoshikawa All rights reserved.
+ * @copyright 2022-2023 By Masashi Yoshikawa All rights reserved.
  * @license ${pkg.license}
  * @version ${pkg.version}
  * @see {@link ${pkg.homepage}}
@@ -65,41 +65,47 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
     // Build Options
     // https://vitejs.dev/config/#build-options
     build: {
-      lib: {
-        entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-        name: 'CodeMirror',
-        formats: ['umd', 'es', 'iife'],
-        fileName: format => `index.${format}.js`,
-      },
+      outDir: mode === 'docs' ? 'docs' : undefined,
+      lib:
+        mode === 'docs'
+          ? undefined
+          : {
+              entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+              name: 'CodeMirror',
+              formats: ['umd', 'es', 'iife'],
+              fileName: format => `index.${format}.js`,
+            },
+
       rollupOptions: {
-        makeAbsoluteExternalsRelative: true,
-        preserveEntrySignatures: 'strict',
         plugins: [
           mode === 'analyze'
             ? // rollup-plugin-visualizer
               // https://github.com/btd/rollup-plugin-visualizer
               visualizer({
                 open: true,
-                filename: 'dist/stats.html',
-                gzipSize: true,
-                brotliSize: true,
+                filename: 'stats.html',
+                gzipSize: false,
+                brotliSize: false,
               })
             : undefined,
         ],
-        external: [
-          'vue',
-          'lodash/compact',
-          'lodash/trim',
-          'vue-demi',
-          'codemirror',
-          '@codemirror/autocomplete',
-          '@codemirror/commands',
-          '@codemirror/language',
-          '@codemirror/lint',
-          '@codemirror/search',
-          '@codemirror/state',
-          '@codemirror/view',
-        ],
+        external:
+          mode === 'docs'
+            ? undefined
+            : [
+                'vue',
+                'lodash/compact',
+                'lodash/trim',
+                'vue-demi',
+                'codemirror',
+                '@codemirror/autocomplete',
+                '@codemirror/commands',
+                '@codemirror/language',
+                '@codemirror/lint',
+                '@codemirror/search',
+                '@codemirror/state',
+                '@codemirror/view',
+              ],
         output: {
           esModule: true,
           generatedCode: {
@@ -120,11 +126,30 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
             'lodash/trim': 'trim',
             vue: 'Vue',
           },
+          manualChunks:
+            mode !== 'docs'
+              ? undefined
+              : {
+                  vue: ['vue'],
+                  codemirror: [
+                    'codemirror',
+                    '@codemirror/autocomplete',
+                    '@codemirror/commands',
+                    '@codemirror/language',
+                    '@codemirror/lint',
+                    '@codemirror/search',
+                    '@codemirror/state',
+                    '@codemirror/view',
+                    // Add the following as needed.
+                    '@codemirror/lang-markdown',
+                    '@codemirror/lang-html',
+                  ],
+                },
         },
       },
       // Minify option
       target: 'esnext',
-      minify: false,
+      minify: mode === 'docs',
     },
   };
 
