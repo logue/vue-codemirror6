@@ -54,10 +54,12 @@ settings:
       - .ts
       - .tsx
   import/resolver:
-    typescript: {}
+    typescript: true
+    node: true
     alias:
       map:
         - ['@', './src']
+        - ['~', './node_modules']
       extensions:
         - .js
         - .ts
