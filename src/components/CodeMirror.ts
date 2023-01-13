@@ -18,8 +18,7 @@ import {
 
 // Helpers
 import h, { slot } from '@/helpers/h-demi';
-import compact from 'lodash/compact';
-import trim from 'lodash/trim';
+import { compact, trim } from 'lodash';
 
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
@@ -332,7 +331,7 @@ export default defineComponent({
     /** Get CodeMirror Extension */
     const extensions: ComputedRef<Extension[]> = computed(() =>
       // TODO: Ignore previous prop was not changed.
-      compact([
+      compact<Extension>([
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // Toggle minimal setup

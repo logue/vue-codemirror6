@@ -2110,9 +2110,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.27.2":
-  version: 2.27.2
-  resolution: "eslint-plugin-import@npm:2.27.2"
+"eslint-plugin-import@npm:^2.27.4":
+  version: 2.27.4
+  resolution: "eslint-plugin-import@npm:2.27.4"
   dependencies:
     array-includes: ^3.1.6
     array.prototype.flat: ^1.3.1
@@ -2127,10 +2127,11 @@ __metadata:
     minimatch: ^3.1.2
     object.values: ^1.1.6
     resolve: ^1.22.1
+    semver: ^6.3.0
     tsconfig-paths: ^3.14.1
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
-  checksum: 246f6bf54a7e2070b18471a38a8e1d085f745679eb893e4e5baf95272f5156ebddd88e611f757ceb3793ae170f56bc6de60b4fe320183d62aa23e58ff248b141
+  checksum: e298a9b1fde6d86737520c7da1d851d1facbf1883e29eddfd374a813eb05a647108c072d5c852b6bf535886c435a419f2fee1d6ae3a324d6f7877d957a796e37
   languageName: node
   linkType: hard
 
@@ -2176,9 +2177,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.8.0":
-  version: 9.8.0
-  resolution: "eslint-plugin-vue@npm:9.8.0"
+"eslint-plugin-vue@npm:^9.9.0":
+  version: 9.9.0
+  resolution: "eslint-plugin-vue@npm:9.9.0"
   dependencies:
     eslint-utils: ^3.0.0
     natural-compare: ^1.4.0
@@ -2189,7 +2190,7 @@ __metadata:
     xml-name-validator: ^4.0.0
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: f3fc36512fa124a81332e353b161a84dd7b55ae07c69c0e9eabc85d56fdc2940422e1f33172d90af0f7913fc5cd25cfc7dfe025db37311d15a2ba5ea486b7602
+  checksum: 059f9c1915504d074adf64bc3371d1e174f8844088d0e08800c958cbef09d7fdf2a0a949634187231645435a1ef31595c8c81f441000ec43589bb58a1282fe3c
   languageName: node
   linkType: hard
 
@@ -4317,6 +4318,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rimraf@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "rimraf@npm:4.0.4"
+  bin:
+    rimraf: dist/cjs/src/bin.js
+  checksum: a3296ea15c79fe3da0bae06a484dd8b8ec1e6d3044b02f05ce27575ef23c856e37eef6e71a668ce0e263da594a05ace1e88be6f42200f1fbbf433b57121bae32
+  languageName: node
+  linkType: hard
+
 "rollup-plugin-visualizer@npm:^5.9.0":
   version: 5.9.0
   resolution: "rollup-plugin-visualizer@npm:5.9.0"
@@ -4399,6 +4409,15 @@ __metadata:
   bin:
     semver: ./bin/semver
   checksum: 57fd0acfd0bac382ee87cd52cd0aaa5af086a7dc8d60379dfe65fea491fb2489b6016400813930ecd61fd0952dae75c115287a1b16c234b1550887117744dfaf
+  languageName: node
+  linkType: hard
+
+"semver@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "semver@npm:6.3.0"
+  bin:
+    semver: ./bin/semver.js
+  checksum: 1b26ecf6db9e8292dd90df4e781d91875c0dcc1b1909e70f5d12959a23c7eebb8f01ea581c00783bbee72ceeaad9505797c381756326073850dc36ed284b21b9
   languageName: node
   linkType: hard
 
@@ -5169,11 +5188,11 @@ __metadata:
     eslint-import-resolver-typescript: ^3.5.3
     eslint-linter-browserify: ^8.31.0
     eslint-plugin-html: ^7.1.0
-    eslint-plugin-import: ^2.27.2
+    eslint-plugin-import: ^2.27.4
     eslint-plugin-jsdoc: ^39.6.4
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-tsdoc: ^0.2.17
-    eslint-plugin-vue: ^9.8.0
+    eslint-plugin-vue: ^9.9.0
     eslint-plugin-vuejs-accessibility: ^2.0.0
     eslint-plugin-yaml: ^0.5.0
     husky: ^8.0.3
@@ -5181,7 +5200,7 @@ __metadata:
     lodash: ^4.17.21
     npm-run-all: ^4.1.5
     prettier: ^2.8.2
-    rimraf: ^3.0.2
+    rimraf: ^4.0.4
     rollup-plugin-visualizer: ^5.9.0
     typescript: ^4.9.4
     vite: ^4.0.4
