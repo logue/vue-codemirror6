@@ -17,7 +17,7 @@ watch(
 </script>
 
 <template>
-  <a href="#" @click="toggleDark()">
+  <a href="#" aria-label="Toggle Dark Mode" @click="toggleDark()">
     <i class="bi bi-circle-half" />
   </a>
 </template>

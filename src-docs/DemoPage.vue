@@ -1,7 +1,7 @@
 <!-- eslint-disable import/no-duplicates -->
 <script setup>
 import CodeMirror from 'vue-codemirror6';
-
+import { useDark } from '@vueuse/core';
 import { html } from '@codemirror/lang-html';
 
 import MarkdownDemo from './components/MarkdownDemo.vue';
@@ -13,9 +13,7 @@ import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue
 import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
 import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
 
-defineProps({
-  dark: { type: Boolean, default: false },
-});
+const dark = useDark();
 
 const markdownDemoSrc = MarkdownDemoSrc.trim();
 const slotDemoSrc = SlotDemoSrc.trim();
