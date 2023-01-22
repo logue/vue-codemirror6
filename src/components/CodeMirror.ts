@@ -460,6 +460,22 @@ export default defineComponent({
       }
     };
 
+    /**
+     * Force Reconfigure Extension
+     *
+     * @see {@link https://codemirror.net/examples/config/#top-level-reconfiguration}
+     */
+    const forceReconfigure = () => {
+      // Deconfigure all Extensions
+      view.value.dispatch({
+        effects: StateEffect.reconfigure.of([]),
+      });
+      // Register extensions
+      view.value.dispatch({
+        effects: StateEffect.appendConfig.of(extensions.value),
+      });
+    };
+
     /* ----- Bellow is experimental. ------ */
 
     /**
@@ -575,6 +591,7 @@ export default defineComponent({
       focus,
       length,
       lint,
+      forceReconfigure,
       // Bellow is CodeMirror5's function
       getRange,
       getLine,

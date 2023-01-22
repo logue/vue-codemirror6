@@ -261,13 +261,14 @@ export default defineComponent({
 
 ## Methods
 
-| Method    | Description                                                                                         |
-| --------- | --------------------------------------------------------------------------------------------------- |
-| selection | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
-| cursor    | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
-| state     | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
-| focus     | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
-| lint      | Force run linter (Only if `linter` prop is specified)                                               |
+| Method           | Description                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| selection        | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
+| cursor           | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
+| state            | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
+| focus            | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
+| lint             | Force run linter (Only if `linter` prop is specified)                                               |
+| forceReconfigure | Re register all extensions.                                                                         |
 
 The instructions below are compatible methods for those familiar with [codemirror5](https://codemirror.net/5/). Since the above method is usually sufficient, its active use is not recommended.
 

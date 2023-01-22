@@ -65,6 +65,10 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
             vue-markdown-wasm
           </a>
           .
+          <br />
+          Full demo is
+          <a href="https://logue.dev/vue-markdown-wasm" target="_blank">here</a>
+          .
         </div>
       </div>
     </section>
