@@ -48,8 +48,6 @@ const onUpdate = update => {
 </script>
 
 <template>
-  <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
-  <!-- eslint-disable vuejs-accessibility/label-has-for -->
   <div class="row">
     <div class="col-6 mb-3">
       <code-mirror
@@ -64,9 +62,11 @@ const onUpdate = update => {
       />
     </div>
     <div class="col-6 mb-3">
-      <textarea v-model="value" rows="4" class="form-control" />
+      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
+      <textarea v-model="value" rows="4" class="form-control"></textarea>
     </div>
     <div class="col-12 mb-3">
+      <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
       <label for="count" class="visually-hidden">Linter Error Count</label>
       <div class="input-group">
         <div class="input-group-text">Linter Error Count</div>

@@ -78,7 +78,8 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
         In this sample, the text is put directly inside the
         <code>&lt;code-mirror&gt;</code>
         tag to make it the initial string. On the Vue side, it is evaluated as a
-        DOM node and only the text node is used as the value.
+        DOM node and only the text node is used as the value. In addition, it
+        does not work with Vue2.7.
       </p>
       <p>
         It's just for simple syntax highlighting. Do not use with
