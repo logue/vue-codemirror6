@@ -129,6 +129,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
               ? undefined
               : {
                   vue: ['vue'],
+                  eslint: ['eslint-linter-browserify'],
                   codemirror: [
                     'codemirror',
                     '@codemirror/autocomplete',
@@ -138,9 +139,13 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
                     '@codemirror/search',
                     '@codemirror/state',
                     '@codemirror/view',
-                    // Add the following as needed.
+                  ],
+                  // Add the following as needed.
+                  'codemirror-lang': [
                     '@codemirror/lang-markdown',
-                    '@codemirror/lang-html',
+                    '@codemirror/lang-javascript',
+                    '@codemirror/lang-json',
+                    '@codemirror/lang-vue',
                   ],
                 },
         },

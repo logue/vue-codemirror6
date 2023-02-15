@@ -2,7 +2,7 @@
 <script setup>
 import CodeMirror from 'vue-codemirror6';
 import { useDark } from '@vueuse/core';
-import { html } from '@codemirror/lang-html';
+import { vue } from '@codemirror/lang-vue';
 
 import MarkdownDemo from './components/MarkdownDemo.vue';
 import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
@@ -48,7 +48,7 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
       <code-mirror
         v-model="markdownDemoSrc"
         :dark="dark"
-        :lang="html()"
+        :lang="vue()"
         basic
         wrap
         readonly
@@ -89,7 +89,7 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
       <code-mirror
         v-model="slotDemoSrc"
         :dark="dark"
-        :lang="html()"
+        :lang="vue()"
         basic
         wrap
         readonly
@@ -118,7 +118,7 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
       <code-mirror
         v-model="linterAndCrossBindingDemoSrc"
         :dark="dark"
-        :lang="html()"
+        :lang="vue()"
         basic
         wrap
         readonly
@@ -182,7 +182,7 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
       <code-mirror
         v-model="readonlyAndDisabledDemoSrc"
         :dark="dark"
-        :lang="html()"
+        :lang="vue()"
         basic
         wrap
         readonly
