@@ -54,7 +54,11 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 
 ### Supported Languages
 
+#### Official
+
+- [`@codemirror/lang-angular`](https://www.npmjs.com/package/@codemirror/lang-angular)
 - [`@codemirror/lang-cpp`](https://www.npmjs.com/package/@codemirror/lang-cpp)
+- [`@codemirror/lang-css`](https://www.npmjs.com/package/@codemirror/lang-css)
 - [`@codemirror/lang-html`](https://www.npmjs.com/package/@codemirror/lang-html)
 - [`@codemirror/lang-java`](https://www.npmjs.com/package/@codemirror/lang-java)
 - [`@codemirror/lang-javascript`](https://www.npmjs.com/package/@codemirror/lang-javascript)
@@ -65,7 +69,60 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 - [`@codemirror/lang-python`](https://www.npmjs.com/package/@codemirror/lang-python)
 - [`@codemirror/lang-rust`](https://www.npmjs.com/package/@codemirror/lang-rust)
 - [`@codemirror/lang-sql`](https://www.npmjs.com/package/@codemirror/lang-sql)
+- [`@codemirror/lang-vue`](https://www.npmjs.com/package/@codemirror/lang-vue)
+- [`@codemirror/lang-west`](https://www.npmjs.com/package/@codemirror/lang-west)
 - [`@codemirror/lang-xml`](https://www.npmjs.com/package/@codemirror/lang-xml)
+
+### Unofficial
+
+- [@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran)
+- [@phoenix-plugin-registry/petetnt.brackets-codemirror-go](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-go)
+- [`@acarl005/lang-sql`](https://www.npmjs.com/package/@acarl005/lang-sql)
+- [`@ark-us/codemirror-lang-taylor`](https://www.npmjs.com/package/@ark-us/codemirror-lang-taylor)
+- [`@formulavize/lang-fiz`](https://www.npmjs.com/package/@formulavize/lang-fiz)
+- [`@gravitywiz/codemirror-lang-gfcalc`](https://www.npmjs.com/package/@gravitywiz/codemirror-lang-gfcalc)
+- [`@nextjournal/lang-clojure`](https://www.npmjs.com/package/@nextjournal/lang-clojure)
+- [`@plutojl/lang-julia`](https://www.npmjs.com/package/@plutojl/lang-julia)
+- [`@polybase/codemirror-lang-javascript`](https://www.npmjs.com/package/@polybase/codemirror-lang-javascript) -[`@replit/codemirror-lang-nix`](https://www.npmjs.com/package/@replit/codemirror-lang-nix)
+- [`@replit/codemirror-lang-csharp`](https://www.npmjs.com/package/@replit/codemirror-lang-csharp)
+- [`@replit/codemirror-lang-solidity`](https://www.npmjs.com/package/@replit/codemirror-lang-solidity)
+- [`@replit/codemirror-lang-svelte`](https://www.npmjs.com/package/@replit/codemirror-lang-svelte)
+- [`@zhijiu/lang-sql`](https://www.npmjs.com/package/@zhijiu/lang-sql)
+- [`codemirror-lang-bool`](https://www.npmjs.com/package/codemirror-lang-bool)
+- [`codemirror-lang-brainfuck`](https://www.npmjs.com/package/codemirror-lang-brainfuck)
+- [`codemirror-lang-cherry`](https://www.npmjs.com/package/codemirror-lang-cherry)
+- [`codemirror-lang-chordpro`](https://www.npmjs.com/package/codemirror-lang-chordpro)
+- [`codemirror-lang-circom`](https://www.npmjs.com/package/codemirror-lang-circom)
+- [`codemirror-lang-edn`](https://www.npmjs.com/package/codemirror-lang-edn)
+- [`codemirror-lang-ejs`](https://www.npmjs.com/package/codemirror-lang-ejs)
+- [`codemirror-lang-fsl`](https://www.npmjs.com/package/codemirror-lang-fsl)
+- [`codemirror-lang-gml`](https://www.npmjs.com/package/codemirror-lang-gml)
+- [`codemirror-lang-golfscript`](https://www.npmjs.com/package/codemirror-lang-golfscript)
+- [`codemirror-lang-homescript`](https://www.npmjs.com/package/codemirror-lang-homescript)
+- [`codemirror-lang-html-n8n`](https://www.npmjs.com/package/codemirror-lang-html-n8n)
+- [`codemirror-lang-inform7`](https://www.npmjs.com/package/codemirror-lang-inform7)
+- [`codemirror-lang-j`](https://www.npmjs.com/package/codemirror-lang-j)
+- [`codemirror-lang-janet`](https://www.npmjs.com/package/codemirror-lang-janet)
+- [`codemirror-lang-k`](https://www.npmjs.com/package/codemirror-lang-k)
+- [`codemirror-lang-karol`](https://www.npmjs.com/package/codemirror-lang-karol)
+- [`codemirror-lang-mermaid`](https://www.npmjs.com/package/codemirror-lang-mermaid)
+- [`codemirror-lang-n8n-expression`](https://www.npmjs.com/package/codemirror-lang-n8n-expression)
+- [`codemirror-lang-prolog`](https://www.npmjs.com/package/codemirror-lang-prolog)
+- [`codemirror-lang-qpen`](https://www.npmjs.com/package/codemirror-lang-qpen)
+- [`codemirror-lang-qtam`](https://www.npmjs.com/package/codemirror-lang-qtam)
+- [`codemirror-lang-r`](https://www.npmjs.com/package/codemirror-lang-r)
+- [`codemirror-lang-rome-ast`](https://www.npmjs.com/package/codemirror-lang-rome-ast)
+- [`codemirror-lang-rome`](https://www.npmjs.com/package/codemirror-lang-rome)
+- [`codemirror-lang-rush`](https://www.npmjs.com/package/codemirror-lang-rush)
+- [`codemirror-lang-scopescript`](https://www.npmjs.com/package/codemirror-lang-scopescript)
+- [`codemirror-lang-statement`](https://www.npmjs.com/package/codemirror-lang-statement)
+- [`gcode-lang-codemirror`](https://www.npmjs.com/package/gcode-lang-codemirror)
+- [`gmail-lang`](https://www.npmjs.com/package/gmail-lang)
+- [`lang-bqn`](https://www.npmjs.com/package/lang-bqn)
+- [`lang-clojure`](https://www.npmjs.com/package/lang-clojure)
+- [`lang-d`](https://www.npmjs.com/package/lang-d)
+- [`lang-feel`](https://www.npmjs.com/package/lang-feel)
+- [`lang-firestore`](https://www.npmjs.com/package/lang-firestore)
 
 ### Supported Themes
 
@@ -312,6 +369,8 @@ const config: UserConfig = {
             '@codemirror/search',
             '@codemirror/state',
             '@codemirror/view',
+          ],
+          'codemirror-lang': [
             // Add the following as needed.
             '@codemirror/lang-html',
             '@codemirror/lang-javascript',
