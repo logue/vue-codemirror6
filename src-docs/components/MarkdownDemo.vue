@@ -20,14 +20,7 @@ defineProps({ dark: Boolean });
 <template>
   <div class="row">
     <div class="col-6">
-      <code-mirror
-        v-model="input"
-        :dark="dark"
-        :lang="markdown()"
-        wrap
-        basic
-        @ready="onReady"
-      />
+      <code-mirror v-model="input" :dark="dark" :lang="markdown()" wrap basic />
     </div>
     <div class="col-6">
       <vue-markdown v-model="input" class="markdown-body" />

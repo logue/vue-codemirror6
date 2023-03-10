@@ -67,6 +67,8 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
   (e: 'destroy'): void;
   /** State Changed */
   (e: 'change', value: EditorState): void;
+  /** Diagnostic Count */
+  (e: 'diagnosticCount'): number;
 }
 
 /** CodeMirror Component */
@@ -230,7 +232,16 @@ export default defineComponent({
      */
     linterConfig: {
       type: Object,
-      default: () => {},
+      default: () => undefined,
+    },
+    /**
+     * Forces any linters configured to run when the editor is idle to run right away.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
+     */
+    forceLinting: {
+      type: Boolean,
+      default: false,
     },
     /**
      * Show Linter Gutter
@@ -251,7 +262,7 @@ export default defineComponent({
      */
     gutterConfig: {
       type: Object,
-      default: () => {},
+      default: () => undefined,
     },
     /**
      * Using tag
@@ -269,6 +280,7 @@ export default defineComponent({
    * @param props  - Props
    * @param context - Context
    */
+  // @ts-ignore
   setup(props, context: SetupContext<CodeMirrorEmitsOptions>) {
     /** Editor DOM */
     const editor: Ref<HTMLElement | undefined> = ref();
@@ -382,6 +394,11 @@ export default defineComponent({
           return;
         }
 
+        // Enable Force Linting
+        if (props.linter && props.forceLinting) {
+          forceLinting(view.value);
+        }
+
         // Update
         view.value.dispatch({
           changes: { from: 0, to: view.value.state.doc.length, insert: value },
@@ -393,11 +410,13 @@ export default defineComponent({
     );
 
     // Extension (mostly props) Changed
-    watch(extensions, exts =>
-      // TODO: Reduce unchanched value
-      view.value.dispatch({
-        effects: StateEffect.reconfigure.of(exts),
-      })
+    watch(
+      () => extensions.value,
+      exts => {
+        view.value.dispatch({
+          effects: StateEffect.reconfigure.of(exts),
+        });
+      }
     );
 
     // focus changed
@@ -433,6 +452,7 @@ export default defineComponent({
           context.emit('change', view.value.state);
         },
       });
+
       await nextTick();
       context.emit('ready', {
         view: view,
@@ -620,16 +640,19 @@ export default defineComponent({
     //   </div>
     // </template>
     return h(
+      // @ts-ignore
       this.$props.tag,
       {
         ref: 'editor',
         class: 'vue-codemirror',
       },
+      // @ts-ignore
       this.$slots.default
         ? // Hide original content
           h(
             'aside',
             { style: 'display: none;', 'aria-hidden': 'true' },
+            // @ts-ignore
             slot(this.$slots.default)
           )
         : undefined

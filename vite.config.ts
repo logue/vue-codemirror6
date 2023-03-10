@@ -2,6 +2,7 @@ import { checker } from 'vite-plugin-checker';
 import { defineConfig, type UserConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import banner from 'vite-plugin-banner';
+import dts from 'vite-plugin-dts';
 import Vue from '@vitejs/plugin-vue';
 
 import { fileURLToPath, URL } from 'node:url';
@@ -54,6 +55,13 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
  * @see {@link ${pkg.homepage}}
  */
 `),
+      // vite-plugin-dts
+      // https://github.com/qmhc/vite-plugin-dts
+      mode === 'docs'
+        ? undefined
+        : dts({
+            tsConfigFilePath: './tsconfig.app.json',
+          }),
     ],
     optimizeDeps: {
       exclude: [

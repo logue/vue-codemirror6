@@ -35,6 +35,7 @@ rules:
   no-unused-vars: warn
   require-jsdoc: warn
   valid-jsdoc: off
+  import/default: off
   jsdoc/require-param-type: off
   jsdoc/require-param:
     - off
