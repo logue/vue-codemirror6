@@ -67,8 +67,6 @@ export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
   (e: 'destroy'): void;
   /** State Changed */
   (e: 'change', value: EditorState): void;
-  /** Diagnostic Count */
-  (e: 'diagnosticCount'): number;
 }
 
 /** CodeMirror Component */
@@ -145,6 +143,15 @@ export default defineComponent({
      * @see {@link https://codemirror.net/examples/tab/}
      */
     tab: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Allow Multiple Selection.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState^allowMultipleSelections}
+     */
+    allowMultipleSelections: {
       type: Boolean,
       default: false,
     },
@@ -358,6 +365,8 @@ export default defineComponent({
         props.wrap ? EditorView.lineWrapping : undefined,
         // Indent with tab
         props.tab ? keymap.of([indentWithTab]) : undefined,
+        // Allow Multiple Selections
+        EditorState.allowMultipleSelections.of(props.allowMultipleSelections),
         // Indent tab size
         props.tabSize ? EditorState.tabSize.of(props.tabSize) : undefined,
         // locale settings
@@ -371,7 +380,7 @@ export default defineComponent({
           ? EditorState.lineSeparator.of(props.lineSeparator)
           : undefined,
         // Lang
-        props.lang ? props.lang : undefined,
+        props.lang ? props.lang.extension : undefined,
         // Append Linter settings
         props.linter ? linter(props.linter, props.linterConfig) : undefined,
         // Show 🔴 to error line when linter enabled.
@@ -380,7 +389,7 @@ export default defineComponent({
           : undefined,
         // Placeholder
         props.placeholder ? placeholder(props.placeholder) : undefined,
-        // Append Extensions (such as basic-setup)
+        // Append Extensions
         ...props.extensions,
       ])
     );
@@ -416,7 +425,8 @@ export default defineComponent({
         view.value.dispatch({
           effects: StateEffect.reconfigure.of(exts),
         });
-      }
+      },
+      { deep: true }
     );
 
     // focus changed
