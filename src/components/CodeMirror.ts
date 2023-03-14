@@ -422,11 +422,12 @@ export default defineComponent({
     watch(
       () => extensions.value,
       exts => {
-        view.value.dispatch({
-          effects: StateEffect.reconfigure.of(exts),
-        });
-      },
-      { deep: true }
+        exts.forEach(ext =>
+          view.value.dispatch({
+            effects: StateEffect.reconfigure.of(ext),
+          })
+        );
+      }
     );
 
     // focus changed
