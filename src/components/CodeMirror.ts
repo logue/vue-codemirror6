@@ -422,11 +422,9 @@ export default defineComponent({
     watch(
       () => extensions.value,
       exts => {
-        exts.forEach(ext =>
-          view.value.dispatch({
-            effects: StateEffect.reconfigure.of(ext),
-          })
-        );
+        view.value.dispatch({
+          effects: StateEffect.reconfigure.of(exts),
+        });
       }
     );
 

@@ -825,10 +825,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.15.2":
-  version: 18.15.2
-  resolution: "@types/node@npm:18.15.2"
-  checksum: 6db83062d295f9da63e7b24477f734b497170a577b21e0c13637d6f355d53713f875536e52ff02938221330d919700b5ed787dc493e32624a3ecb6c86105cfc8
+"@types/node@npm:^18.15.3":
+  version: 18.15.3
+  resolution: "@types/node@npm:18.15.3"
+  checksum: 31b1d92475a82c30de29aa6c0771b18a276552d191283b4423ba2d61b3f01159bf0d02576c0b7cc834b043997893800db6bb47f246083ed85aa45e79c80875d7
   languageName: node
   linkType: hard
 
@@ -2383,9 +2383,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^40.0.1":
-  version: 40.0.1
-  resolution: "eslint-plugin-jsdoc@npm:40.0.1"
+"eslint-plugin-jsdoc@npm:^40.0.2":
+  version: 40.0.2
+  resolution: "eslint-plugin-jsdoc@npm:40.0.2"
   dependencies:
     "@es-joy/jsdoccomment": ~0.36.1
     comment-parser: 1.3.1
@@ -2396,7 +2396,7 @@ __metadata:
     spdx-expression-parse: ^3.0.1
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
-  checksum: 19c5de2f8d0dec11c981eccce7255a8cc58e37c8d697c75144913879b16a9ea90995764bfeb00cbfc2b0678e28210cbe62a6b7865b05e756e887fffc892baf61
+  checksum: 87fe23ba30972ecf49522c70466d4dbc4a5b28bf2c999f6995357a0fc8702bee1e5300e2393c72990d2baa54607592eeb3b3ff771d3e962be01d21da7a2087c4
   languageName: node
   linkType: hard
 
@@ -5723,7 +5723,7 @@ __metadata:
     "@codemirror/lang-markdown": ^6.1.0
     "@codemirror/lang-vue": ^0.1.1
     "@types/lodash": ^4.14.191
-    "@types/node": ^18.15.2
+    "@types/node": ^18.15.3
     "@typescript-eslint/eslint-plugin": ^5.55.0
     "@typescript-eslint/parser": ^5.55.0
     "@vitejs/plugin-vue": ^4.0.0
@@ -5739,7 +5739,7 @@ __metadata:
     eslint-linter-browserify: ^8.36.0
     eslint-plugin-html: ^7.1.0
     eslint-plugin-import: ^2.27.5
-    eslint-plugin-jsdoc: ^40.0.1
+    eslint-plugin-jsdoc: ^40.0.2
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-tsdoc: ^0.2.17
     eslint-plugin-vue: ^9.9.0
