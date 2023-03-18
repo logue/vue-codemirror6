@@ -1,26 +1,19 @@
-root: true
 env:
   browser: true
-  es6: true
+  es2022: true # Vuetify recommended
   node: true
 extends:
-  - eslint:recommended
-  - google
-  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:vue/vue3-recommended
+  - standard-with-typescript
   - plugin:import/recommended
   - plugin:import/typescript
-  - plugin:jsdoc/recommended
-  - plugin:vue/vue3-recommended
   - plugin:vuejs-accessibility/recommended
   - plugin:yaml/recommended
   - '@vue/eslint-config-prettier'
-plugins:
-  - '@typescript-eslint'
-  - jsdoc
-  - tsdoc
-  - html
-  - yaml
-  - vue
+overrides:
+  - files:
+      - '*.html'
+    processor: vue/.vue
 parser: vue-eslint-parser
 parserOptions:
   ecmaVersion: latest
@@ -28,21 +21,27 @@ parserOptions:
   sourceType: module
   createDefaultProgram: true
   project:
-    - ./tsconfig.json
+    - ./tsconfig.app.json
+    - ./tsconfig.node.json
+  extraFileExtensions:
+    - .vue
+plugins:
+  - import
+  - tsdoc
+  - html
+  - yaml
+  - vue
 rules:
-  new-cap: off
-  no-invalid-this: off
-  no-unused-vars: warn
   require-jsdoc: warn
-  valid-jsdoc: off
+  no-unused-vars: warn
+  '@typescript-eslint/ban-ts-comment': off
+  '@typescript-eslint/no-confusing-void-expression': off
+  '@typescript-eslint/no-floating-promises': off
+  '@typescript-eslint/no-invalid-void-type': off
+  '@typescript-eslint/prefer-nullish-coalescing': off
+  '@typescript-eslint/strict-boolean-expressions': off
+  '@typescript-eslint/triple-slash-reference': off
   import/default: off
-  jsdoc/require-param-type: off
-  jsdoc/require-param:
-    - off
-    - enableRootFixer: false
-  jsdoc/require-returns-description: off
-  jsdoc/require-returns-type: off
-  jsdoc/require-returns: off
   tsdoc/syntax: warn
   vue/html-self-closing:
     - error

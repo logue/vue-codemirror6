@@ -21,7 +21,7 @@ interface Options extends VNodeProps {
   'aria-hidden'?: string;
 }
 
-const adaptOnsV3 = (ons: Object) => {
+const adaptOnsV3 = (ons: any): any => {
   if (!ons) return {};
   return Object.entries(ons).reduce((ret, [key, handler]) => {
     key = key.charAt(0).toUpperCase() + key.slice(1);
@@ -54,6 +54,6 @@ function h(
 }
 
 const slot = (defaultSlots: any): Slots =>
-  typeof defaultSlots == 'function' ? defaultSlots() : defaultSlots;
+  typeof defaultSlots === 'function' ? defaultSlots() : defaultSlots;
 
 export { slot, h as default };

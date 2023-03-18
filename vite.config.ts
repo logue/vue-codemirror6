@@ -1,3 +1,6 @@
+import { fileURLToPath, URL } from 'node:url';
+import { writeFileSync } from 'node:fs';
+
 import { checker } from 'vite-plugin-checker';
 import { defineConfig, type UserConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -5,10 +8,8 @@ import banner from 'vite-plugin-banner';
 import dts from 'vite-plugin-dts';
 import Vue from '@vitejs/plugin-vue';
 
-import { fileURLToPath, URL } from 'node:url';
-import fs from 'node:fs';
-
-const pkg = require('./package.json');
+// @ts-nocheck
+import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
@@ -165,7 +166,7 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
   };
 
   // Write meta data.
-  fs.writeFileSync(
+  writeFileSync(
     fileURLToPath(new URL('./src/Meta.ts', import.meta.url)),
     `import type MetaInterface from '@/interfaces/MetaInterface';
 

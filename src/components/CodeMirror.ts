@@ -23,6 +23,7 @@ import { compact, trim } from 'lodash';
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
 import {
+  Compartment,
   EditorSelection,
   EditorState,
   StateEffect,
@@ -91,7 +92,7 @@ export default defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#view.EditorView^theme}
      */
     theme: {
-      type: Object as PropType<{ [selector: string]: StyleSpec }>,
+      type: Object as PropType<Record<string, StyleSpec>>,
       default: () => {},
     },
     /** Dark Mode */
@@ -287,7 +288,7 @@ export default defineComponent({
    * @param props  - Props
    * @param context - Context
    */
-  // @ts-ignore
+  // @ts-expect-error
   setup(props, context: SetupContext<CodeMirrorEmitsOptions>) {
     /** Editor DOM */
     const editor: Ref<HTMLElement | undefined> = ref();
@@ -324,7 +325,7 @@ export default defineComponent({
 
     /** Cursor Position */
     const cursor: WritableComputedRef<number> = computed({
-      get: () => view.value.state.selection.main.head || 0,
+      get: () => view.value.state.selection.main.head,
       set: a => view.value.dispatch({ selection: { anchor: a } }),
     });
 
@@ -347,6 +348,12 @@ export default defineComponent({
       () => view.value.state.doc.length
     );
 
+    // Synamic Reconfiguration
+    // @see https://codemirror.net/examples/config/
+
+    const language = new Compartment();
+    const tabSize = new Compartment();
+
     /** Get CodeMirror Extension */
     const extensions: ComputedRef<Extension[]> = computed(() =>
       // TODO: Ignore previous prop was not changed.
@@ -368,7 +375,9 @@ export default defineComponent({
         // Allow Multiple Selections
         EditorState.allowMultipleSelections.of(props.allowMultipleSelections),
         // Indent tab size
-        props.tabSize ? EditorState.tabSize.of(props.tabSize) : undefined,
+        props.tabSize
+          ? tabSize.of(EditorState.tabSize.of(props.tabSize))
+          : undefined,
         // locale settings
         props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
         // Readonly option
@@ -380,7 +389,7 @@ export default defineComponent({
           ? EditorState.lineSeparator.of(props.lineSeparator)
           : undefined,
         // Lang
-        props.lang ? props.lang.extension : undefined,
+        props.lang ? language.of(props.lang) : undefined,
         // Append Linter settings
         props.linter ? linter(props.linter, props.linterConfig) : undefined,
         // Show 🔴 to error line when linter enabled.
@@ -435,7 +444,7 @@ export default defineComponent({
     onMounted(async () => {
       /** Initial value */
       let value: string | Text = doc.value;
-      if (editor.value && editor.value.childNodes[0]) {
+      if (editor.value?.childNodes[0]) {
         // when slot mode, overwrite initial value
         if (doc.value !== '') {
           console.warn(
@@ -456,6 +465,7 @@ export default defineComponent({
           // console.log(view.state.doc.toString(), tr);
           if (tr.changes.empty) return;
           // child-to-parent binding
+          // eslint-disable-next-line @typescript-eslint/no-base-to-string
           const v = view.value.state.doc.toString();
           context.emit('update:modelValue', v);
           context.emit('change', view.value.state);
@@ -464,7 +474,7 @@ export default defineComponent({
 
       await nextTick();
       context.emit('ready', {
-        view: view,
+        view,
         state: view.value.state,
         container: editor.value,
       });
@@ -472,10 +482,8 @@ export default defineComponent({
 
     /** Destroy */
     onUnmounted(() => {
-      if (view.value) {
-        view.value.destroy();
-        context.emit('destroy');
-      }
+      view.value.destroy();
+      context.emit('destroy');
     });
 
     /**
@@ -483,7 +491,7 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
-    const lint = () => {
+    const lint = (): void => {
       if (props.linter) {
         forceLinting(view.value);
       }
@@ -494,7 +502,7 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/examples/config/#top-level-reconfiguration}
      */
-    const forceReconfigure = () => {
+    const forceReconfigure = (): void => {
       // Deconfigure all Extensions
       view.value.dispatch({
         effects: StateEffect.reconfigure.of([]),
@@ -560,7 +568,7 @@ export default defineComponent({
       replacement: string | Text,
       from: number,
       to: number
-    ) =>
+    ): void =>
       view.value.dispatch({
         changes: { from, to, insert: replacement },
       });
@@ -570,7 +578,7 @@ export default defineComponent({
      *
      * @param replacement - replacement text
      */
-    const replaceSelection = (replacement: string | Text) =>
+    const replaceSelection = (replacement: string | Text): void =>
       view.value.dispatch(view.value.state.replaceSelection(replacement));
     /**
      * Set the cursor position.
@@ -584,7 +592,7 @@ export default defineComponent({
      * @param anchor - anchor position
      * @param head -
      */
-    const setSelection = (anchor: number, head?: number) =>
+    const setSelection = (anchor: number, head?: number): void =>
       view.value.dispatch({ selection: { anchor, head } });
     /**
      * Sets a new set of selections. There must be at least one selection in the given array.
@@ -595,7 +603,7 @@ export default defineComponent({
     const setSelections = (
       ranges: readonly SelectionRange[],
       primary?: number
-    ) =>
+    ): void =>
       view.value.dispatch({
         selection: EditorSelection.create(ranges, primary),
       });
@@ -604,7 +612,7 @@ export default defineComponent({
      *
      * @param f - function
      */
-    const extendSelectionsBy = (f: Function) =>
+    const extendSelectionsBy = (f: any): void =>
       view.value.dispatch({
         selection: EditorSelection.create(
           selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
@@ -614,6 +622,7 @@ export default defineComponent({
     /** Export properties and functions */
     context.expose({
       editor,
+      view,
       cursor,
       selection,
       state,
@@ -649,19 +658,19 @@ export default defineComponent({
     //   </div>
     // </template>
     return h(
-      // @ts-ignore
+      // @ts-expect-error
       this.$props.tag,
       {
         ref: 'editor',
         class: 'vue-codemirror',
       },
-      // @ts-ignore
+      // @ts-expect-error
       this.$slots.default
         ? // Hide original content
           h(
             'aside',
             { style: 'display: none;', 'aria-hidden': 'true' },
-            // @ts-ignore
+            // @ts-expect-error
             slot(this.$slots.default)
           )
         : undefined

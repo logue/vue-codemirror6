@@ -2,5 +2,5 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 
-// @ts-ignore
+// @ts-expect-error
 createApp(App).mount('#app');

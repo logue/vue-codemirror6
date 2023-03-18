@@ -5,7 +5,8 @@
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "package.json"
   ],
   "compilerOptions": {
     "composite": true,
