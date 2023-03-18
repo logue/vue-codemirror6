@@ -103,7 +103,6 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
             ? undefined
             : [
                 'vue',
-                'lodash',
                 'vue-demi',
                 'codemirror',
                 '@codemirror/autocomplete',
@@ -130,7 +129,6 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
             '@codemirror/state': 'state',
             '@codemirror/view': 'view',
             'vue-demi': 'VueDemi',
-            lodash: 'lodash',
             vue: 'Vue',
           },
           manualChunks:

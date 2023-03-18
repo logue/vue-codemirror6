@@ -8,17 +8,14 @@ import {
   shallowRef,
   watch,
   type ComputedRef,
-  type ObjectEmitsOptions,
   type PropType,
   type Ref,
-  type SetupContext,
   type ShallowRef,
   type WritableComputedRef,
 } from 'vue-demi';
 
 // Helpers
 import h, { slot } from '@/helpers/h-demi';
-import { compact, trim } from 'lodash';
 
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
@@ -46,29 +43,6 @@ import {
 } from '@codemirror/lint';
 import type { LanguageSupport } from '@codemirror/language';
 import type { StyleSpec } from 'style-mod';
-
-/** Emit Interface */
-export interface CodeMirrorEmitsOptions extends ObjectEmitsOptions {
-  /** Model Update */
-  (e: 'update:modelValue', value: string | Text): void;
-  /** CodeMirror ViewUpdate */
-  (e: 'update', value: ViewUpdate): void;
-  /** CodeMirror onFocus */
-  (e: 'focus', value: boolean): void;
-  /** CodeMirror onReady */
-  (
-    e: 'ready',
-    value: {
-      view: EditorView;
-      state: EditorState;
-      container: HTMLElement;
-    }
-  ): void;
-  /** CodeMirror onDestroy */
-  (e: 'destroy'): void;
-  /** State Changed */
-  (e: 'change', value: EditorState): void;
-}
 
 /** CodeMirror Component */
 export default defineComponent({
@@ -231,7 +205,7 @@ export default defineComponent({
      */
     linter: {
       type: Function as PropType<LintSource>,
-      default: undefined,
+      default: () => undefined,
     },
     /**
      * Linter Config
@@ -281,15 +255,31 @@ export default defineComponent({
     },
   },
   /** Emits */
-  emits: ['update:modelValue', 'update', 'ready', 'focus', 'change', 'destroy'],
+  emits: {
+    /** Model Update */
+    'update:modelValue': (value: string | Text) => value,
+    /** CodeMirror ViewUpdate */
+    update: (value: ViewUpdate) => value,
+    /** CodeMirror onReady */
+    ready: (value: {
+      view: EditorView;
+      state: EditorState;
+      container: HTMLElement | undefined;
+    }) => value,
+    /** CodeMirror onFocus */
+    focus: (value: boolean) => value,
+    /** State Changed */
+    change: (value: EditorState) => value,
+    /** CodeMirror onDestroy */
+    destroy: () => true,
+  },
   /**
    * Setup
    *
    * @param props  - Props
    * @param context - Context
    */
-  // @ts-expect-error
-  setup(props, context: SetupContext<CodeMirrorEmitsOptions>) {
+  setup(props, context) {
     /** Editor DOM */
     const editor: Ref<HTMLElement | undefined> = ref();
 
@@ -357,7 +347,7 @@ export default defineComponent({
     /** Get CodeMirror Extension */
     const extensions: ComputedRef<Extension[]> = computed(() =>
       // TODO: Ignore previous prop was not changed.
-      compact<Extension>([
+      [
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // Toggle minimal setup
@@ -400,7 +390,7 @@ export default defineComponent({
         props.placeholder ? placeholder(props.placeholder) : undefined,
         // Append Extensions
         ...props.extensions,
-      ])
+      ].filter((extension): extension is Extension => !!extension)
     );
 
     // for parent-to-child binding.
@@ -429,12 +419,12 @@ export default defineComponent({
 
     // Extension (mostly props) Changed
     watch(
-      () => extensions.value,
+      extensions,
       exts => {
         view.value.dispatch({
           effects: StateEffect.reconfigure.of(exts),
         });
-      }
+      },
     );
 
     // focus changed
@@ -451,7 +441,7 @@ export default defineComponent({
             '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
           );
         }
-        value = trim((editor.value.childNodes[0] as HTMLElement).innerText);
+        value = (editor.value.childNodes[0] as HTMLElement).innerText.trim();
       }
 
       // Register Codemirror
@@ -464,9 +454,7 @@ export default defineComponent({
           // TODO: Emit lint error event
           // console.log(view.state.doc.toString(), tr);
           if (tr.changes.empty) return;
-          // child-to-parent binding
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          const v = view.value.state.doc.toString();
+          const v = view.value.state.doc;
           context.emit('update:modelValue', v);
           context.emit('change', view.value.state);
         },
@@ -474,7 +462,7 @@ export default defineComponent({
 
       await nextTick();
       context.emit('ready', {
-        view,
+        view: view.value,
         state: view.value.state,
         container: editor.value,
       });
@@ -658,19 +646,16 @@ export default defineComponent({
     //   </div>
     // </template>
     return h(
-      // @ts-expect-error
       this.$props.tag,
       {
         ref: 'editor',
         class: 'vue-codemirror',
       },
-      // @ts-expect-error
       this.$slots.default
         ? // Hide original content
           h(
             'aside',
             { style: 'display: none;', 'aria-hidden': 'true' },
-            // @ts-expect-error
             slot(this.$slots.default)
           )
         : undefined
