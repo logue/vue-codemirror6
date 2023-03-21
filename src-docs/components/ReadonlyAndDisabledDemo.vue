@@ -1,11 +1,11 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 /** Readonly */
-const isReadonly = ref(true);
+const isReadonly: Ref<boolean> = ref(true);
 /** Disabled (Not Editable) */
-const isDisabled = ref(false);
+const isDisabled: Ref<boolean> = ref(false);
 
 // Sync dark mode
 defineProps({ dark: Boolean });

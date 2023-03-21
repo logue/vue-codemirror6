@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import CodeMirror from 'vue-codemirror6';
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 

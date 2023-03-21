@@ -62,6 +62,7 @@ settings:
       map:
         - ['@', './src']
         - ['~', './node_modules']
+        - ['vue-codemirror6', './src/components/CodeMirror.ts']
       extensions:
         - .js
         - .ts

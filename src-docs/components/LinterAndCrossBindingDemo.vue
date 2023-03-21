@@ -1,18 +1,20 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
-import { diagnosticCount } from '@codemirror/lint';
+import { diagnosticCount, type Diagnostic } from '@codemirror/lint';
 import { esLint, javascript } from '@codemirror/lang-javascript';
+// @ts-ignore
 import eslint from 'eslint-linter-browserify';
+import type { EditorView, ViewUpdate } from '@codemirror/view';
 
 /** Demo code */
-const value = ref(`document.querySelectorAll('.btn').forEach(
+const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'));
 );`);
 
 /** Linter Error count */
-const errorCount = ref(0);
+const errorCount: Ref<number> = ref(0);
 
 /**
  * JavaScript language Linter Setting.
@@ -20,7 +22,7 @@ const errorCount = ref(0);
  *
  * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
  */
-const linter = esLint(
+const linter: (view: EditorView) => Diagnostic[] = esLint(
   // eslint-disable-next-line
   new eslint.Linter(),
   {
@@ -39,8 +41,8 @@ const linter = esLint(
 defineProps({ dark: Boolean });
 
 /** Get ViewUpdate for update lint error count. */
-const onUpdate = update => {
-  if (update.flags === 0) {
+const onUpdate = (update: ViewUpdate) => {
+  if (!update.docChanged) {
     return;
   }
   errorCount.value = diagnosticCount(update.state);

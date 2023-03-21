@@ -1,5 +1,5 @@
 <!-- eslint-disable import/no-duplicates -->
-<script setup>
+<script setup lang="ts">
 import CodeMirror from 'vue-codemirror6';
 import { useDark } from '@vueuse/core';
 import { vue } from '@codemirror/lang-vue';

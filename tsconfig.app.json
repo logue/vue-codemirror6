@@ -12,8 +12,7 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
-    "allowJs": true,
-    "paths": { "@/*": ["./src/*"] },
+    "paths": { "@/*": ["./src/*"], "vue-codemirror6": ["./src/index.ts"] },
     "lib": ["ESNext", "DOM", "DOM.Iterable"]
   }
 }

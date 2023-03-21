@@ -1,12 +1,12 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, type Ref } from 'vue';
 
 import CodeMirror from 'vue-codemirror6';
 import VueMarkdown from 'vue-markdown-wasm';
 import { markdown } from '@codemirror/lang-markdown';
 
 /** Demo text */
-const input = ref(`# The quick brown fox jumps over the lazy dog.
+const input: Ref<string> = ref(`# The quick brown fox jumps over the lazy dog.
 
 [Lorem ipsum](https://www.lipsum.com/) dolor sit amet, **consectetur** adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

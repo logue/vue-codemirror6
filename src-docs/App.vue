@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ToggleTheme from './components/ToggleTheme.vue';
 import DemoPage from './DemoPage.vue';
 </script>
