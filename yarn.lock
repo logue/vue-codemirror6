@@ -4667,12 +4667,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "prettier@npm:2.8.5"
+"prettier@npm:^2.8.6":
+  version: 2.8.6
+  resolution: "prettier@npm:2.8.6"
   bin:
     prettier: bin-prettier.js
-  checksum: b7f8d30e14061e0478bc5a59d4d889688d804c173a0daa91b1b85dc08eef5eb6956d1b59f4037770776fda5b967f6c9ca3b7a8a43c50bedb4c7b182029f865aa
+  checksum: 8ac94fa67aec0e65743ea15ebf954ef2f1e52638abd129dc04e8b49e8bb3224c0233c98df6b5c98efd31bd2a43866590486559438ee4ead09dc81be389068572
   languageName: node
   linkType: hard
 
@@ -4870,14 +4870,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "rimraf@npm:4.4.0"
+"rimraf@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "rimraf@npm:4.4.1"
   dependencies:
     glob: ^9.2.0
   bin:
     rimraf: dist/cjs/src/bin.js
-  checksum: 0cedaf9d138589d1bb0ab851f05804c6d30827aa66563472b04ab76245f83537e23e7b94f1f79ea6c368c0d84a18fcde6a756fca3a44c967e08792671b3a0a6e
+  checksum: b786adc02651e2e24bbedb04bbdea80652fc9612632931ff2d9f898c5e4708fe30956186597373c568bd5230a4dc2fadfc816ccacba8a1daded3a006a6b74f1a
   languageName: node
   linkType: hard
 
@@ -5847,8 +5847,8 @@ __metadata:
     husky: ^8.0.3
     lint-staged: ^13.2.0
     npm-run-all: ^4.1.5
-    prettier: ^2.8.5
-    rimraf: ^4.4.0
+    prettier: ^2.8.6
+    rimraf: ^4.4.1
     rollup-plugin-visualizer: ^5.9.0
     sass: ^1.59.3
     typescript: ^4.9.5
