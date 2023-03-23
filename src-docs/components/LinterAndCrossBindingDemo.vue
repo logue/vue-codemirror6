@@ -2,11 +2,16 @@
 import { ref, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
-import { diagnosticCount, type Diagnostic } from '@codemirror/lint';
 import { esLint, javascript } from '@codemirror/lang-javascript';
 // @ts-ignore
 import eslint from 'eslint-linter-browserify';
-import type { EditorView, ViewUpdate } from '@codemirror/view';
+import type { LintSource } from '@codemirror/lint';
+
+// Sync Dark mode
+defineProps({ dark: Boolean });
+
+/** CodeMirror Instance */
+const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 
 /** Demo code */
 const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
@@ -22,7 +27,7 @@ const errorCount: Ref<number> = ref(0);
  *
  * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
  */
-const linter: (view: EditorView) => Diagnostic[] = esLint(
+const linter: LintSource = esLint(
   // eslint-disable-next-line
   new eslint.Linter(),
   {
@@ -37,57 +42,65 @@ const linter: (view: EditorView) => Diagnostic[] = esLint(
   }
 );
 
-// Sync Dark mode
-defineProps({ dark: Boolean });
-
-/** Get ViewUpdate for update lint error count. */
-const onUpdate = (update: ViewUpdate) => {
-  if (!update.docChanged) {
-    return;
-  }
-  errorCount.value = diagnosticCount(update.state);
-};
+/** Detect Error Count */
+const onHasError = (v: number) => (errorCount.value = v);
 </script>
 
+<!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <div class="row">
-    <div class="col-6 mb-3">
+    <div class="col-6">
       <code-mirror
+        ref="cm"
         v-model="value"
         :dark="dark"
         :lang="javascript()"
         :linter="linter"
         basic
+        class="mb-3"
         gutter
         wrap
-        @update="onUpdate"
+        @has-error="onHasError"
       />
+      <div class="row mb-3">
+        <div class="col-6">
+          <div class="input-group">
+            <label for="count" class="input-group-text">Count</label>
+            <input
+              id="count"
+              type="text"
+              :value="cm?.length"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-group">
+            <label for="diagnosticCount" class="input-group-text">
+              Diagnostic Count
+            </label>
+            <input
+              id="diagnosticCount"
+              type="number"
+              class="form-control"
+              :value="cm?.diagnosticCount"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-6 mb-3">
+    <div class="col-6">
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
       <textarea v-model="value" rows="4" class="form-control"></textarea>
     </div>
-    <div class="col-12 mb-3">
-      <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-      <label for="count" class="visually-hidden">Linter Error Count</label>
-      <div class="input-group">
-        <div class="input-group-text">Linter Error Count</div>
-        <input
-          id="count"
-          type="number"
-          class="form-control"
-          :value="errorCount"
-          readonly
-        />
-      </div>
-      <p>
-        <kbd>Ctrl-Shift-m</kbd>
-        (
-        <kbd>Cmd-Shift-m</kbd>
-        on macOS) to show lint panel.
-        <kbd>F8</kbd>
-        key shows the next error.
-      </p>
-    </div>
   </div>
+  <p>
+    <kbd>Ctrl-Shift-m</kbd>
+    (
+    <kbd>Cmd-Shift-m</kbd>
+    on macOS) to show lint panel.
+    <kbd>F8</kbd>
+    key shows the next error.
+  </p>
 </template>

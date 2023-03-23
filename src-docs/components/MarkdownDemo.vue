@@ -5,6 +5,9 @@ import CodeMirror from 'vue-codemirror6';
 import VueMarkdown from 'vue-markdown-wasm';
 import { markdown } from '@codemirror/lang-markdown';
 
+/** CodeMirror Instance */
+const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
+
 /** Demo text */
 const input: Ref<string> = ref(`# The quick brown fox jumps over the lazy dog.
 
@@ -20,7 +23,14 @@ defineProps({ dark: Boolean });
 <template>
   <div class="row">
     <div class="col-6">
-      <code-mirror v-model="input" :dark="dark" :lang="markdown()" wrap basic />
+      <code-mirror
+        ref="cm"
+        v-model="input"
+        :dark="dark"
+        :lang="markdown()"
+        wrap
+        basic
+      />
     </div>
     <div class="col-6">
       <vue-markdown v-model="input" class="markdown-body" />

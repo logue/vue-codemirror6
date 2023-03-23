@@ -321,20 +321,40 @@ export default defineComponent({
 | update | When CodeMirror state changed. Returns [ViewUpdate](https://codemirror.net/docs/ref/#view.ViewUpdate) object. |
 | change | Value changed. Returns [EditorState](https://codemirror.net/docs/ref/#state.EditorState)                      |
 
-## Methods
+## Parameter / Function
 
-| Method           | Description                                                                                         |
-| ---------------- | --------------------------------------------------------------------------------------------------- |
-| selection        | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
-| cursor           | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
-| state            | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
-| focus            | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
-| lint             | Force run linter (Only if `linter` prop is specified)                                               |
-| forceReconfigure | Re register all extensions.                                                                         |
+```vue
+<script setup lang="ts">
+import { ref, onMounted, type Ref, type PropType } from 'vue';
+import CodeMirror from 'vue-codemirror6';
 
-The instructions below are compatible methods for those familiar with [codemirror5](https://codemirror.net/5/). Since the above method is usually sufficient, its active use is not recommended.
+const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 
-| Method                                                              | Description                                                                                      |
+onMounted(() => {
+  console.log(cm.value?.json);
+});
+</script>
+<template>
+  <code-mirror ref="cm" />
+</template>
+```
+
+| Function / Parameter | Description                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| selection            | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
+| cursor               | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
+| state                | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
+| json                 | Get and set state to a JSON-serializable object.                                                    |
+| focus                | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
+| lint                 | Force run linter (Only if `linter` prop is specified)                                               |
+| forceReconfigure     | Re register all extensions.                                                                         |
+
+### CodeMirror5 backward compatible functions
+
+The instructions below are compatible methods for those familiar with [codemirror5](https://codemirror.net/5/).
+Since the above method is usually sufficient, its **active use is not recommended**.
+
+| Function                                                            | Description                                                                                      |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | getRange(from?: number, to?: number)                                | Get the text between the given points in the editor.                                             |
 | getLine(number: number)                                             | Get the content of line.                                                                         |
