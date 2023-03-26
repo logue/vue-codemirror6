@@ -5,7 +5,8 @@ import CodeMirror from 'vue-codemirror6';
 import { esLint, javascript } from '@codemirror/lang-javascript';
 // @ts-ignore
 import eslint from 'eslint-linter-browserify';
-import type { LintSource } from '@codemirror/lint';
+import { diagnosticCount, type LintSource } from '@codemirror/lint';
+import type { ViewUpdate } from '@codemirror/view';
 
 // Sync Dark mode
 defineProps({ dark: Boolean });
@@ -42,8 +43,10 @@ const linter: LintSource = esLint(
   }
 );
 
-/** Detect Error Count */
-const onHasError = (v: number) => (errorCount.value = v);
+/** Get ViewUpdate for update lint error count. */
+const onUpdate = (update: ViewUpdate) => {
+  errorCount.value = diagnosticCount(update.state);
+};
 </script>
 
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
@@ -60,7 +63,7 @@ const onHasError = (v: number) => (errorCount.value = v);
         class="mb-3"
         gutter
         wrap
-        @has-error="onHasError"
+        @Update="onUpdate"
       />
       <div class="row mb-3">
         <div class="col-6">

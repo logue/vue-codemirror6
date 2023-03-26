@@ -814,10 +814,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.15.5":
-  version: 18.15.5
-  resolution: "@types/node@npm:18.15.5"
-  checksum: 5fbf3453bd5ce1402bb2964e55d928fc8a8a7de5451b1b0fe66587fecb8a3eb86854ca9cefa5076a5971e2cff00e1773ceeb5d872a54f6c6ddfbbc1064b4e91a
+"@types/node@npm:^18.15.10":
+  version: 18.15.10
+  resolution: "@types/node@npm:18.15.10"
+  checksum: 9aeae0b683eda82892def5315812bdee3f1a28c4898b7e70f8e2514564538b16c4dccbe8339c1266f8fc1d707a48f152689264a854f5ebc2eba5011e793612d9
   languageName: node
   linkType: hard
 
@@ -1490,6 +1490,15 @@ __metadata:
   version: 1.0.0
   resolution: "boolbase@npm:1.0.0"
   checksum: 3e25c80ef626c3a3487c73dbfc70ac322ec830666c9ad915d11b701142fab25ec1e63eff2c450c74347acfd2de854ccde865cd79ef4db1683f7c7b046ea43bb0
+  languageName: node
+  linkType: hard
+
+"bootstrap@npm:5.3.0-alpha2":
+  version: 5.3.0-alpha2
+  resolution: "bootstrap@npm:5.3.0-alpha2"
+  peerDependencies:
+    "@popperjs/core": ^2.11.6
+  checksum: 6459d3af5ae3f8ab3b1e9c006b1ac6afa9f9571f0f65b1f03563f1b050e98dcc8eeaa00a4c4f31518a709563569931261e735ea410969d6e5bbcd16691dc400e
   languageName: node
   linkType: hard
 
@@ -4667,12 +4676,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.6":
-  version: 2.8.6
-  resolution: "prettier@npm:2.8.6"
+"prettier@npm:^2.8.7":
+  version: 2.8.7
+  resolution: "prettier@npm:2.8.7"
   bin:
     prettier: bin-prettier.js
-  checksum: 8ac94fa67aec0e65743ea15ebf954ef2f1e52638abd129dc04e8b49e8bb3224c0233c98df6b5c98efd31bd2a43866590486559438ee4ead09dc81be389068572
+  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
   languageName: node
   linkType: hard
 
@@ -4957,16 +4966,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.59.3":
-  version: 1.59.3
-  resolution: "sass@npm:1.59.3"
+"sass@npm:^1.60.0":
+  version: 1.60.0
+  resolution: "sass@npm:1.60.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 839b5282cdf7d0ba3fdbfb605277dd584a8c40fa3e3e58ad905d64cd812acfb82ff0a4072d4981673db884ee61505472ff07c5c5a8a497f16ba013b183ba6473
+  checksum: 06e163c37af466ec194cf2ed8dab616372afeb19322d356947d48ea664fc38398ae77c4d91bea9cb0ace954ce289d5518d0f8555ecc49f6bf2539a8ef52fc580
   languageName: node
   linkType: hard
 
@@ -5823,13 +5832,14 @@ __metadata:
     "@codemirror/lang-markdown": ^6.1.0
     "@codemirror/lang-vue": ^0.1.1
     "@types/lodash": ^4.14.191
-    "@types/node": ^18.15.5
+    "@types/node": ^18.15.10
     "@typescript-eslint/eslint-plugin": ^5.56.0
     "@typescript-eslint/parser": ^5.56.0
     "@vitejs/plugin-vue": ^4.1.0
     "@vue/eslint-config-prettier": ^7.1.0
     "@vue/tsconfig": ^0.1.3
     "@vueuse/core": ^9.13.0
+    bootstrap: 5.3.0-alpha2
     codemirror: ^6.0.1
     eslint: ^8.36.0
     eslint-config-standard-with-typescript: latest
@@ -5847,10 +5857,10 @@ __metadata:
     husky: ^8.0.3
     lint-staged: ^13.2.0
     npm-run-all: ^4.1.5
-    prettier: ^2.8.6
+    prettier: ^2.8.7
     rimraf: ^4.4.1
     rollup-plugin-visualizer: ^5.9.0
-    sass: ^1.59.3
+    sass: ^1.60.0
     typescript: ^4.9.5
     vite: ^4.2.1
     vite-plugin-banner: ^0.7.0
@@ -5862,7 +5872,7 @@ __metadata:
     vue-markdown-wasm: ^0.3.6
     vue-tsc: ^1.2.0
   peerDependencies:
-    vue: ^2.7.14 || ^3.2.47
+    vue: ^2.7.14 || ^3.2
   languageName: unknown
   linkType: soft
 
