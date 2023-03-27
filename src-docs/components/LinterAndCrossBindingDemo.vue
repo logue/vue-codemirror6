@@ -42,11 +42,6 @@ const linter: LintSource = esLint(
     },
   }
 );
-
-/** Get ViewUpdate for update lint error count. */
-const onUpdate = (update: ViewUpdate) => {
-  errorCount.value = diagnosticCount(update.state);
-};
 </script>
 
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
@@ -63,7 +58,6 @@ const onUpdate = (update: ViewUpdate) => {
         class="mb-3"
         gutter
         wrap
-        @Update="onUpdate"
       />
       <div class="row mb-3">
         <div class="col-6">

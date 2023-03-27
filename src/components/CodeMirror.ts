@@ -20,6 +20,12 @@ import h, { slot } from '@/helpers/h-demi';
 // CodeMirror
 import { basicSetup, minimalSetup } from 'codemirror';
 import {
+  EditorView,
+  keymap,
+  placeholder,
+  type ViewUpdate,
+} from '@codemirror/view';
+import {
   Compartment,
   EditorSelection,
   EditorState,
@@ -31,19 +37,13 @@ import {
   type Text,
 } from '@codemirror/state';
 import {
-  EditorView,
-  keymap,
-  placeholder,
-  type ViewUpdate,
-} from '@codemirror/view';
-import { indentWithTab } from '@codemirror/commands';
-import {
   forceLinting,
   linter,
   lintGutter,
   diagnosticCount as linterDagnosticCount,
   type LintSource,
 } from '@codemirror/lint';
+import { indentWithTab } from '@codemirror/commands';
 import type { LanguageSupport } from '@codemirror/language';
 import type { StyleSpec } from 'style-mod';
 
@@ -217,7 +217,9 @@ export default defineComponent({
      */
     linterConfig: {
       type: Object,
-      default: () => undefined,
+      default: () => {
+        return { needsRefresh: true };
+      },
     },
     /**
      * Forces any linters configured to run when the editor is idle to run right away.
@@ -311,41 +313,31 @@ export default defineComponent({
     });
 
     /**
-     * Editor State
-     *
-     * @see {@link https://codemirror.net/docs/ref/#state.EditorState}
-     */
-    const state: Ref<EditorState | undefined> = ref();
-
-    /**
      * Editor Selection
      *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorSelection}
      */
-    const selection: WritableComputedRef<EditorSelection | undefined> =
-      computed({
-        get: () => state.value?.selection,
-        set: s => view.value?.dispatch({ selection: s }),
-      });
+    const selection: WritableComputedRef<EditorSelection> = computed({
+      get: () => view.value.state.selection,
+      set: s => view.value.dispatch({ selection: s }),
+    });
 
     /** Cursor Position */
     const cursor: WritableComputedRef<number> = computed({
-      get: () => state.value?.selection.main.head ?? 0,
-      set: a => view.value?.dispatch({ selection: { anchor: a } }),
+      get: () => view.value.state.selection.main.head,
+      set: a => view.value.dispatch({ selection: { anchor: a } }),
     });
-
-    /** Text length */
-    const length: ComputedRef<number> = computed(
-      () => state.value?.doc.length ?? 0
-    );
 
     /** JSON */
-    const json: WritableComputedRef<
-      Record<string, StateField<any>> | undefined
-    > = computed({
-      get: () => state.value?.toJSON(),
-      set: j => view.value?.setState(EditorState.fromJSON(j)),
-    });
+    const json: WritableComputedRef<Record<string, StateField<any>>> = computed(
+      {
+        get: () => view.value.state.toJSON(),
+        set: j => view.value.setState(EditorState.fromJSON(j)),
+      }
+    );
+
+    /** Text length */
+    const length: Ref<number> = ref(0);
 
     /**
      * Returns the number of active lint diagnostics in the given state.
@@ -370,7 +362,8 @@ export default defineComponent({
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate): void => {
-          if (!update.docChanged) {
+          if (update.changes.empty || !update.docChanged) {
+            // Suppress event firing if no change
             return;
           }
           context.emit('update', update);
@@ -412,41 +405,6 @@ export default defineComponent({
       ].filter((extension): extension is Extension => !!extension)
     );
 
-    // for parent-to-child binding.
-    watch(
-      () => props.modelValue,
-      value => {
-        if (view.value.composing) {
-          // IME fix
-          return;
-        }
-
-        // Update
-        view.value.dispatch({
-          changes: { from: 0, to: view.value.state.doc.length, insert: value },
-          selection: view.value.state.selection,
-          scrollIntoView: true,
-        });
-
-        // Commit Vue side state.
-        state.value = view.value.state;
-      },
-      { immediate: true }
-    );
-
-    /*
-    watch(
-      () => view.value.state,
-      s => {
-        if (props.linter) {
-          console.log(linterDagnosticCount(s));
-          diagnosticCount.value = linterDagnosticCount(view.value.state);
-        }
-      },
-      { deep: true }
-    );
-    */
-
     // Extension (mostly props) Changed
     watch(
       extensions,
@@ -459,17 +417,7 @@ export default defineComponent({
     );
 
     // focus changed
-    watch(focus, isFocus => {
-      if (!isFocus) {
-        if (props.linter) {
-          // TODO: Not work collectly
-          const count = linterDagnosticCount(view.value.state);
-          console.log(count);
-          diagnosticCount.value = count;
-        }
-      }
-      context.emit('focus', isFocus);
-    });
+    watch(focus, isFocus => context.emit('focus', isFocus));
 
     /** When loaded */
     onMounted(async () => {
@@ -487,13 +435,11 @@ export default defineComponent({
         }
         value = (editor.value.childNodes[0] as HTMLElement).innerText.trim();
       }
-      await nextTick();
 
       // Register Codemirror
       view.value = new EditorView({
-        doc: value,
-        extensions: extensions.value,
         parent: editor.value,
+        state: EditorState.create({ doc: value, extensions: extensions.value }),
         dispatch: (tr: Transaction) => {
           view.value.update([tr]);
 
@@ -501,16 +447,15 @@ export default defineComponent({
             // if not change value, no fire emit event
             return;
           }
-          console.log(tr);
+
+          // Update count
+          length.value = tr.state.doc.length;
 
           if (props.linter) {
-            // TODO: Not work collectly
-            const count = linterDagnosticCount(tr.startState);
-            console.log(count);
-            diagnosticCount.value = count;
             if (props.forceLinting) {
-              lint();
+              forceLinting(view.value);
             }
+            diagnosticCount.value = linterDagnosticCount(tr.state);
           }
 
           // console.log(view.state.doc.toString(), tr);
@@ -518,23 +463,23 @@ export default defineComponent({
           context.emit('update:modelValue', (tr.state.doc as any).toString());
           // Emit EditorState
           context.emit('change', tr.state);
-
-          state.value = tr.state;
         },
       });
 
-      state.value = view.value.state;
+      await nextTick();
+      length.value = view.value.state.doc.length;
+      diagnosticCount.value = linterDagnosticCount(view.value.state);
 
       context.emit('ready', {
         view: view.value,
-        state: state.value,
+        state: view.value.state,
         container: editor.value,
       });
     });
 
     /** Destroy */
     onUnmounted(() => {
-      view.value?.destroy();
+      view.value.destroy();
       context.emit('destroy');
     });
 
@@ -544,10 +489,9 @@ export default defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
     const lint = (): void => {
-      if (!view.value || !props.linter) {
-        return;
+      if (props.linter) {
+        forceLinting(view.value);
       }
-      forceLinting(view.value);
     };
 
     /**
@@ -575,44 +519,46 @@ export default defineComponent({
      * @param to - end line number
      */
     const getRange = (from?: number, to?: number): string | undefined =>
-      state.value?.sliceDoc(from, to);
+      view.value.state.sliceDoc(from, to);
     /**
      * Get the content of line.
      *
      * @param number - line number
      */
-    const getLine = (number: number): string | undefined =>
-      state.value?.doc.line(number + 1).text;
+    const getLine = (number: number): string =>
+      view.value.state.doc.line(number + 1).text;
     /** Get the number of lines in the editor. */
-    const lineCount = (): number => state.value?.doc.lines ?? 0;
+    const lineCount = (): number => view.value.state.doc.lines;
     /** Retrieve one end of the primary selection. */
-    const getCursor = (): number => cursor.value ?? 0;
+    const getCursor = (): number => view.value.state.selection.main.head;
     /** Retrieves a list of all current selections. */
-    const listSelections = (): readonly SelectionRange[] | undefined =>
-      state.value?.selection.ranges;
+    const listSelections = (): readonly SelectionRange[] =>
+      view.value.state.selection.ranges ?? [];
     /** Get the currently selected code. */
-    const getSelection = (): string | undefined =>
-      state.value?.sliceDoc(
-        state.value.selection.main.from,
-        state.value.selection.main.to
-      );
+    const getSelection = (): string =>
+      view.value.state.sliceDoc(
+        view.value.state.selection.main.from,
+        view.value.state.selection.main.to
+      ) ?? '';
     /**
      * The length of the given array should be the same as the number of active selections.
      * Replaces the content of the selections with the strings in the array.
      */
-    const getSelections = (): string[] | undefined => {
-      if (!state.value) {
-        return;
+    const getSelections = (): string[] => {
+      const s = view.value.state;
+      if (!s) {
+        return [];
       }
-      const s = state.value;
+
       return s.selection.ranges.map((r: { from: number; to: number }) =>
         s.sliceDoc(r.from, r.to)
       );
     };
     /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
-      state.value?.selection.ranges.some((r: { empty: boolean }) => !r.empty) ??
-      false;
+      view.value.state.selection.ranges.some(
+        (r: { empty: boolean }) => !r.empty
+      );
 
     /**
      * Replace the part of the document between from and to with the given string.
@@ -635,18 +581,15 @@ export default defineComponent({
      *
      * @param replacement - replacement text
      */
-    const replaceSelection = (replacement: string | Text): void => {
-      if (!state.value) {
-        return;
-      }
-      view.value.dispatch(state.value.replaceSelection(replacement));
-    };
+    const replaceSelection = (replacement: string | Text): void =>
+      view.value.dispatch(view.value.state.replaceSelection(replacement));
     /**
      * Set the cursor position.
      *
      * @param position - position.
      */
-    const setCursor = (position: number): number => (cursor.value = position);
+    const setCursor = (position: number): void =>
+      view.value.dispatch({ selection: { anchor: position } });
     /**
      * Set a single selection range.
      *
@@ -673,16 +616,12 @@ export default defineComponent({
      *
      * @param f - function
      */
-    const extendSelectionsBy = (f: any): void => {
-      if (!selection.value) {
-        return;
-      }
+    const extendSelectionsBy = (f: any): void =>
       view.value.dispatch({
         selection: EditorSelection.create(
           selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
         ),
       });
-    };
 
     /** Export properties and functions */
     context.expose({
@@ -690,7 +629,6 @@ export default defineComponent({
       view,
       cursor,
       selection,
-      state,
       focus,
       length,
       json,
@@ -716,31 +654,6 @@ export default defineComponent({
 
     return {
       editor,
-      view,
-      cursor,
-      selection,
-      state,
-      focus,
-      length,
-      json,
-      diagnosticCount,
-      lint,
-      forceReconfigure,
-      // Bellow is CodeMirror5's function
-      getRange,
-      getLine,
-      lineCount,
-      getCursor,
-      listSelections,
-      getSelection,
-      getSelections,
-      somethingSelected,
-      replaceRange,
-      replaceSelection,
-      setCursor,
-      setSelection,
-      setSelections,
-      extendSelectionsBy,
     };
   },
   render() {

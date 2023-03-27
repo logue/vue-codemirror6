@@ -341,13 +341,13 @@ onMounted(() => {
 
 | Function / Parameter | Description                                                                                         |
 | -------------------- | --------------------------------------------------------------------------------------------------- |
+| view                 | Get and set [EditorView](https://codemirror.net/docs/ref/#view.EditorView).                         |
 | selection            | Get and set the [EditorSelection](https://codemirror.net/docs/ref/#state.EditorSelection) instance. |
 | cursor               | Get and set the [cursor](https://codemirror.net/docs/ref/#state.EditorSelection^cursor) location.   |
-| state                | Get and set [EditorState](https://codemirror.net/docs/ref/#state.EditorState).                      |
 | json                 | Get and set state to a JSON-serializable object.                                                    |
 | focus                | Get and set [focus](https://codemirror.net/docs/ref/#view.EditorView.focus).                        |
-| lint                 | Force run linter (Only if `linter` prop is specified)                                               |
-| forceReconfigure     | Re register all extensions.                                                                         |
+| lint()               | Force run linter (Only if `linter` prop is specified)                                               |
+| forceReconfigure()   | Re register all extensions.                                                                         |
 
 ### CodeMirror5 backward compatible functions
 
