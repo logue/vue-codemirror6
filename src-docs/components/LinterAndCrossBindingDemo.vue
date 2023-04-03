@@ -3,10 +3,9 @@ import { ref, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
 import { esLint, javascript } from '@codemirror/lang-javascript';
+import type { LintSource } from '@codemirror/lint';
 // @ts-ignore
 import eslint from 'eslint-linter-browserify';
-import { diagnosticCount, type LintSource } from '@codemirror/lint';
-import type { ViewUpdate } from '@codemirror/view';
 
 // Sync Dark mode
 defineProps({ dark: Boolean });
@@ -18,9 +17,6 @@ const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'));
 );`);
-
-/** Linter Error count */
-const errorCount: Ref<number> = ref(0);
 
 /**
  * JavaScript language Linter Setting.
@@ -68,6 +64,7 @@ const linter: LintSource = esLint(
               type="text"
               :value="cm?.length"
               class="form-control"
+              readonly
             />
           </div>
         </div>

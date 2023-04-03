@@ -37,10 +37,11 @@ import {
   type Text,
 } from '@codemirror/state';
 import {
+  diagnosticCount as linterDagnosticCount,
   forceLinting,
   linter,
   lintGutter,
-  diagnosticCount as linterDagnosticCount,
+  type Diagnostic,
   type LintSource,
 } from '@codemirror/lint';
 import { indentWithTab } from '@codemirror/commands';
@@ -366,6 +367,18 @@ export default defineComponent({
             // Suppress event firing if no change
             return;
           }
+          if (props.linter) {
+            // Linter process
+            if (props.forceLinting) {
+              // If forceLinting enabled, first liting.
+              forceLinting(view.value);
+            }
+            // Count diagnostics.
+            diagnosticCount.value = (
+              props.linter(view.value) as readonly Diagnostic[]
+            ).length;
+          }
+
           context.emit('update', update);
         }),
         // Toggle light/dark mode.
@@ -416,6 +429,27 @@ export default defineComponent({
       { immediate: true }
     );
 
+    // for parent-to-child binding.
+    watch(
+      () => props.modelValue,
+      async value => {
+        if (view.value.composing) {
+          // IME fix
+          return;
+        }
+
+        // Update
+        view.value.dispatch({
+          changes: { from: 0, to: view.value.state.doc.length, insert: value },
+          selection: view.value.state.selection,
+          scrollIntoView: true,
+        });
+        // Update count
+        length.value = view.value.state.doc.length;
+      },
+      { immediate: true }
+    );
+
     // focus changed
     watch(focus, isFocus => context.emit('focus', isFocus));
 
@@ -448,16 +482,6 @@ export default defineComponent({
             return;
           }
 
-          // Update count
-          length.value = tr.state.doc.length;
-
-          if (props.linter) {
-            if (props.forceLinting) {
-              forceLinting(view.value);
-            }
-            diagnosticCount.value = linterDagnosticCount(tr.state);
-          }
-
           // console.log(view.state.doc.toString(), tr);
           // state.toString() is not defined, so use toJSON and toText function to convert string.
           context.emit('update:modelValue', (tr.state.doc as any).toString());
@@ -467,8 +491,6 @@ export default defineComponent({
       });
 
       await nextTick();
-      length.value = view.value.state.doc.length;
-      diagnosticCount.value = linterDagnosticCount(view.value.state);
 
       context.emit('ready', {
         view: view.value,
@@ -489,9 +511,13 @@ export default defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
     const lint = (): void => {
-      if (props.linter) {
+      if (!props.linter || !view.value) {
+        return;
+      }
+      if (props.forceLinting) {
         forceLinting(view.value);
       }
+      diagnosticCount.value = linterDagnosticCount(view.value.state);
     };
 
     /**
