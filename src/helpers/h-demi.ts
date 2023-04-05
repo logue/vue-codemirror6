@@ -14,14 +14,16 @@ import {
 
 interface Options extends VNodeProps {
   class?: string;
-  domProps?: Record<any, any>;
-  on?: Record<any, any>;
-  props?: Record<any, any>;
+  domProps?: VNodeProps;
+  on?: Record<string, () => void>;
+  props?: VNodeProps;
   style?: string;
   'aria-hidden'?: string;
 }
 
-const adaptOnsV3 = (ons: any): any => {
+const adaptOnsV3 = (
+  ons: Record<string, () => void>
+): Record<string, () => void> => {
   if (!ons) return {};
   return Object.entries(ons).reduce((ret, [key, handler]) => {
     key = key.charAt(0).toUpperCase() + key.slice(1);
@@ -33,7 +35,7 @@ const adaptOnsV3 = (ons: any): any => {
 /**
  * hDemi function.
  */
-function h(
+export default function h(
   type: string | Record<any, any>,
   options: Options = {},
   chidren?: any
@@ -53,7 +55,5 @@ function h(
   );
 }
 
-const slot = (defaultSlots: any): Slots =>
+export const slot = (defaultSlots: any): Slots =>
   typeof defaultSlots === 'function' ? defaultSlots() : defaultSlots;
-
-export { slot, h as default };

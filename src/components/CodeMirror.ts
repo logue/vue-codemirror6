@@ -649,8 +649,7 @@ export default defineComponent({
         ),
       });
 
-    /** Export properties and functions */
-    context.expose({
+    const exposed = {
       editor,
       view,
       cursor,
@@ -676,11 +675,11 @@ export default defineComponent({
       setSelection,
       setSelections,
       extendSelectionsBy,
-    });
-
-    return {
-      editor,
     };
+
+    /** Export properties and functions */
+    context.expose(exposed);
+    return exposed;
   },
   render() {
     // <template>

@@ -141,7 +141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/lang-javascript@npm:^6.1.2, @codemirror/lang-javascript@npm:^6.1.4":
+"@codemirror/lang-javascript@npm:^6.1.2":
   version: 6.1.4
   resolution: "@codemirror/lang-javascript@npm:6.1.4"
   dependencies:
@@ -153,6 +153,21 @@ __metadata:
     "@lezer/common": ^1.0.0
     "@lezer/javascript": ^1.0.0
   checksum: d550db179c522cd7c39d26815ee47ac4751656c856d42eeb3743e67482d4377692c4fcd3413b0e97c2c7070b6b10aaa582909c6234f42b04145d56efc49c8a6b
+  languageName: node
+  linkType: hard
+
+"@codemirror/lang-javascript@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@codemirror/lang-javascript@npm:6.1.5"
+  dependencies:
+    "@codemirror/autocomplete": ^6.0.0
+    "@codemirror/language": ^6.6.0
+    "@codemirror/lint": ^6.0.0
+    "@codemirror/state": ^6.0.0
+    "@codemirror/view": ^6.0.0
+    "@lezer/common": ^1.0.0
+    "@lezer/javascript": ^1.0.0
+  checksum: f0355f9577fac03437137356b5c8826ec073480d9b0efc62289eac483172d47dafe569f31bf788e4228e8b789197e50a0768cf10b0cde5f600e89b6b469f52cc
   languageName: node
   linkType: hard
 
@@ -5841,7 +5856,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue-codemirror6@workspace:."
   dependencies:
-    "@codemirror/lang-javascript": ^6.1.4
+    "@codemirror/lang-javascript": ^6.1.5
     "@codemirror/lang-json": ^6.0.1
     "@codemirror/lang-markdown": ^6.1.0
     "@codemirror/lang-vue": ^0.1.1
@@ -5850,6 +5865,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.57.1
     "@typescript-eslint/parser": ^5.57.1
     "@vitejs/plugin-vue": ^4.1.0
+    "@vue/compiler-sfc": ^3.2.47
     "@vue/eslint-config-prettier": ^7.1.0
     "@vue/tsconfig": ^0.1.3
     "@vueuse/core": ^9.13.0
