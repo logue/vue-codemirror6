@@ -55,7 +55,7 @@
   "engines": {
     "yarn": ">=1.22.19"
   },
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@3.5.1",
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
@@ -84,15 +84,14 @@
     "@codemirror/lang-markdown": "^6.1.1",
     "@codemirror/lang-vue": "^0.1.1",
     "@tsconfig/node-lts": "^18.12.1",
-    "@types/lodash": "^4.14.194",
-    "@types/node": "^18.16.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
+    "@types/node": "^18.16.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "@vitejs/plugin-vue": "^4.2.1",
     "@vue/compiler-sfc": "^3.2.47",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/tsconfig": "^0.3.2",
-    "@vueuse/core": "^10.1.0",
+    "@vueuse/core": "^10.1.2",
     "bootstrap": "5.3.0-alpha3",
     "eslint": "^8.39.0",
     "eslint-config-standard-with-typescript": "latest",
@@ -115,14 +114,14 @@
     "rollup-plugin-visualizer": "^5.9.0",
     "sass": "^1.62.1",
     "typescript": "^5.0.4",
-    "vite": "^4.3.3",
+    "vite": "^4.3.4",
     "vite-plugin-banner": "^0.7.0",
-    "vite-plugin-checker": "^0.5.6",
+    "vite-plugin-checker": "^0.6.0",
     "vite-plugin-dts": "^2.3.0",
     "vue": "^3.2.47",
-    "vue-eslint-parser": "^9.1.1",
+    "vue-eslint-parser": "^9.2.0",
     "vue-markdown-wasm": "^0.3.7",
-    "vue-tsc": "^1.6.0"
+    "vue-tsc": "^1.6.3"
   },
   "husky": {
     "hooks": {

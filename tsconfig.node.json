@@ -13,6 +13,10 @@
   ],
   "compilerOptions": {
     "composite": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "types": ["node"]
   }
 }
