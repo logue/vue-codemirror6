@@ -1,9 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
-  "extends": [
-    "@tsconfig/node-lts/tsconfig.json",
-    "@vue/tsconfig/tsconfig.json"
-  ],
+  "extends": "@tsconfig/node-lts/tsconfig.json",
   "include": [
     "vite.config.*",
     "vitest.config.*",
@@ -14,9 +11,7 @@
   "compilerOptions": {
     "composite": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
     "types": ["node"]
   }
 }

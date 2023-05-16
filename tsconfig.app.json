@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
-  "extends": ["@vue/tsconfig/tsconfig.json", "@vue/tsconfig/tsconfig.dom.json"],
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
     "src/**/*",
@@ -12,7 +12,8 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"], "vue-codemirror6": ["./src/index.ts"] },
-    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
