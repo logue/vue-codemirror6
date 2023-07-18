@@ -558,14 +558,15 @@ export default defineComponent({
     /** Retrieve one end of the primary selection. */
     const getCursor = (): number => view.value.state.selection.main.head;
     /** Retrieves a list of all current selections. */
-    const listSelections = (): readonly SelectionRange[] =>
-      view.value.state.selection.ranges ?? [];
+    const listSelections = (): readonly SelectionRange[]  => {
+      var _view$value$state$sel;
+      return (_view$value$state$sel = view.value.state.selection.ranges) !== null && _view$value$state$sel !== void 0 ? _view$value$state$sel : [];
+    };
     /** Get the currently selected code. */
-    const getSelection = (): string =>
-      view.value.state.sliceDoc(
-        view.value.state.selection.main.from,
-        view.value.state.selection.main.to
-      ) ?? '';
+    const getSelection = (): string => {
+      var _view$value$state$sli;
+      return (_view$value$state$sli = view.value.state.sliceDoc(view.value.state.selection.main.from, view.value.state.selection.main.to)) !== null && _view$value$state$sli !== void 0 ? _view$value$state$sli : '';
+    };
     /**
      * The length of the given array should be the same as the number of active selections.
      * Replaces the content of the selections with the strings in the array.
