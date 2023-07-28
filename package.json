@@ -135,6 +135,7 @@
   "resolutions": {
     "http-cache-semantics": "^4.1.1",
     "json5": "^2.2.3",
+    "semver": "^7.5.2",
     "yaml": "^2.2.2"
   }
 }
