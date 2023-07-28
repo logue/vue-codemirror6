@@ -433,8 +433,10 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       async value => {
-        if (view.value.composing) {
-          // IME fix
+        if (
+          view.value.composing || // IME fix
+          view.value.state.doc.toJSON().join('\n') === value // don't need to update
+        ) {
           return;
         }
 
