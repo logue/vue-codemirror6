@@ -8,11 +8,10 @@ import banner from 'vite-plugin-banner';
 import dts from 'vite-plugin-dts';
 import Vue from '@vitejs/plugin-vue';
 
-// @ts-nocheck
 import pkg from './package.json';
 
 // https://vitejs.dev/config/
-export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
+export default defineConfig(({ mode, command }): UserConfig => {
   const config: UserConfig = {
     base: './',
     publicDir: command === 'serve' ? 'public' : false,
@@ -33,18 +32,18 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       },
     },
     plugins: [
+      // @ts-expect-error
       Vue(),
       // vite-plugin-checker
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
         typescript: true,
         vueTsc: true,
-        eslint: {
-          lintCommand: 'eslint',
-        },
+        // eslint: { lintCommand: 'eslint' },
       }),
       // vite-plugin-banner
       // https://github.com/chengpeiquan/vite-plugin-banner
+      // @ts-expect-error
       banner(`/**
  * ${pkg.name}
  *
@@ -61,7 +60,9 @@ export default defineConfig(async ({ mode, command }): Promise<UserConfig> => {
       mode === 'docs'
         ? undefined
         : dts({
-            tsConfigFilePath: './tsconfig.app.json',
+            tsconfigPath: fileURLToPath(
+              new URL('./tsconfig.app.json', import.meta.url)
+            ),
           }),
     ],
     optimizeDeps: {
