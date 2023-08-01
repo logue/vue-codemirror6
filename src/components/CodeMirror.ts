@@ -435,8 +435,12 @@ export default defineComponent({
       async value => {
         if (
           view.value.composing || // IME fix
-          view.value.state.doc.toJSON().join('\n') === value // don't need to update
+          view.value.state.doc.toJSON().join(props.lineSeparator ?? '\n') ===
+            value // don't need to update
         ) {
+          // Update count
+          length.value = view.value.state.doc.length;
+          // Do not commit CodeMirror's store.
           return;
         }
 
