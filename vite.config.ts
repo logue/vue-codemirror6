@@ -39,7 +39,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
       checker({
         typescript: true,
         vueTsc: true,
-        // eslint: { lintCommand: 'eslint' },
+        eslint: { lintCommand: 'eslint' },
       }),
       // vite-plugin-banner
       // https://github.com/chengpeiquan/vite-plugin-banner
@@ -57,13 +57,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
 `),
       // vite-plugin-dts
       // https://github.com/qmhc/vite-plugin-dts
-      mode === 'docs'
-        ? undefined
-        : dts({
-            tsconfigPath: fileURLToPath(
-              new URL('./tsconfig.app.json', import.meta.url)
-            ),
-          }),
+      mode === 'docs' ? undefined : dts(),
     ],
     optimizeDeps: {
       exclude: [

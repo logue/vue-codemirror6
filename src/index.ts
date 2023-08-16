@@ -6,10 +6,3 @@ const installCodeMirror = (app: any): void =>
   app.component('CodeMirror', CodeMirror);
 
 export { CodeMirror as default, installCodeMirror as install, Meta };
-
-// For CDN. (Maybe Vue2 only)
-// @ts-expect-error
-if (typeof window !== 'undefined' && window.Vue) {
-  // @ts-expect-error
-  window.Vue.use(CodeMirror);
-}
