@@ -4,7 +4,6 @@ import CodeMirror from 'vue-codemirror6';
 
 import { esLint, javascript } from '@codemirror/lang-javascript';
 import type { LintSource } from '@codemirror/lint';
-// @ts-ignore
 import eslint from 'eslint-linter-browserify';
 
 // Sync Dark mode
@@ -17,6 +16,8 @@ const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'));
 );`);
+
+const focused: Ref<boolean> = ref(false);
 
 /**
  * JavaScript language Linter Setting.
@@ -38,6 +39,10 @@ const linter: LintSource = esLint(
     },
   }
 );
+
+const onFocus = (f: boolean): void => {
+  focused.value = f;
+};
 </script>
 
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
@@ -54,9 +59,10 @@ const linter: LintSource = esLint(
         class="mb-3"
         gutter
         wrap
+        @focus="onFocus"
       />
       <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-4">
           <div class="input-group">
             <label for="count" class="input-group-text">Count</label>
             <input
@@ -68,7 +74,7 @@ const linter: LintSource = esLint(
             />
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-5">
           <div class="input-group">
             <label for="diagnosticCount" class="input-group-text">
               Diagnostic Count
@@ -80,6 +86,19 @@ const linter: LintSource = esLint(
               :value="cm?.diagnosticCount"
               readonly
             />
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-check form-check-inline">
+            <input
+              id="focused"
+              v-model="focused"
+              class="form-check-input"
+              type="checkbox"
+              checked
+              disabled
+            />
+            <label class="form-check-label" for="focused">Focused</label>
           </div>
         </div>
       </div>

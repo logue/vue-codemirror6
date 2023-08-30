@@ -4,6 +4,7 @@
 !/.yarn/releases
 # !/.yarn/sdks
 # !/.yarn/cache
+/.vscode/*
 node_modules
 .DS_Store
 dist

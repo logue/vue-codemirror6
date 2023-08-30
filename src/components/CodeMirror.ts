@@ -274,6 +274,8 @@ export default defineComponent({
     }) => true,
     /** CodeMirror onFocus */
     focus: (value: boolean) => true,
+    /** blur */
+    // blur: (value: boolean) => true,
     /** State Changed */
     change: (value: EditorState) => true,
     /** CodeMirror onDestroy */
@@ -378,8 +380,8 @@ export default defineComponent({
               props.linter(view.value) as readonly Diagnostic[]
             ).length;
           }
-
           context.emit('update', update);
+          context.emit('focus', view.value.hasFocus);
         }),
         // Toggle light/dark mode.
         EditorView.theme(props.theme, { dark: props.dark }),
@@ -482,6 +484,8 @@ export default defineComponent({
         state: EditorState.create({ doc: value, extensions: extensions.value }),
         dispatch: (tr: Transaction) => {
           view.value.update([tr]);
+
+          context.emit('focus', view.value.hasFocus);
 
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event

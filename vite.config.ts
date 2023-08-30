@@ -32,7 +32,6 @@ export default defineConfig(({ mode, command }): UserConfig => {
       },
     },
     plugins: [
-      // @ts-expect-error
       Vue(),
       // vite-plugin-checker
       // https://github.com/fi3ework/vite-plugin-checker
