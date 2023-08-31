@@ -274,8 +274,6 @@ export default defineComponent({
     }) => true,
     /** CodeMirror onFocus */
     focus: (value: boolean) => true,
-    /** blur */
-    // blur: (value: boolean) => true,
     /** State Changed */
     change: (value: EditorState) => true,
     /** CodeMirror onDestroy */
@@ -349,22 +347,26 @@ export default defineComponent({
      */
     const diagnosticCount: Ref<number> = ref(0);
 
-    // Synamic Reconfiguration
-    // @see https://codemirror.net/examples/config/
-
-    const language = new Compartment();
-    const tabSize = new Compartment();
-
     /** Get CodeMirror Extension */
-    const extensions: ComputedRef<Extension[]> = computed(() =>
+    const extensions: ComputedRef<Extension[]> = computed(() => {
+      // Synamic Reconfiguration
+      // @see https://codemirror.net/examples/config/
+      const language = new Compartment();
+      const tabSize = new Compartment();
+
       // TODO: Ignore previous prop was not changed.
-      [
+      return [
         // Toggle basic setup
         props.basic ? basicSetup : undefined,
         // Toggle minimal setup
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate): void => {
+          // Emit focus status
+          context.emit('focus', view.value.hasFocus);
+          // Update count
+          length.value = view.value.state.doc.length;
+
           if (update.changes.empty || !update.docChanged) {
             // Suppress event firing if no change
             return;
@@ -381,7 +383,6 @@ export default defineComponent({
             ).length;
           }
           context.emit('update', update);
-          context.emit('focus', view.value.hasFocus);
         }),
         // Toggle light/dark mode.
         EditorView.theme(props.theme, { dark: props.dark }),
@@ -417,8 +418,8 @@ export default defineComponent({
         props.placeholder ? placeholder(props.placeholder) : undefined,
         // Append Extensions
         ...props.extensions,
-      ].filter((extension): extension is Extension => !!extension)
-    );
+      ].filter((extension): extension is Extension => !!extension);
+    });
 
     // Extension (mostly props) Changed
     watch(
@@ -440,8 +441,6 @@ export default defineComponent({
           view.value.state.doc.toJSON().join(props.lineSeparator ?? '\n') ===
             value // don't need to update
         ) {
-          // Update count
-          length.value = view.value.state.doc.length;
           // Do not commit CodeMirror's store.
           return;
         }
@@ -452,14 +451,9 @@ export default defineComponent({
           selection: view.value.state.selection,
           scrollIntoView: true,
         });
-        // Update count
-        length.value = view.value.state.doc.length;
       },
       { immediate: true }
     );
-
-    // focus changed
-    watch(focus, isFocus => context.emit('focus', isFocus));
 
     /** When loaded */
     onMounted(async () => {
@@ -484,8 +478,6 @@ export default defineComponent({
         state: EditorState.create({ doc: value, extensions: extensions.value }),
         dispatch: (tr: Transaction) => {
           view.value.update([tr]);
-
-          context.emit('focus', view.value.hasFocus);
 
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event
@@ -677,6 +669,7 @@ export default defineComponent({
       length,
       json,
       diagnosticCount,
+      dom: view.value.contentDOM,
       lint,
       forceReconfigure,
       // Bellow is CodeMirror5's function

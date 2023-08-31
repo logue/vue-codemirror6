@@ -12,3 +12,4 @@ dist-ssr
 *.local
 /src/Meta.ts
 docs/
+stats.html
