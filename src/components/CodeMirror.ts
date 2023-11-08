@@ -219,7 +219,7 @@ export default defineComponent({
     linterConfig: {
       type: Object,
       default: () => {
-        return { needsRefresh: true };
+        return {};
       },
     },
     /**
