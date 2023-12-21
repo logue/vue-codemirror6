@@ -153,7 +153,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
       },
       // Minify option
       target: 'esnext',
-      minify: mode === 'docs',
+      // minify: mode === 'docs',
     },
   };
 
