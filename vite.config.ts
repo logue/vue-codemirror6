@@ -37,12 +37,11 @@ export default defineConfig(({ mode, command }): UserConfig => {
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
         typescript: true,
-        vueTsc: true,
+        // vueTsc: true,
         eslint: { lintCommand: 'eslint' },
       }),
       // vite-plugin-banner
       // https://github.com/chengpeiquan/vite-plugin-banner
-      // @ts-expect-error
       banner(`/**
  * ${pkg.name}
  *

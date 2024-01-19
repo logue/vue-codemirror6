@@ -13,3 +13,4 @@ dist-ssr
 /src/Meta.ts
 docs/
 stats.html
+*.tsbuildinfo

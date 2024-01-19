@@ -5,13 +5,16 @@
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
+    "nightwatch.conf.*",
     "playwright.config.*",
     "package.json"
   ],
   "compilerOptions": {
     "composite": true,
-    "resolveJsonModule": true,
     "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "noEmit": true,
     "types": ["node"]
   }
 }

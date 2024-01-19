@@ -486,7 +486,7 @@ export default defineComponent({
 
           // console.log(view.state.doc.toString(), tr);
           // state.toString() is not defined, so use toJSON and toText function to convert string.
-          context.emit('update:modelValue', (tr.state.doc as any).toString());
+          context.emit('update:modelValue', tr.state.doc);
           // Emit EditorState
           context.emit('change', tr.state);
         },
@@ -656,6 +656,7 @@ export default defineComponent({
     const extendSelectionsBy = (f: any): void =>
       view.value.dispatch({
         selection: EditorSelection.create(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
         ),
       });
