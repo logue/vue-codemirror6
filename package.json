@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "license": "MIT",
   "description": "CodeMirror6 Component for vue2 and vue3.",
   "keywords": [
