@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "license": "MIT",
   "description": "CodeMirror6 Component for vue2 and vue3.",
   "keywords": [
@@ -55,7 +55,7 @@
   "engines": {
     "yarn": ">=1.22.19"
   },
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.1.0",
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
@@ -84,8 +84,8 @@
     "@codemirror/lang-markdown": "^6.2.4",
     "@codemirror/lang-vue": "0.1.2",
     "@tsconfig/node-lts": "^20.1.1",
-    "@types/node": "^20.11.10",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/compiler-sfc": "^3.4.15",
     "@vue/eslint-config-prettier": "^9.0.0",
@@ -105,8 +105,8 @@
     "eslint-plugin-vue": "latest",
     "eslint-plugin-vuejs-accessibility": "^2.2.1",
     "eslint-plugin-yaml": "^0.5.0",
-    "husky": "^9.0.6",
-    "lint-staged": "^15.2.0",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.4",
     "rimraf": "^5.0.5",
@@ -115,11 +115,11 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vite-plugin-banner": "^0.7.1",
-    "vite-plugin-checker": "^0.6.2",
+    "vite-plugin-checker": "^0.6.4",
     "vite-plugin-dts": "^3.7.2",
     "vue": "^3.4.15",
     "vue-eslint-parser": "^9.4.2",
-    "vue-markdown-wasm": "^0.4.0",
+    "vue-markdown-wasm": "^0.3.14",
     "vue-tsc": "^1.8.27"
   },
   "husky": {
@@ -133,7 +133,6 @@
   },
   "resolutions": {
     "json5": "^2.2.3",
-    "lodash": ">4.17.21",
     "postcss": "^8.4.31",
     "semver": "^7.5.3",
     "yaml": "^2.3.2",

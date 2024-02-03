@@ -263,7 +263,7 @@ export default defineComponent({
   /** Emits */
   emits: {
     /** Model Update */
-    'update:modelValue': (value: string | Text) => true,
+    'update:modelValue': (value: string | Text = '') => true,
     /** CodeMirror ViewUpdate */
     update: (value: ViewUpdate) => true,
     /** CodeMirror onReady */
@@ -364,8 +364,9 @@ export default defineComponent({
         EditorView.updateListener.of((update: ViewUpdate): void => {
           // Emit focus status
           context.emit('focus', view.value.hasFocus);
+
           // Update count
-          length.value = view.value.state.doc.length;
+          length.value = view.value.state.doc?.length;
 
           if (update.changes.empty || !update.docChanged) {
             // Suppress event firing if no change
@@ -478,7 +479,6 @@ export default defineComponent({
         state: EditorState.create({ doc: value, extensions: extensions.value }),
         dispatch: (tr: Transaction) => {
           view.value.update([tr]);
-
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event
             return;
@@ -486,7 +486,7 @@ export default defineComponent({
 
           // console.log(view.state.doc.toString(), tr);
           // state.toString() is not defined, so use toJSON and toText function to convert string.
-          context.emit('update:modelValue', tr.state.doc);
+          context.emit('update:modelValue', tr.state.doc.toString() ?? '');
           // Emit EditorState
           context.emit('change', tr.state);
         },
