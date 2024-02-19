@@ -241,7 +241,7 @@ export default defineComponent({
      */
     gutter: {
       type: Boolean,
-      defalt: false,
+      default: false,
     },
     /**
      * Gutter Config
