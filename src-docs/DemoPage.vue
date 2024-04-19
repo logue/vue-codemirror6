@@ -193,16 +193,22 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
         <code>disabled</code>
         prop to if you want to use it as a simple syntax highlighter.
       </p>
-      <code-mirror
-        v-model="readonlyAndDisabledDemoSrc"
-        :dark="dark"
-        :lang="vue()"
-        basic
-        wrap
-        readonly
-      />
-      <h3>Demo</h3>
-      <readonly-and-disabled-demo :dark="dark" />
+      <div class="row">
+        <div class="col-sm">
+          <code-mirror
+            v-model="readonlyAndDisabledDemoSrc"
+            :dark="dark"
+            :lang="vue()"
+            basic
+            wrap
+            readonly
+          />
+        </div>
+        <div class="col-sm">
+          <h3>Demo</h3>
+          <readonly-and-disabled-demo :dark="dark" />
+        </div>
+      </div>
     </section>
   </div>
 </template>

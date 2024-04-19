@@ -1,0 +1,7 @@
+{
+  "reject": [
+    "@codemirror/lang-vue",
+    "eslint",
+    "eslint-linter-browserify"
+  ]
+}
