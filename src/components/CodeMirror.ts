@@ -2,6 +2,7 @@
 
 // CodeMirror
 import { indentWithTab } from '@codemirror/commands';
+import { indentUnit, type LanguageSupport } from '@codemirror/language';
 import {
   diagnosticCount as linterDagnosticCount,
   forceLinting,
@@ -44,7 +45,6 @@ import {
   type WritableComputedRef,
 } from 'vue-demi';
 
-import type { LanguageSupport } from '@codemirror/language';
 import type { StyleSpec } from 'style-mod';
 
 import h, { slot } from '@/helpers/h-demi';
@@ -127,6 +127,13 @@ export default defineComponent({
     tab: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * Tab character
+     */
+    indentUnit: {
+      type: String,
+      default: undefined,
     },
     /**
      * Allow Multiple Selection.
@@ -394,6 +401,8 @@ export default defineComponent({
         props.wrap ? EditorView.lineWrapping : undefined,
         // Indent with tab
         props.tab ? keymap.of([indentWithTab]) : undefined,
+        // Tab character
+        props.indentUnit ? indentUnit.of(props.indentUnit) : undefined,
         // Allow Multiple Selections
         EditorState.allowMultipleSelections.of(props.allowMultipleSelections),
         // Indent tab size
