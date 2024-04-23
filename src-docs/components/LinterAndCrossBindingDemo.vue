@@ -2,8 +2,8 @@
 import { ref, type Ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
-import { esLint, javascript } from '@codemirror/lang-javascript';
-import type { LintSource } from '@codemirror/lint';
+import { javascript, esLint } from '@codemirror/lang-javascript';
+// Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
 
 // Sync Dark mode
@@ -25,20 +25,17 @@ const focused: Ref<boolean> = ref(false);
  *
  * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
  */
-const linter: LintSource = esLint(
-  // eslint-disable-next-line
-  new eslint.Linter(),
-  {
+const linter = esLint(new eslint.Linter(), {
+  languageOptions: {
     parserOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
     },
-    env: {
-      browser: true,
-      node: true,
-    },
-  }
-);
+  },
+  rules: {
+    semi: ['error', 'never'],
+  },
+});
 
 const onFocus = (f: boolean): void => {
   focused.value = f;

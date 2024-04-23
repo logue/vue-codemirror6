@@ -1,12 +1,13 @@
-import { fileURLToPath, URL } from 'node:url';
 import { writeFileSync } from 'node:fs';
+import { fileURLToPath, URL } from 'node:url';
 
-import { checker } from 'vite-plugin-checker';
+import Vue from '@vitejs/plugin-vue';
 import { defineConfig, type UserConfig } from 'vite';
+
 import { visualizer } from 'rollup-plugin-visualizer';
 import banner from 'vite-plugin-banner';
+import { checker } from 'vite-plugin-checker';
 import dts from 'vite-plugin-dts';
-import Vue from '@vitejs/plugin-vue';
 
 import pkg from './package.json';
 
@@ -38,7 +39,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
       checker({
         typescript: true,
         // vueTsc: true,
-        eslint: { lintCommand: 'eslint' },
+        // eslint: { lintCommand: 'eslint' },
       }),
       // vite-plugin-banner
       // https://github.com/chengpeiquan/vite-plugin-banner

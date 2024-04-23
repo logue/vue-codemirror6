@@ -1,8 +1,0 @@
-.husky/
-.vscode/
-.yarn/
-dist/
-public/assets/
-docs/
-stats.html
-index.html

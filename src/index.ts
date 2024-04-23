@@ -1,5 +1,5 @@
-import CodeMirror from './components/CodeMirror';
 import Meta from './Meta';
+import CodeMirror from './components/CodeMirror';
 
 // TODO: Move phrases props to option.
 const installCodeMirror = (app: any): void =>

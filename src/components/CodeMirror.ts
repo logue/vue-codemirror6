@@ -1,3 +1,33 @@
+// Helpers
+
+// CodeMirror
+import { indentWithTab } from '@codemirror/commands';
+import {
+  diagnosticCount as linterDagnosticCount,
+  forceLinting,
+  linter,
+  lintGutter,
+  type Diagnostic,
+  type LintSource,
+} from '@codemirror/lint';
+import {
+  Compartment,
+  EditorSelection,
+  EditorState,
+  StateEffect,
+  type Transaction,
+  type Extension,
+  type SelectionRange,
+  type StateField,
+  type Text,
+} from '@codemirror/state';
+import {
+  EditorView,
+  keymap,
+  placeholder,
+  type ViewUpdate,
+} from '@codemirror/view';
+import { basicSetup, minimalSetup } from 'codemirror';
 import {
   computed,
   defineComponent,
@@ -14,39 +44,10 @@ import {
   type WritableComputedRef,
 } from 'vue-demi';
 
-// Helpers
-import h, { slot } from '@/helpers/h-demi';
-
-// CodeMirror
-import { basicSetup, minimalSetup } from 'codemirror';
-import {
-  EditorView,
-  keymap,
-  placeholder,
-  type ViewUpdate,
-} from '@codemirror/view';
-import {
-  Compartment,
-  EditorSelection,
-  EditorState,
-  StateEffect,
-  type Transaction,
-  type Extension,
-  type SelectionRange,
-  type StateField,
-  type Text,
-} from '@codemirror/state';
-import {
-  diagnosticCount as linterDagnosticCount,
-  forceLinting,
-  linter,
-  lintGutter,
-  type Diagnostic,
-  type LintSource,
-} from '@codemirror/lint';
-import { indentWithTab } from '@codemirror/commands';
 import type { LanguageSupport } from '@codemirror/language';
 import type { StyleSpec } from 'style-mod';
+
+import h, { slot } from '@/helpers/h-demi';
 
 /** CodeMirror Component */
 export default defineComponent({
@@ -71,7 +72,9 @@ export default defineComponent({
      */
     theme: {
       type: Object as PropType<Record<string, StyleSpec>>,
-      default: () => {},
+      default: () => {
+        return {};
+      },
     },
     /** Dark Mode */
     dark: {
@@ -208,7 +211,7 @@ export default defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#lint.linter}
      */
     linter: {
-      type: Function as PropType<LintSource>,
+      type: Function as PropType<LintSource | any>,
       default: undefined,
     },
     /**
@@ -263,19 +266,19 @@ export default defineComponent({
   /** Emits */
   emits: {
     /** Model Update */
-    'update:modelValue': (value: string | Text = '') => true,
+    'update:modelValue': (_value: string | Text = '') => true,
     /** CodeMirror ViewUpdate */
-    update: (value: ViewUpdate) => true,
+    update: (_value: ViewUpdate) => true,
     /** CodeMirror onReady */
-    ready: (value: {
+    ready: (_value: {
       view: EditorView;
       state: EditorState;
       container: HTMLElement;
     }) => true,
     /** CodeMirror onFocus */
-    focus: (value: boolean) => true,
+    focus: (_value: boolean) => true,
     /** State Changed */
-    change: (value: EditorState) => true,
+    change: (_value: EditorState) => true,
     /** CodeMirror onDestroy */
     destroy: () => true,
   },
@@ -656,7 +659,6 @@ export default defineComponent({
     const extendSelectionsBy = (f: any): void =>
       view.value.dispatch({
         selection: EditorSelection.create(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
         ),
       });
