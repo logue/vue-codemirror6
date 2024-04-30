@@ -202,20 +202,10 @@ export default defineComponent({
 
 ### Full Example
 
-When using as a Markdown editor on [vite-vue2-vuetify-ts-starter](https://github.com/logue/vite-vue2-vuetify-ts-starter).
+When using as a Markdown editor on [https://github.com/logue/vite-vue3-ts-starter](vite-vue3-ts-starter).
 
 ```vue
-<template>
-  <code-mirror
-    v-model="value"
-    basic
-    :dark="dark"
-    :lang="lang"
-    :phrases="phreses"
-  />
-</template>
-
-<script lang="ts">
+<script lang="ts" setup>
 import { ref, defineComponent, type Ref } from 'vue';
 
 // Load component
@@ -227,90 +217,76 @@ import type { LanguageSupport } from '@codemirror/language';
 import type { Extension } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 
-export default defineComponent({
-  components: {
-    CodeMirror,
-  },
-  setup() {
-    /**
-     * Get Vuetify instance
-     *
-     * @see {@link https://github.com/logue/vite-vue2-vuetify-ts-starter | vite-vue2-vuetify-ts-starter}
-     */
-    const vuetify = useVuetify();
+/** text */
+const value: Ref<string> = ref('');
 
-    /** text */
-    const value: Ref<string> = ref('');
+/** Dark mode **/
+const dark: Ref<boolean> = ref(
+  window.matchMedia('(prefers-color-scheme: dark)').matches
+);
 
-    /** Dark mode **/
-    const dark: Ref<boolean> = ref(
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
+/**
+ * CodeMirror Language
+ *
+ * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
+ */
+const lang: LanguageSupport = md();
 
-    /**
-     * CodeMirror Language
-     *
-     * @see {@link https://codemirror.net/6/docs/ref/#language | @codemirror/language}
-     */
-    const lang: LanguageSupport = md();
-
-    /**
-     * Internationalization Config.
-     * In this example, the display language to Japanese.
-     * Must be reactive when used in combination with vue-i18n.
-     *
-     * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
-     */
-    const phrases: Ref<Record<string, string>> = ref({
-      // @codemirror/view
-      'Control character': '制御文字',
-      // @codemirror/commands
-      'Selection deleted': '選択を削除',
-      // @codemirror/language
-      'Folded lines': '折り畳まれた行',
-      'Unfolded lines': '折り畳める行',
-      to: '行き先',
-      'folded code': '折り畳まれたコード',
-      unfold: '折り畳みを解除',
-      'Fold line': '行を折り畳む',
-      'Unfold line': '行の折り畳む解除',
-      // @codemirror/search
-      'Go to line': '行き先の行',
-      go: 'OK',
-      Find: '検索',
-      Replace: '置き換え',
-      next: '▼',
-      previous: '▲',
-      all: 'すべて',
-      'match case': '一致条件',
-      'by word': '全文検索',
-      regexp: '正規表現',
-      replace: '置き換え',
-      'replace all': 'すべてを置き換え',
-      close: '閉じる',
-      'current match': '現在の一致',
-      'replaced $ matches': '$ 件の一致を置き換え',
-      'replaced match on line $': '$ 行の一致を置き換え',
-      'on line': 'した行',
-      // @codemirror/autocomplete
-      Completions: '自動補完',
-      // @codemirror/lint
-      Diagnostics: 'エラー',
-      'No diagnostics': 'エラーなし',
-    });
-
-    /** When dark value changed, sync vuetify's dark mode */
-    watch(dark, v => (vuetify.theme.dark = v));
-
-    return {
-      dark,
-      value,
-      lang,
-      phrases,
-    };
-  },
-});
+/**
+ * Internationalization Config.
+ * In this example, the display language to Japanese.
+ * Must be reactive when used in combination with vue-i18n.
+ *
+ * @see {@link https://codemirror.net/6/examples/translate/ | Example: Internationalization}
+ */
+const phrases: Record<string, string> = {
+  // @codemirror/view
+  'Control character': '制御文字',
+  // @codemirror/commands
+  'Selection deleted': '選択を削除',
+  // @codemirror/language
+  'Folded lines': '折り畳まれた行',
+  'Unfolded lines': '折り畳める行',
+  to: '行き先',
+  'folded code': '折り畳まれたコード',
+  unfold: '折り畳みを解除',
+  'Fold line': '行を折り畳む',
+  'Unfold line': '行の折り畳む解除',
+  // @codemirror/search
+  'Go to line': '行き先の行',
+  go: 'OK',
+  Find: '検索',
+  Replace: '置き換え',
+  next: '▼',
+  previous: '▲',
+  all: 'すべて',
+  'match case': '一致条件',
+  'by word': '全文検索',
+  regexp: '正規表現',
+  replace: '置き換え',
+  'replace all': 'すべてを置き換え',
+  close: '閉じる',
+  'current match': '現在の一致',
+  'replaced $ matches': '$ 件の一致を置き換え',
+  'replaced match on line $': '$ 行の一致を置き換え',
+  'on line': 'した行',
+  // @codemirror/autocomplete
+  Completions: '自動補完',
+  // @codemirror/lint
+  Diagnostics: 'エラー',
+  'No diagnostics': 'エラーなし',
+};
 </script>
+
+<template>
+  <code-mirror
+    v-model="value"
+    basic
+    :dark="dark"
+    :lang="lang"
+    :phrases="phrases"
+  />
+</template>
 ```
 
 ## Events
@@ -413,4 +389,5 @@ const config: UserConfig = {
 
 ## LICENSE
 
-©2022-2023 by Logue. Licensed under the [MIT License](LICENSE).
+©2022-2024 by Logue.
+Licensed under the [MIT License](LICENSE).
