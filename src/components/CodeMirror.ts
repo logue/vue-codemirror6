@@ -458,6 +458,16 @@ export default defineComponent({
           return;
         }
 
+        // Range Fix ?
+        // https://github.com/logue/vue-codemirror6/issues/27
+        if (
+          !selection.value.ranges.every(
+            range => range.anchor < value.length && range.head < value.length
+          )
+        ) {
+          return;
+        }
+
         // Update
         view.value.dispatch({
           changes: { from: 0, to: view.value.state.doc.length, insert: value },
