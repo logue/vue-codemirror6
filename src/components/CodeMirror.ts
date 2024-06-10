@@ -363,11 +363,13 @@ export default defineComponent({
       // @see https://codemirror.net/examples/config/
       const language = new Compartment();
       const tabSize = new Compartment();
-
+      if (props.basic && props.minimal) {
+        throw '[Vue CodeMirror] Both basic and minimal cannot be specified.';
+      }
       // TODO: Ignore previous prop was not changed.
       return [
         // Toggle basic setup
-        props.basic ? basicSetup : undefined,
+        props.basic && !props.minimal ? basicSetup : undefined,
         // Toggle minimal setup
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
