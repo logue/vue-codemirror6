@@ -46,12 +46,12 @@ import DemoPage from './DemoPage.vue';
   </nav>
   <header class="bg-body-tertiary">
     <div class="container py-3">
-      <h1>Vue CodeMirrror6 Demo</h1>
+      <h1>Vue CodeMirror6 Demo</h1>
       <p class="lead">
         A rough demo of Vue CodeMirror6 in action. You can switch between dark
         modes from the
         <i class="bi bi-circle-half" />
-        icon in the upper left.
+        icon in the upper right.
       </p>
     </div>
   </header>
