@@ -362,7 +362,7 @@ const config: UserConfig = {
           // ...
           codemirror: [
             // Split CodeMirror code.
-            'vue-codemirror6'
+            'vue-codemirror6',
             'codemirror',
             '@codemirror/autocomplete',
             '@codemirror/commands',
