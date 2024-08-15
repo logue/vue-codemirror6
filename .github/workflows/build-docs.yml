@@ -25,8 +25,8 @@ jobs:
 
       - name: Build 🔧
         run: |
-          yarn install
-          yarn build:docs
+          pnpm install
+          pnpm run build:docs
 
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4.6.3
