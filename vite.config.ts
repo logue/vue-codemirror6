@@ -25,13 +25,6 @@ export default defineConfig(({ mode, command }): UserConfig => {
         'vue-codemirror6': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
-    // https://vitejs.dev/config/#server-options
-    server: {
-      fs: {
-        // Allow serving files from one level up to the project root
-        allow: ['..'],
-      },
-    },
     plugins: [
       Vue(),
       // vite-plugin-checker
@@ -56,7 +49,9 @@ export default defineConfig(({ mode, command }): UserConfig => {
 `),
       // vite-plugin-dts
       // https://github.com/qmhc/vite-plugin-dts
-      mode === 'docs' ? undefined : dts(),
+      mode === 'docs'
+        ? undefined
+        : dts({ tsconfigPath: './tsconfig.app.json' }),
     ],
     optimizeDeps: {
       exclude: [

@@ -462,14 +462,16 @@ export default defineComponent({
 
         // Range Fix ?
         // https://github.com/logue/vue-codemirror6/issues/27
-        const isSelectionOutOfRange =  !view.value.state.selection.ranges.every(
+        const isSelectionOutOfRange = !view.value.state.selection.ranges.every(
           range => range.anchor < value.length && range.head < value.length
-        )
-    
+        );
+
         // Update
         view.value.dispatch({
           changes: { from: 0, to: view.value.state.doc.length, insert: value },
-          selection: isSelectionOutOfRange ? { anchor: 0, head: 0 } : view.value.state.selection,
+          selection: isSelectionOutOfRange
+            ? { anchor: 0, head: 0 }
+            : view.value.state.selection,
           scrollIntoView: true,
         });
       },
