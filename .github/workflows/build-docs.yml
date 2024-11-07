@@ -12,16 +12,21 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout ✅
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
 
       - name: Use Node.js ${{ matrix.node-version }} ⚡
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.1.0
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Install pnpm 🎁
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Build 🔧
         run: |
@@ -29,7 +34,7 @@ jobs:
           pnpm run build:docs
 
       - name: Deploy to gh-pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.8
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
