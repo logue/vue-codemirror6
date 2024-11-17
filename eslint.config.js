@@ -15,6 +15,7 @@ export default tseslint.config(
       '.vscode/',
       '.yarn/',
       'dist/',
+      'docs/',
       'public/',
       'src/** /*.generated.*',
       'eslint.config.js',
@@ -26,7 +27,11 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        project: ['tsconfig.app.json', 'tsconfig.node.json'],
+        project: [
+          'tsconfig.app.json',
+          'tsconfig.node.json',
+          'tsconfig.docs.json',
+        ],
         tsconfigRootDir: import.meta.dirname,
         extraFileExtensions: ['.vue'],
         ecmaVersion: 'latest',
