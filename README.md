@@ -389,5 +389,5 @@ const config: UserConfig = {
 
 ## LICENSE
 
-©2022-2024 by Logue.
+©2022-2025 by Logue.
 Licensed under the [MIT License](LICENSE).

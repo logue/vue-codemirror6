@@ -62,7 +62,7 @@ import DemoPage from './DemoPage.vue';
 
   <footer class="footer mt-auto py-3 mb-0 bg-body-tertiary">
     <div class="container mb-0">
-      &copy; 2022-2023 by
+      &copy; 2022-2025 by
       <a href="http://logue.dev/">Logue</a>
       . Licensed under the
       <a href="http://opensource.org/licenses/mit-license.php">MIT License</a>

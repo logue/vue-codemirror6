@@ -41,7 +41,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
  *
  * @description ${pkg.description}
  * @author ${pkg.author.name} <${pkg.author.email}>
- * @copyright 2022-2024 By Masashi Yoshikawa All rights reserved.
+ * @copyright 2022-2025 By Masashi Yoshikawa All rights reserved.
  * @license ${pkg.license}
  * @version ${pkg.version}
  * @see {@link ${pkg.homepage}}
