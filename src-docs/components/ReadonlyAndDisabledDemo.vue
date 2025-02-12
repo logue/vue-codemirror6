@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
+
 import CodeMirror from 'vue-codemirror6';
 
 /** Readonly */

@@ -1,106 +1,92 @@
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import configPrettier from '@vue/eslint-config-prettier';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 
 import pluginImport from 'eslint-plugin-import';
-import pluginTsdoc from 'eslint-plugin-tsdoc';
-//import pluginVue from 'eslint-plugin-vue';
+import pluginVue from 'eslint-plugin-vue';
+import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
+
+// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
+// import { configureVueProject } from '@vue/eslint-config-typescript'
+// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
+// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+
 /**
  * ESLint Config
  */
-// @ts-check
-export default tseslint.config(
+export default defineConfigWithVueTs(
   {
+    name: 'app/files-to-lint',
+    files: ['**/*.{ts,mts,tsx,vue}']
+  },
+  {
+    name: 'app/files-to-ignore',
     ignores: [
       '.vscode/',
       '.yarn/',
-      'dist/',
-      'docs/',
-      'public/',
-      'src/** /*.generated.*',
+      '**/dist/**',
+      '**/dist-ssr/**',
+      '**/coverage/**',
       'eslint.config.js',
-    ],
+      'pnpm-lock.yaml',
+      'playwright-report',
+      'test-results',
+      'public/',
+      'src/**/*.generated.*'
+    ]
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.stylistic,
+  pluginVue.configs['flat/recommended'],
+  ...pluginVueA11y.configs['flat/recommended'],
+  vueTsConfigs.recommended,
   {
-    languageOptions: {
-      parserOptions: {
-        project: [
-          'tsconfig.app.json',
-          'tsconfig.node.json',
-          'tsconfig.docs.json',
-        ],
-        tsconfigRootDir: import.meta.dirname,
-        extraFileExtensions: ['.vue'],
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
-    },
     plugins: {
-      import: pluginImport,
-      tsdoc: pluginTsdoc,
-      //vue: pluginVue,
+      import: pluginImport
     },
+
     settings: {
       // This will do the trick
       'import/parsers': {
         espree: ['.js', '.cjs', '.mjs', '.jsx'],
         '@typescript-eslint/parser': ['.ts', '.tsx'],
-        'vue-eslint-parser': ['.vue'],
+        'vue-eslint-parser': ['.vue']
       },
       'import/resolver': {
         typescript: true,
         node: true,
-        alias: {
-          map: [
-            ['@', './src'],
-            ['~', './node_modules'],
-            ['vue-codemirror6', './src'],
-          ],
-          extensions: ['.js', '.ts', '.jsx', '.tsx', '.vue'],
-        },
+        'eslint-import-resolver-custom-alias': {
+          alias: {
+            '@': './src',
+            '~': './node_modules'
+          },
+          extensions: ['.js', '.ts', '.jsx', '.tsx', '.vue']
+        }
       },
       vite: {
-        configPath: './vite.config.ts',
-      },
+        configPath: './vite.config.ts'
+      }
     },
     rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-import-type-side-effects': 'error',
       // ...importPlugin.configs["recommended"].rules,
       'no-unused-vars': 'warn',
       // const lines: string[] = []; style
       '@typescript-eslint/array-type': [
         'error',
         {
-          default: 'array',
-        },
+          default: 'array'
+        }
       ],
       // Enable @ts-ignore etc.
       '@typescript-eslint/ban-ts-comment': 'off',
       // Left-hand side style
-      '@typescript-eslint/consistent-generic-constructors': [
-        'error',
-        'type-annotation',
-      ],
+      '@typescript-eslint/consistent-generic-constructors': ['error', 'type-annotation'],
       // Enable import sort order, see bellow.
       '@typescript-eslint/consistent-type-imports': [
         'off',
         {
-          prefer: 'type-imports',
-        },
+          prefer: 'type-imports'
+        }
       ],
       // Fix for pinia
       '@typescript-eslint/explicit-function-return-type': 'off',
-      // Allow short land for pretter
-      '@typescript-eslint/no-confusing-void-expression': [
-        'error',
-        {
-          ignoreArrowShorthand: true,
-        },
-      ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       // Fix for vite import.meta.env
@@ -116,55 +102,41 @@ export default tseslint.config(
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'parent',
-            'sibling',
-            'index',
-            'object',
-            'type',
-          ],
+          groups: ['builtin', 'external', 'parent', 'sibling', 'index', 'object', 'type'],
           pathGroups: [
             // Vue Core
             {
               pattern:
-                '{vue,vue-router,vuex,@/stores,vue-i18n,pinia,vite,vitest,vitest/**,@vitejs/**,@vue/**}',
+                '{vue,vue-router,vuex,@/store,vue-i18n,pinia,vite,vitest,vitest/**,@vitejs/**,@vue/**}',
               group: 'external',
-              position: 'before',
+              position: 'before'
             },
             // Internal Codes
             {
               pattern: '{@/**}',
               group: 'internal',
-              position: 'before',
-            },
+              position: 'before'
+            }
           ],
           pathGroupsExcludedImportTypes: ['builtin'],
           alphabetize: {
-            order: 'asc',
+            order: 'asc'
           },
-          'newlines-between': 'always',
-        },
+          'newlines-between': 'always'
+        }
       ],
-      'tsdoc/syntax': 'warn',
-      /*
       // A tag with no content should be written like <br />.
       'vue/html-self-closing': [
         'error',
         {
           html: {
-            void: 'always',
-          },
-        },
+            void: 'always'
+          }
+        }
       ],
       // Mitigate non-multiword component name errors to warnings.
-      'vue/multi-word-component-names': 'warn',
-      // for Vuetify Labs Fix (v-data-tables etc.)
-      'vuetify/no-deprecated-components': 'warn',
-      */
-    },
+      'vue/multi-word-component-names': 'warn'
+    }
   },
-  // ...pluginVue.configs['flat/recommended'],
-  eslintConfigPrettier
+  configPrettier
 );

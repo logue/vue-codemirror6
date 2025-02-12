@@ -1,17 +1,18 @@
 <!-- eslint-disable import/no-duplicates -->
 <script setup lang="ts">
-import CodeMirror from 'vue-codemirror6';
-import { useDark } from '@vueuse/core';
 import { vue } from '@codemirror/lang-vue';
+import { useDark } from '@vueuse/core';
 
-import MarkdownDemo from './components/MarkdownDemo.vue';
-import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
-import SlotDemo from './components/SlotDemo.vue';
-import SlotDemoSrc from './components/SlotDemo.vue?raw';
-import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
-import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
 import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
 import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
+import MarkdownDemo from './components/MarkdownDemo.vue';
+import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
+import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
+import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
+import SlotDemo from './components/SlotDemo.vue';
+import SlotDemoSrc from './components/SlotDemo.vue?raw';
+
+import CodeMirror from 'vue-codemirror6';
 
 const dark = useDark();
 

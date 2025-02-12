@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ToggleTheme from './components/ToggleTheme.vue';
 import DemoPage from './DemoPage.vue';
+import ToggleTheme from './components/ToggleTheme.vue';
 </script>
 
 <!-- eslint-disable vuejs-accessibility/anchor-has-content -->

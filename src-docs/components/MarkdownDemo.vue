@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 
-import CodeMirror from 'vue-codemirror6';
-import VueMarkdown from 'vue-markdown-wasm';
 import { markdown } from '@codemirror/lang-markdown';
+import VueMarkdown from 'vue-markdown-wasm';
+
+import CodeMirror from 'vue-codemirror6';
 
 /** CodeMirror Instance */
 const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();

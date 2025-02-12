@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /** Bootstrap 5.3 Toggle Dark mode */
 import { watch } from 'vue';
+
 import { useDark, useToggle } from '@vueuse/core';
 
 const isDark = useDark();
