@@ -269,6 +269,13 @@ export default defineComponent({
       type: String,
       default: 'div',
     },
+    /**
+     * External updates also cause the form to scroll
+     */
+    scrollIntoView: {
+      type: Boolean,
+      default: true,
+    },
   },
   /** Emits */
   emits: {
@@ -472,7 +479,7 @@ export default defineComponent({
           selection: isSelectionOutOfRange
             ? { anchor: 0, head: 0 }
             : view.value.state.selection,
-          scrollIntoView: true,
+          scrollIntoView: props.scrollIntoView,
         });
       },
       { immediate: true }
