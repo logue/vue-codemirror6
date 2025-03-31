@@ -5,7 +5,7 @@
  * @author Logue <logue@hotmail.co.jp>
  * @copyright 2022-2025 By Masashi Yoshikawa All rights reserved.
  * @license MIT
- * @version 1.3.12
+ * @version 1.3.13
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
 
