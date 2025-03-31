@@ -164,6 +164,13 @@ export default defineConfigWithVueTs(
       ],
       // Mitigate non-multiword component name errors to warnings.
       'vue/multi-word-component-names': 'warn',
+      // allow model-value
+      'vue/no-deprecated-model-definition': [
+        'error',
+        {
+          allowVue3Compat: true,
+        },
+      ],
     },
   },
   configPrettier

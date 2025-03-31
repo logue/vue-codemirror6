@@ -55,6 +55,7 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 | gutter                    | boolean                           | Display 🔴 on the line where there was an error when `linter` was specified. It will not work if `linter` is not specified.                                                                                                    |
 | gutterConfig              | Object                            | see <https://codemirror.net/docs/ref/#lint.lintGutter^config>                                                                                                                                                                  |
 | tag                       | string                            | HTML tags used in the component. (Default is `div` tag.)                                                                                                                                                                       |
+| scrollIntoView            | boolean                           | Allows an external update to scroll the form. (Default is `true`)                                                                                                                                                              |
 
 ⚠ Notice: `lang` and `linter` can also be set together in `extensions`. These are separated for compatibility with previous versions of CodeMirror settings and for typing props.
 
@@ -81,8 +82,8 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 
 ### Unofficial
 
-- [@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran)
-- [@phoenix-plugin-registry/petetnt.brackets-codemirror-go](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-go)
+- [`@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran`](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-fortran)
+- [`@phoenix-plugin-registry/petetnt.brackets-codemirror-go`](https://www.npmjs.com/package/@phoenix-plugin-registry/petetnt.brackets-codemirror-go)
 - [`@acarl005/lang-sql`](https://www.npmjs.com/package/@acarl005/lang-sql)
 - [`@ark-us/codemirror-lang-taylor`](https://www.npmjs.com/package/@ark-us/codemirror-lang-taylor)
 - [`@formulavize/lang-fiz`](https://www.npmjs.com/package/@formulavize/lang-fiz)

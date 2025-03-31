@@ -270,7 +270,8 @@ export default defineComponent({
       default: 'div',
     },
     /**
-     * External updates also cause the form to scroll
+     * Allows an external update to scroll the form.
+     * @see {@link https://codemirror.net/docs/ref/#state.TransactionSpec.scrollIntoView}
      */
     scrollIntoView: {
       type: Boolean,
