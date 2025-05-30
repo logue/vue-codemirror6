@@ -26,13 +26,13 @@
     "email": "logue@hotmail.co.jp",
     "url": "https://logue.dev/"
   },
-  "homepage": "https://github.com/logue/vue-codemirror6",
+  "homepage": "https://bgithub.xyz/logue/vue-codemirror6",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/logue/vue-codemirror6.git"
   },
   "bugs": {
-    "url": "https://github.com/logue/vue-codemirror6/issues"
+    "url": "https://bgithub.xyz/logue/vue-codemirror6/issues"
   },
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -80,7 +80,6 @@
     "@codemirror/view": "^6.36.8",
     "codemirror": "^6.0.1",
     "style-mod": "^4.1.2",
-    "vue-codemirror6": "file:",
     "vue-demi": "latest"
   },
   "peerDependencies": {
