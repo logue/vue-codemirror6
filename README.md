@@ -203,7 +203,7 @@ export default defineComponent({
 
 ### Full Example
 
-When using as a Markdown editor on [https://github.com/logue/vite-vue3-ts-starter](vite-vue3-ts-starter).
+When using as a Markdown editor on [vite-vue3-ts-starter](https://github.com/logue/vite-vue3-ts-starter).
 
 ```vue
 <script lang="ts" setup>
