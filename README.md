@@ -361,18 +361,7 @@ const config: UserConfig = {
       output: {
         manualChunks: {
           // ...
-          codemirror: [
-            // Split CodeMirror code.
-            'vue-codemirror6',
-            'codemirror',
-            '@codemirror/autocomplete',
-            '@codemirror/commands',
-            '@codemirror/language',
-            '@codemirror/lint',
-            '@codemirror/search',
-            '@codemirror/state',
-            '@codemirror/view',
-          ],
+          codemirror: ['vue-codemirror6'],
           'codemirror-lang': [
             // Add the following as needed.
             '@codemirror/lang-html',

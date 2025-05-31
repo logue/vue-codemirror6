@@ -1,6 +1,3 @@
-// Helpers
-
-// CodeMirror
 import { indentWithTab } from '@codemirror/commands';
 import { indentUnit, type LanguageSupport } from '@codemirror/language';
 import {
@@ -372,7 +369,9 @@ export default defineComponent({
       const language = new Compartment();
       const tabSize = new Compartment();
       if (props.basic && props.minimal) {
-        throw '[Vue CodeMirror] Both basic and minimal cannot be specified.';
+        throw new Error(
+          '[Vue CodeMirror] Both basic and minimal cannot be specified.'
+        );
       }
       // TODO: Ignore previous prop was not changed.
       return [
@@ -441,17 +440,14 @@ export default defineComponent({
         props.placeholder ? placeholder(props.placeholder) : undefined,
         // Append Extensions
         ...props.extensions,
-      ].filter((extension): extension is Extension => !!extension);
+      ].filter((extension): extension is Extension => !!extension); // Filter undefined
     });
 
     // Extension (mostly props) Changed
     watch(
       extensions,
-      exts => {
-        view.value?.dispatch({
-          effects: StateEffect.reconfigure.of(exts),
-        });
-      },
+      exts =>
+        view.value?.dispatch({ effects: StateEffect.reconfigure.of(exts) }),
       { immediate: true }
     );
 
@@ -516,7 +512,7 @@ export default defineComponent({
 
           // console.log(view.state.doc.toString(), tr);
           // state.toString() is not defined, so use toJSON and toText function to convert string.
-          context.emit('update:modelValue', tr.state.doc.toString() ?? '');
+          context.emit('update:modelValue', tr.state.doc.toString());
           // Emit EditorState
           context.emit('change', tr.state);
         },
