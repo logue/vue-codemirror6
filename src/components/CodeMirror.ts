@@ -1,7 +1,7 @@
 import { indentWithTab } from '@codemirror/commands';
 import { indentUnit, type LanguageSupport } from '@codemirror/language';
 import {
-  diagnosticCount as linterDagnosticCount,
+  diagnosticCount as linterDiagnosticCount,
   forceLinting,
   linter,
   lintGutter,
@@ -198,7 +198,7 @@ export default defineComponent({
      */
     phrases: {
       type: Object as PropType<Record<string, string>>,
-      default: () => undefined,
+      default: undefined,
     },
     /**
      * CodeMirror Language
@@ -207,7 +207,7 @@ export default defineComponent({
      */
     lang: {
       type: Object as PropType<LanguageSupport>,
-      default: () => undefined,
+      default: undefined,
     },
     /**
      * CodeMirror Linter
@@ -257,7 +257,7 @@ export default defineComponent({
      */
     gutterConfig: {
       type: Object,
-      default: () => undefined,
+      default: undefined,
     },
     /**
      * Using tag
@@ -545,7 +545,7 @@ export default defineComponent({
       if (props.forceLinting) {
         forceLinting(view.value);
       }
-      diagnosticCount.value = linterDagnosticCount(view.value.state);
+      diagnosticCount.value = linterDiagnosticCount(view.value.state);
     };
 
     /**
