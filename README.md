@@ -56,6 +56,7 @@ This component can handle bidirectional binding by `v-model` like a general Vue 
 | gutterConfig              | Object                            | see <https://codemirror.net/docs/ref/#lint.lintGutter^config>                                                                                                                                                                  |
 | tag                       | string                            | HTML tags used in the component. (Default is `div` tag.)                                                                                                                                                                       |
 | scrollIntoView            | boolean                           | Allows an external update to scroll the form. (Default is `true`)                                                                                                                                                              |
+| keymap                    | KeyBinding[]                      | Key bindings associate key names with command-style functions. See <https://codemirror.net/docs/ref/#view.KeyBinding>                                                                                                          |
 
 ⚠ Notice: `lang` and `linter` can also be set together in `extensions`. These are separated for compatibility with previous versions of CodeMirror settings and for typing props.
 

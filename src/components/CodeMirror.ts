@@ -23,6 +23,7 @@ import {
   EditorView,
   keymap,
   placeholder,
+  type KeyBinding,
   type ViewUpdate,
 } from '@codemirror/view';
 import { basicSetup, minimalSetup } from 'codemirror';
@@ -127,6 +128,10 @@ export default defineComponent({
     },
     /**
      * Tab character
+     * This is the unit of indentation used when the editor is configured to indent with tabs.
+     * It is also used to determine the size of the tab character when the editor is configured to use tabs for indentation..
+     *
+     * @see {@link https://codemirror.net/docs/ref/#state.EditorState^indentUnit}
      */
     indentUnit: {
       type: String,
@@ -134,6 +139,10 @@ export default defineComponent({
     },
     /**
      * Allow Multiple Selection.
+     * This allows the editor to have multiple selections at the same time.
+     * This is useful for editing multiple parts of the document at once.
+     * If this is set to true, the editor will allow multiple selections.
+     * If this is set to false, the editor will only allow a single selection.
      *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorState^allowMultipleSelections}
      */
@@ -143,6 +152,9 @@ export default defineComponent({
     },
     /**
      * Tab size
+     * This is the number of spaces that a tab character represents in the editor.
+     * It is used to determine the size of the tab character when the editor is configured to use tabs for indentation.
+     * If this is set to a number, the editor will use that number of spaces for each tab character.
      *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorState^tabSize}
      */
@@ -153,6 +165,9 @@ export default defineComponent({
     /**
      * Set line break (separetor) char.
      *
+     * This is the character that is used to separate lines in the editor.
+     * It is used to determine the line break character when the editor is configured to use a specific line break character.
+     *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorState^lineSeparator}
      */
     lineSeparator: {
@@ -161,6 +176,11 @@ export default defineComponent({
     },
     /**
      * Readonly
+     *
+     * This is a CodeMirror Facet that allows you to set the editor to read-only mode.
+     * When this is set to true, the editor will not allow any changes to be made to the document.
+     * This is useful for displaying code that should not be edited, such as documentation or examples.
+     * If this is set to false, the editor will allow changes to be made to the document.
      *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorState^readOnly}
      */
@@ -183,6 +203,8 @@ export default defineComponent({
     /**
      * Additional Extension
      *
+     * You can use this to add any additional extensions that you want to use in the editor.
+     *
      * @see {@link https://codemirror.net/docs/ref/#state.Extension}
      */
     extensions: {
@@ -194,6 +216,10 @@ export default defineComponent({
     /**
      * Language Phreses
      *
+     * This is a CodeMirror Facet that allows you to define custom phrases for the editor.
+     * It can be used to override default phrases or add new ones.
+     * This is useful for translating the editor to different languages or for customizing the editor's UI.
+     *
      * @see {@link https://codemirror.net/examples/translate/}
      */
     phrases: {
@@ -202,6 +228,10 @@ export default defineComponent({
     },
     /**
      * CodeMirror Language
+     *
+     * This is a CodeMirror Facet that allows you to define the language of the editor.
+     * It can be used to enable syntax highlighting and other language-specific features.
+     * It is useful for displaying code in a specific language, such as JavaScript, Python, or HTML.
      *
      * @see {@link https://codemirror.net/docs/ref/#language}
      */
@@ -212,6 +242,11 @@ export default defineComponent({
     /**
      * CodeMirror Linter
      *
+     * This is a CodeMirror Facet that allows you to define a linter for the editor.
+     * It can be used to check the code for errors and warnings, and to provide feedback to the user.
+     * It is useful for displaying code in a specific language, such as JavaScript, Python, or HTML.
+     * This is useful for providing feedback to the user about the code they are writing.
+     *
      * @see {@link https://codemirror.net/docs/ref/#lint.linter}
      */
     linter: {
@@ -220,6 +255,10 @@ export default defineComponent({
     },
     /**
      * Linter Config
+     *
+     * This is a CodeMirror Facet that allows you to define the configuration for the linter.
+     * It can be used to specify options for the linter, such as the severity of errors and warnings, and to customize the behavior of the linter.
+     * This is useful for providing feedback to the user about the code they are writing.
      *
      * @see {@link https://codemirror.net/docs/ref/#lint.linter^config}
      */
@@ -231,6 +270,8 @@ export default defineComponent({
     },
     /**
      * Forces any linters configured to run when the editor is idle to run right away.
+     *
+     * This is useful for running linters on the initial load of the editor, or when the user has made changes to the code and wants to see the results immediately.
      *
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
@@ -253,6 +294,10 @@ export default defineComponent({
     /**
      * Gutter Config
      *
+     * This is a CodeMirror Facet that allows you to define the configuration for the gutter.
+     * It can be used to specify options for the gutter, such as the size of the gutter, the position of the gutter, and to customize the behavior of the gutter.
+     * This is useful for providing feedback to the user about the code they are writing.
+     *
      * @see {@link https://codemirror.net/docs/ref/#lint.lintGutter^config}
      */
     gutterConfig: {
@@ -268,11 +313,27 @@ export default defineComponent({
     },
     /**
      * Allows an external update to scroll the form.
+     *
+     * This is useful for scrolling the editor to a specific position when the user has made changes to the code and wants to see the results immediately.
+     * If this is set to true, the editor will scroll to the position specified in the transaction.
+     * If this is set to false, the editor will not scroll to the position specified in the transaction.
+     *
      * @see {@link https://codemirror.net/docs/ref/#state.TransactionSpec.scrollIntoView}
      */
     scrollIntoView: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * Key map
+     * This is a CodeMirror Facet that allows you to define custom key bindings.
+     * It can be used to override default key bindings or add new ones.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#view.keymap}
+     */
+    keymap: {
+      type: Array as PropType<KeyBinding[]>,
+      default: () => [],
     },
   },
   /** Emits */
@@ -373,6 +434,17 @@ export default defineComponent({
           '[Vue CodeMirror] Both basic and minimal cannot be specified.'
         );
       }
+      /** Keymap */
+      let keymaps: KeyBinding[] = [];
+      if (props.keymap && props.keymap.length > 0) {
+        // If keymap is specified, use it.
+        keymaps = props.keymap;
+      }
+      if (props.tab) {
+        // If tab is enabled, add indentWithTab to keymap.
+        keymaps.push(indentWithTab);
+      }
+
       // TODO: Ignore previous prop was not changed.
       return [
         // Toggle basic setup
@@ -408,8 +480,6 @@ export default defineComponent({
         EditorView.theme(props.theme, { dark: props.dark }),
         // Toggle line wrapping
         props.wrap ? EditorView.lineWrapping : undefined,
-        // Indent with tab
-        props.tab ? keymap.of([indentWithTab]) : undefined,
         // Tab character
         props.indentUnit ? indentUnit.of(props.indentUnit) : undefined,
         // Allow Multiple Selections
@@ -438,6 +508,8 @@ export default defineComponent({
           : undefined,
         // Placeholder
         props.placeholder ? placeholder(props.placeholder) : undefined,
+        // Keymap and Indent with Tab
+        keymaps.length !== 0 ? keymap.of(keymaps) : undefined,
         // Append Extensions
         ...props.extensions,
       ].filter((extension): extension is Extension => !!extension); // Filter undefined
