@@ -91,9 +91,6 @@ export default defineConfig(({ mode, command }): UserConfig => {
           mode === 'docs'
             ? undefined
             : [
-                'vue',
-                'vue-demi',
-                'codemirror',
                 '@codemirror/autocomplete',
                 '@codemirror/commands',
                 '@codemirror/language',
@@ -101,6 +98,10 @@ export default defineConfig(({ mode, command }): UserConfig => {
                 '@codemirror/search',
                 '@codemirror/state',
                 '@codemirror/view',
+                'codemirror',
+                'style-mod',
+                'vue-demi',
+                'vue',
               ],
         output: {
           esModule: true,
@@ -111,38 +112,47 @@ export default defineConfig(({ mode, command }): UserConfig => {
           systemNullSetters: false,
           exports: 'named',
           globals: {
-            codemirror: 'codemirror',
+            '@codemirror/autocomplete': 'autocomplete',
             '@codemirror/commands': 'commands',
             '@codemirror/language': 'language',
             '@codemirror/lint': 'lint',
+            '@codemirror/search': 'search',
             '@codemirror/state': 'state',
             '@codemirror/view': 'view',
+            'style-mod': 'styleMod',
             'vue-demi': 'VueDemi',
+            codemirror: 'codemirror',
             vue: 'Vue',
           },
           manualChunks:
             mode !== 'docs'
               ? undefined
-              : {
-                  vue: ['vue'],
-                  eslint: ['eslint-linter-browserify'],
-                  codemirror: [
-                    'codemirror',
-                    '@codemirror/autocomplete',
-                    '@codemirror/commands',
-                    '@codemirror/language',
-                    '@codemirror/lint',
-                    '@codemirror/search',
-                    '@codemirror/state',
-                    '@codemirror/view',
-                  ],
-                  // Add the following as needed.
-                  'codemirror-lang': [
-                    '@codemirror/lang-markdown',
-                    '@codemirror/lang-javascript',
-                    '@codemirror/lang-json',
-                    '@codemirror/lang-vue',
-                  ],
+              : (id: string) => {
+                  if (
+                    id.includes('/node_modules/@vue/') ||
+                    id.includes('/node_modules/vue')
+                  ) {
+                    return 'vue';
+                  }
+
+                  if (id.includes('/node_modules/eslint-linter-browserify/')) {
+                    return 'eslint-linter-browserify';
+                  }
+
+                  // CodeMirror6
+                  if (
+                    id.includes('/node_modules/codemirror/') ||
+                    id.includes('/node_modules/@codemirror/') ||
+                    id.includes('/node_modules/style-mod/')
+                  ) {
+                    // Split CodeMirror and CodeMirror language into separate chunks
+                    return !/lang-/.exec(id) ? 'codemirror' : 'codemirror-lang';
+                  }
+
+                  if (id.includes('/node_modules/')) {
+                    // Other chunks
+                    return 'vendor';
+                  }
                 },
         },
       },
