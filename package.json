@@ -77,14 +77,14 @@
     "vue-demi": "latest"
   },
   "peerDependencies": {
-    "@codemirror/autocomplete": "^6.0.0",
-    "@codemirror/commands": "^6.0.0",
-    "@codemirror/language": "^6.0.0",
-    "@codemirror/lint": "^6.0.0",
-    "@codemirror/search": "^6.0.0",
-    "@codemirror/state": "^6.0.0",
-    "@codemirror/view": "^6.0.0",
-    "codemirror": "^6.0.0",
+    "@codemirror/autocomplete": "^6.18.6",
+    "@codemirror/commands": "^6.8.1",
+    "@codemirror/language": "^6.11.1",
+    "@codemirror/lint": "^6.8.5",
+    "@codemirror/search": "^6.5.11",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.37.2",
+    "codemirror": "^6.0.2",
     "vue": "^2.7.14 || ^3.4"
   },
   "devDependencies": {
