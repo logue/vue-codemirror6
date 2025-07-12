@@ -5,11 +5,11 @@
  * @author Logue <logue@hotmail.co.jp>
  * @copyright 2022-2025 By Masashi Yoshikawa All rights reserved.
  * @license MIT
- * @version 1.3.20
+ * @version 1.3.21
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
 
-import{w as Dr,V as Hr,x as jr}from"./vendor-DRMUk2Bs.js";/**
+import{w as Dr,V as Hr,x as jr}from"./vendor-BBc_s_YE.js";/**
 * @vue/shared v3.5.17
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
