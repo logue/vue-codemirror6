@@ -70,7 +70,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
           : {
               entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
               name: 'CodeMirror',
-              formats: ['umd', 'es', 'iife'],
+              formats: ['es', 'cjs', 'umd', 'iife'],
               fileName: format => `index.${format}.js`,
             },
 
