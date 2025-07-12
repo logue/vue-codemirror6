@@ -295,8 +295,8 @@ defineProps({ dark: Boolean });
     <label class="form-check-label" for="disabled">Disabled</label>
   </div>
   <code-mirror :dark="dark" basic :readonly="isReadonly" :disabled="isDisabled">
-    <pre
->色は匂へど　散りぬるを
+    <pre>
+色は匂へど　散りぬるを
 我が世誰そ　常ならむ
 有為の奥山　今日越えて
 浅き夢見じ　酔ひもせず</pre
