@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "1.3.20",
+  "version": "1.3.21",
   "license": "MIT",
   "description": "CodeMirror6 Component for vue2 and vue3.",
   "keywords": [
@@ -41,8 +41,10 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "files": [
@@ -50,14 +52,15 @@
     "/dist",
     "./src/components/CodeMirror.ts"
   ],
+  "sideEffects": false,
   "browser": {
     "./sfc": "./src/components/CodeMirror.ts"
   },
   "engines": {
+    "node": ">=18",
     "pnpm": ">=10.3.0"
   },
-  "packageManager": "pnpm@10.12.1",
-  "sideEffects": false,
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "vite",
     "clean": "rimraf node_modules/.vite",
@@ -73,62 +76,62 @@
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@codemirror/autocomplete": "^6.18.6",
-    "@codemirror/commands": "^6.8.1",
-    "@codemirror/language": "^6.11.1",
-    "@codemirror/lint": "^6.8.5",
-    "@codemirror/search": "^6.5.11",
-    "@codemirror/state": "^6.5.2",
-    "@codemirror/view": "^6.37.2",
-    "codemirror": "^6.0.2",
-    "style-mod": "^4.1.2",
     "vue-demi": "latest"
   },
   "peerDependencies": {
-    "vue": "^2.7.14 || ^3.4"
+    "vue": "^2.7.14 || ^3.3.4",
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/commands": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/lint": "^6.0.0",
+    "@codemirror/search": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "style-mod": "^4.0.0",
+    "codemirror": "^6.0.0"
   },
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.2.4",
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/lang-markdown": "^6.3.3",
     "@codemirror/lang-vue": "^0.1.3",
-    "@tsconfig/node-lts": "^22.0.1",
-    "@types/node": "^24.0.3",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@tsconfig/node-lts": "^22.0.2",
+    "@types/node": "^24.0.13",
+    "@vitejs/plugin-vue": "^6.0.0",
     "@vue/compiler-sfc": "^3.5.17",
     "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.1",
+    "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
-    "@vueuse/core": "^13.4.0",
+    "@vueuse/core": "^13.5.0",
     "bootstrap": "^5.3.7",
-    "eslint": "^9.29.0",
+    "eslint": "^9.31.0",
     "eslint-import-resolver-custom-alias": "^1.3.2",
-    "eslint-import-resolver-typescript": "^4.4.3",
-    "eslint-linter-browserify": "^9.29.0",
-    "eslint-plugin-import": "^2.31.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-linter-browserify": "^9.31.0",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-playwright": "^2.2.0",
-    "eslint-plugin-vue": "^10.2.0",
+    "eslint-plugin-vue": "^10.3.0",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "husky": "^9.1.7",
     "jiti": "^2.4.2",
     "lint-staged": "^16.1.2",
     "npm-run-all2": "^8.0.4",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "rollup-plugin-visualizer": "^6.0.3",
     "sass-embedded": "^1.89.2",
     "supports-color": "^10.0.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.34.1",
-    "vite": "^6.3.5",
+    "typescript-eslint": "^8.36.0",
+    "vite": "^7.0.4",
     "vite-plugin-banner": "^0.8.1",
-    "vite-plugin-checker": "^0.9.3",
+    "vite-plugin-checker": "^0.10.0",
     "vite-plugin-dts": "^4.5.4",
     "vue": "^3.5.17",
-    "vue-eslint-parser": "^10.1.3",
+    "vue-eslint-parser": "^10.2.0",
     "vue-markdown-wasm": "^0.5.1",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^3.0.1"
   },
   "husky": {
     "hooks": {
