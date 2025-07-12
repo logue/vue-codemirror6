@@ -3,6 +3,8 @@
 import { vue } from '@codemirror/lang-vue';
 import { useDark } from '@vueuse/core';
 
+import KeyMapDemo from './components/KeyMapDemo.vue';
+import KeyMapDemoSrc from './components/KeyMapDemo.vue?raw';
 import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
 import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
 import MarkdownDemo from './components/MarkdownDemo.vue';
@@ -20,6 +22,7 @@ const markdownDemoSrc = MarkdownDemoSrc.trim();
 const slotDemoSrc = SlotDemoSrc.trim();
 const readonlyAndDisabledDemoSrc = ReadonlyAndDisabledDemoSrc.trim();
 const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
+const keyMapDemoSrc = KeyMapDemoSrc.trim();
 </script>
 
 <template>
@@ -208,6 +211,38 @@ const linterAndCrossBindingDemoSrc = LinterAndCrossBindingDemoSrc.trim();
         <div class="col-sm">
           <h3>Demo</h3>
           <readonly-and-disabled-demo :dark="dark" />
+        </div>
+      </div>
+    </section>
+    <section class="mb-5">
+      <h2>Key Map Demo</h2>
+      <p>
+        This is a sample that allows you to define your own keymap. The
+        <code>keymap</code>
+        prop is an array of objects that define the keymap.
+      </p>
+      <p>
+        The
+        <code>run</code>
+        function is called when the keymap is matched. If it returns
+        <code>true</code>
+        , the default behavior of the keymap is not executed.
+      </p>
+      <div class="row">
+        <div class="col-sm">
+          <code-mirror
+            v-model="keyMapDemoSrc"
+            :dark="dark"
+            :lang="vue()"
+            basic
+            wrap
+            readonly
+          />
+        </div>
+        <div class="col-sm">
+          <h3>Demo</h3>
+          <p>Press Shift+Ctrl+Enter to see the console log.</p>
+          <key-map-demo />
         </div>
       </div>
     </section>
