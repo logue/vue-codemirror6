@@ -202,6 +202,37 @@ export default defineComponent({
 </script>
 ```
 
+### Using with SSR (Nuxt.js, etc.)
+
+This component is now SSR-compatible. CodeMirror will only be initialized on the client side, and the component will safely render without errors during server-side rendering.
+
+If you're using Nuxt 3, you can use the component directly:
+
+```vue
+<template>
+  <code-mirror v-model="value" :lang="lang" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+import { javascript } from '@codemirror/lang-javascript';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+```
+
+For Nuxt 2 or if you encounter any issues, you can wrap the component with `<ClientOnly>`:
+
+```vue
+<template>
+  <client-only>
+    <code-mirror v-model="value" :lang="lang" />
+  </client-only>
+</template>
+```
+
 ### Full Example
 
 When using as a Markdown editor on [vite-vue3-ts-starter](https://github.com/logue/vite-vue3-ts-starter).

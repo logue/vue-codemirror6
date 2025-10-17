@@ -82,6 +82,8 @@ export default defineComponent({
     /**
      * Use Basic Setup
      *
+     * This will enable the basic setup for the editor.
+     *
      * @see {@link https://codemirror.net/docs/ref/#codemirror.basicSetup}
      */
     basic: {
@@ -120,6 +122,8 @@ export default defineComponent({
     /**
      * Allow tab key indent.
      *
+     * This will enable the tab key to indent the current line or selection.
+     *
      * @see {@link https://codemirror.net/examples/tab/}
      */
     tab: {
@@ -128,6 +132,7 @@ export default defineComponent({
     },
     /**
      * Tab character
+     *
      * This is the unit of indentation used when the editor is configured to indent with tabs.
      * It is also used to determine the size of the tab character when the editor is configured to use tabs for indentation..
      *
@@ -139,6 +144,7 @@ export default defineComponent({
     },
     /**
      * Allow Multiple Selection.
+     *
      * This allows the editor to have multiple selections at the same time.
      * This is useful for editing multiple parts of the document at once.
      * If this is set to true, the editor will allow multiple selections.
@@ -152,6 +158,7 @@ export default defineComponent({
     },
     /**
      * Tab size
+     *
      * This is the number of spaces that a tab character represents in the editor.
      * It is used to determine the size of the tab character when the editor is configured to use tabs for indentation.
      * If this is set to a number, the editor will use that number of spaces for each tab character.
@@ -373,7 +380,7 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/docs/ref/#view.EditorView}
      */
-    const view: ShallowRef<EditorView> = shallowRef(new EditorView());
+    const view: ShallowRef<EditorView | undefined> = shallowRef(undefined);
 
     /**
      * Focus
@@ -381,9 +388,9 @@ export default defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#view.EditorView.hasFocus}
      */
     const focus: WritableComputedRef<boolean> = computed({
-      get: () => view.value.hasFocus,
+      get: () => view.value?.hasFocus ?? false,
       set: f => {
-        if (f) {
+        if (f && view.value) {
           view.value.focus();
         }
       },
@@ -394,24 +401,37 @@ export default defineComponent({
      *
      * @see {@link https://codemirror.net/docs/ref/#state.EditorSelection}
      */
-    const selection: WritableComputedRef<EditorSelection> = computed({
-      get: () => view.value.state.selection,
-      set: s => view.value.dispatch({ selection: s }),
-    });
+    const selection: WritableComputedRef<EditorSelection | undefined> =
+      computed({
+        get: () => view.value?.state.selection,
+        set: s => {
+          if (view.value && s) {
+            view.value.dispatch({ selection: s });
+          }
+        },
+      });
 
     /** Cursor Position */
     const cursor: WritableComputedRef<number> = computed({
-      get: () => view.value.state.selection.main.head,
-      set: a => view.value.dispatch({ selection: { anchor: a } }),
+      get: () => view.value?.state.selection.main.head ?? 0,
+      set: a => {
+        if (view.value) {
+          view.value.dispatch({ selection: { anchor: a } });
+        }
+      },
     });
 
     /** JSON */
-    const json: WritableComputedRef<Record<string, StateField<any>>> = computed(
-      {
-        get: () => view.value.state.toJSON(),
-        set: j => view.value.setState(EditorState.fromJSON(j)),
-      }
-    );
+    const json: WritableComputedRef<
+      Record<string, StateField<any>> | undefined
+    > = computed({
+      get: () => view.value?.state.toJSON(),
+      set: j => {
+        if (view.value && j) {
+          view.value.setState(EditorState.fromJSON(j));
+        }
+      },
+    });
 
     /** Text length */
     const length: Ref<number> = ref(0);
@@ -453,6 +473,9 @@ export default defineComponent({
         props.minimal && !props.basic ? minimalSetup : undefined,
         // ViewUpdate event listener
         EditorView.updateListener.of((update: ViewUpdate): void => {
+          if (!view.value) {
+            return;
+          }
           // Emit focus status
           context.emit('focus', view.value.hasFocus);
 
@@ -527,6 +550,9 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       async value => {
+        if (!view.value) {
+          return;
+        }
         if (
           view.value.composing || // IME fix
           view.value.state.doc.toJSON().join(props.lineSeparator ?? '\n') ===
@@ -556,11 +582,14 @@ export default defineComponent({
 
     /** When loaded */
     onMounted(async () => {
-      /** Initial value */
-      let value: string | Text = doc.value;
-      if (!editor.value) {
+      // Skip initialization in SSR environment
+      if (typeof window === 'undefined' || !editor.value) {
         return;
       }
+
+      /** Initial value */
+      let value: string | Text = doc.value;
+
       if (editor.value.childNodes[0]) {
         // when slot mode, overwrite initial value
         if (doc.value !== '') {
@@ -576,6 +605,9 @@ export default defineComponent({
         parent: editor.value,
         state: EditorState.create({ doc: value, extensions: extensions.value }),
         dispatch: (tr: Transaction) => {
+          if (!view.value) {
+            return;
+          }
           view.value.update([tr]);
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event
@@ -601,8 +633,10 @@ export default defineComponent({
 
     /** Destroy */
     onUnmounted(() => {
-      view.value.destroy();
-      context.emit('destroy');
+      if (view.value) {
+        view.value.destroy();
+        context.emit('destroy');
+      }
     });
 
     /**
@@ -645,42 +679,38 @@ export default defineComponent({
      * @param to - end line number
      */
     const getRange = (from?: number, to?: number): string | undefined =>
-      view.value.state.sliceDoc(from, to);
+      view.value?.state.sliceDoc(from, to);
     /**
      * Get the content of line.
      *
      * @param number - line number
      */
-    const getLine = (number: number): string =>
-      view.value.state.doc.line(number + 1).text;
+    const getLine = (number: number): string | undefined =>
+      view.value?.state.doc.line(number + 1).text;
     /** Get the number of lines in the editor. */
-    const lineCount = (): number => view.value.state.doc.lines;
+    const lineCount = (): number => view.value?.state.doc.lines ?? 0;
     /** Retrieve one end of the primary selection. */
-    const getCursor = (): number => view.value.state.selection.main.head;
+    const getCursor = (): number => view.value?.state.selection.main.head ?? 0;
     /** Retrieves a list of all current selections. */
     const listSelections = (): readonly SelectionRange[] => {
-      let _view$value$state$sel;
-      return (_view$value$state$sel = view.value.state.selection.ranges) !==
-        null && _view$value$state$sel !== undefined
-        ? _view$value$state$sel
-        : [];
+      return view.value?.state.selection.ranges ?? [];
     };
     /** Get the currently selected code. */
     const getSelection = (): string => {
-      let _view$value$state$sli;
-      return (_view$value$state$sli = view.value.state.sliceDoc(
+      if (!view.value) {
+        return '';
+      }
+      return view.value.state.sliceDoc(
         view.value.state.selection.main.from,
         view.value.state.selection.main.to
-      )) !== null && _view$value$state$sli !== undefined
-        ? _view$value$state$sli
-        : '';
+      );
     };
     /**
      * The length of the given array should be the same as the number of active selections.
      * Replaces the content of the selections with the strings in the array.
      */
     const getSelections = (): string[] => {
-      const s = view.value.state;
+      const s = view.value?.state;
       if (!s) {
         return [];
       }
@@ -691,9 +721,9 @@ export default defineComponent({
     };
     /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
-      view.value.state.selection.ranges.some(
+      view.value?.state.selection.ranges.some(
         (r: { empty: boolean }) => !r.empty
-      );
+      ) ?? false;
 
     /**
      * Replace the part of the document between from and to with the given string.
@@ -706,33 +736,45 @@ export default defineComponent({
       replacement: string | Text,
       from: number,
       to: number
-    ): void =>
-      view.value.dispatch({
-        changes: { from, to, insert: replacement },
-      });
+    ): void => {
+      if (view.value) {
+        view.value.dispatch({
+          changes: { from, to, insert: replacement },
+        });
+      }
+    };
     /**
      * Replace the selection(s) with the given string.
      * By default, the new selection ends up after the inserted text.
      *
      * @param replacement - replacement text
      */
-    const replaceSelection = (replacement: string | Text): void =>
-      view.value.dispatch(view.value.state.replaceSelection(replacement));
+    const replaceSelection = (replacement: string | Text): void => {
+      if (view.value) {
+        view.value.dispatch(view.value.state.replaceSelection(replacement));
+      }
+    };
     /**
      * Set the cursor position.
      *
      * @param position - position.
      */
-    const setCursor = (position: number): void =>
-      view.value.dispatch({ selection: { anchor: position } });
+    const setCursor = (position: number): void => {
+      if (view.value) {
+        view.value.dispatch({ selection: { anchor: position } });
+      }
+    };
     /**
      * Set a single selection range.
      *
      * @param anchor - anchor position
      * @param head -
      */
-    const setSelection = (anchor: number, head?: number): void =>
-      view.value.dispatch({ selection: { anchor, head } });
+    const setSelection = (anchor: number, head?: number): void => {
+      if (view.value) {
+        view.value.dispatch({ selection: { anchor, head } });
+      }
+    };
     /**
      * Sets a new set of selections. There must be at least one selection in the given array.
      *
@@ -742,21 +784,27 @@ export default defineComponent({
     const setSelections = (
       ranges: readonly SelectionRange[],
       primary?: number
-    ): void =>
-      view.value.dispatch({
-        selection: EditorSelection.create(ranges, primary),
-      });
+    ): void => {
+      if (view.value) {
+        view.value.dispatch({
+          selection: EditorSelection.create(ranges, primary),
+        });
+      }
+    };
     /**
      * Applies the given function to all existing selections, and calls extendSelections on the result.
      *
      * @param f - function
      */
-    const extendSelectionsBy = (f: any): void =>
-      view.value.dispatch({
-        selection: EditorSelection.create(
-          selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
-        ),
-      });
+    const extendSelectionsBy = (f: any): void => {
+      if (view.value && selection.value) {
+        view.value.dispatch({
+          selection: EditorSelection.create(
+            selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
+          ),
+        });
+      }
+    };
 
     const exposed = {
       editor,
@@ -767,7 +815,7 @@ export default defineComponent({
       length,
       json,
       diagnosticCount,
-      dom: view.value.contentDOM,
+      dom: view.value?.contentDOM,
       lint,
       forceReconfigure,
       // Bellow is CodeMirror5's function
