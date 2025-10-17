@@ -428,8 +428,11 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: modelValue.value,
-          'onUpdate:modelValue': (value: string) => {
-            modelValue.value = value;
+          'onUpdate:modelValue': (
+            value?: string | import('@codemirror/state').Text
+          ) => {
+            modelValue.value =
+              typeof value === 'string' ? value : (value?.toString() ?? '');
           },
         },
       });
