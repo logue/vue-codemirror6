@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { nextTick } from 'vue';
 
-import CodeMirror from '../components/CodeMirror';
+import CodeMirror from '../index';
 
 describe('CodeMirror SSR Compatibility', () => {
   let originalWindow: Window & typeof globalThis;

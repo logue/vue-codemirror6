@@ -5,7 +5,7 @@ import { nextTick, ref } from 'vue';
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
 
-import CodeMirror from '../components/CodeMirror';
+import CodeMirror from '../index';
 
 describe('CodeMirror Component', () => {
   beforeEach(() => {
