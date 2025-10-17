@@ -428,7 +428,6 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: modelValue.value,
-          // @ts-expect-error
           'onUpdate:modelValue': (value: string) => {
             modelValue.value = value;
           },
@@ -467,7 +466,7 @@ describe('CodeMirror Component', () => {
         const updateEvents = wrapper.emitted('update:modelValue');
         expect(updateEvents).toBeTruthy();
         if (updateEvents && updateEvents.length > 0) {
-          const lastEvent = updateEvents[updateEvents.length - 1];
+          const lastEvent = updateEvents.at(-1);
           expect(lastEvent?.[0]).toBe('changed');
         }
       }

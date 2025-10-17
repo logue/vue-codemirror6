@@ -56,12 +56,11 @@
   },
   "files": [
     "CHANGELOG.md",
-    "/dist",
-    "./src/components/CodeMirror.ts"
+    "/dist"
   ],
   "sideEffects": false,
   "browser": {
-    "./sfc": "./src/components/CodeMirror.ts"
+    "./sfc": "./src/index.ts"
   },
   "engines": {
     "node": ">=18",
@@ -102,10 +101,19 @@
     "vue": "^2.7.14 || ^3.3.4"
   },
   "devDependencies": {
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/commands": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
     "@codemirror/lang-javascript": "^6.2.4",
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/lang-markdown": "^6.4.0",
     "@codemirror/lang-vue": "^0.1.3",
+    "@codemirror/lint": "^6.0.0",
+    "@codemirror/search": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "codemirror": "^6.0.0",
+    "style-mod": "^4.0.0",
     "@tsconfig/node-lts": "^22.0.2",
     "@types/node": "^24.8.1",
     "@vitejs/plugin-vue": "^6.0.1",

@@ -12,12 +12,28 @@ importers:
 
   .:
     dependencies:
+      vue-demi:
+        specifier: latest
+        version: 0.14.10(vue@3.5.22(typescript@5.9.3))
+    devDependencies:
       '@codemirror/autocomplete':
         specifier: ^6.0.0
         version: 6.19.0
       '@codemirror/commands':
         specifier: ^6.0.0
         version: 6.9.0
+      '@codemirror/lang-javascript':
+        specifier: ^6.2.4
+        version: 6.2.4
+      '@codemirror/lang-json':
+        specifier: ^6.0.2
+        version: 6.0.2
+      '@codemirror/lang-markdown':
+        specifier: ^6.4.0
+        version: 6.4.0
+      '@codemirror/lang-vue':
+        specifier: ^0.1.3
+        version: 0.1.3
       '@codemirror/language':
         specifier: ^6.0.0
         version: 6.11.3
@@ -33,28 +49,6 @@ importers:
       '@codemirror/view':
         specifier: ^6.0.0
         version: 6.38.6
-      codemirror:
-        specifier: ^6.0.0
-        version: 6.0.2
-      style-mod:
-        specifier: ^4.0.0
-        version: 4.1.2
-      vue-demi:
-        specifier: latest
-        version: 0.14.10(vue@3.5.22(typescript@5.9.3))
-    devDependencies:
-      '@codemirror/lang-javascript':
-        specifier: ^6.2.4
-        version: 6.2.4
-      '@codemirror/lang-json':
-        specifier: ^6.0.2
-        version: 6.0.2
-      '@codemirror/lang-markdown':
-        specifier: ^6.4.0
-        version: 6.4.0
-      '@codemirror/lang-vue':
-        specifier: ^0.1.3
-        version: 0.1.3
       '@tsconfig/node-lts':
         specifier: ^22.0.2
         version: 22.0.2
@@ -88,6 +82,9 @@ importers:
       bootstrap:
         specifier: ^5.3.8
         version: 5.3.8(@popperjs/core@2.11.8)
+      codemirror:
+        specifier: ^6.0.0
+        version: 6.0.2
       eslint:
         specifier: ^9.37.0
         version: 9.37.0(jiti@2.6.1)(supports-color@10.2.2)
@@ -139,6 +136,9 @@ importers:
       sass-embedded:
         specifier: ^1.93.2
         version: 1.93.2
+      style-mod:
+        specifier: ^4.0.0
+        version: 4.1.2
       supports-color:
         specifier: ^10.2.2
         version: 10.2.2

@@ -8,7 +8,7 @@ describe('CodeMirror SSR Compatibility', () => {
   let originalWindow: Window & typeof globalThis;
 
   beforeEach(() => {
-    originalWindow = globalThis.window as Window & typeof globalThis;
+    originalWindow = globalThis.window;
   });
 
   afterEach(() => {
@@ -81,9 +81,9 @@ describe('CodeMirror SSR Compatibility', () => {
       const wrapper = mount(CodeMirror, { props });
 
       expect(wrapper.exists()).toBe(true);
-      Object.entries(props).forEach(([key, value]) => {
+      for (const [key, value] of Object.entries(props)) {
         expect(wrapper.props(key as keyof typeof props)).toBe(value);
-      });
+      }
     });
   });
 
@@ -128,8 +128,11 @@ describe('CodeMirror SSR Compatibility', () => {
       expect(() => vm.replaceRange('new', 0, 3)).not.toThrow();
       expect(() => vm.replaceSelection('new')).not.toThrow();
       // extendSelectionsBy should be safe
-      expect(() => vm.extendSelectionsBy(() => {})).not.toThrow();
+      expect(() => vm.extendSelectionsBy(noopExtendSelectionsBy)).not.toThrow();
     });
+
+    // Move to outer scope
+    function noopExtendSelectionsBy() {}
 
     it('should handle computed properties safely', async () => {
       const wrapper = mount(CodeMirror, {
