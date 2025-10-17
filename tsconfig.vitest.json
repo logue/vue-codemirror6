@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["src/**/*", "src/**/__tests__/*", "env.d.ts"],
+  "exclude": [],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "composite": true,
+    "lib": ["ES2020", "DOM"],
+    "types": ["node", "vitest/globals", "@vue/test-utils"]
+  }
+}

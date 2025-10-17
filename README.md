@@ -409,6 +409,33 @@ const config: UserConfig = {
 };
 ```
 
+## Development
+
+### Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit testing.
+
+```bash
+# Run tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with UI
+pnpm test:ui
+
+# Run tests with coverage
+pnpm test:coverage
+```
+
+The test suite includes:
+
+- **Component Tests**: Testing basic rendering, props, events, and v-model binding
+- **SSR Tests**: Ensuring proper server-side rendering compatibility for Nuxt.js and other SSR frameworks
+- **Method Tests**: Verifying all exposed methods work correctly
+- **Edge Cases**: Testing error handling and unusual scenarios
+
 ## LICENSE
 
 ©2022-2025 by Logue.

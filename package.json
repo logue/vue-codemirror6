@@ -79,6 +79,10 @@
     "preview": "vite preview --mode=docs",
     "build-only": "vite build",
     "type-check": "vue-tsc --declaration --emitDeclarationOnly",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepare": "husky",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
@@ -86,7 +90,6 @@
     "vue-demi": "latest"
   },
   "peerDependencies": {
-    "vue": "^2.7.14 || ^3.3.4",
     "@codemirror/autocomplete": "^6.0.0",
     "@codemirror/commands": "^6.0.0",
     "@codemirror/language": "^6.0.0",
@@ -94,8 +97,9 @@
     "@codemirror/search": "^6.0.0",
     "@codemirror/state": "^6.0.0",
     "@codemirror/view": "^6.0.0",
+    "codemirror": "^6.0.0",
     "style-mod": "^4.0.0",
-    "codemirror": "^6.0.0"
+    "vue": "^2.7.14 || ^3.3.4"
   },
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.2.4",
@@ -105,6 +109,7 @@
     "@tsconfig/node-lts": "^22.0.2",
     "@types/node": "^24.8.0",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/ui": "^3.2.4",
     "@vue/compiler-sfc": "^3.5.22",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
@@ -120,6 +125,7 @@
     "eslint-plugin-playwright": "^2.2.2",
     "eslint-plugin-vue": "^10.5.1",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
+    "happy-dom": "^20.0.4",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "lint-staged": "^16.2.4",
@@ -135,6 +141,7 @@
     "vite-plugin-banner": "^0.8.1",
     "vite-plugin-checker": "^0.11.0",
     "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4",
     "vue": "^3.5.22",
     "vue-eslint-parser": "^10.2.0",
     "vue-markdown-wasm": "^0.5.2",
