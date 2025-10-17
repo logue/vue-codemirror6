@@ -9,7 +9,7 @@
  * @see {@link https://github.com/logue/vue-codemirror6}
  */
 
-import{w as Lr,V as $r,x as Ur}from"./vendor-Cqc6lHne.js";/**
+import{w as Lr,V as $r,x as Ur}from"./vendor-6Jo6Gz1M.js";/**
 * @vue/shared v3.5.22
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
