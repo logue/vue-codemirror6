@@ -438,5 +438,5 @@ The test suite includes:
 
 ## LICENSE
 
-©2022-2025 by Logue.
+©2022-2026 by Logue.
 Licensed under the [MIT License](LICENSE).

@@ -13,7 +13,8 @@ watch(
     document.documentElement.setAttribute(
       'data-bs-theme',
       dark ? 'dark' : 'light'
-    )
+    ),
+  { immediate: true }
 );
 </script>
 
