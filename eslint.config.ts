@@ -6,6 +6,7 @@ import {
 
 // @ts-ignore
 import pluginImport from 'eslint-plugin-import';
+import pluginOxlint from 'eslint-plugin-oxlint';
 import pluginVue from 'eslint-plugin-vue';
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 
@@ -173,5 +174,6 @@ export default defineConfigWithVueTs(
       ],
     },
   },
+  ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
   configPrettier
 );
