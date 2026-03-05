@@ -4,9 +4,10 @@ import {
   vueTsConfigs,
 } from '@vue/eslint-config-typescript';
 
-// @ts-ignore
-import pluginImport from 'eslint-plugin-import';
+import pluginImport from 'eslint-plugin-import-x';
 import pluginOxlint from 'eslint-plugin-oxlint';
+// @ts-ignore
+import pluginSecurity from 'eslint-plugin-security';
 import pluginVue from 'eslint-plugin-vue';
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 
@@ -175,5 +176,6 @@ export default defineConfigWithVueTs(
     },
   },
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
+  pluginSecurity.configs.recommended,
   configPrettier
 );
