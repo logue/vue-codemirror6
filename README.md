@@ -1,5 +1,7 @@
 # vue-codemirror6
 
+English | [日本語](README.ja.md)
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png" alt="logo" width="300" height="300" />
 </p>
