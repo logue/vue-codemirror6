@@ -42,7 +42,6 @@ import { ref, type Ref } from 'vue';
 import { javascript, esLint } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
-
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
@@ -162,9 +161,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 import { ref, type Ref } from 'vue';
 
 import { markdown } from '@codemirror/lang-markdown';
-import VueMarkdown from 'vue-markdown-wasm';
-
 import CodeMirror from 'vue-codemirror6';
+import VueMarkdown from 'vue-markdown-wasm';
 
 /** Demo text */
 const input: Ref<string> = ref(\`# The quick brown fox jumps over the lazy dog.
@@ -410,7 +408,6 @@ defineProps({ dark: Boolean });
   "description": "CodeMirror6 for Vue3 and Vue2 component"
 }`,-1)]]),_:1},8,[`dark`,`lang`,`linter`]))}}),Oe=`<script setup lang="ts">
 import { json, jsonParseLinter } from '@codemirror/lang-json';
-
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
