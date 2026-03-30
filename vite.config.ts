@@ -105,11 +105,6 @@ export default defineConfig(({ mode, command }): UserConfig => {
               ],
         output: {
           esModule: true,
-          generatedCode: {
-            reservedNamesAsProps: false,
-          },
-          interop: 'compat',
-          systemNullSetters: false,
           exports: 'named',
           globals: {
             '@codemirror/autocomplete': 'autocomplete',
