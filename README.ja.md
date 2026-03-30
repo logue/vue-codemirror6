@@ -58,6 +58,7 @@ yarn add vue-codemirror6 @vue/composition-api
 | gutterConfig              | Object                            | <https://codemirror.net/docs/ref/#lint.lintGutter^config>を参照してください。                                                                                                                                        |
 | tag                       | string                            | コンポーネントで使用されるHTMLタグ。（デフォルトは`div`タグです。）                                                                                                                                                  |
 | scrollIntoView            | boolean                           | 外部更新でフォームをスクロールできるようにします。（デフォルトは`true`です。）                                                                                                                                       |
+| preserveScrollPosition    | boolean                           | `modelValue` が外部から更新されたときにエディタのスクロール位置を保持します。追記更新時に先頭へ戻る挙動の抑止に使えます。（デフォルトは`false`です。）                                                               |
 | keymap                    | KeyBinding[]                      | キーバインディングは、キー名をコマンドスタイルの関数に関連付けます。<https://codemirror.net/docs/ref/#view.KeyBinding>を参照してください。                                                                           |
 
 ⚠ 注意: `lang`と`linter`は、`extensions`にまとめて設定することもできます。これらは、以前のバージョンのCodeMirror設定との互換性とpropsの型付けのために分離されています。

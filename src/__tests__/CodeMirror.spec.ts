@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { nextTick, ref } from 'vue';
 
 import { javascript } from '@codemirror/lang-javascript';
@@ -164,6 +164,17 @@ describe('CodeMirror Component', () => {
       // Just verify the prop is set, don't compare object identity
       expect(wrapper.props('lang')).toBeDefined();
       expect(wrapper.props('lang')).toHaveProperty('language');
+    });
+
+    it('should accept preserveScrollPosition prop', () => {
+      const wrapper = mount(CodeMirror, {
+        props: {
+          modelValue: 'test',
+          preserveScrollPosition: true,
+        },
+      });
+
+      expect(wrapper.props('preserveScrollPosition')).toBe(true);
     });
   });
 
@@ -446,6 +457,49 @@ describe('CodeMirror Component', () => {
       await nextTick();
 
       expect(wrapper.props('modelValue')).toBe('updated');
+    });
+
+    it('should preserve scroll position on external updates when enabled', async () => {
+      const wrapper = mount(CodeMirror, {
+        props: {
+          modelValue: 'initial',
+          preserveScrollPosition: true,
+        },
+      });
+
+      await nextTick();
+      await nextTick();
+
+      const vm = wrapper.vm as any;
+      expect(vm.view).toBeDefined();
+
+      const scrollSnapshotSpy = vi.spyOn(vm.view, 'scrollSnapshot');
+
+      await wrapper.setProps({ modelValue: 'initial\nupdated' });
+      await nextTick();
+
+      expect(scrollSnapshotSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not preserve scroll position on external updates by default', async () => {
+      const wrapper = mount(CodeMirror, {
+        props: {
+          modelValue: 'initial',
+        },
+      });
+
+      await nextTick();
+      await nextTick();
+
+      const vm = wrapper.vm as any;
+      expect(vm.view).toBeDefined();
+
+      const scrollSnapshotSpy = vi.spyOn(vm.view, 'scrollSnapshot');
+
+      await wrapper.setProps({ modelValue: 'initial\nupdated' });
+      await nextTick();
+
+      expect(scrollSnapshotSpy).not.toHaveBeenCalled();
     });
 
     it('should emit update:modelValue when content changes', async () => {

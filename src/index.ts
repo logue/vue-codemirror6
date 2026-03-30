@@ -333,6 +333,18 @@ const CodeMirror = defineComponent({
       default: true,
     },
     /**
+     * Preserve the current scroll position on external updates.
+     *
+     * This keeps the editor's own scroll container from jumping when
+     * `modelValue` is updated from outside the component.
+     *
+     * @see {@link https://codemirror.net/docs/ref/#view.EditorView.scrollSnapshot}
+     */
+    preserveScrollPosition: {
+      type: Boolean,
+      default: false,
+    },
+    /**
      * Key map
      * This is a CodeMirror Facet that allows you to define custom key bindings.
      * It can be used to override default key bindings or add new ones.
@@ -405,9 +417,9 @@ const CodeMirror = defineComponent({
     const selection: WritableComputedRef<EditorSelection | undefined> =
       computed({
         get: () => view.value?.state.selection,
-        set: s => {
-          if (view.value && s) {
-            view.value.dispatch({ selection: s });
+        set: selection => {
+          if (view.value && selection) {
+            view.value.dispatch({ selection });
           }
         },
       });
@@ -415,9 +427,9 @@ const CodeMirror = defineComponent({
     /** Cursor Position */
     const cursor: WritableComputedRef<number> = computed({
       get: () => view.value?.state.selection.main.head ?? 0,
-      set: a => {
+      set: anchor => {
         if (view.value) {
-          view.value.dispatch({ selection: { anchor: a } });
+          view.value.dispatch({ selection: { anchor } });
         }
       },
     });
@@ -569,13 +581,25 @@ const CodeMirror = defineComponent({
           range => range.anchor < value.length && range.head < value.length
         );
 
+        /** Scroll Fix */
+        const changes = {
+          from: 0,
+          to: view.value.state.doc.length,
+          insert: value,
+        };
+        // If preserveScrollPosition is enabled, create a scroll snapshot before updating the document.
+        const scrollSnapshot = props.preserveScrollPosition
+          ? view.value.scrollSnapshot().map(view.value.state.changes(changes))
+          : undefined;
+
         // Update
         view.value.dispatch({
-          changes: { from: 0, to: view.value.state.doc.length, insert: value },
+          changes,
           selection: isSelectionOutOfRange
             ? { anchor: 0, head: 0 }
             : view.value.state.selection,
           scrollIntoView: props.scrollIntoView,
+          effects: scrollSnapshot ? [scrollSnapshot] : undefined,
         });
       },
       { immediate: true }

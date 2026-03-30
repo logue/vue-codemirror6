@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { json, jsonParseLinter } from '@codemirror/lang-json';
+
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode

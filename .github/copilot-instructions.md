@@ -68,9 +68,14 @@ The component must work in SSR environments (Nuxt.js, etc.):
 - `view.value` may be `undefined` on server ⚠️
 - Always use optional chaining: `view.value?.method()`
 - Browser-only code wrapped in `if (typeof window !== 'undefined')`
-- See [SSR_FIX_SUMMARY.md](../../SSR_FIX_SUMMARY.md) for detailed changes
+- See [SSR_FIX_SUMMARY.md](../SSR_FIX_SUMMARY.md) for detailed changes
 
 ### Build Outputs
+
+### Generated Metadata
+
+- `src/Meta.ts` is generated automatically when starting the dev server or running the library build.
+- If `src/Meta.ts` is missing in a fresh checkout, run `pnpm dev` or `pnpm build` before treating it as a broken import.
 
 Multiple formats in `dist/`:
 
@@ -106,15 +111,15 @@ Users must install these separately to avoid duplication.
 
 ## Key Files Reference
 
-| File                                                                         | Purpose                                         |
-| ---------------------------------------------------------------------------- | ----------------------------------------------- |
-| [src/index.ts](src/index.ts)                                                 | Main component definition                       |
-| [src/Meta.ts](src/Meta.ts)                                                   | Component metadata and type definitions         |
-| [src/**tests**/CodeMirror.spec.ts](src/__tests__/CodeMirror.spec.ts)         | Component tests                                 |
-| [src/**tests**/CodeMirror.ssr.spec.ts](src/__tests__/CodeMirror.ssr.spec.ts) | SSR tests                                       |
-| [vite.config.ts](vite.config.ts)                                             | Build config (outputs, plugins, DTS generation) |
-| [vitest.config.ts](vitest.config.ts)                                         | Test config (happy-dom, coverage)               |
-| [eslint.config.ts](eslint.config.ts)                                         | Linting config                                  |
+| File                                                                            | Purpose                                         |
+| ------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [src/index.ts](../src/index.ts)                                                 | Main component definition                       |
+| [src/Meta.ts](../src/Meta.ts)                                                   | Component metadata and type definitions         |
+| [src/**tests**/CodeMirror.spec.ts](../src/__tests__/CodeMirror.spec.ts)         | Component tests                                 |
+| [src/**tests**/CodeMirror.ssr.spec.ts](../src/__tests__/CodeMirror.ssr.spec.ts) | SSR tests                                       |
+| [vite.config.ts](../vite.config.ts)                                             | Build config (outputs, plugins, DTS generation) |
+| [vitest.config.ts](../vitest.config.ts)                                         | Test config (happy-dom, coverage)               |
+| [eslint.config.ts](../eslint.config.ts)                                         | Linting config                                  |
 
 ## Common Pitfalls to Avoid
 
