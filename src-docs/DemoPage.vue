@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { vue } from '@codemirror/lang-vue';
 import { useDark } from '@vueuse/core';
+import CodeMirror from 'vue-codemirror6';
 
 import KeyMapDemo from './components/KeyMapDemo.vue';
 import KeyMapDemoSrc from './components/KeyMapDemo.vue?raw';
@@ -13,8 +14,6 @@ import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
 import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
 import SlotDemo from './components/SlotDemo.vue';
 import SlotDemoSrc from './components/SlotDemo.vue?raw';
-
-import CodeMirror from 'vue-codemirror6';
 
 const dark = useDark();
 

@@ -2,9 +2,8 @@
 import { ref, type Ref } from 'vue';
 
 import { markdown } from '@codemirror/lang-markdown';
-import VueMarkdown from 'vue-markdown-wasm';
-
 import CodeMirror from 'vue-codemirror6';
+import VueMarkdown from 'vue-markdown-wasm';
 
 /** Demo text */
 const input: Ref<string> = ref(`# The quick brown fox jumps over the lazy dog.

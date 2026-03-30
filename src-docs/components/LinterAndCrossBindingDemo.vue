@@ -4,7 +4,6 @@ import { ref, type Ref } from 'vue';
 import { javascript, esLint } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
-
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
