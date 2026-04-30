@@ -70,9 +70,3 @@ import ToggleTheme from './components/ToggleTheme.vue';
     </div>
   </footer>
 </template>
-
-<style>
-.vue-codemirror * {
-  font-family: var(--bs-font-monospace);
-}
-</style>

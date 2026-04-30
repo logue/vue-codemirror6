@@ -7,6 +7,7 @@
 import {
   h as hDemi,
   isVue2,
+  type Component,
   type Slots,
   type VNode,
   type VNodeProps,
@@ -36,14 +37,14 @@ const adaptOnsV3 = (
  * hDemi function.
  */
 export default function h(
-  type: string | Record<any, any>,
+  type: string | Component,
   options: Options = {},
-  chidren?: any
+  children?: VNode | VNode[] | null
 ): VNode {
   if (isVue2) {
     // Makeshift support :(
     // Since Vue2.7 includes the Composition API, the functions in vue-demi are not used.
-    return hDemi(type, options, chidren);
+    return hDemi(type, options, children);
   }
   const { props, domProps, on, ...extraOptions } = options;
   const ons = on ? adaptOnsV3(on) : {};
@@ -51,9 +52,11 @@ export default function h(
   return hDemi(
     type,
     { ...extraOptions, ...props, ...domProps, ...ons },
-    chidren
+    children
   );
 }
 
-export const slot = (defaultSlots: any): Slots =>
-  typeof defaultSlots === 'function' ? defaultSlots() : defaultSlots;
+export const slot = (
+  defaultSlots: (() => VNode[]) | VNode[] | undefined
+): VNode[] =>
+  typeof defaultSlots === 'function' ? defaultSlots() : (defaultSlots ?? []);

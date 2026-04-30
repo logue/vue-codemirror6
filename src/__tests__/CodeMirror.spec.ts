@@ -5,7 +5,7 @@ import { nextTick, ref } from 'vue';
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
 
-import CodeMirror from '../index';
+import CodeMirror, { type CodeMirrorExposed } from '../index';
 
 describe('CodeMirror Component', () => {
   beforeEach(() => {
@@ -191,13 +191,11 @@ describe('CodeMirror Component', () => {
 
       const readyEvents = wrapper.emitted('ready');
       expect(readyEvents).toBeTruthy();
-      if (readyEvents && readyEvents.length > 0) {
-        expect(readyEvents.length).toBeGreaterThan(0);
-        const firstEvent = readyEvents[0]?.[0];
-        expect(firstEvent).toHaveProperty('view');
-        expect(firstEvent).toHaveProperty('state');
-        expect(firstEvent).toHaveProperty('container');
-      }
+      expect(readyEvents!.length).toBeGreaterThan(0);
+      const firstEvent = readyEvents![0]?.[0];
+      expect(firstEvent).toHaveProperty('view');
+      expect(firstEvent).toHaveProperty('state');
+      expect(firstEvent).toHaveProperty('container');
     });
 
     it('should emit update:modelValue on text change', async () => {
@@ -211,17 +209,16 @@ describe('CodeMirror Component', () => {
       await nextTick();
 
       // Simulate text change through exposed view
-      const vm = wrapper.vm as any;
-      if (vm.view) {
-        vm.view.dispatch({
-          changes: { from: 0, to: vm.view.state.doc.length, insert: 'updated' },
-        });
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
+      expect(vm.view).toBeDefined();
+      vm.view!.dispatch({
+        changes: { from: 0, to: vm.view!.state.doc.length, insert: 'updated' },
+      });
 
-        await nextTick();
+      await nextTick();
 
-        const updateEvents = wrapper.emitted('update:modelValue');
-        expect(updateEvents).toBeTruthy();
-      }
+      const updateEvents = wrapper.emitted('update:modelValue');
+      expect(updateEvents).toBeTruthy();
     });
 
     it('should emit destroy event on unmount', async () => {
@@ -262,7 +259,7 @@ describe('CodeMirror Component', () => {
         attachTo: document.body,
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       // Before nextTick, view might not be fully initialized
       expect(vm).toBeDefined();
       wrapper.unmount();
@@ -275,7 +272,7 @@ describe('CodeMirror Component', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // These should not throw even if view is undefined
       expect(() => vm.getRange()).not.toThrow();
@@ -301,7 +298,7 @@ describe('CodeMirror Component', () => {
 
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.editor).toBeDefined();
     });
 
@@ -315,11 +312,9 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
-      if (vm.view) {
-        expect(vm.view).toBeInstanceOf(EditorView);
-      }
+      expect(vm.view).toBeInstanceOf(EditorView);
     });
 
     it('should expose cursor getter/setter', async () => {
@@ -332,7 +327,7 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       const initialCursor = vm.cursor;
       expect(typeof initialCursor).toBe('number');
     });
@@ -348,7 +343,7 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       // length is updated in the update listener, so it might be 0 initially
       expect(typeof vm.length).toBe('number');
     });
@@ -363,11 +358,10 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
+      expect(vm.view).toBeDefined();
       const range = vm.getRange(0, 5);
-      if (vm.view) {
-        expect(range).toBe('hello');
-      }
+      expect(range).toBe('hello');
     });
 
     it('should expose lineCount method', async () => {
@@ -380,11 +374,10 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
+      expect(vm.view).toBeDefined();
       const count = vm.lineCount();
-      if (vm.view) {
-        expect(count).toBeGreaterThan(0);
-      }
+      expect(count).toBeGreaterThan(0);
     });
 
     it('should expose getLine method', async () => {
@@ -397,11 +390,10 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
-      if (vm.view) {
-        const line = vm.getLine(0);
-        expect(line).toBe('first line');
-      }
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
+      expect(vm.view).toBeDefined();
+      const line = vm.getLine(0);
+      expect(line).toBe('first line');
     });
 
     it('should expose lint method', async () => {
@@ -414,7 +406,7 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(() => vm.lint()).not.toThrow();
     });
 
@@ -428,7 +420,7 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(() => vm.forceReconfigure()).not.toThrow();
     });
   });
@@ -470,10 +462,13 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
 
-      const scrollSnapshotSpy = vi.spyOn(vm.view, 'scrollSnapshot');
+      const scrollSnapshotSpy = vi.spyOn(
+        vm.view as EditorView,
+        'scrollSnapshot'
+      );
 
       await wrapper.setProps({ modelValue: 'initial\nupdated' });
       await nextTick();
@@ -491,10 +486,13 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
 
-      const scrollSnapshotSpy = vi.spyOn(vm.view, 'scrollSnapshot');
+      const scrollSnapshotSpy = vi.spyOn(
+        vm.view as EditorView,
+        'scrollSnapshot'
+      );
 
       await wrapper.setProps({ modelValue: 'initial\nupdated' });
       await nextTick();
@@ -512,21 +510,17 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
-      if (vm.view) {
-        vm.view.dispatch({
-          changes: { from: 0, to: vm.view.state.doc.length, insert: 'changed' },
-        });
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
+      expect(vm.view).toBeDefined();
+      vm.view!.dispatch({
+        changes: { from: 0, to: vm.view!.state.doc.length, insert: 'changed' },
+      });
 
-        await nextTick();
+      await nextTick();
 
-        const updateEvents = wrapper.emitted('update:modelValue');
-        expect(updateEvents).toBeTruthy();
-        if (updateEvents && updateEvents.length > 0) {
-          const lastEvent = updateEvents.at(-1);
-          expect(lastEvent?.[0]).toBe('changed');
-        }
-      }
+      const updateEvents = wrapper.emitted('update:modelValue');
+      expect(updateEvents).toBeTruthy();
+      expect(updateEvents!.at(-1)?.[0]).toBe('changed');
     });
   });
 
@@ -582,7 +576,7 @@ describe('CodeMirror Component', () => {
       await nextTick();
       await nextTick();
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       // length is a reactive value that gets updated
       expect(typeof vm.length).toBe('number');
       expect(vm.length).toBeGreaterThanOrEqual(0);

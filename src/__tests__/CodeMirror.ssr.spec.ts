@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { nextTick } from 'vue';
 
-import CodeMirror from '../index';
+import CodeMirror, { type CodeMirrorExposed } from '../index';
 
 describe('CodeMirror SSR Compatibility', () => {
   let originalWindow: Window & typeof globalThis;
@@ -13,8 +13,8 @@ describe('CodeMirror SSR Compatibility', () => {
 
   afterEach(() => {
     // Restore window
-    if (!(globalThis as any).window && originalWindow) {
-      (globalThis as any).window = originalWindow;
+    if (!(globalThis as Record<string, unknown>).window && originalWindow) {
+      (globalThis as Record<string, unknown>).window = originalWindow;
     }
   });
 
@@ -37,7 +37,7 @@ describe('CodeMirror SSR Compatibility', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // In SSR, view should remain undefined until client-side hydration
       // Since we're testing in happy-dom (which has window), we test the defensive approach
@@ -95,7 +95,7 @@ describe('CodeMirror SSR Compatibility', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // Test all exposed methods return safe values
       expect(vm.getCursor()).toBe(0);
@@ -117,7 +117,7 @@ describe('CodeMirror SSR Compatibility', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // None of these should throw
       expect(() => vm.lint()).not.toThrow();
@@ -141,7 +141,7 @@ describe('CodeMirror SSR Compatibility', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // These should return safe defaults
       expect(typeof vm.focus).toBe('boolean');
@@ -162,7 +162,7 @@ describe('CodeMirror SSR Compatibility', () => {
       await nextTick();
       await nextTick(); // Wait for onMounted to complete
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // After mounting in browser environment, view should be initialized
       expect(vm.view).toBeDefined();
@@ -263,7 +263,7 @@ describe('CodeMirror SSR Compatibility', () => {
         },
       });
 
-      const vm = wrapper.vm as any;
+      const vm = wrapper.vm as unknown as CodeMirrorExposed;
       // Should not throw
       expect(vm.editor).toBeDefined();
     });

@@ -158,6 +158,7 @@ export default defineConfig(({ mode, command }): UserConfig => {
   };
 
   // Write meta data.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- path is resolved from import.meta.url which is a static ESM URL, not user input
   writeFileSync(
     fileURLToPath(new URL('./src/Meta.ts', import.meta.url)),
     `import type MetaInterface from '@/interfaces/MetaInterface';

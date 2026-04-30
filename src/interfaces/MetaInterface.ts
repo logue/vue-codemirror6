@@ -1,7 +1,9 @@
 /** Build information meta data */
-export default interface MetaInterface {
+type MetaInterface = {
   /** Version */
   version: string;
   /** Build date */
   date: string;
-}
+};
+
+export default MetaInterface;

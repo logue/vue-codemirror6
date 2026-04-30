@@ -4,11 +4,11 @@ import { ref, type Ref } from 'vue';
 import { javascript, esLint } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
-
+// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
-defineProps({ dark: Boolean });
+defineProps<{ dark?: boolean }>();
 
 /** CodeMirror Instance */
 const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
@@ -53,8 +53,8 @@ const onFocus = (f: boolean): void => {
         :dark="dark"
         :lang="javascript()"
         :linter="linter"
-        basic
         class="mb-3"
+        basic
         gutter
         wrap
         @focus="onFocus"
@@ -65,8 +65,8 @@ const onFocus = (f: boolean): void => {
             <label for="count" class="input-group-text">Count</label>
             <input
               id="count"
-              type="text"
               :value="cm?.length"
+              type="text"
               class="form-control"
               readonly
             />
@@ -79,9 +79,9 @@ const onFocus = (f: boolean): void => {
             </label>
             <input
               id="diagnosticCount"
+              :value="cm?.diagnosticCount"
               type="number"
               class="form-control"
-              :value="cm?.diagnosticCount"
               readonly
             />
           </div>

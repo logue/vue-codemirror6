@@ -1,7 +1,9 @@
-<!-- eslint-disable import/no-duplicates -->
+<!-- eslint-disable import-x/no-duplicates -- for Demo source code use. -->
 <script setup lang="ts">
 import { vue } from '@codemirror/lang-vue';
 import { useDark } from '@vueuse/core';
+// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+import CodeMirror from 'vue-codemirror6';
 
 import KeyMapDemo from './components/KeyMapDemo.vue';
 import KeyMapDemoSrc from './components/KeyMapDemo.vue?raw';
@@ -13,8 +15,6 @@ import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
 import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
 import SlotDemo from './components/SlotDemo.vue';
 import SlotDemoSrc from './components/SlotDemo.vue?raw';
-
-import CodeMirror from 'vue-codemirror6';
 
 const dark = useDark();
 
@@ -58,7 +58,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         readonly
       />
       <h3>Demo</h3>
-      <markdown-demo class="mb-3" :dark="dark" />
+      <markdown-demo :dark="dark" class="mb-3" />
       <div class="alert alert-info d-flex align-items-center my-3" role="alert">
         <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
           <svg

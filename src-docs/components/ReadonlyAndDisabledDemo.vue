@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 
+// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 
 /** Readonly */
@@ -9,7 +10,7 @@ const isReadonly: Ref<boolean> = ref(true);
 const isDisabled: Ref<boolean> = ref(false);
 
 // Sync dark mode
-defineProps({ dark: Boolean });
+defineProps<{ dark?: boolean }>();
 </script>
 
 <!-- eslint-disable no-irregular-whitespace -->
@@ -19,10 +20,10 @@ defineProps({ dark: Boolean });
     <input
       id="readonly"
       v-model="isReadonly"
+      :aria-checked="isReadonly"
       type="checkbox"
       class="form-check-input"
       role="switch"
-      :aria-checked="isReadonly"
     />
     <label class="form-check-label" for="readonly">Readonly</label>
   </div>
@@ -30,14 +31,14 @@ defineProps({ dark: Boolean });
     <input
       id="disabled"
       v-model="isDisabled"
+      :aria-checked="isDisabled"
       type="checkbox"
       class="form-check-input"
       role="switch"
-      :aria-checked="isDisabled"
     />
     <label class="form-check-label" for="disabled">Disabled</label>
   </div>
-  <code-mirror :dark="dark" basic :readonly="isReadonly" :disabled="isDisabled">
+  <code-mirror :dark="dark" :readonly="isReadonly" :disabled="isDisabled" basic>
     <pre>
 色は匂へど　散りぬるを
 我が世誰そ　常ならむ

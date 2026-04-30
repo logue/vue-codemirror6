@@ -89,7 +89,7 @@ Multiple formats in `dist/`:
 
 CodeMirror 6 packages are peer deps (not bundled):
 
-```
+```text
 @codemirror/{commands,language,lint,search,state,view}
 @codemirror/autocomplete
 codemirror (state/view core)
