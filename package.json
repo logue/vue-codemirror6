@@ -121,7 +121,7 @@
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/test-utils": "^2.4.10",
     "@vue/tsconfig": "^0.9.1",
-    "@vueuse/core": "^14.2.1",
+    "@vueuse/core": "^14.3.0",
     "bootstrap": "^5.3.8",
     "codemirror": "^6.0.2",
     "eslint": "^10.2.1",
