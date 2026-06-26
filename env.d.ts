@@ -1,15 +1,16 @@
-/// <reference types="vite/client" />
+/// <reference types="@rsbuild/core/types" />
 
 declare module '*.vue' {
   import Vue from 'vue';
   export default Vue;
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Vite env extension point; add VITE_APP_* variable types here as needed
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Rsbuild env extension point; add PUBLIC_* variable types here as needed
 interface ImportMetaEnv {
-  // see https://vitejs.dev/guide/env-and-mode.html#env-files
+  // see https://rsbuild.rs/guide/advanced/env-vars
   // add .env variables.
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+/** Build-time constants injected via `source.define` in rsbuild.config.ts / rslib.config.ts */
+declare const __APP_VERSION__: string;
+declare const __BUILD_DATE__: string;
+declare const __DEMO_BUILD__: boolean;

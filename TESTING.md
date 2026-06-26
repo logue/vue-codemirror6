@@ -1,6 +1,6 @@
 # Testing Guide
 
-このプロジェクトは[Vitest](https://vitest.dev/)を使用してテストを行っています。
+このプロジェクトは[Rstest](https://rstest.rs/)を使用してテストを行っています。
 
 ## テストの実行
 
@@ -48,7 +48,7 @@ pnpm test:coverage
 新しい機能を追加する場合は、対応するテストも追加してください：
 
 ```typescript
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from '@rstest/core';
 import { mount } from '@vue/test-utils';
 import CodeMirror from '@/components/CodeMirror';
 
@@ -175,6 +175,6 @@ GitHub ActionsなどのCI環境でテストを実行する場合は、`pnpm test
 
 ## 参考リンク
 
-- [Vitest Documentation](https://vitest.dev/)
+- [Rstest Documentation](https://rstest.rs/)
 - [Vue Test Utils](https://test-utils.vuejs.org/)
 - [Happy DOM](https://github.com/capricorn86/happy-dom)

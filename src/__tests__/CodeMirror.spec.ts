@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, rs } from '@rstest/core';
 import { nextTick, ref } from 'vue';
 
 import { javascript } from '@codemirror/lang-javascript';
@@ -152,19 +152,23 @@ describe('CodeMirror Component', () => {
       expect(wrapper.props('placeholder')).toBe(placeholderText);
     });
 
-    it('should accept lang prop', { timeout: 10000 }, () => {
-      const lang = javascript();
-      const wrapper = mount(CodeMirror, {
-        props: {
-          modelValue: 'const x = 1;',
-          lang,
-        },
-      });
+    it(
+      'should accept lang prop',
+      () => {
+        const lang = javascript();
+        const wrapper = mount(CodeMirror, {
+          props: {
+            modelValue: 'const x = 1;',
+            lang,
+          },
+        });
 
-      // Just verify the prop is set, don't compare object identity
-      expect(wrapper.props('lang')).toBeDefined();
-      expect(wrapper.props('lang')).toHaveProperty('language');
-    });
+        // Just verify the prop is set, don't compare object identity
+        expect(wrapper.props('lang')).toBeDefined();
+        expect(wrapper.props('lang')).toHaveProperty('language');
+      },
+      { timeout: 10000 }
+    );
 
     it('should accept preserveScrollPosition prop', () => {
       const wrapper = mount(CodeMirror, {
@@ -465,7 +469,7 @@ describe('CodeMirror Component', () => {
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
 
-      const scrollSnapshotSpy = vi.spyOn(
+      const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
         'scrollSnapshot'
       );
@@ -489,7 +493,7 @@ describe('CodeMirror Component', () => {
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
 
-      const scrollSnapshotSpy = vi.spyOn(
+      const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
         'scrollSnapshot'
       );

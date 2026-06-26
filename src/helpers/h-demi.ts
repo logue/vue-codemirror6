@@ -8,7 +8,6 @@ import {
   h as hDemi,
   isVue2,
   type Component,
-  type Slots,
   type VNode,
   type VNodeProps,
 } from 'vue-demi';
@@ -39,7 +38,7 @@ const adaptOnsV3 = (
 export default function h(
   type: string | Component,
   options: Options = {},
-  children?: VNode | VNode[] | null
+  children?: VNode | VNode[]
 ): VNode {
   if (isVue2) {
     // Makeshift support :(

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from '@rstest/core';
 import { nextTick } from 'vue';
 
 import CodeMirror, { type CodeMirrorExposed } from '../index';
@@ -132,7 +132,9 @@ describe('CodeMirror SSR Compatibility', () => {
     });
 
     // Move to outer scope
-    function noopExtendSelectionsBy() {}
+    function noopExtendSelectionsBy(): number {
+      return 0;
+    }
 
     it('should handle computed properties safely', async () => {
       const wrapper = mount(CodeMirror, {

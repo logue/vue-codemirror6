@@ -1,3 +1,54 @@
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  esbuild: true
+  unrs-resolver: true
+  vue-demi: true
+minimumReleaseAgeExclude:
+  - '@types/node@25.9.3'
+  - '@vue/compiler-core@3.5.38 || 3.5.39'
+  - '@vue/compiler-dom@3.5.38 || 3.5.39'
+  - '@vue/compiler-sfc@3.5.38 || 3.5.39'
+  - '@vue/compiler-ssr@3.5.38 || 3.5.39'
+  - '@vue/reactivity@3.5.38 || 3.5.39'
+  - '@vue/runtime-core@3.5.38 || 3.5.39'
+  - '@vue/runtime-dom@3.5.38 || 3.5.39'
+  - '@vue/server-renderer@3.5.38 || 3.5.39'
+  - '@vue/shared@3.5.38 || 3.5.39'
+  - vue@3.5.38 || 3.5.39
+  - '@oxlint/binding-android-arm-eabi@1.71.0'
+  - '@oxlint/binding-android-arm64@1.71.0'
+  - '@oxlint/binding-darwin-arm64@1.71.0'
+  - '@oxlint/binding-darwin-x64@1.71.0'
+  - '@oxlint/binding-freebsd-x64@1.71.0'
+  - '@oxlint/binding-linux-arm-gnueabihf@1.71.0'
+  - '@oxlint/binding-linux-arm-musleabihf@1.71.0'
+  - '@oxlint/binding-linux-arm64-gnu@1.71.0'
+  - '@oxlint/binding-linux-arm64-musl@1.71.0'
+  - '@oxlint/binding-linux-ppc64-gnu@1.71.0'
+  - '@oxlint/binding-linux-riscv64-gnu@1.71.0'
+  - '@oxlint/binding-linux-riscv64-musl@1.71.0'
+  - '@oxlint/binding-linux-s390x-gnu@1.71.0'
+  - '@oxlint/binding-linux-x64-gnu@1.71.0'
+  - '@oxlint/binding-linux-x64-musl@1.71.0'
+  - '@oxlint/binding-openharmony-arm64@1.71.0'
+  - '@oxlint/binding-win32-arm64-msvc@1.71.0'
+  - '@oxlint/binding-win32-ia32-msvc@1.71.0'
+  - '@oxlint/binding-win32-x64-msvc@1.71.0'
+  - '@rsbuild/plugin-vue@2.0.0'
+  - oxlint@1.71.0
+  - '@biomejs/biome@2.5.1'
+  - '@biomejs/cli-darwin-arm64@2.5.1'
+  - '@biomejs/cli-darwin-x64@2.5.1'
+  - '@biomejs/cli-linux-arm64-musl@2.5.1'
+  - '@biomejs/cli-linux-arm64@2.5.1'
+  - '@biomejs/cli-linux-x64-musl@2.5.1'
+  - '@biomejs/cli-linux-x64@2.5.1'
+  - '@biomejs/cli-win32-arm64@2.5.1'
+  - '@biomejs/cli-win32-x64@2.5.1'
+  - '@codemirror/state@6.7.0'
+  - '@codemirror/view@6.43.2 || 6.43.3'
+  - '@codemirror/language@6.12.4'
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild

@@ -20,13 +20,13 @@ A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. This co
 ## Usage
 
 ```sh
-yarn add vue-codemirror6 codemirror
+pnpm install vue-codemirror6 codemirror
 ```
 
 For Vue 2.7 or below, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is required separately.
 
 ```sh
-yarn add vue-codemirror6 @vue/composition-api
+pnpm install vue-codemirror6 @vue/composition-api
 ```
 
 This component can handle bidirectional binding by `v-model` like a general Vue component.
