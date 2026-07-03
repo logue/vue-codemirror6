@@ -66,8 +66,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(@rsbuild/core@2.1.4)(@rspack/core@2.1.2(@swc/helpers@0.5.23))(@vue/compiler-sfc@3.5.39)(vue@3.5.39(typescript@6.0.3))
       '@rslib/core':
-        specifier: ^0.23.1
-        version: 0.23.1(typescript@6.0.3)
+        specifier: ^0.23.2
+        version: 0.23.2(typescript@6.0.3)
       '@rslint/core':
         specifier: ^0.6.4
         version: 0.6.4
@@ -76,7 +76,7 @@ importers:
         version: 0.10.6(@rsbuild/core@2.1.4)(@rstest/core@0.10.6(happy-dom@20.10.6))
       '@rstest/adapter-rslib':
         specifier: ^0.10.6
-        version: 0.10.6(@rslib/core@0.23.1(typescript@6.0.3))(@rstest/core@0.10.6(happy-dom@20.10.6))(typescript@6.0.3)
+        version: 0.10.6(@rslib/core@0.23.2(typescript@6.0.3))(@rstest/core@0.10.6(happy-dom@20.10.6))(typescript@6.0.3)
       '@rstest/core':
         specifier: ^0.10.6
         version: 0.10.6(happy-dom@20.10.6)
@@ -929,10 +929,10 @@ packages:
       '@rsbuild/core':
         optional: true
 
-  '@rslib/core@0.23.1':
+  '@rslib/core@0.23.2':
     resolution:
       {
-        integrity: sha512-kATUdbAwWL12Zrvuiv4M9JmwxG0pvH7zAJeQpPwMgGbs6uWPG4jA89DQEDyoBFmM/p4flBXN40x+42hbN+Bhbw==,
+        integrity: sha512-KxSp+/y0BJ1O4oKwxX4ydBY7/ZVeJCUpWAmQniCIct8mTxIQFPGO/ibKbKq2IxZYqRuRpM8g+Dtyq0VbEQf9HQ==,
       }
     engines: { node: ^20.19.0 || >=22.12.0 }
     hasBin: true
@@ -4161,10 +4161,10 @@ packages:
       }
     engines: { node: '>= 0.8' }
 
-  rsbuild-plugin-dts@0.23.1:
+  rsbuild-plugin-dts@0.23.2:
     resolution:
       {
-        integrity: sha512-RB3gbeT5dsmh1Q3uukKHSviYs7ul0PHtLa8WfkJSRu44E+VpRlYalAX1W7lqPt0dnKE+JhpCX7wuf98o1RJYjw==,
+        integrity: sha512-Ve8WOSPyTBjxH40O/6fChJtflL7yqcUtt5zbF0eHDM4hIt35jqLocRlSdCxFJdQm0blTjl6+hkmPa/vNI06ArA==,
       }
     engines: { node: ^20.19.0 || >=22.12.0 }
     peerDependencies:
@@ -5626,10 +5626,10 @@ snapshots:
       - '@vue/compiler-sfc'
       - vue
 
-  '@rslib/core@0.23.1(typescript@6.0.3)':
+  '@rslib/core@0.23.2(typescript@6.0.3)':
     dependencies:
       '@rsbuild/core': 2.1.4
-      rsbuild-plugin-dts: 0.23.1(@rsbuild/core@2.1.4)(typescript@6.0.3)
+      rsbuild-plugin-dts: 0.23.2(@rsbuild/core@2.1.4)(typescript@6.0.3)
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -5795,9 +5795,9 @@ snapshots:
       '@rsbuild/core': 2.1.4
       '@rstest/core': 0.10.6(happy-dom@20.10.6)
 
-  '@rstest/adapter-rslib@0.10.6(@rslib/core@0.23.1(typescript@6.0.3))(@rstest/core@0.10.6(happy-dom@20.10.6))(typescript@6.0.3)':
+  '@rstest/adapter-rslib@0.10.6(@rslib/core@0.23.2(typescript@6.0.3))(@rstest/core@0.10.6(happy-dom@20.10.6))(typescript@6.0.3)':
     dependencies:
-      '@rslib/core': 0.23.1(typescript@6.0.3)
+      '@rslib/core': 0.23.2(typescript@6.0.3)
       '@rstest/core': 0.10.6(happy-dom@20.10.6)
     optionalDependencies:
       typescript: 6.0.3
@@ -7623,7 +7623,7 @@ snapshots:
       hash-base: 3.1.2
       inherits: 2.0.4
 
-  rsbuild-plugin-dts@0.23.1(@rsbuild/core@2.1.4)(typescript@6.0.3):
+  rsbuild-plugin-dts@0.23.2(@rsbuild/core@2.1.4)(typescript@6.0.3):
     dependencies:
       '@ast-grep/napi': 0.37.0
       '@rsbuild/core': 2.1.4

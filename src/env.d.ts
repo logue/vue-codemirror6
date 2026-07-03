@@ -1,15 +1,5 @@
 /// <reference types="@rsbuild/core/types" />
 /// <reference types="@rslib/core/types" />
-declare module '*.vue' {
-  import Vue from 'vue';
-  export default Vue;
-}
-
-declare module '*?raw' {
-  const content: string;
-  export default content;
-}
-
 declare module '*?source' {
   const content: string;
   export default content;
