@@ -1,4 +1,4 @@
-name: NodeJS with Vite
+name: Build and deploy github page
 
 on:
   push:
@@ -12,19 +12,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
       - name: Checkout ✅
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7
 
       - name: Use Node.js ${{ matrix.node-version }} ⚡
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Install pnpm 🎁
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Build 🔧
         run: |
@@ -32,7 +32,7 @@ jobs:
           pnpm run build:docs
 
       - name: Deploy to gh-pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.8
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.

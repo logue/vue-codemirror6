@@ -46,7 +46,7 @@ import {
 
 import type { StyleSpec } from 'style-mod';
 
-import Meta from '@/Meta';
+import { Meta } from '@/Meta';
 import h, { slot } from '@/helpers/h-demi';
 
 /** CodeMirror Component */

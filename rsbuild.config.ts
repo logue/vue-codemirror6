@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from '@rsbuild/core';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginVue } from '@rsbuild/plugin-vue';
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -27,6 +28,7 @@ export default defineConfig({
         },
       },
     }),
+    pluginNodePolyfill(),
   ],
   source: {
     define: {
@@ -46,19 +48,26 @@ export default defineConfig({
   },
   tools: {
     htmlPlugin: undefined,
-    rspack: {
-      module: {
-        rules: [
-          {
-            resourceQuery: /url$/,
-            type: 'asset/resource',
-          },
-          {
-            resourceQuery: /raw$/,
-            type: 'asset/source',
-          },
-        ],
-      },
+    rspack: config => {
+      // 1. 既存のVueコンパイルルールを探し、`?source` がある場合は「除外」する設定を追加
+      config.module?.rules?.forEach(rule => {
+        if (
+          rule &&
+          typeof rule === 'object' &&
+          rule.test &&
+          rule.test.toString().includes('vue')
+        ) {
+          // クエリに "source" が含まれる場合は、このVueコンパイルルールを適用させない
+          rule.resourceQuery = { not: [/source/] };
+        }
+      });
+
+      // 2. `?source` 専用のルールを先頭に追加（Vueコンパイルをバイパスして生テキスト化）
+      config.module?.rules?.unshift({
+        test: /\.vue$/,
+        resourceQuery: /^\?source$/,
+        type: 'asset/source',
+      });
     },
   },
   resolve: {

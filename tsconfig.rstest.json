@@ -1,11 +1,12 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": ["src/**/*", "src/**/__tests__/*", "env.d.ts"],
-  "exclude": ["src/docs/**/*"],
+  "exclude": [],
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
     "composite": true,
-    "lib": ["ES2022", "DOM"],
-    "types": ["node", "@rstest/core", "@vue/test-utils"]
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "lib": [],
+    "types": ["node"]
   }
 }

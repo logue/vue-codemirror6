@@ -117,9 +117,9 @@ Users must install these separately to avoid duplication.
 | [src/Meta.ts](../src/Meta.ts)                                                   | Component metadata and type definitions         |
 | [src/**tests**/CodeMirror.spec.ts](../src/__tests__/CodeMirror.spec.ts)         | Component tests                                 |
 | [src/**tests**/CodeMirror.ssr.spec.ts](../src/__tests__/CodeMirror.ssr.spec.ts) | SSR tests                                       |
-| [vite.config.ts](../vite.config.ts)                                             | Build config (outputs, plugins, DTS generation) |
-| [vitest.config.ts](../vitest.config.ts)                                         | Test config (happy-dom, coverage)               |
-| [eslint.config.ts](../eslint.config.ts)                                         | Linting config                                  |
+| [rsbuild.config.ts](../rsbuild.config.ts)                                       | Build config (outputs, plugins, DTS generation) |
+| [rstest.config.ts](../rstest.config.ts)                                         | Test config (happy-dom, coverage)               |
+| [rslint.config.ts](../rslint.config.ts)                                         | Linting config                                  |
 
 ## Common Pitfalls to Avoid
 

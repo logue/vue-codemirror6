@@ -180,8 +180,7 @@ Also, insert a `<pre>` tag to prevent the text in the slot from being automatica
     <pre>
 {
   "key": "value"
-}</pre
-    >
+}</pre>
   </code-mirror>
 </template>
 

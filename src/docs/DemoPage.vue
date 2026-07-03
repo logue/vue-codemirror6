@@ -6,15 +6,15 @@ import { useDark } from '@vueuse/core';
 import CodeMirror from '@/index';
 
 import KeyMapDemo from './components/KeyMapDemo.vue';
-import KeyMapDemoSrc from './components/KeyMapDemo.vue?raw';
+import KeyMapDemoSrc from './components/KeyMapDemo.vue?source';
 import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
-import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?raw';
+import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?source';
 import MarkdownDemo from './components/MarkdownDemo.vue';
-import MarkdownDemoSrc from './components/MarkdownDemo.vue?raw';
+import MarkdownDemoSrc from './components/MarkdownDemo.vue?source';
 import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
-import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?raw';
+import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?source';
 import SlotDemo from './components/SlotDemo.vue';
-import SlotDemoSrc from './components/SlotDemo.vue?raw';
+import SlotDemoSrc from './components/SlotDemo.vue?source';
 
 const dark = useDark();
 

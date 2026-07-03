@@ -1,12 +1,12 @@
 {
   "extends": "@tsconfig/node-lts/tsconfig.json",
   "include": [
-    "vite.config.*",
-    "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "rslib.config.*",
+    "rslint.config.*",
+    "rstest.config.*"
   ],
   "compilerOptions": {
     "noEmit": true,
