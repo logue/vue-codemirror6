@@ -1,12 +1,14 @@
 {
-  "extends": "./tsconfig.app.json",
-  "exclude": [],
+  "extends": "./tsconfig.rslib.json",
+  "include": [
+    "src/**/__tests__/*",
+    "env.d.ts"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
+  ],
   "compilerOptions": {
-    "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
-    "lib": [],
-    "types": ["node"]
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.rstest.tsbuildinfo"
   }
 }

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-
 import { markdown } from '@codemirror/lang-markdown';
+import { type Ref, ref } from 'vue';
 // eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 import VueMarkdown from 'vue-markdown-wasm';

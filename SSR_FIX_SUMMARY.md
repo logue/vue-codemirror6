@@ -70,9 +70,9 @@ pnpm build       # ビルド成功
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
-import { javascript } from '@codemirror/lang-javascript';
+import { ref } from "vue";
+import CodeMirror from "vue-codemirror6";
+import { javascript } from "@codemirror/lang-javascript";
 
 const value = ref('console.log("Hello, World!");');
 const lang = javascript();
@@ -89,8 +89,8 @@ const lang = javascript();
 </template>
 
 <script>
-import CodeMirror from 'vue-codemirror6';
-import { javascript } from '@codemirror/lang-javascript';
+import CodeMirror from "vue-codemirror6";
+import { javascript } from "@codemirror/lang-javascript";
 
 export default {
   components: {

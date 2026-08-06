@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { type Ref, ref } from 'vue';
 
 // eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
@@ -43,7 +43,6 @@ defineProps<{ dark?: boolean }>();
 色は匂へど　散りぬるを
 我が世誰そ　常ならむ
 有為の奥山　今日越えて
-浅き夢見じ　酔ひもせず</pre
-    >
+浅き夢見じ　酔ひもせず</pre>
   </code-mirror>
 </template>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-
-import { javascript, esLint } from '@codemirror/lang-javascript';
+import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
+import { type Ref, ref } from 'vue';
 // eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
-import CodeMirror from 'vue-codemirror6';
+import type CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
 defineProps<{ dark?: boolean }>();

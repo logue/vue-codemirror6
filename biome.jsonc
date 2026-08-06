@@ -1,0 +1,116 @@
+{
+  // Biome config for this workspace. Comments are preserved in JSONC.
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "root": true,
+  "files": {
+    "includes": [
+      "**",
+      "!!**/.rslib",
+      "!!**/node_modules",
+      "!!**/dist",
+      "!!**/docs"
+    ],
+    // Ignore files that cannot be processed by biome.
+    "ignoreUnknown": true
+  },
+  // Enable Biome's built-in version control system (VCS) support.
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "linter": {
+    // See https://biomejs.dev/linter/ for a list of all available rules.
+    "rules": {
+      "a11y": "info",
+      "complexity": "warn",
+      "correctness": {
+        // Disable this rule to allow Node.js modules for configuration files and scripts.
+        "noNodejsModules": "off"
+      },
+      "nursery": "off",
+      "performance": "warn",
+      "security": "error",
+      "style": {
+        // For libraries, it's common to use default exports for the main entry point.
+        // Disable this rule to allow default exports in library code.
+        "noDefaultExport": "off"
+      },
+      "suspicious": "error"
+    }
+  },
+  // Enable Biome's built-in code assist feature
+  // for code actions and refactoring.
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        // Sort imports on save.
+        // This is useful for keeping import statements organized
+        // and consistent.
+        "organizeImports": "on"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    // To prevent indentation shifts and resulting differences
+    // when adding or deleting items.
+    "attributePosition": "multiline"
+  },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "all",
+      "quoteStyle": "single"
+    },
+    // JSXRuntime is set to "transparent" to allow JSX syntax in
+    // JavaScript files without requiring a specific JSX factory
+    // function.
+    // This is useful for projects that use React or other libraries
+    // that support JSX.
+    "jsxRuntime": "transparent",
+    // When you use CSS-in-JS (such as styled-components) or
+    // GraphQL (such as Relay, Apollo etc.), you may want to enable
+    // this option to avoid formatting issues with embedded snippets.
+    "experimentalEmbeddedSnippetsEnabled": false
+  },
+  "json": {
+    "parser": {
+      // Allow comments in JSON files. This is useful for configuration files
+      // that may contain comments for documentation purposes.
+      "allowComments": true
+    },
+    "formatter": {
+      // To prevent indentation shifts and resulting differences
+      // when adding or deleting items.
+      "expand": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true,
+      // If you are using Tailwind CSS, set this to true to avoid
+      // formatting issues with Tailwind directives.
+      "tailwindDirectives": false
+    }
+  },
+  "html": {
+    // If you are using a framework like React, Vue, Svelte or Angular,
+    // set this to true to avoid formatting issues with
+    // framework-specific syntax.
+    "experimentalFullSupportEnabled": true,
+    "formatter": {
+      // Prioritize structure over whitespace characters.
+      // (This is because differences are more likely to occur.)
+      "whitespaceSensitivity": "css",
+      // Do not omit the slash (/) for empty elements.
+      // e.g. <br /> instead of <br>
+      "selfCloseVoidElements": "always"
+    }
+  }
+}

@@ -1,9 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, rs } from '@rstest/core';
-import { nextTick, ref } from 'vue';
-
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
+import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { mount } from '@vue/test-utils';
+import { nextTick, ref } from 'vue';
 
 import CodeMirror, { type CodeMirrorExposed } from '../index';
 
@@ -167,7 +166,7 @@ describe('CodeMirror Component', () => {
         expect(wrapper.props('lang')).toBeDefined();
         expect(wrapper.props('lang')).toHaveProperty('language');
       },
-      { timeout: 10000 }
+      { timeout: 10000 },
     );
 
     it('should accept preserveScrollPosition prop', () => {
@@ -436,7 +435,7 @@ describe('CodeMirror Component', () => {
         props: {
           modelValue: modelValue.value,
           'onUpdate:modelValue': (
-            value?: string | import('@codemirror/state').Text
+            value?: string | import('@codemirror/state').Text,
           ) => {
             modelValue.value =
               typeof value === 'string' ? value : (value?.toString() ?? '');
@@ -471,7 +470,7 @@ describe('CodeMirror Component', () => {
 
       const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
-        'scrollSnapshot'
+        'scrollSnapshot',
       );
 
       await wrapper.setProps({ modelValue: 'initial\nupdated' });
@@ -495,7 +494,7 @@ describe('CodeMirror Component', () => {
 
       const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
-        'scrollSnapshot'
+        'scrollSnapshot',
       );
 
       await wrapper.setProps({ modelValue: 'initial\nupdated' });

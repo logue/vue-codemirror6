@@ -5,9 +5,9 @@
  */
 
 import {
+  type Component,
   h as hDemi,
   isVue2,
-  type Component,
   type VNode,
   type VNodeProps,
 } from 'vue-demi';
@@ -22,7 +22,7 @@ interface Options extends VNodeProps {
 }
 
 const adaptOnsV3 = (
-  ons: Record<string, () => void>
+  ons: Record<string, () => void>,
 ): Record<string, () => void> => {
   if (!ons) return {};
   return Object.entries(ons).reduce((ret, [key, handler]) => {
@@ -38,7 +38,7 @@ const adaptOnsV3 = (
 export default function h(
   type: string | Component,
   options: Options = {},
-  children?: VNode | VNode[]
+  children?: VNode | VNode[],
 ): VNode {
   if (isVue2) {
     // Makeshift support :(
@@ -51,11 +51,11 @@ export default function h(
   return hDemi(
     type,
     { ...extraOptions, ...props, ...domProps, ...ons },
-    children
+    children,
   );
 }
 
 export const slot = (
-  defaultSlots: (() => VNode[]) | VNode[] | undefined
+  defaultSlots: (() => VNode[]) | VNode[] | undefined,
 ): VNode[] =>
   typeof defaultSlots === 'function' ? defaultSlots() : (defaultSlots ?? []);

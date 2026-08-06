@@ -6,12 +6,13 @@
   <img src="https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png" alt="logo" width="300" height="300" />
 </p>
 
-[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
-[![NPM Downloads](https://img.shields.io/npm/dm/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/vue-codemirror6)
-[![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/vue-codemirror6/file/README.md)
-[![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/vue-codemirror6)
-[![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
-[![Twitter Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://twitter.com/logue256)
+[![npm version](https://img.shields.io/npm/v/@logue/vue-codemirror6.svg)](https://www.npmjs.com/package/@logue/vue-codemirror6)
+[![NPM Downloads](https://img.shields.io/npm/dm/@logue/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/@logue/vue-codemirror6)
+[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/@logue/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/@logue/vue-codemirror6)
+[![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/@logue/vue-codemirror6/file/README.md)
+[![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/@logue/vue-codemirror6)
+[![X Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://x.com/logue256)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/logue?label=Sponsor&logo=github&color=ea4aaa)](https://github.com/sponsors/logue)
 
 Vueで[CodeMirror6](https://codemirror.net/6/)を使用するためのコンポーネントです。このコンポーネントはVue2とVue3の両方で動作します。
 
@@ -152,16 +153,16 @@ pnpm install vue-codemirror6 @vue/composition-api
 </template>
 
 <script>
-import { ref, defineComponent } from 'vue';
+import { ref, defineComponent } from "vue";
 
-import CodeMirror from 'vue-codemirror6';
+import CodeMirror from "vue-codemirror6";
 
 export default defineComponent({
   components: {
     CodeMirror,
   },
   setup() {
-    const value = ref('Cozy lummox gives smart squid who asks for job pen.');
+    const value = ref("Cozy lummox gives smart squid who asks for job pen.");
 
     return { value };
   },
@@ -186,11 +187,11 @@ export default defineComponent({
 </template>
 
 <script>
-import { ref, defineComponent } from 'vue';
+import { ref, defineComponent } from "vue";
 
-import { json, jsonParseLinter } from '@codemirror/lang-json';
+import { json, jsonParseLinter } from "@codemirror/lang-json";
 
-import CodeMirror from 'vue-codemirror6';
+import CodeMirror from "vue-codemirror6";
 
 export default defineComponent({
   components: {
@@ -217,9 +218,9 @@ Nuxt 3を使用している場合は、コンポーネントを直接使用で�
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
-import { javascript } from '@codemirror/lang-javascript';
+import { ref } from "vue";
+import CodeMirror from "vue-codemirror6";
+import { javascript } from "@codemirror/lang-javascript";
 
 const value = ref('console.log("Hello, World!");');
 const lang = javascript();
@@ -242,23 +243,23 @@ Nuxt 2を使用している場合や問題が発生した場合は、コンポ�
 
 ```vue
 <script lang="ts" setup>
-import { ref, defineComponent, type Ref } from 'vue';
+import { ref, defineComponent, type Ref } from "vue";
 
 // コンポーネントの読み込み
-import CodeMirror from 'vue-codemirror6';
+import CodeMirror from "vue-codemirror6";
 
 // CodeMirror拡張機能
-import { markdown as md } from '@codemirror/lang-markdown';
-import type { LanguageSupport } from '@codemirror/language';
-import type { Extension } from '@codemirror/state';
-import type { ViewUpdate } from '@codemirror/view';
+import { markdown as md } from "@codemirror/lang-markdown";
+import type { LanguageSupport } from "@codemirror/language";
+import type { Extension } from "@codemirror/state";
+import type { ViewUpdate } from "@codemirror/view";
 
 /** テキスト */
-const value: Ref<string> = ref('');
+const value: Ref<string> = ref("");
 
 /** ダークモード **/
 const dark: Ref<boolean> = ref(
-  window.matchMedia('(prefers-color-scheme: dark)').matches
+  window.matchMedia("(prefers-color-scheme: dark)").matches,
 );
 
 /**
@@ -277,40 +278,40 @@ const lang: LanguageSupport = md();
  */
 const phrases: Record<string, string> = {
   // @codemirror/view
-  'Control character': '制御文字',
+  "Control character": "制御文字",
   // @codemirror/commands
-  'Selection deleted': '選択を削除',
+  "Selection deleted": "選択を削除",
   // @codemirror/language
-  'Folded lines': '折り畳まれた行',
-  'Unfolded lines': '折り畳める行',
-  to: '行き先',
-  'folded code': '折り畳まれたコード',
-  unfold: '折り畳みを解除',
-  'Fold line': '行を折り畳む',
-  'Unfold line': '行の折り畳む解除',
+  "Folded lines": "折り畳まれた行",
+  "Unfolded lines": "折り畳める行",
+  to: "行き先",
+  "folded code": "折り畳まれたコード",
+  unfold: "折り畳みを解除",
+  "Fold line": "行を折り畳む",
+  "Unfold line": "行の折り畳む解除",
   // @codemirror/search
-  'Go to line': '行き先の行',
-  go: 'OK',
-  Find: '検索',
-  Replace: '置き換え',
-  next: '▼',
-  previous: '▲',
-  all: 'すべて',
-  'match case': '一致条件',
-  'by word': '全文検索',
-  regexp: '正規表現',
-  replace: '置き換え',
-  'replace all': 'すべてを置き換え',
-  close: '閉じる',
-  'current match': '現在の一致',
-  'replaced $ matches': '$ 件の一致を置き換え',
-  'replaced match on line $': '$ 行の一致を置き換え',
-  'on line': 'した行',
+  "Go to line": "行き先の行",
+  go: "OK",
+  Find: "検索",
+  Replace: "置き換え",
+  next: "▼",
+  previous: "▲",
+  all: "すべて",
+  "match case": "一致条件",
+  "by word": "全文検索",
+  regexp: "正規表現",
+  replace: "置き換え",
+  "replace all": "すべてを置き換え",
+  close: "閉じる",
+  "current match": "現在の一致",
+  "replaced $ matches": "$ 件の一致を置き換え",
+  "replaced match on line $": "$ 行の一致を置き換え",
+  "on line": "した行",
   // @codemirror/autocomplete
-  Completions: '自動補完',
+  Completions: "自動補完",
   // @codemirror/lint
-  Diagnostics: 'エラー',
-  'No diagnostics': 'エラーなし',
+  Diagnostics: "エラー",
+  "No diagnostics": "エラーなし",
 };
 </script>
 
@@ -338,8 +339,8 @@ const phrases: Record<string, string> = {
 
 ```vue
 <script setup lang="ts">
-import { ref, onMounted, type Ref, type PropType } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+import { ref, onMounted, type Ref, type PropType } from "vue";
+import CodeMirror from "vue-codemirror6";
 
 const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 
@@ -396,12 +397,12 @@ const config: UserConfig = {
       output: {
         manualChunks: {
           // ...
-          codemirror: ['vue-codemirror6'],
-          'codemirror-lang': [
+          codemirror: ["vue-codemirror6"],
+          "codemirror-lang": [
             // 必要に応じて以下を追加してください。
-            '@codemirror/lang-html',
-            '@codemirror/lang-javascript',
-            '@codemirror/lang-markdown',
+            "@codemirror/lang-html",
+            "@codemirror/lang-javascript",
+            "@codemirror/lang-markdown",
           ],
           // ...
         },
@@ -443,11 +444,3 @@ pnpm test:coverage
 
 ©2022-2026 by Logue.
 [MITライセンス](LICENSE)の下でライセンスされています。
-
-## 🎨 開発者のために作られました
-
-このライブラリは、**最新の開発者体験**に焦点を当てて構築されています。これを維持するには、すべてがシームレスに動作することを確認するための継続的なテストと更新が必要です。
-
-このプロジェクトの細部へのこだわりを評価していただける場合は、Vue.jsとMetaverseエコシステム全体での私の仕事をサポートするために、小額のスポンサーシップをいただければ幸いです。
-
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/logue?label=Sponsor&logo=github&color=ea4aaa)](https://github.com/sponsors/logue)

@@ -1,15 +1,34 @@
-/.yarn/*
-# !/.yarn/patches
-# !/.yarn/plugins
-!/.yarn/releases
-# !/.yarn/sdks
-# !/.yarn/cache
-/.vscode/*
-node_modules
+# Dependencies
+node_modules/
+.claude/
+
+# Build / Cache
+dist/
+docs/
+.rslib/
+coverage/
+
+# Database
+data/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Lockfiles
+*.lock
+# pnpm-lock.yaml # as you need to commit this file for reproducible builds
+# pnpm-workspace.yaml # as you need to commit this file for reproducible builds
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Local
 .DS_Store
-dist
-dist-ssr
+Thumbs.db
 *.local
-/docs/
-stats.html
-*.tsbuildinfo
+*.log*

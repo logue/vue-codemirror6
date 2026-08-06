@@ -48,15 +48,15 @@ pnpm test:coverage
 新しい機能を追加する場合は、対応するテストも追加してください：
 
 ```typescript
-import { describe, it, expect } from '@rstest/core';
-import { mount } from '@vue/test-utils';
-import CodeMirror from '@/components/CodeMirror';
+import { describe, it, expect } from "@rstest/core";
+import { mount } from "@vue/test-utils";
+import CodeMirror from "@/components/CodeMirror";
 
-describe('New Feature', () => {
-  it('should work correctly', async () => {
+describe("New Feature", () => {
+  it("should work correctly", async () => {
     const wrapper = mount(CodeMirror, {
       props: {
-        modelValue: 'test',
+        modelValue: "test",
         // 新機能のprops
       },
     });
@@ -95,7 +95,7 @@ describe('New Feature', () => {
 ```typescript
 beforeEach(() => {
   // 各テストの前にクリーンアップ
-  document.body.innerHTML = '';
+  document.body.innerHTML = "";
 });
 ```
 
@@ -122,10 +122,10 @@ wrapper.unmount();
 
 ```typescript
 // 良い例
-expect(wrapper.props('readonly')).toBe(true);
+expect(wrapper.props("readonly")).toBe(true);
 
 // 避けるべき例
-expect(wrapper.props('readonly')).toBeTruthy();
+expect(wrapper.props("readonly")).toBeTruthy();
 ```
 
 ## トラブルシューティング
@@ -135,7 +135,7 @@ expect(wrapper.props('readonly')).toBeTruthy();
 長時間かかるテストにはタイムアウトを設定できます：
 
 ```typescript
-it('long running test', { timeout: 10000 }, async () => {
+it("long running test", { timeout: 10000 }, async () => {
   // テストコード
 });
 ```
@@ -146,7 +146,7 @@ it('long running test', { timeout: 10000 }, async () => {
 
 ```typescript
 const wrapper = mount(CodeMirror, {
-  props: { modelValue: 'test' },
+  props: { modelValue: "test" },
   attachTo: document.body,
 });
 

@@ -1,19 +1,28 @@
 {
   "extends": "@tsconfig/node-lts/tsconfig.json",
   "include": [
-    "cypress.config.*",
-    "nightwatch.conf.*",
-    "playwright.config.*",
+    "env.d.ts",
+    "rsbuild.config.*",
     "rslib.config.*",
     "rslint.config.*",
-    "rstest.config.*"
+    "package.json"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
   ],
   "compilerOptions": {
+    "composite": true,
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["node"]
+    "resolveJsonModule": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   }
 }
