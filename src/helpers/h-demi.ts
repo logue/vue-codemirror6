@@ -12,14 +12,14 @@ import {
   type VNodeProps,
 } from 'vue-demi';
 
-interface Options extends VNodeProps {
+type Options = VNodeProps & {
   class?: string;
   domProps?: VNodeProps;
   on?: Record<string, () => void>;
   props?: VNodeProps;
   style?: string;
   'aria-hidden'?: string;
-}
+};
 
 const adaptOnsV3 = (
   ons: Record<string, () => void>,
@@ -33,7 +33,13 @@ const adaptOnsV3 = (
 };
 
 /**
- * hDemi function.
+ * Cross-version `h` (hyperscript) function that normalizes Vue 2 style
+ * options (`props`, `domProps`, `on`) into Vue 3's flat VNode data object.
+ *
+ * @param type - Element tag name or component.
+ * @param options - VNode options, accepting both Vue 2 and Vue 3 shapes.
+ * @param children - Child VNode(s).
+ * @returns Created VNode.
  */
 export default function h(
   type: string | Component,
@@ -55,6 +61,12 @@ export default function h(
   );
 }
 
+/**
+ * Normalize a default slot into a VNode array, invoking it if it is a function.
+ *
+ * @param defaultSlots - Default slot content or slot function.
+ * @returns Resolved VNode array.
+ */
 export const slot = (
   defaultSlots: (() => VNode[]) | VNode[] | undefined,
 ): VNode[] =>

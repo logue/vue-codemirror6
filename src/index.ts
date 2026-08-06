@@ -887,40 +887,14 @@ const CodeMirror = defineComponent({
   },
 });
 
+/**
+ * Vue plugin install function that registers the CodeMirror component globally.
+ *
+ * @param app - Vue application instance.
+ */
 const installCodeMirror = (app: App): void => {
   app.component('CodeMirror', CodeMirror);
 };
 
-/** Public API exposed from the CodeMirror component instance.
- * Note: Vue 3 auto-unwraps refs on the component instance proxy,
- * so reactive refs appear as their underlying value types here.
- */
-export type CodeMirrorExposed = {
-  editor: HTMLElement | undefined;
-  view: EditorView | undefined;
-  cursor: number;
-  selection: EditorSelection | undefined;
-  focus: boolean;
-  length: number;
-  json: Record<string, StateField<unknown>> | undefined;
-  diagnosticCount: number;
-  dom: Element | undefined;
-  lint: () => void;
-  forceReconfigure: () => void;
-  getRange: (from?: number, to?: number) => string | undefined;
-  getLine: (number: number) => string | undefined;
-  lineCount: () => number;
-  getCursor: () => number;
-  listSelections: () => readonly SelectionRange[];
-  getSelection: () => string;
-  getSelections: () => string[];
-  somethingSelected: () => boolean;
-  replaceRange: (replacement: string | Text, from: number, to: number) => void;
-  replaceSelection: (replacement: string | Text) => void;
-  setCursor: (position: number) => void;
-  setSelection: (anchor: number, head?: number) => void;
-  setSelections: (ranges: readonly SelectionRange[], primary?: number) => void;
-  extendSelectionsBy: (f: (range: SelectionRange) => number) => void;
-};
-
+export type { CodeMirrorExposed } from '@/types/CodeMirrorExposed';
 export { CodeMirror as default, installCodeMirror as install, Meta };
