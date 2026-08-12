@@ -25,11 +25,13 @@ const adaptOnsV3 = (
   ons: Record<string, () => void>,
 ): Record<string, () => void> => {
   if (!ons) return {};
-  return Object.entries(ons).reduce((ret, [key, handler]) => {
-    key = key.charAt(0).toUpperCase() + key.slice(1);
-    key = `on${key}`;
-    return { ...ret, [key]: handler };
-  }, {});
+  return Object.entries(ons).reduce<Record<string, () => void>>(
+    (ret, [key, handler]) => {
+      ret[`on${key.charAt(0).toUpperCase()}${key.slice(1)}`] = handler;
+      return ret;
+    },
+    {},
+  );
 };
 
 /**
@@ -56,7 +58,12 @@ export default function h(
 
   return hDemi(
     type,
-    { ...extraOptions, ...props, ...domProps, ...ons },
+    {
+      ...extraOptions,
+      ...props,
+      ...domProps,
+      ...ons,
+    },
     children,
   );
 }

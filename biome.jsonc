@@ -22,21 +22,32 @@
   "linter": {
     // See https://biomejs.dev/linter/ for a list of all available rules.
     "rules": {
+      "preset": "recommended",
       "a11y": "info",
-      "complexity": "warn",
+      "complexity": {
+        // for Test use.
+        "noExcessiveLinesPerFunction": "off"
+      },
       "correctness": {
         // Disable this rule to allow Node.js modules for configuration files and scripts.
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        // Fix for Vue
+        "noUnusedImports": "off"
       },
       "nursery": "off",
       "performance": "warn",
-      "security": "error",
+      "security": {
+        "noSecrets": "off"
+      },
       "style": {
         // For libraries, it's common to use default exports for the main entry point.
         // Disable this rule to allow default exports in library code.
         "noDefaultExport": "off"
       },
-      "suspicious": "error"
+      "suspicious": {
+        // Since it's assumed to be deleted during transpilation, It won't check it.
+        "noConsole": "off"
+      }
     }
   },
   // Enable Biome's built-in code assist feature
@@ -59,12 +70,15 @@
     "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 80,
+    "useEditorconfig": true,
     // To prevent indentation shifts and resulting differences
     // when adding or deleting items.
-    "attributePosition": "multiline"
+    "attributePosition": "multiline",
+    "expand": "always"
   },
   "javascript": {
     "formatter": {
+      "enabled": true,
       "trailingCommas": "all",
       "quoteStyle": "single"
     },
@@ -77,7 +91,12 @@
     // When you use CSS-in-JS (such as styled-components) or
     // GraphQL (such as Relay, Apollo etc.), you may want to enable
     // this option to avoid formatting issues with embedded snippets.
-    "experimentalEmbeddedSnippetsEnabled": false
+    "experimentalEmbeddedSnippetsEnabled": true,
+    // If yu use global variable
+    "globals": [
+      // "$", // jQuery
+      // "_", // underscore.js
+    ]
   },
   "json": {
     "parser": {
@@ -86,6 +105,7 @@
       "allowComments": true
     },
     "formatter": {
+      "enabled": true,
       // To prevent indentation shifts and resulting differences
       // when adding or deleting items.
       "expand": "always"
@@ -97,6 +117,10 @@
       // If you are using Tailwind CSS, set this to true to avoid
       // formatting issues with Tailwind directives.
       "tailwindDirectives": false
+    },
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single"
     }
   },
   "html": {
@@ -104,7 +128,15 @@
     // set this to true to avoid formatting issues with
     // framework-specific syntax.
     "experimentalFullSupportEnabled": true,
+    "parser": {
+      // If you use Vue.
+      "vue": true
+    },
     "formatter": {
+      "enabled": true,
+      // To prevent indentation shifts and resulting differences
+      // when adding or deleting items.
+      "attributePosition": "multiline",
       // Prioritize structure over whitespace characters.
       // (This is because differences are more likely to occur.)
       "whitespaceSensitivity": "css",

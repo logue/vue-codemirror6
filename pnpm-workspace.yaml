@@ -1,26 +1,5 @@
 allowBuilds:
-  core-js: true
   vue-demi: true
-minimumReleaseAgeExclude:
-  - "@rslint/core@0.7.3"
-  - "@rslint/native-darwin-arm64@0.7.3"
-  - "@rslint/native-darwin-x64@0.7.3"
-  - "@rslint/native-linux-arm64-gnu@0.7.3"
-  - "@rslint/native-linux-arm64-musl@0.7.3"
-  - "@rslint/native-linux-x64-gnu@0.7.3"
-  - "@rslint/native-linux-x64-musl@0.7.3"
-  - "@rslint/native-win32-arm64-msvc@0.7.3"
-  - "@rslint/native-win32-x64-msvc@0.7.3"
-  - "@rstest/adapter-rsbuild@0.11.6"
-  - "@rstest/adapter-rslib@0.11.6"
-  - "@rstest/core@0.11.6"
-  - "@vue/compiler-core@3.5.41"
-  - "@vue/compiler-dom@3.5.41"
-  - "@vue/compiler-sfc@3.5.41"
-  - "@vue/compiler-ssr@3.5.41"
-  - "@vue/reactivity@3.5.41"
-  - "@vue/runtime-core@3.5.41"
-  - "@vue/runtime-dom@3.5.41"
-  - "@vue/server-renderer@3.5.41"
-  - "@vue/shared@3.5.41"
-  - vue@3.5.41
+# Do not enforce minimum release age for dependencies.
+# Version selection is delegated to package.json constraints.
+minimumReleaseAge: 0

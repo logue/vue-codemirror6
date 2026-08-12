@@ -418,7 +418,9 @@ const CodeMirror = defineComponent({
         get: () => view.value?.state.selection,
         set: (selection) => {
           if (view.value && selection) {
-            view.value.dispatch({ selection });
+            view.value.dispatch({
+              selection,
+            });
           }
         },
       });
@@ -428,7 +430,11 @@ const CodeMirror = defineComponent({
       get: () => view.value?.state.selection.main.head ?? 0,
       set: (anchor) => {
         if (view.value) {
-          view.value.dispatch({ selection: { anchor } });
+          view.value.dispatch({
+            selection: {
+              anchor,
+            },
+          });
         }
       },
     });
@@ -512,7 +518,9 @@ const CodeMirror = defineComponent({
           context.emit('update', update);
         }),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme, { dark: props.dark }),
+        EditorView.theme(props.theme, {
+          dark: props.dark,
+        }),
         // Toggle line wrapping
         props.wrap ? EditorView.lineWrapping : undefined,
         // Tab character
@@ -547,15 +555,19 @@ const CodeMirror = defineComponent({
         keymaps.length > 0 ? keymap.of(keymaps) : undefined,
         // Append Extensions
         ...props.extensions,
-      ].filter((extension): extension is Extension => !!extension); // Filter undefined
+      ].filter((extension): extension is Extension => Boolean(extension)); // Filter undefined
     });
 
     // Extension (mostly props) Changed
     watch(
       extensions,
       (exts) =>
-        view.value?.dispatch({ effects: StateEffect.reconfigure.of(exts) }),
-      { immediate: true },
+        view.value?.dispatch({
+          effects: StateEffect.reconfigure.of(exts),
+        }),
+      {
+        immediate: true,
+      },
     );
 
     // for parent-to-child binding.
@@ -595,13 +607,22 @@ const CodeMirror = defineComponent({
         view.value.dispatch({
           changes,
           selection: isSelectionOutOfRange
-            ? { anchor: 0, head: 0 }
+            ? {
+                anchor: 0,
+                head: 0,
+              }
             : view.value.state.selection,
           scrollIntoView: props.scrollIntoView,
-          effects: scrollSnapshot ? [scrollSnapshot] : undefined,
+          effects: scrollSnapshot
+            ? [
+                scrollSnapshot,
+              ]
+            : undefined,
         });
       },
-      { immediate: true },
+      {
+        immediate: true,
+      },
     );
 
     /** When loaded */
@@ -627,12 +648,17 @@ const CodeMirror = defineComponent({
       // Register Codemirror
       view.value = new EditorView({
         parent: editor.value,
-        state: EditorState.create({ doc: value, extensions: extensions.value }),
+        state: EditorState.create({
+          doc: value,
+          extensions: extensions.value,
+        }),
         dispatch: (tr: Transaction) => {
           if (!view.value) {
             return;
           }
-          view.value.update([tr]);
+          view.value.update([
+            tr,
+          ]);
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event
             return;
@@ -763,7 +789,11 @@ const CodeMirror = defineComponent({
     ): void => {
       if (view.value) {
         view.value.dispatch({
-          changes: { from, to, insert: replacement },
+          changes: {
+            from,
+            to,
+            insert: replacement,
+          },
         });
       }
     };
@@ -785,7 +815,11 @@ const CodeMirror = defineComponent({
      */
     const setCursor = (position: number): void => {
       if (view.value) {
-        view.value.dispatch({ selection: { anchor: position } });
+        view.value.dispatch({
+          selection: {
+            anchor: position,
+          },
+        });
       }
     };
     /**
@@ -796,7 +830,12 @@ const CodeMirror = defineComponent({
      */
     const setSelection = (anchor: number, head?: number): void => {
       if (view.value) {
-        view.value.dispatch({ selection: { anchor, head } });
+        view.value.dispatch({
+          selection: {
+            anchor,
+            head,
+          },
+        });
       }
     };
     /**
@@ -879,7 +918,10 @@ const CodeMirror = defineComponent({
         ? // Hide original content
           h(
             'aside',
-            { style: 'display: none;', 'aria-hidden': 'true' },
+            {
+              style: 'display: none;',
+              'aria-hidden': 'true',
+            },
             slot(this.$slots.default),
           )
         : undefined,

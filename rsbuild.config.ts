@@ -43,7 +43,9 @@ export default defineConfig({
   },
   source: {
     tsconfigPath: './tsconfig.rsbuild.json',
-    include: ['./src'],
+    include: [
+      './src',
+    ],
     define: {
       __APP_VERSION__: JSON.stringify(pkg.version),
       __BUILD_DATE__: JSON.stringify(buildDate),

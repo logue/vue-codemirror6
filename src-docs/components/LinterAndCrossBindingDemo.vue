@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
@@ -7,7 +10,9 @@ import { type Ref, ref } from 'vue';
 import type CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
-defineProps<{ dark?: boolean }>();
+defineProps<{
+  dark?: boolean;
+}>();
 
 /** CodeMirror Instance */
 const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
@@ -33,7 +38,10 @@ const linter = esLint(new eslint.Linter(), {
     },
   },
   rules: {
-    semi: ['error', 'never'],
+    semi: [
+      'error',
+      'never',
+    ],
   },
 });
 
@@ -61,7 +69,11 @@ const onFocus = (f: boolean): void => {
       <div class="row mb-3">
         <div class="col-4">
           <div class="input-group">
-            <label for="count" class="input-group-text">Count</label>
+            <label
+              for="count"
+              class="input-group-text"
+              >Count</label
+            >
             <input
               id="count"
               :value="cm?.length"
@@ -73,7 +85,10 @@ const onFocus = (f: boolean): void => {
         </div>
         <div class="col-5">
           <div class="input-group">
-            <label for="diagnosticCount" class="input-group-text">
+            <label
+              for="diagnosticCount"
+              class="input-group-text"
+            >
               Diagnostic Count
             </label>
             <input
@@ -95,14 +110,22 @@ const onFocus = (f: boolean): void => {
               checked
               disabled
             />
-            <label class="form-check-label" for="focused">Focused</label>
+            <label
+              class="form-check-label"
+              for="focused"
+              >Focused</label
+            >
           </div>
         </div>
       </div>
     </div>
     <div class="col-6">
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
-      <textarea v-model="value" rows="4" class="form-control"></textarea>
+      <textarea
+        v-model="value"
+        rows="4"
+        class="form-control"
+      ></textarea>
     </div>
   </div>
   <p>

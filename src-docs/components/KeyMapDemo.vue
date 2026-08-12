@@ -1,7 +1,10 @@
-<script lang="ts" setup>
+<script
+  lang="ts"
+  setup
+>
 import { ref } from 'vue';
 
-// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+// biome-igonore - lint/suspicious/noConsole  -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 
 const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');

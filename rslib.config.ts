@@ -47,6 +47,9 @@ const bannerText = `/**
 `;
 
 export default defineConfig({
+  plugins: [
+    pluginTypeCheck(),
+  ],
   lib: [
     {
       format: 'esm',
@@ -88,5 +91,4 @@ export default defineConfig({
       __BUILD_DATE__: JSON.stringify(buildDate),
     },
   },
-  plugins: [pluginTypeCheck()],
 });

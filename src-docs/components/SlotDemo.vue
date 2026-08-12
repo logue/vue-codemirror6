@@ -1,10 +1,15 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 // eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
-defineProps<{ dark?: boolean }>();
+defineProps<{
+  dark?: boolean;
+}>();
 </script>
 
 <!-- prettier-ignore -->
@@ -23,7 +28,6 @@ defineProps<{ dark?: boolean }>();
   "name": "vue-codemirror6 Demo",
   "url": "https://github.com/logue/vue-codemirror6",
   "description": "CodeMirror6 for Vue3 and Vue2 component"
-}</pre
-    >
+}</pre>
   </code-mirror>
 </template>
