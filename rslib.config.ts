@@ -1,11 +1,26 @@
+/** For build library use */
 import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
+import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { defineConfig } from '@rslib/core';
-import { pluginVue } from '@rsbuild/plugin-vue';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+/**
+ * The UMD name is used for the global variable name when the library
+ * is included via a <script> tag.
+ * DO NOT use kebab-case or snake_case for the UMD name.
+ * Use camelCase or PascalCase instead.
+ *
+ * For example, if your library is called "my-library", you might use
+ * "MyLibrary" as the UMD name.
+ * Then, name might be used in the following way:
+ *
+ * @example
+ * <script src="https://cdn.jsdelivr.net/npm/your-library@1.0.0/dist/index.umd.js"></script>
+ * <script>
+ *   const myLibrary = window.umdName;
+ * </script>
+ */
+const umdName = undefined; // CHANGE THIS to your library's global variable name.
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as {
   name: string;
@@ -21,71 +36,28 @@ const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as {
 
 const buildDate = new Date().toISOString();
 const bannerText = `/**
- * ${pkg.name}
- *
- * @description ${pkg.description}
- * @author ${pkg.author.name} <${pkg.author.email}>
- * @license ${pkg.license}
- * @version ${pkg.version}
- * @see {@link ${pkg.homepage}}
- */
+* ${pkg.name}
+*
+* @description ${pkg.description}
+* @author ${pkg.author.name} <${pkg.author.email}>
+* @license ${pkg.license}
+* @version ${pkg.version}
+* @see {@link ${pkg.homepage}}
+*/
 `;
 
-/**
- * UMD external definition: keeps the real package specifier for the
- * commonjs/amd branches, while using a friendly global name for the
- * plain `<script>` tag (root) branch.
- */
-const umdExternal = (
-  rootName: string,
-  packageName: string
-): { root: string; commonjs: string; commonjs2: string; amd: string } => ({
-  root: rootName,
-  commonjs: packageName,
-  commonjs2: packageName,
-  amd: packageName,
-});
-
-/** Externals used by the UMD build. */
-const umdGlobals = {
-  '@codemirror/autocomplete': umdExternal(
-    'autocomplete',
-    '@codemirror/autocomplete'
-  ),
-  '@codemirror/commands': umdExternal('commands', '@codemirror/commands'),
-  '@codemirror/language': umdExternal('language', '@codemirror/language'),
-  '@codemirror/lint': umdExternal('lint', '@codemirror/lint'),
-  '@codemirror/search': umdExternal('search', '@codemirror/search'),
-  '@codemirror/state': umdExternal('state', '@codemirror/state'),
-  '@codemirror/view': umdExternal('view', '@codemirror/view'),
-  'style-mod': umdExternal('styleMod', 'style-mod'),
-  'vue-demi': umdExternal('VueDemi', 'vue-demi'),
-  codemirror: umdExternal('codemirror', 'codemirror'),
-  vue: umdExternal('Vue', 'vue'),
-};
-
 export default defineConfig({
-  source: {
-    define: {
-      __APP_VERSION__: JSON.stringify(pkg.version),
-      __BUILD_DATE__: JSON.stringify(buildDate),
-    },
-    entry: {
-      index: './src/index.ts',
-    },
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
-  plugins: [pluginVue()],
+  plugins: [
+    pluginTypeCheck(),
+  ],
   lib: [
     {
       format: 'esm',
-      syntax: 'esnext',
-      dts: true,
-      bundle: true,
+      dts: {
+        tsgo: true, // Enable TypeScript 7 native compiler
+        // isolated: true,  // SWC fast_dts
+        bundle: true,
+      },
       banner: {
         js: bannerText,
       },
@@ -97,33 +69,26 @@ export default defineConfig({
       },
     },
     {
-      format: 'cjs',
-      syntax: 'esnext',
-      bundle: true,
-      banner: {
-        js: bannerText,
-      },
-      output: {
-        cleanDistPath: false,
-        sourceMap: true,
-      },
-    },
-    {
       format: 'umd',
-      syntax: 'esnext',
-      umdName: 'vue-codemirror',
-      bundle: true,
+      umdName,
       banner: {
         js: bannerText,
       },
       output: {
-        cleanDistPath: false,
         filename: {
           js: 'index.umd.js',
         },
-        externals: umdGlobals,
+        cleanDistPath: false,
+        minify: true,
         sourceMap: true,
       },
     },
   ],
+  source: {
+    tsconfigPath: './tsconfig.rslib.json',
+    define: {
+      __APP_VERSION__: JSON.stringify(pkg.version),
+      __BUILD_DATE__: JSON.stringify(buildDate),
+    },
+  },
 });

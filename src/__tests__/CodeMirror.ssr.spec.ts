@@ -1,5 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it } from '@rstest/core';
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, afterEach } from '@rstest/core';
 import { nextTick } from 'vue';
 
 import CodeMirror, { type CodeMirrorExposed } from '../index';
@@ -30,7 +30,7 @@ describe('CodeMirror SSR Compatibility', () => {
       expect(wrapper.classes()).toContain('vue-codemirror');
     });
 
-    it('should not initialize EditorView on server', async () => {
+    it('should not initialize EditorView on server', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'server side code',
@@ -78,7 +78,9 @@ describe('CodeMirror SSR Compatibility', () => {
         lineSeparator: '\n',
       };
 
-      const wrapper = mount(CodeMirror, { props });
+      const wrapper = mount(CodeMirror, {
+        props,
+      });
 
       expect(wrapper.exists()).toBe(true);
       for (const [key, value] of Object.entries(props)) {
@@ -88,7 +90,7 @@ describe('CodeMirror SSR Compatibility', () => {
   });
 
   describe('Safe Method Calls in SSR', () => {
-    it('should return safe defaults when view is undefined', async () => {
+    it('should return safe defaults when view is undefined', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
@@ -106,8 +108,14 @@ describe('CodeMirror SSR Compatibility', () => {
       expect(Array.isArray(vm.getSelections())).toBe(true);
       expect(vm.somethingSelected()).toBe(false);
       // getRange and getLine return string or undefined depending on whether view is initialized
-      expect(['string', 'undefined']).toContain(typeof vm.getRange());
-      expect(['string', 'undefined']).toContain(typeof vm.getLine(0));
+      expect([
+        'string',
+        'undefined',
+      ]).toContain(typeof vm.getRange());
+      expect([
+        'string',
+        'undefined',
+      ]).toContain(typeof vm.getLine(0));
     });
 
     it('should not throw when calling methods before view initialization', () => {
@@ -136,7 +144,7 @@ describe('CodeMirror SSR Compatibility', () => {
       return 0;
     }
 
-    it('should handle computed properties safely', async () => {
+    it('should handle computed properties safely', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
@@ -161,7 +169,6 @@ describe('CodeMirror SSR Compatibility', () => {
         attachTo: document.body,
       });
 
-      await nextTick();
       await nextTick(); // Wait for onMounted to complete
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -181,7 +188,6 @@ describe('CodeMirror SSR Compatibility', () => {
       });
 
       await nextTick();
-      await nextTick();
 
       const readyEvents = wrapper.emitted('ready');
       expect(readyEvents).toBeTruthy();
@@ -198,9 +204,10 @@ describe('CodeMirror SSR Compatibility', () => {
       });
 
       await nextTick();
-      await nextTick();
 
-      await wrapper.setProps({ modelValue: 'updated' });
+      await wrapper.setProps({
+        modelValue: 'updated',
+      });
       await nextTick();
 
       expect(wrapper.props('modelValue')).toBe('updated');
@@ -278,14 +285,20 @@ describe('CodeMirror SSR Compatibility', () => {
       });
 
       // Rapidly change props before view is initialized
-      await wrapper.setProps({ modelValue: 'v2' });
-      await wrapper.setProps({ modelValue: 'v3' });
-      await wrapper.setProps({ modelValue: 'v4' });
+      await wrapper.setProps({
+        modelValue: 'v2',
+      });
+      await wrapper.setProps({
+        modelValue: 'v3',
+      });
+      await wrapper.setProps({
+        modelValue: 'v4',
+      });
 
       expect(wrapper.props('modelValue')).toBe('v4');
     });
 
-    it('should handle unmount before initialization', async () => {
+    it('should handle unmount before initialization', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
@@ -298,13 +311,19 @@ describe('CodeMirror SSR Compatibility', () => {
 
     it('should handle multiple instances', () => {
       const wrapper1 = mount(CodeMirror, {
-        props: { modelValue: 'instance 1' },
+        props: {
+          modelValue: 'instance 1',
+        },
       });
       const wrapper2 = mount(CodeMirror, {
-        props: { modelValue: 'instance 2' },
+        props: {
+          modelValue: 'instance 2',
+        },
       });
       const wrapper3 = mount(CodeMirror, {
-        props: { modelValue: 'instance 3' },
+        props: {
+          modelValue: 'instance 3',
+        },
       });
 
       expect(wrapper1.props('modelValue')).toBe('instance 1');
@@ -327,7 +346,6 @@ describe('CodeMirror SSR Compatibility', () => {
       });
 
       await nextTick();
-      await nextTick();
 
       wrapper.unmount();
 
@@ -344,9 +362,6 @@ describe('CodeMirror SSR Compatibility', () => {
           },
           attachTo: document.body,
         });
-
-        await nextTick();
-        await nextTick();
 
         expect(wrapper.exists()).toBe(true);
 

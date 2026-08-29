@@ -1,9 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, rs } from '@rstest/core';
-import { nextTick, ref } from 'vue';
-
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
+import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { mount } from '@vue/test-utils';
+import { nextTick, ref } from 'vue';
 
 import CodeMirror, { type CodeMirrorExposed } from '../index';
 
@@ -152,23 +151,19 @@ describe('CodeMirror Component', () => {
       expect(wrapper.props('placeholder')).toBe(placeholderText);
     });
 
-    it(
-      'should accept lang prop',
-      () => {
-        const lang = javascript();
-        const wrapper = mount(CodeMirror, {
-          props: {
-            modelValue: 'const x = 1;',
-            lang,
-          },
-        });
+    it('should accept lang prop', () => {
+      const lang = javascript();
+      const wrapper = mount(CodeMirror, {
+        props: {
+          modelValue: 'const x = 1;',
+          lang,
+        },
+      });
 
-        // Just verify the prop is set, don't compare object identity
-        expect(wrapper.props('lang')).toBeDefined();
-        expect(wrapper.props('lang')).toHaveProperty('language');
-      },
-      { timeout: 10000 }
-    );
+      // Just verify the prop is set, don't compare object identity
+      expect(wrapper.props('lang')).toBeDefined();
+      expect(wrapper.props('lang')).toHaveProperty('language');
+    }, 10000);
 
     it('should accept preserveScrollPosition prop', () => {
       const wrapper = mount(CodeMirror, {
@@ -195,7 +190,7 @@ describe('CodeMirror Component', () => {
 
       const readyEvents = wrapper.emitted('ready');
       expect(readyEvents).toBeTruthy();
-      expect(readyEvents!.length).toBeGreaterThan(0);
+      expect(readyEvents?.length).toBeGreaterThan(0);
       const firstEvent = readyEvents![0]?.[0];
       expect(firstEvent).toHaveProperty('view');
       expect(firstEvent).toHaveProperty('state');
@@ -215,8 +210,12 @@ describe('CodeMirror Component', () => {
       // Simulate text change through exposed view
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
-      vm.view!.dispatch({
-        changes: { from: 0, to: vm.view!.state.doc.length, insert: 'updated' },
+      vm.view?.dispatch({
+        changes: {
+          from: 0,
+          to: vm.view?.state.doc.length,
+          insert: 'updated',
+        },
       });
 
       await nextTick();
@@ -436,7 +435,7 @@ describe('CodeMirror Component', () => {
         props: {
           modelValue: modelValue.value,
           'onUpdate:modelValue': (
-            value?: string | import('@codemirror/state').Text
+            value?: string | import('@codemirror/state').Text,
           ) => {
             modelValue.value =
               typeof value === 'string' ? value : (value?.toString() ?? '');
@@ -449,7 +448,9 @@ describe('CodeMirror Component', () => {
 
       // Update the prop
       modelValue.value = 'updated';
-      await wrapper.setProps({ modelValue: modelValue.value });
+      await wrapper.setProps({
+        modelValue: modelValue.value,
+      });
       await nextTick();
 
       expect(wrapper.props('modelValue')).toBe('updated');
@@ -471,10 +472,12 @@ describe('CodeMirror Component', () => {
 
       const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
-        'scrollSnapshot'
+        'scrollSnapshot',
       );
 
-      await wrapper.setProps({ modelValue: 'initial\nupdated' });
+      await wrapper.setProps({
+        modelValue: 'initial\nupdated',
+      });
       await nextTick();
 
       expect(scrollSnapshotSpy).toHaveBeenCalledTimes(1);
@@ -495,10 +498,12 @@ describe('CodeMirror Component', () => {
 
       const scrollSnapshotSpy = rs.spyOn(
         vm.view as EditorView,
-        'scrollSnapshot'
+        'scrollSnapshot',
       );
 
-      await wrapper.setProps({ modelValue: 'initial\nupdated' });
+      await wrapper.setProps({
+        modelValue: 'initial\nupdated',
+      });
       await nextTick();
 
       expect(scrollSnapshotSpy).not.toHaveBeenCalled();
@@ -516,15 +521,19 @@ describe('CodeMirror Component', () => {
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
       expect(vm.view).toBeDefined();
-      vm.view!.dispatch({
-        changes: { from: 0, to: vm.view!.state.doc.length, insert: 'changed' },
+      vm.view?.dispatch({
+        changes: {
+          from: 0,
+          // to: vm.view.state.doc.length,
+          insert: 'changed',
+        },
       });
 
       await nextTick();
 
       const updateEvents = wrapper.emitted('update:modelValue');
       expect(updateEvents).toBeTruthy();
-      expect(updateEvents!.at(-1)?.[0]).toBe('changed');
+      expect(updateEvents?.at(-1)?.[0]).toBe('changed');
     });
   });
 

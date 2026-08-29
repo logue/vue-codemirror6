@@ -1,0 +1,27 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src-docs/**/*"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
+  "compilerOptions": {
+    "types": [
+      "@rsbuild/core/types",
+      "node"
+    ],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.rsbuild.tsbuildinfo",
+    "outDir": "docs",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "vue-codemirror6": [
+        "./src/*"
+      ]
+    }
+  }
+}

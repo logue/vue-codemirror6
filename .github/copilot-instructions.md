@@ -1,139 +1,233 @@
-# Vue-CodeMirror6 Workspace Instructions
+# vue-codemirror6 Agent Instructions
 
-**Project**: A Vue 2 & 3 compatible CodeMirror 6 component library
-**Tech Stack**: TypeScript, Vue 3 (with vue-demi for Vue 2 support), Vite, Vitest, CodeMirror 6
-**Language**: Primarily TypeScript with Vue SFC components
+## Project Overview
 
-## Essential Commands
+**vue-codemirror6** is a Vue 3 component library providing CodeMirror 6 integration for both Vue 2.7+ and Vue 3.3+. The library enables rich code editing capabilities with syntax highlighting, linting, and full TypeScript support.
 
-| Task                   | Command                                            |
-| ---------------------- | -------------------------------------------------- |
-| **Development server** | `pnpm dev`                                         |
-| **Build library**      | `pnpm build` (includes type checking)              |
-| **Build docs**         | `pnpm build:docs` then `pnpm preview`              |
-| **Run tests**          | `pnpm test` (watch mode) or `pnpm test:run` (once) |
-| **Test coverage**      | `pnpm test:coverage`                               |
-| **All linting**        | `pnpm lint` (oxlint, eslint, prettier)             |
-| **Type check**         | `pnpm type-check` (vue-tsc)                        |
+- **Main Entry**: `src/index.ts` (library exports)
+- **Demo/Docs**: `src/docs/` (Rsbuild-based demo site)
+- **Component**: `src/CodeMirror.vue` (main Vue component)
+- **Package Manager**: pnpm@11.8.0+
+- **Node Version**: ^22.18.0 || >=24.12.0
 
-## Architecture & Key Patterns
+## Build System (Rslib + Rsbuild)
 
-### Main Component (`src/index.ts`, `src/Meta.ts`)
+### Library Build (Rslib)
 
-- **Vue Composition API** with `vue-demi` for Vue 2/3 compatibility
-- **Core Props**: `modelValue`, `lang`, `extensions`, `linter`, `keymap`, `dark`, `readonly`, `disabled`, etc.
-- **Exposed Methods**: `getView()`, `focus()`, `getRange()`, `setCursor()`, `getSelection()` (CodeMirror5 API compatibility layer)
-- **Event Emitters**: `ready`, `update`, `change`, `destroy`
-- **Two Setup Modes**: `basic` (basicSetup) or `minimal` (minimalSetup)
+- **Config**: `rslib.config.ts`
+- **Command**: `pnpm build-only` (or `rslib` directly)
+- **Output**:
+  - ESM: `dist/index.es.js` (with `.d.ts`)
+  - CJS: `dist/index.cjs`
+  - UMD: `dist/index.umd.js`
+- **Features**: Vue plugin bundled, source maps included, package metadata injected
 
-### Design Principles
+### Demo/Docs Build (Rsbuild)
 
-1. **Unidirectional + v-model binding**: Text content updates flow via v-model
-2. **Optional ChainING on `view.value`**: All CodeMirror view access uses `view.value?.` to handle SSR
-3. **Props over Extensions**: Explicit props (`lang`, `linter`, `keymap`) separate from generic `extensions[]` for better type safety and DX
-4. **Lazy Initialization**: Editor only initializes in browser (client-side), SSR-safe with `onMounted` checks
+- **Config**: `rsbuild.config.ts`
+- **Commands**:
+  - Development: `pnpm dev` (serves demo at `http://localhost:3000`)
+  - Production: `pnpm build:docs` (outputs to `docs/`)
+  - Preview: `pnpm preview`
+- **Demo Entry**: `src/docs/index.ts`
+- **Template**: `index.html`
+- **Features**: Vue 3, SCSS support, code examples, interactive components
 
-### Testing Strategy (`src/__tests__/`)
+## Development Workflow
 
-- **`CodeMirror.spec.ts`**: Component functionality (rendering, props, v-model, events, slots, public methods)
-- **`CodeMirror.ssr.spec.ts`**: SSR compatibility (server-side rendering, safe method calls, hydration, cleanup)
-- **Framework**: Vitest with happy-dom environment
-- **Setup**: Uses Vue Test Utils for component mounting
-- **Coverage Targets**: All public methods and critical code paths (see vitest.config.ts for exclusions)
+### Installation & Setup
 
-## Code Quality Standards
+```bash
+pnpm install
+```
 
-### Linting & Formatting
+### Common Commands
 
-- **Oxlint**: Fast, Rust-based linting (primary)
-- **ESLint**: Vue plugin + TypeScript rules + accessibility checks
-- **Prettier**: Code formatting
-- **vue-tsc**: Type checking before build
+- **Development**: `pnpm dev` — starts demo dev server
+- **Library Watch**: `pnpm dev:lib` — watches library source for changes
+- **Build All**: `pnpm build` — runs type-check + library build
+- **Build Library**: `pnpm build-only` — Rslib library build
+- **Build Docs**: `pnpm build:docs` — Rsbuild demo site
+- **Type Check**: `pnpm type-check` — vue-tsc validation
+- **Clean Cache**: `pnpm clean` — removes build cache
 
-Run all checks: `pnpm lint` (automatically fixes most issues)
+### Testing & Quality
+
+- **Run Tests**: `pnpm test` — Rstest runner
+- **Watch Tests**: `pnpm test:ui` — interactive test UI
+- **Coverage**: `pnpm test:coverage` — coverage report
+- **Lint**: `pnpm lint` — runs all linters
+  - `pnpm lint:check` — Biome check with auto-fix
+  - `pnpm lint:rslint` — Rslint validation
+  - `pnpm lint:format` — Prettier formatting
+
+## Testing
+
+This project uses **Rstest** for unit testing with Vue Test Utils and Testing Library.
+
+### Test Files
+
+- Located in `src/__tests__/` (mirrors source structure)
+- File pattern: `*.spec.ts` or `*.test.ts`
+- Configuration: `rstest.config.ts`
+
+### Test Strategy
+
+- Component rendering and props validation
+- v-model binding and events (update, change, focus)
+- Method exposure (view, selection, cursor, json, etc.)
+- SSR compatibility
+- Edge cases and error handling
+
+## Code Style & Quality
+
+### Linting Tools
+
+- **Rslint** (`rslint.config.ts`): Fast, Rust-based linting
+- **Biome** (`biome.json`): Code formatting and analysis
+- **Prettier** (`.prettierrc`): Code formatting fallback
 
 ### TypeScript
 
-- **Strict Mode**: Enabled
-- **Vue Support**: `@vue/eslint-config-typescript`
-- **Type Declarations**: Auto-generated via `vite-plugin-dts` during build
-- **Aliases**: `@` → `src/`, `vue-codemirror6` → `src/`
+- **Config Files**:
+  - `tsconfig.json` — base configuration
+  - `tsconfig.app.json` — application code
+  - `tsconfig.node.json` — build script tooling
+  - `tsconfig.rstest.json` — test files
+- **Vue SFC Typing**: Full support via `@vue/language-features`
 
-## Important Context
+### Import Path Aliases
 
-### SSR Compatibility (Critical)
+- `@` → `src/` (use in source code, see `rslib.config.ts` and `rsbuild.config.ts`)
+- `vue-codemirror6` → `src/` (demo self-reference, allows testing published API)
 
-The component must work in SSR environments (Nuxt.js, etc.):
+## Project Structure
 
-- `view.value` may be `undefined` on server ⚠️
-- Always use optional chaining: `view.value?.method()`
-- Browser-only code wrapped in `if (typeof window !== 'undefined')`
-- See [SSR_FIX_SUMMARY.md](../SSR_FIX_SUMMARY.md) for detailed changes
-
-### Build Outputs
-
-### Generated Metadata
-
-- `src/Meta.ts` is generated automatically when starting the dev server or running the library build.
-- If `src/Meta.ts` is missing in a fresh checkout, run `pnpm dev` or `pnpm build` before treating it as a broken import.
-
-Multiple formats in `dist/`:
-
-- ES modules: `index.es.js`
-- CommonJS: `index.cjs.js`
-- UMD: `index.umd.js`
-- IIFE: `index.iife.js`
-- Types: `index.d.ts`
-
-### Peer Dependencies
-
-CodeMirror 6 packages are peer deps (not bundled):
-
-```text
-@codemirror/{commands,language,lint,search,state,view}
-@codemirror/autocomplete
-codemirror (state/view core)
-style-mod
-vue: ^2.7.14 || ^3.3.4
+```
+vue-codemirror6/
+├── src/
+│   ├── index.ts                 # Library entry
+│   ├── CodeMirror.vue           # Main component
+│   ├── docs/                    # Demo/documentation site
+│   ├── helpers/                 # Utility functions
+│   ├── types/                   # TypeScript definitions
+│   └── __tests__/               # Unit tests
+├── rslib.config.ts              # Library build configuration
+├── rsbuild.config.ts            # Demo build configuration
+├── rstest.config.ts             # Test configuration
+├── rslint.config.ts             # Linting configuration
+├── biome.json                   # Code formatting config
+├── tsconfig.json                # TypeScript base
+├── vitest.config.ts             # Vitest (used by rstest)
+├── package.json                 # Dependencies & scripts
+└── index.html                   # Demo HTML template
 ```
 
-Users must install these separately to avoid duplication.
+## Key Files to Know
 
-### Common Development Tasks
+- **Component**: `src/CodeMirror.vue` — Main Vue SFC
+- **Types**: `src/Meta.ts` — Version/build date injection
+- **Exports**: `src/index.ts` — What gets published
+- **Tests**: `src/__tests__/CodeMirror.spec.ts` — Component tests
+- **Helpers**: `src/helpers/h-demi.ts` — Vue 2/3 compatibility utilities
 
-**Adding a new prop**: Add to interface → component props → applicable compartment/state → test it
+## Important Patterns
 
-**Adding language support demo**: Add to `src-docs/components/` and import in `App.vue`
+### Vue 2/3 Compatibility
 
-**Fixing a bug**: Create test first in `__tests__/`, implement fix in `src/`, verify with `pnpm test`
+- Uses `vue-demi` for cross-version support
+- Composition API works on both versions
+- `script setup` syntax available via SFC compiler
 
-**Updating themes or extensions**: Use the `extensions` prop or create a helper function in `src/helpers/`
+### Library Output
 
-## Key Files Reference
+- ESM bundle with `.d.ts` declaration files
+- CommonJS for Node.js consumers
+- UMD for direct `<script>` tags (globals: `autocomplete`, `commands`, `language`, `lint`, etc.)
+- Source maps for debugging
 
-| File                                                                            | Purpose                                         |
-| ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [src/index.ts](../src/index.ts)                                                 | Main component definition                       |
-| [src/Meta.ts](../src/Meta.ts)                                                   | Component metadata and type definitions         |
-| [src/**tests**/CodeMirror.spec.ts](../src/__tests__/CodeMirror.spec.ts)         | Component tests                                 |
-| [src/**tests**/CodeMirror.ssr.spec.ts](../src/__tests__/CodeMirror.ssr.spec.ts) | SSR tests                                       |
-| [rsbuild.config.ts](../rsbuild.config.ts)                                       | Build config (outputs, plugins, DTS generation) |
-| [rstest.config.ts](../rstest.config.ts)                                         | Test config (happy-dom, coverage)               |
-| [rslint.config.ts](../rslint.config.ts)                                         | Linting config                                  |
+### Build Artifacts
 
-## Common Pitfalls to Avoid
+- Keep `dist/` in `.gitignore` (rebuilt on CI)
+- Published files in `package.json` `files` field: `CHANGELOG.md` and `/dist`
+- UMD globals defined in `rslib.config.ts` for each CodeMirror module
 
-1. **Direct `view` access without optional chaining** → SSR will break
-2. **Importing `@codemirror` modules in component** → May cause bundling issues; prefer `extensions` prop
-3. **Mutating props directly** → Use emitted events or expose methods instead
-4. **Async state changes without `nextTick`** → Can cause race conditions in updates
-5. **Forgetting to test SSR mode** → Use `pnpm test` to run all tests including SSR
+## Before Making Changes
 
-## Workspace Conventions
+1. **Run full test suite**: `pnpm test`
+2. **Type check**: `pnpm type-check`
+3. **Lint code**: `pnpm lint`
+4. **Test in demo**: `pnpm dev` and verify component in browser
+5. **Build all targets**: `pnpm build`
 
-- **Vue 3 syntax throughout** (vue-demi handles Vue 2 compatibility)
-- **TypeScript strict mode**
-- **Composition API only** (no Options API)
-- **Kebab-case for component props** (auto-converted from camelCase)
-- **PascalCase for type names**, camelCase for variables/functions
-- **Comments for complex CodeMirror API usage** (document non-obvious patterns)
+## Common Tasks
+
+### Adding a Prop
+
+1. Update `CodeMirror.vue` `defineProps`
+2. Add TypeScript type in `types/`
+3. Update README.md props table
+4. Add test case in `src/__tests__/`
+5. Test with `pnpm dev`
+
+### Adding a Method
+
+1. Implement in `CodeMirror.vue` using `defineExpose`
+2. Export type in `src/index.ts` if needed
+3. Add test case in `src/__tests__/`
+4. Update README.md method docs
+5. Verify backward compatibility with CM5 compat layer
+
+### Fixing a Bug
+
+1. Write a failing test
+2. Fix the implementation
+3. Verify test passes: `pnpm test`
+4. Check demo: `pnpm dev`
+5. Run full lint/type/build: `pnpm build`
+
+### Updating Dependencies
+
+- Review breaking changes for Rslib/Rsbuild/Vue versions
+- Run `pnpm install` to update lock file
+- Run full test suite: `pnpm test`
+- Test demo: `pnpm dev`
+- Verify builds: `pnpm build`
+
+## Release Process
+
+1. Update version in `package.json`
+2. Run `pnpm version` (auto-generates CHANGELOG)
+3. Commit & tag
+4. Push to remote
+5. CI publishes to npm
+
+The `pnpm version` script uses `auto-changelog` and runs Husky hooks.
+
+## Debugging
+
+### Dev Server Issues
+
+- Check port 3000 availability: `pnpm dev --port 5173`
+- Clear cache: `pnpm clean`
+- Reinstall node_modules: `rm -rf node_modules && pnpm install`
+
+### Build Errors
+
+- Verify TypeScript: `pnpm type-check`
+- Check Rslib config for output target mismatch
+- Look at `dist/` for partial builds (may cause confusion)
+
+### Test Failures
+
+- Run UI mode for interactive debugging: `pnpm test:ui`
+- Check Rstest config for environment variables (Happy DOM, Vue Test Utils)
+- Verify mock setup matches real CodeMirror API
+
+## Additional Resources
+
+- [CodeMirror 6 Docs](https://codemirror.net/6/)
+- [Vue 3 Guide](https://vuejs.org/)
+- [Rslib Documentation](https://lib.rspack.dev/)
+- [Rsbuild Documentation](https://rsbuild.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)

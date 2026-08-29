@@ -1,53 +1,52 @@
 import { indentWithTab } from '@codemirror/commands';
 import { indentUnit, type LanguageSupport } from '@codemirror/language';
 import {
-  diagnosticCount as linterDiagnosticCount,
-  forceLinting,
-  linter,
-  lintGutter,
   type Diagnostic,
+  forceLinting,
   type LintSource,
+  linter,
+  diagnosticCount as linterDiagnosticCount,
+  lintGutter,
 } from '@codemirror/lint';
 import {
   Compartment,
   EditorSelection,
   EditorState,
-  StateEffect,
-  type Transaction,
   type Extension,
   type SelectionRange,
+  StateEffect,
   type StateField,
   type Text,
+  type Transaction,
 } from '@codemirror/state';
 import {
   EditorView,
+  type KeyBinding,
   keymap,
   placeholder,
-  type KeyBinding,
   type ViewUpdate,
 } from '@codemirror/view';
 import { basicSetup, minimalSetup } from 'codemirror';
+import type { StyleSpec } from 'style-mod';
 import {
+  type App,
+  type ComputedRef,
   computed,
   defineComponent,
   nextTick,
   onMounted,
   onUnmounted,
-  ref,
-  shallowRef,
-  watch,
-  type App,
-  type ComputedRef,
   type PropType,
   type Ref,
+  ref,
   type ShallowRef,
+  shallowRef,
   type WritableComputedRef,
+  watch,
 } from 'vue-demi';
 
-import type { StyleSpec } from 'style-mod';
-
-import Meta from '@/Meta';
 import h, { slot } from '@/helpers/h-demi';
+import { Meta } from '@/types/Meta';
 
 /** CodeMirror Component */
 const CodeMirror = defineComponent({
@@ -403,7 +402,7 @@ const CodeMirror = defineComponent({
      */
     const focus: WritableComputedRef<boolean> = computed({
       get: () => view.value?.hasFocus ?? false,
-      set: f => {
+      set: (f) => {
         if (f && view.value) {
           view.value.focus();
         }
@@ -418,9 +417,11 @@ const CodeMirror = defineComponent({
     const selection: WritableComputedRef<EditorSelection | undefined> =
       computed({
         get: () => view.value?.state.selection,
-        set: selection => {
+        set: (selection) => {
           if (view.value && selection) {
-            view.value.dispatch({ selection });
+            view.value.dispatch({
+              selection,
+            });
           }
         },
       });
@@ -428,9 +429,13 @@ const CodeMirror = defineComponent({
     /** Cursor Position */
     const cursor: WritableComputedRef<number> = computed({
       get: () => view.value?.state.selection.main.head ?? 0,
-      set: anchor => {
+      set: (anchor) => {
         if (view.value) {
-          view.value.dispatch({ selection: { anchor } });
+          view.value.dispatch({
+            selection: {
+              anchor,
+            },
+          });
         }
       },
     });
@@ -440,7 +445,7 @@ const CodeMirror = defineComponent({
       Record<string, StateField<unknown>> | undefined
     > = computed({
       get: () => view.value?.state.toJSON(),
-      set: j => {
+      set: (j) => {
         if (view.value && j) {
           view.value.setState(EditorState.fromJSON(j));
         }
@@ -465,7 +470,7 @@ const CodeMirror = defineComponent({
       const tabSize = new Compartment();
       if (props.basic && props.minimal) {
         throw new Error(
-          '[Vue CodeMirror] Both basic and minimal cannot be specified.'
+          '[Vue CodeMirror] Both basic and minimal cannot be specified.',
         );
       }
       /** Keymap */
@@ -514,7 +519,9 @@ const CodeMirror = defineComponent({
           context.emit('update', update);
         }),
         // Toggle light/dark mode.
-        EditorView.theme(props.theme, { dark: props.dark }),
+        EditorView.theme(props.theme, {
+          dark: props.dark,
+        }),
         // Toggle line wrapping
         props.wrap ? EditorView.lineWrapping : undefined,
         // Tab character
@@ -549,21 +556,25 @@ const CodeMirror = defineComponent({
         keymaps.length > 0 ? keymap.of(keymaps) : undefined,
         // Append Extensions
         ...props.extensions,
-      ].filter((extension): extension is Extension => !!extension); // Filter undefined
+      ].filter((extension): extension is Extension => Boolean(extension)); // Filter undefined
     });
 
     // Extension (mostly props) Changed
     watch(
       extensions,
-      exts =>
-        view.value?.dispatch({ effects: StateEffect.reconfigure.of(exts) }),
-      { immediate: true }
+      (exts) =>
+        view.value?.dispatch({
+          effects: StateEffect.reconfigure.of(exts),
+        }),
+      {
+        immediate: true,
+      },
     );
 
     // for parent-to-child binding.
     watch(
       () => props.modelValue,
-      async value => {
+      async (value) => {
         if (!view.value) {
           return;
         }
@@ -579,7 +590,7 @@ const CodeMirror = defineComponent({
         // Range Fix ?
         // https://github.com/logue/vue-codemirror6/issues/27
         const isSelectionOutOfRange = !view.value.state.selection.ranges.every(
-          range => range.anchor < value.length && range.head < value.length
+          (range) => range.anchor < value.length && range.head < value.length,
         );
 
         /** Scroll Fix */
@@ -597,13 +608,22 @@ const CodeMirror = defineComponent({
         view.value.dispatch({
           changes,
           selection: isSelectionOutOfRange
-            ? { anchor: 0, head: 0 }
+            ? {
+                anchor: 0,
+                head: 0,
+              }
             : view.value.state.selection,
           scrollIntoView: props.scrollIntoView,
-          effects: scrollSnapshot ? [scrollSnapshot] : undefined,
+          effects: scrollSnapshot
+            ? [
+                scrollSnapshot,
+              ]
+            : undefined,
         });
       },
-      { immediate: true }
+      {
+        immediate: true,
+      },
     );
 
     /** When loaded */
@@ -620,7 +640,7 @@ const CodeMirror = defineComponent({
         // when slot mode, overwrite initial value
         if (doc.value !== '') {
           console.warn(
-            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
+            '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.',
           );
         }
         value = (editor.value.childNodes[0] as HTMLElement).innerText.trim();
@@ -629,12 +649,17 @@ const CodeMirror = defineComponent({
       // Register Codemirror
       view.value = new EditorView({
         parent: editor.value,
-        state: EditorState.create({ doc: value, extensions: extensions.value }),
+        state: EditorState.create({
+          doc: value,
+          extensions: extensions.value,
+        }),
         dispatch: (tr: Transaction) => {
           if (!view.value) {
             return;
           }
-          view.value.update([tr]);
+          view.value.update([
+            tr,
+          ]);
           if (tr.changes.empty || !tr.docChanged) {
             // if not change value, no fire emit event
             return;
@@ -671,7 +696,7 @@ const CodeMirror = defineComponent({
      * @see {@link https://codemirror.net/docs/ref/#lint.forceLinting}
      */
     const lint = (): void => {
-      if (!props.linter || !view.value) {
+      if (!(props.linter && view.value)) {
         return;
       }
       if (props.forceLinting) {
@@ -728,7 +753,7 @@ const CodeMirror = defineComponent({
       }
       return view.value.state.sliceDoc(
         view.value.state.selection.main.from,
-        view.value.state.selection.main.to
+        view.value.state.selection.main.to,
       );
     };
     /**
@@ -742,13 +767,13 @@ const CodeMirror = defineComponent({
       }
 
       return s.selection.ranges.map((r: { from: number; to: number }) =>
-        s.sliceDoc(r.from, r.to)
+        s.sliceDoc(r.from, r.to),
       );
     };
     /** Return true if any text is selected. */
     const somethingSelected = (): boolean =>
       view.value?.state.selection.ranges.some(
-        (r: { empty: boolean }) => !r.empty
+        (r: { empty: boolean }) => !r.empty,
       ) ?? false;
 
     /**
@@ -761,11 +786,15 @@ const CodeMirror = defineComponent({
     const replaceRange = (
       replacement: string | Text,
       from: number,
-      to: number
+      to: number,
     ): void => {
       if (view.value) {
         view.value.dispatch({
-          changes: { from, to, insert: replacement },
+          changes: {
+            from,
+            to,
+            insert: replacement,
+          },
         });
       }
     };
@@ -787,7 +816,11 @@ const CodeMirror = defineComponent({
      */
     const setCursor = (position: number): void => {
       if (view.value) {
-        view.value.dispatch({ selection: { anchor: position } });
+        view.value.dispatch({
+          selection: {
+            anchor: position,
+          },
+        });
       }
     };
     /**
@@ -798,7 +831,12 @@ const CodeMirror = defineComponent({
      */
     const setSelection = (anchor: number, head?: number): void => {
       if (view.value) {
-        view.value.dispatch({ selection: { anchor, head } });
+        view.value.dispatch({
+          selection: {
+            anchor,
+            head,
+          },
+        });
       }
     };
     /**
@@ -809,7 +847,7 @@ const CodeMirror = defineComponent({
      */
     const setSelections = (
       ranges: readonly SelectionRange[],
-      primary?: number
+      primary?: number,
     ): void => {
       if (view.value) {
         view.value.dispatch({
@@ -826,7 +864,7 @@ const CodeMirror = defineComponent({
       if (view.value && selection.value) {
         view.value.dispatch({
           selection: EditorSelection.create(
-            selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
+            selection.value.ranges.map((r: SelectionRange) => r.extend(f(r))),
           ),
         });
       }
@@ -881,48 +919,25 @@ const CodeMirror = defineComponent({
         ? // Hide original content
           h(
             'aside',
-            { style: 'display: none;', 'aria-hidden': 'true' },
-            slot(this.$slots.default)
+            {
+              style: 'display: none;',
+              'aria-hidden': 'true',
+            },
+            slot(this.$slots.default),
           )
-        : undefined
+        : undefined,
     );
   },
 });
 
+/**
+ * Vue plugin install function that registers the CodeMirror component globally.
+ *
+ * @param app - Vue application instance.
+ */
 const installCodeMirror = (app: App): void => {
   app.component('CodeMirror', CodeMirror);
 };
 
-/** Public API exposed from the CodeMirror component instance.
- * Note: Vue 3 auto-unwraps refs on the component instance proxy,
- * so reactive refs appear as their underlying value types here.
- */
-export type CodeMirrorExposed = {
-  editor: HTMLElement | undefined;
-  view: EditorView | undefined;
-  cursor: number;
-  selection: EditorSelection | undefined;
-  focus: boolean;
-  length: number;
-  json: Record<string, StateField<unknown>> | undefined;
-  diagnosticCount: number;
-  dom: Element | undefined;
-  lint: () => void;
-  forceReconfigure: () => void;
-  getRange: (from?: number, to?: number) => string | undefined;
-  getLine: (number: number) => string | undefined;
-  lineCount: () => number;
-  getCursor: () => number;
-  listSelections: () => readonly SelectionRange[];
-  getSelection: () => string;
-  getSelections: () => string[];
-  somethingSelected: () => boolean;
-  replaceRange: (replacement: string | Text, from: number, to: number) => void;
-  replaceSelection: (replacement: string | Text) => void;
-  setCursor: (position: number) => void;
-  setSelection: (anchor: number, head?: number) => void;
-  setSelections: (ranges: readonly SelectionRange[], primary?: number) => void;
-  extendSelectionsBy: (f: (range: SelectionRange) => number) => void;
-};
-
+export type { CodeMirrorExposed } from '@/types/CodeMirrorExposed';
 export { CodeMirror as default, installCodeMirror as install, Meta };

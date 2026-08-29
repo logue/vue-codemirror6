@@ -1,0 +1,37 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/",
+    "src/**/__tests__/*"
+  ],
+  "compilerOptions": {
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "@rslib/core/types",
+      "node"
+    ],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.rslib.tsbuildinfo",
+    "useDefineForClassFields": true,
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    /* modules */
+    "module": "esnext",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    /* type checking */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}

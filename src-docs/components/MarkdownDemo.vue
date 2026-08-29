@@ -1,8 +1,10 @@
-<script setup lang="ts">
-import { ref, type Ref } from 'vue';
-
+<script
+  setup
+  lang="ts"
+>
 import { markdown } from '@codemirror/lang-markdown';
-// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+import { type Ref, ref } from 'vue';
+
 import CodeMirror from 'vue-codemirror6';
 import VueMarkdown from 'vue-markdown-wasm';
 
@@ -15,7 +17,9 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`);
 
 // Sync dark mode
-defineProps<{ dark?: boolean }>();
+defineProps<{
+  dark?: boolean;
+}>();
 </script>
 
 <template>
