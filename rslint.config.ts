@@ -109,6 +109,7 @@ export default defineConfig([
       'import/order': [
         'error',
         {
+          /*
           groups: [
             'builtin',
             'external',
@@ -118,6 +119,7 @@ export default defineConfig([
             'object',
             'type',
           ],
+          */
           pathGroups: [
             {
               pattern: '{@/**}',

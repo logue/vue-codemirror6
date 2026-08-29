@@ -15,3 +15,8 @@ declare module '*?source' {
   const content: string;
   export default content;
 }
+
+declare module '*.vue?source' {
+  const content: string;
+  export default content;
+}

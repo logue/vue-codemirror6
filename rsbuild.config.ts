@@ -41,6 +41,25 @@ export default defineConfig({
   html: {
     template: './index.html',
   },
+  tools: {
+    rspack: (config) => {
+      config.module.rules?.unshift({
+        test: /\.vue$/,
+        resourceQuery: /source/,
+        use: [
+          {
+            loader: fileURLToPath(
+              new URL(
+                './src-docs/loaders/vue-source-loader.js',
+                import.meta.url,
+              ),
+            ),
+          },
+        ],
+      });
+      return config;
+    },
+  },
   source: {
     tsconfigPath: './tsconfig.rsbuild.json',
     include: [
