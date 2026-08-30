@@ -1,4 +1,5 @@
 allowBuilds:
+  "@parcel/watcher": true
   vue-demi: true
 overrides:
   elliptic: ">=6.6.1"
