@@ -20,7 +20,7 @@ import { defineConfig } from '@rslib/core';
  *   const myLibrary = window.umdName;
  * </script>
  */
-const umdName = undefined; // CHANGE THIS to your library's global variable name.
+const umdName = 'VueCodeMirror'; // CHANGE THIS to your library's global variable name.
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as {
   name: string;
@@ -69,8 +69,11 @@ export default defineConfig({
       },
     },
     {
+      // Compatibility-only browser build. npm consumers should prefer the ESM entry
+      // above, which is the default package export and the primary distribution target.
       format: 'umd',
       umdName,
+      autoExternal: true,
       banner: {
         js: bannerText,
       },
@@ -80,7 +83,7 @@ export default defineConfig({
         },
         cleanDistPath: false,
         minify: true,
-        sourceMap: true,
+        sourceMap: false,
       },
     },
   ],

@@ -21,6 +21,10 @@
     "codemirror6"
   ],
   "type": "module",
+  "main": "./dist/index.es.js",
+  "module": "./dist/index.es.js",
+  "unpkg": "./dist/index.umd.js",
+  "jsdelivr": "./dist/index.umd.js",
   "author": {
     "name": "Logue",
     "email": "logue@hotmail.co.jp",
@@ -46,7 +50,8 @@
       "default": "./dist/index.es.js"
     },
     "./umd": {
-      "default": "./dist/index.umd.js"
+      "default": "./dist/index.umd.js",
+      "import": "./dist/index.umd.js"
     },
     "./package.json": "./package.json"
   },
