@@ -1,6 +1,5 @@
 /** For build documentation site use. */
 import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig } from '@rsbuild/core';
@@ -18,20 +17,7 @@ const buildDate = new Date().toISOString();
 export default defineConfig({
   plugins: [
     pluginNodePolyfill(),
-    pluginTypeCheck({
-      tsCheckerOptions: {
-        // vue-tsc-api is a drop-in replacement for vue-tsc that uses
-        // the TypeScript API directly, which is faster and more efficient
-        // than spawning a separate process.
-        typescript: {
-          // TypeScript 7 exposes its runtime API from the lib/typescript.js entry,
-          // not the package root, so point the checker at the actual compiler file.
-          typescriptPath: createRequire(import.meta.url).resolve(
-            'typescript/lib/typescript.js',
-          ),
-        },
-      },
-    }),
+    pluginTypeCheck(),
     pluginVue(),
     pluginVueDevTools(),
   ],
