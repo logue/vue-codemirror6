@@ -1,7 +1,4 @@
-<script
-  setup
-  lang="ts"
->
+<script setup vapor lang="ts">
 import { vue } from '@codemirror/lang-vue';
 import { useDark } from '@vueuse/core';
 
@@ -60,19 +57,9 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         readonly
       />
       <h3>Demo</h3>
-      <markdown-demo
-        :dark="dark"
-        class="mb-3"
-      />
-      <div
-        class="alert alert-info d-flex align-items-center my-3"
-        role="alert"
-      >
-        <div
-          class="bi flex-shrink-0 me-2 fs-2"
-          role="img"
-          aria-label="Info:"
-        >
+      <markdown-demo :dark="dark" class="mb-3" />
+      <div class="alert alert-info d-flex align-items-center my-3" role="alert">
+        <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -92,19 +79,13 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         </div>
         <div>
           The process of converting Markdown to HTML uses
-          <a
-            href="https://github.com/logue/vue-markdown-wasm"
-            target="_blank"
-          >
+          <a href="https://github.com/logue/vue-markdown-wasm" target="_blank">
             vue-markdown-wasm
           </a>
           .
           <br />
           Full demo is
-          <a
-            href="https://logue.dev/vue-markdown-wasm"
-            target="_blank"
-          >
+          <a href="https://logue.dev/vue-markdown-wasm" target="_blank">
             vue-markdown-wasm
           </a>
           .

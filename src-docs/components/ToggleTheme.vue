@@ -1,7 +1,4 @@
-<script
-  setup
-  lang="ts"
->
+<script setup vapor lang="ts">
 /** Bootstrap 5.3 Toggle Dark mode */
 
 import { useDark, useToggle } from '@vueuse/core';
@@ -23,11 +20,7 @@ watch(
 </script>
 
 <template>
-  <a
-    href="#"
-    aria-label="Toggle Dark Mode"
-    @click="toggleDark()"
-  >
+  <a href="#" aria-label="Toggle Dark Mode" @click="toggleDark()">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"

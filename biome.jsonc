@@ -5,50 +5,32 @@
   "files": {
     "includes": [
       "**",
+      "!!**/.agents",
+      "!!**/.mf",
+      "!!**/.rsbuild",
       "!!**/.rslib",
-      "!!**/node_modules",
+      "!!**/coverage",
+      "!!**/demo",
+      "!!**/dist-ssr",
       "!!**/dist",
-      "!!**/docs"
+      "!!**/docs",
+      "!!**/node_modules"
     ],
     // Ignore files that cannot be processed by biome.
     "ignoreUnknown": true
   },
+  "plugins": [
+    // "./node_modules/@logue/biome-plugins/grit/enforce-attribute-order.grit",
+    "./node_modules/@logue/biome-plugins/grit/enforce-pure-src.grit",
+    "./node_modules/@logue/biome-plugins/grit/prefer-union-over-enum.grit",
+    "./node_modules/@logue/biome-plugins/grit/no-null-type.grit",
+    "./node_modules/@logue/biome-plugins/grit/vue-multi-word-filename.grit"
+  ],
   // Enable Biome's built-in version control system (VCS) support.
   "vcs": {
-    "enabled": true,
     "clientKind": "git",
+    "enabled": true,
     "useIgnoreFile": true
-  },
-  "linter": {
-    // See https://biomejs.dev/linter/ for a list of all available rules.
-    "rules": {
-      "preset": "recommended",
-      "a11y": "info",
-      "complexity": {
-        // for Test use.
-        "noExcessiveLinesPerFunction": "off"
-      },
-      "correctness": {
-        // Disable this rule to allow Node.js modules for configuration files and scripts.
-        "noNodejsModules": "off",
-        // Fix for Vue
-        "noUnusedImports": "off"
-      },
-      "nursery": "off",
-      "performance": "warn",
-      "security": {
-        "noSecrets": "off"
-      },
-      "style": {
-        // For libraries, it's common to use default exports for the main entry point.
-        // Disable this rule to allow default exports in library code.
-        "noDefaultExport": "off"
-      },
-      "suspicious": {
-        // Since it's assumed to be deleted during transpilation, It won't check it.
-        "noConsole": "off"
-      }
-    }
   },
   // Enable Biome's built-in code assist feature
   // for code actions and refactoring.
@@ -65,62 +47,80 @@
   },
   "formatter": {
     "enabled": true,
+    // To prevent indentation shifts and resulting differences
+    // when adding or deleting items.
+    "attributePosition": "multiline",
+    "expand": "always",
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 80,
-    "useEditorconfig": true,
-    // To prevent indentation shifts and resulting differences
-    // when adding or deleting items.
-    "attributePosition": "multiline",
-    "expand": "always"
+    "useEditorconfig": true
   },
-  "javascript": {
-    "formatter": {
-      "enabled": true,
-      "trailingCommas": "all",
-      "quoteStyle": "single"
-    },
-    // JSXRuntime is set to "transparent" to allow JSX syntax in
-    // JavaScript files without requiring a specific JSX factory
-    // function.
-    // This is useful for projects that use React or other libraries
-    // that support JSX.
-    "jsxRuntime": "transparent",
-    // When you use CSS-in-JS (such as styled-components) or
-    // GraphQL (such as Relay, Apollo etc.), you may want to enable
-    // this option to avoid formatting issues with embedded snippets.
-    "experimentalEmbeddedSnippetsEnabled": true,
-    // If yu use global variable
-    "globals": [
-      // "$", // jQuery
-      // "_", // underscore.js
-    ]
-  },
-  "json": {
-    "parser": {
-      // Allow comments in JSON files. This is useful for configuration files
-      // that may contain comments for documentation purposes.
-      "allowComments": true
-    },
-    "formatter": {
-      "enabled": true,
-      // To prevent indentation shifts and resulting differences
-      // when adding or deleting items.
-      "expand": "always"
+  "linter": {
+    // See https://biomejs.dev/linter/ for a list of all available rules.
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        // Because they are often used for purposes that are meaningless
+        // to screen readers, such as icons.
+        "noSvgWithoutTitle": "off"
+      },
+      "complexity": {
+        // To remove the warning about processing long lines of code, uncomment the following line.
+        // "noExcessiveLinesPerFunction": "off",
+        // The contents of the interior should be kept secret. (The concept of the facade)
+        "noRedundantDefaultExport": "off"
+      },
+      "correctness": {
+        // Disable this rule to allow Node.js modules for configuration files and scripts.
+        "noNodejsModules": "off"
+      },
+      "nursery": {
+        // Enforce the sorting of CSS utility classes.
+        "useSortedClasses": "error",
+        // Do not use nextTick(()=>{...}), use await nextTick() in Vue.
+        "useVueNextTickPromise": "error"
+      },
+      "performance": {
+        "useVueVapor": "error"
+      },
+      "security": {},
+      "style": {
+        // For libraries, it's common to use default exports for the main entry point.
+        // Disable this rule to allow default exports in library code.
+        "noDefaultExport": "off",
+        // Add type to import when type only import.
+        "useImportType": "error",
+        // Do not use v-bind:foo="", use :foo="" in Vue.
+        "useVueConsistentVBindStyle": "error",
+        // Do not use v-on:foo="", use @foo="" in Vue.
+        "useVueConsistentVOnStyle": "error",
+        // Do not use camelCase attribute. use kebab-case attribute in Vue.
+        "useVueHyphenatedAttributes": "error"
+      },
+      "suspicious": {
+        // The `any` type completely destroys type safety and becomes a
+        // breeding ground for runtime errors.
+        "noExplicitAny": "warn",
+        // The removal of the console.* functions should be handled by the bundler.
+        "noConsole": "off",
+        // Do not use enum, use union.
+        "noConstEnum": "error"
+      }
     }
   },
   "css": {
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single"
+    },
     "parser": {
       "cssModules": true,
       // If you are using Tailwind CSS, set this to true to avoid
       // formatting issues with Tailwind directives.
       "tailwindDirectives": false
-    },
-    "formatter": {
-      "enabled": true,
-      "quoteStyle": "single"
     }
   },
   "html": {
@@ -128,21 +128,77 @@
     // set this to true to avoid formatting issues with
     // framework-specific syntax.
     "experimentalFullSupportEnabled": true,
-    "parser": {
-      // If you use Vue.
-      "vue": true
-    },
     "formatter": {
       "enabled": true,
       // To prevent indentation shifts and resulting differences
       // when adding or deleting items.
-      "attributePosition": "multiline",
-      // Prioritize structure over whitespace characters.
-      // (This is because differences are more likely to occur.)
-      "whitespaceSensitivity": "css",
+      "attributePosition": "auto",
       // Do not omit the slash (/) for empty elements.
       // e.g. <br /> instead of <br>
-      "selfCloseVoidElements": "always"
+      "selfCloseVoidElements": "always",
+      // Prioritize structure over whitespace characters.
+      // (This is because differences are more likely to occur.)
+      "whitespaceSensitivity": "css"
+    },
+    "parser": {
+      // If you use Vue.
+      "vue": true
     }
-  }
+  },
+  "javascript": {
+    // When you use CSS-in-JS (such as styled-components) or
+    // GraphQL (such as Relay, Apollo etc.), you may want to enable
+    // this option to avoid formatting issues with embedded snippets.
+    "experimentalEmbeddedSnippetsEnabled": false,
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single",
+      "trailingCommas": "all"
+    },
+    // If yu use global variable
+    "globals": [
+      // "$", // jQuery
+      // "_", // underscore.js
+    ],
+    // JSXRuntime is set to "transparent" to allow JSX syntax in
+    // JavaScript files without requiring a specific JSX factory
+    // function.
+    // This is useful for projects that use React or other libraries
+    // that support JSX.
+    "jsxRuntime": "transparent"
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      // To prevent indentation shifts and resulting differences
+      // when adding or deleting items.
+      "expand": "always"
+    },
+    "parser": {
+      // Allow comments in JSON files. This is useful for configuration files
+      // that may contain comments for documentation purposes.
+      "allowComments": true
+    }
+  },
+  "overrides": [
+    {
+      // For test code rules.
+      "includes": [
+        "./**/__tests__/*"
+      ],
+      "linter": {
+        "rules": {
+          "a11y": "off",
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            // The test code allows the `any` type to verify that
+            // an error occurs when an invalid value is entered.
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ]
 }
