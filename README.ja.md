@@ -6,11 +6,11 @@
   <img src="https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png" alt="logo" width="300" height="300" />
 </p>
 
-[![npm version](https://img.shields.io/npm/v/@logue/vue-codemirror6.svg)](https://www.npmjs.com/package/@logue/vue-codemirror6)
-[![NPM Downloads](https://img.shields.io/npm/dm/@logue/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/@logue/vue-codemirror6)
-[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/@logue/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/@logue/vue-codemirror6)
+[![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/vue-codemirror6)
+[![NPM Downloads](https://img.shields.io/npm/dm/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/vue-codemirror6)
+[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/@logue/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
 [![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/@logue/vue-codemirror6/file/README.md)
-[![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/@logue/vue-codemirror6)
+[![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
 [![X Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://x.com/logue256)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/logue?label=Sponsor&logo=github&color=ea4aaa)](https://github.com/sponsors/logue)
 
@@ -182,7 +182,8 @@ export default defineComponent({
     <pre>
 {
   "key": "value"
-}</pre>
+}</pre
+    >
   </code-mirror>
 </template>
 
