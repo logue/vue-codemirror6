@@ -1,0 +1,49 @@
+{
+  "id": "VueCodeMirror",
+  "name": "VueCodeMirror",
+  "metaData": {
+    "name": "VueCodeMirror",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "1.7.0",
+      "buildName": "vue-codemirror6"
+    },
+    "remoteEntry": {
+      "name": "VueCodeMirror.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "@mf-types.zip",
+      "api": "@mf-types.d.ts"
+    },
+    "globalName": "VueCodeMirror",
+    "pluginVersion": "2.9.0",
+    "publicPath": "/"
+  },
+  "shared": [],
+  "remotes": [],
+  "exposes": [
+    {
+      "path": ".",
+      "id": "VueCodeMirror:.",
+      "name": ".",
+      "requires": [],
+      "file": "src/index.ts",
+      "assets": {
+        "js": {
+          "sync": [
+            "__federation_expose_default_export.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    }
+  ]
+}
