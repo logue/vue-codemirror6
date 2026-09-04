@@ -8,7 +8,7 @@
 
 [![npm version](https://img.shields.io/npm/v/vue-codemirror6.svg)](https://www.npmjs.com/package/vue-codemirror6)
 [![NPM Downloads](https://img.shields.io/npm/dm/vue-codemirror6.svg?style=flat)](https://www.npmjs.com/package/vue-codemirror6)
-[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/@logue/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
+[![jsdelivr CDN](https://data.jsdelivr.com/v1/package/npm/vue-codemirror6/badge)](https://www.jsdelivr.com/package/npm/vue-codemirror6)
 [![Open in unpkg](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/@logue/vue-codemirror6/file/README.md)
 [![Open in Gitpod](https://shields.io/badge/Open%20in-Gitpod-green?logo=Gitpod)](https://gitpod.io/#https://github.com/logue/vue-codemirror6)
 [![X Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://x.com/logue256)

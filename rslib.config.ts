@@ -1,8 +1,10 @@
 /** For build library use */
-import { readFileSync } from 'node:fs';
-
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { defineConfig } from '@rslib/core';
+
+import { readFileSync } from 'node:fs';
+
+import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 
 /**
  * The UMD name is used for the global variable name when the library
@@ -49,17 +51,43 @@ const bannerText = `/**
 export default defineConfig({
   plugins: [
     pluginTypeCheck(),
+    pluginModuleFederation({
+      exposes: {
+        '.': './src/index.ts',
+      },
+      name: umdName,
+      shared: {
+        react: {
+          singleton: true,
+        },
+        'react-dom': {
+          singleton: true,
+        },
+        vue: {
+          singleton: true,
+        },
+      },
+    }),
   ],
+  banner: {
+    css: bannerText,
+    dts: bannerText,
+    js: bannerText,
+  },
+  bundle: true,
+  syntax: 'esnext',
+  output: {
+    target: 'node',
+    autoExternal: true,
+  },
   lib: [
     {
       format: 'esm',
       dts: {
-        tsgo: true, // Enable TypeScript 7 native compiler
         // isolated: true,  // SWC fast_dts
         bundle: true,
-      },
-      banner: {
-        js: bannerText,
+        autoExtension: true,
+        tsgo: true, // Enable TypeScript 7 native compiler
       },
       output: {
         filename: {
@@ -72,26 +100,28 @@ export default defineConfig({
       // Compatibility-only browser build. npm consumers should prefer the ESM entry
       // above, which is the default package export and the primary distribution target.
       format: 'umd',
-      umdName,
-      autoExternal: true,
-      banner: {
-        js: bannerText,
-      },
       output: {
+        cleanDistPath: false,
         filename: {
           js: 'index.umd.js',
         },
-        cleanDistPath: false,
         minify: true,
         sourceMap: false,
       },
+      syntax: 'es2020',
+      umdName,
+    },
+    {
+      // Module Federation
+      format: 'mf',
+      splitChunks: false,
     },
   ],
   source: {
-    tsconfigPath: './tsconfig.rslib.json',
     define: {
       __APP_VERSION__: JSON.stringify(pkg.version),
       __BUILD_DATE__: JSON.stringify(buildDate),
     },
+    tsconfigPath: './tsconfig.rslib.json',
   },
 });

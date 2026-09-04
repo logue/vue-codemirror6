@@ -5,15 +5,27 @@
   "files": {
     "includes": [
       "**",
+      // AI agents skill docs.
       "!!**/.agents",
+      // Build intermediate artifacts.
+      "!!**/.cache",
+      "!!**/.data",
       "!!**/.mf",
-      "!!**/.rsbuild",
-      "!!**/.rslib",
+      "!!**/.nitro",
+      "!!**/.nuxt",
+      "!!**/.output",
+      "!!**/.rstack",
+      // Test coverage reports.
       "!!**/coverage",
+      "!!**/reports",
+      "!!**/test-results",
+      // Built artifacts.
       "!!**/demo",
       "!!**/dist-ssr",
       "!!**/dist",
       "!!**/docs",
+      "!!**/storybook-static",
+      // Node modules.
       "!!**/node_modules"
     ],
     // Ignore files that cannot be processed by biome.
@@ -23,8 +35,8 @@
     // "./node_modules/@logue/biome-plugins/grit/enforce-attribute-order.grit",
     "./node_modules/@logue/biome-plugins/grit/enforce-pure-src.grit",
     "./node_modules/@logue/biome-plugins/grit/prefer-union-over-enum.grit",
-    "./node_modules/@logue/biome-plugins/grit/no-null-type.grit",
-    "./node_modules/@logue/biome-plugins/grit/vue-multi-word-filename.grit"
+    "./node_modules/@logue/biome-plugins/grit/no-null-type.grit"
+    // "./node_modules/@logue/biome-plugins/grit/vue-multi-word-filename.grit"
   ],
   // Enable Biome's built-in version control system (VCS) support.
   "vcs": {
@@ -38,10 +50,19 @@
     "enabled": true,
     "actions": {
       "source": {
+        "useSortedInterfaceMembers": "on",
+        // Remove duplicate CSS classes.
+        "noDuplicateClasses": "on",
         // Sort imports on save.
         // This is useful for keeping import statements organized
         // and consistent.
-        "organizeImports": "on"
+        "organizeImports": "off",
+        // Sort stylesheet properties.
+        "useSortedProperties": "on",
+        // Sort package.json.
+        "useSortedPackageJson": "on",
+        // Sort html(like) attributes.
+        "useSortedAttributes": "on"
       }
     }
   },
@@ -75,7 +96,10 @@
       },
       "correctness": {
         // Disable this rule to allow Node.js modules for configuration files and scripts.
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        // Disallow reserved keys in Vue component data and computed properties.
+        "noVueReservedKeys": "error",
+        "noUnusedImports": "off"
       },
       "nursery": {
         // Enforce the sorting of CSS utility classes.
@@ -93,6 +117,8 @@
         "noDefaultExport": "off",
         // Add type to import when type only import.
         "useImportType": "error",
+        // Do not use option api in Vue.
+        "noVueOptionsApi": "error",
         // Do not use v-bind:foo="", use :foo="" in Vue.
         "useVueConsistentVBindStyle": "error",
         // Do not use v-on:foo="", use @foo="" in Vue.
@@ -132,7 +158,7 @@
       "enabled": true,
       // To prevent indentation shifts and resulting differences
       // when adding or deleting items.
-      "attributePosition": "auto",
+      "attributePosition": "multiline",
       // Do not omit the slash (/) for empty elements.
       // e.g. <br /> instead of <br>
       "selfCloseVoidElements": "always",
@@ -196,6 +222,24 @@
             // The test code allows the `any` type to verify that
             // an error occurs when an invalid value is entered.
             "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      // For test code rules.
+      "includes": [
+        "./**/*.vue"
+      ],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useValidAnchor": "info",
+            "useHeadingContent": "off"
+          },
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
           }
         }
       }

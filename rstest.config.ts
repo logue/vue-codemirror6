@@ -1,8 +1,8 @@
-import { withRslibConfig } from '@rstest/adapter-rslib';
+import { withRsbuildConfig } from '@rstest/adapter-rsbuild';
 import { defineConfig } from '@rstest/core';
 
 export default defineConfig({
-  extends: withRslibConfig(),
+  extends: withRsbuildConfig(),
   testEnvironment: 'happy-dom',
   source: {
     tsconfigPath: './tsconfig.rstest.json',

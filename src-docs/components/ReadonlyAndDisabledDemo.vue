@@ -1,4 +1,8 @@
-<script setup vapor lang="ts">
+<script
+  lang="ts"
+  setup
+  vapor
+>
 import { type Ref, ref } from 'vue';
 
 // eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
@@ -20,27 +24,40 @@ defineProps<{
 <template>
   <div class="form-check form-switch">
     <input
+      class="form-check-input"
       id="readonly"
+      role="switch"
+      type="checkbox"
       v-model="isReadonly"
       :aria-checked="isReadonly"
-      type="checkbox"
-      class="form-check-input"
-      role="switch"
     />
-    <label class="form-check-label" for="readonly">Readonly</label>
+    <label
+      class="form-check-label"
+      for="readonly"
+      >Readonly</label
+    >
   </div>
   <div class="form-check form-switch">
     <input
+      class="form-check-input"
       id="disabled"
+      role="switch"
+      type="checkbox"
       v-model="isDisabled"
       :aria-checked="isDisabled"
-      type="checkbox"
-      class="form-check-input"
-      role="switch"
     />
-    <label class="form-check-label" for="disabled">Disabled</label>
+    <label
+      class="form-check-label"
+      for="disabled"
+      >Disabled</label
+    >
   </div>
-  <code-mirror :dark="dark" :readonly="isReadonly" :disabled="isDisabled" basic>
+  <code-mirror
+    basic
+    :dark="dark"
+    :disabled="isDisabled"
+    :readonly="isReadonly"
+  >
     <pre>
 色は匂へど　散りぬるを
 我が世誰そ　常ならむ

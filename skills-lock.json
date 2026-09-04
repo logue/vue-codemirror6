@@ -7,17 +7,29 @@
       "skillPath": "skills/rsbuild-best-practices/SKILL.md",
       "computedHash": "2f1de26a27367666c49d16b114d31dbf78dc71f02b3e0784b1e3bf90f4e6e90b"
     },
-    "rslib-best-practices": {
-      "source": "rstackjs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/rslib-best-practices/SKILL.md",
-      "computedHash": "be776b5192c676c6d94f96063b9ee52d2545b9ba47dd8ae1a1afa78a2c19b507"
-    },
     "rstest-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rstest-best-practices/SKILL.md",
-      "computedHash": "f0b2092fa4696a8364b0ae15e44fa7752367bac01a2dd1b98223d01ffe001e04"
+      "computedHash": "589016fc3deccd3244d40b113f897f2af83ef75022dff5cece7f90682c566e00"
+    },
+    "vue-best-practices": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vue-best-practices/SKILL.md",
+      "computedHash": "3df585ad31aec78fe55c56c1411262737e6b231677a3153dec512a882fde80cd"
+    },
+    "vue-pinia-best-practices": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vue-pinia-best-practices/SKILL.md",
+      "computedHash": "d4ba913bec21910b8e37b2115cd964df2dc43ad62346b981c7b88d4ddc8cf792"
+    },
+    "vue-router-best-practices": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vue-router-best-practices/SKILL.md",
+      "computedHash": "f0745ed318c113e592ab4a9ded57ceadd0db2edab00cdb46b216c83f5ce0799e"
     }
   }
 }

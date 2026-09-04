@@ -1,4 +1,8 @@
-<script lang="ts" vapor setup>
+<script
+  lang="ts"
+  setup
+  vapor
+>
 import { ref } from 'vue';
 
 // biome-igonore - lint/suspicious/noConsole  -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
@@ -9,6 +13,8 @@ const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');
 
 <template>
   <code-mirror
+    basic
+    tab
     v-model="temp"
     :keymap="[
       {
@@ -19,7 +25,5 @@ const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');
         },
       },
     ]"
-    tab
-    basic
   />
 </template>

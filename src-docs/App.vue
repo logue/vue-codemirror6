@@ -1,35 +1,52 @@
-<script setup vapor lang="ts">
+<script
+  lang="ts"
+  setup
+  vapor
+>
 import ToggleTheme from './components/ToggleTheme.vue';
 import DemoPage from './DemoPage.vue';
 </script>
 
 <!-- eslint-disable vuejs-accessibility/anchor-has-content -->
 <template>
-  <nav class="navbar navbar-expand-md bg-dark" data-bs-theme="dark">
+  <nav
+    class="navbar navbar-expand-md bg-dark"
+    data-bs-theme="dark"
+  >
     <div class="container-fluid d-flex justify-content-between">
-      <a class="navbar-brand" href="#">Vue CodeMirror6</a>
+      <a
+        class="navbar-brand"
+        href="#"
+        >Vue CodeMirror6</a
+      >
       <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
         aria-controls="navbarCollapse"
         aria-expanded="false"
         aria-label="Toggle navigation"
+        class="navbar-toggler"
+        data-bs-target="#navbarCollapse"
+        data-bs-toggle="collapse"
+        type="button"
       >
         <span class="navbar-toggler-icon" />
       </button>
-      <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
+      <div
+        class="collapse navbar-collapse flex-grow-0"
+        id="navbarCollapse"
+      >
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/logue/vue-codemirror6">
+            <a
+              class="nav-link"
+              href="https://github.com/logue/vue-codemirror6"
+            >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
                 class="bi bi-github"
+                fill="currentColor"
+                height="16"
                 viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <title>github</title>
                 <path
@@ -39,7 +56,10 @@ import DemoPage from './DemoPage.vue';
             </a>
           </li>
           <li class="nav-item">
-            <toggle-theme class="nav-link" attribute="data-bs-theme" />
+            <toggle-theme
+              attribute="data-bs-theme"
+              class="nav-link"
+            />
           </li>
         </ul>
       </div>

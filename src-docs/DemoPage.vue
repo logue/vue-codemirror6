@@ -1,4 +1,8 @@
-<script setup vapor lang="ts">
+<script
+  lang="ts"
+  setup
+  vapor
+>
 import { vue } from '@codemirror/lang-vue';
 import { useDark } from '@vueuse/core';
 
@@ -49,24 +53,34 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         when you want to use columns. (Enable text wrapping)
       </p>
       <code-mirror
+        basic
+        readonly
+        wrap
         v-model="markdownDemoSrc"
         :dark="dark"
         :lang="vue()"
-        basic
-        wrap
-        readonly
       />
       <h3>Demo</h3>
-      <markdown-demo :dark="dark" class="mb-3" />
-      <div class="alert alert-info d-flex align-items-center my-3" role="alert">
-        <div class="bi flex-shrink-0 me-2 fs-2" role="img" aria-label="Info:">
+      <markdown-demo
+        class="mb-3"
+        :dark="dark"
+      />
+      <div
+        class="alert alert-info d-flex align-items-center my-3"
+        role="alert"
+      >
+        <div
+          aria-label="Info:"
+          class="bi flex-shrink-0 me-2 fs-2"
+          role="img"
+        >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            fill="currentColor"
             class="bi bi-info-circle"
+            fill="currentColor"
+            height="32"
             viewBox="0 0 16 16"
+            width="32"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <title>info-circle</title>
             <path
@@ -79,13 +93,19 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         </div>
         <div>
           The process of converting Markdown to HTML uses
-          <a href="https://github.com/logue/vue-markdown-wasm" target="_blank">
+          <a
+            href="https://github.com/logue/vue-markdown-wasm"
+            target="_blank"
+          >
             vue-markdown-wasm
           </a>
           .
           <br />
           Full demo is
-          <a href="https://logue.dev/vue-markdown-wasm" target="_blank">
+          <a
+            href="https://logue.dev/vue-markdown-wasm"
+            target="_blank"
+          >
             vue-markdown-wasm
           </a>
           .
@@ -107,12 +127,12 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         .
       </p>
       <code-mirror
+        basic
+        readonly
+        wrap
         v-model="slotDemoSrc"
         :dark="dark"
         :lang="vue()"
-        basic
-        wrap
-        readonly
       />
       <h3>Sample</h3>
       <slot-demo :dark="dark" />
@@ -136,12 +156,12 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         for the eslint linter.
       </p>
       <code-mirror
+        basic
+        readonly
+        wrap
         v-model="linterAndCrossBindingDemoSrc"
         :dark="dark"
         :lang="vue()"
-        basic
-        wrap
-        readonly
       />
       <h3>Sample</h3>
       <p>Make sure you see 🔴 when you change the value to get an error.</p>
@@ -202,12 +222,12 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <div class="row">
         <div class="col-sm">
           <code-mirror
+            basic
+            readonly
+            wrap
             v-model="readonlyAndDisabledDemoSrc"
             :dark="dark"
             :lang="vue()"
-            basic
-            wrap
-            readonly
           />
         </div>
         <div class="col-sm">
@@ -233,12 +253,12 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <div class="row">
         <div class="col-sm">
           <code-mirror
+            basic
+            readonly
+            wrap
             v-model="keyMapDemoSrc"
             :dark="dark"
             :lang="vue()"
-            basic
-            wrap
-            readonly
           />
         </div>
         <div class="col-sm">

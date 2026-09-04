@@ -1,11 +1,13 @@
 /** For build documentation site use. */
-import { readFileSync } from 'node:fs';
-import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig } from '@rsbuild/core';
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { pluginVue } from '@rsbuild/plugin-vue';
+
+import { readFileSync } from 'node:fs';
+import { fileURLToPath, URL } from 'node:url';
+
 import { pluginVueDevTools } from '@vue-devtools-rstack/rsbuild';
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as {

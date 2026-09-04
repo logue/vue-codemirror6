@@ -1,6 +1,7 @@
+import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
-import { beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { mount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
 

@@ -1,132 +1,64 @@
 ---
 name: rstest-best-practices
-description: Rstest best practices for config, CLI workflow, test writing, mocking, snapshot testing, DOM testing, coverage, multi-project setup, CI integration, performance and debugging. Use when writing, reviewing, or troubleshooting Rstest test projects.
+description: Rstest best practices for project setup, configuration, CLI workflow, test writing, mocking, snapshot testing, DOM testing, coverage, multi-project setup, and CI integration. Use when setting up, writing, or reviewing Rstest tests and test projects. For systematic startup, build, runtime, logging, memory, or performance diagnosis, use rstest-debugging.
 ---
 
 # Rstest Best Practices
 
-Apply these rules when writing or reviewing Rstest test projects.
+Apply these rules when setting up, writing, or reviewing Rstest projects.
 
-## Configuration
+## Workflow
 
-- Use `rstest.config.ts` and `defineConfig` from `@rstest/core`
-- Prefer explicit imports `import { test, expect, describe } from '@rstest/core'` over `globals: true`
-- For Rsbuild projects, use `@rstest/adapter-rsbuild` with `extends: withRsbuildConfig()` to reuse build config
-- For Rslib projects, use `@rstest/adapter-rslib` with `extends: withRslibConfig()` to reuse build config
-- Use `setupFiles` for shared test setup (e.g., custom matchers, cleanup hooks)
-- When using Rsbuild plugins (e.g., `@rsbuild/plugin-react`), add them via the `plugins` field
-- For deep-level or advanced build configuration needs, use `tools.rspack` or `tools.bundlerChain`
+- Inspect the existing package manager, dependency policy, module mode, build configuration, test layout, and framework conventions before editing.
+- Add `@rstest/core`, a package-local test script, and a config file whose extension matches the package's module mode.
+- Reuse existing build configuration only when doing so lowers maintenance cost and remains compatible. An adapter is optional; use an independent Rstest config when adapter integration is incompatible or disproportionately costly, and explicitly reproduce required aliases, plugins, defines, environments, and externals.
+- Configure test discovery, environment, and setup files intentionally. Do not enable `passWithNoTests` unless an empty test set is an expected and documented state.
+- Verify test discovery with `rstest list`, then run focused tests, the full suite, and the project's existing build or type-check command.
 
-## CLI
+## Configuration and environments
 
-- Use `rstest` or `rstest run` to run tests (`run` disables watch mode, suitable for CI)
-- Use `rstest --watch` or `rstest watch` for local development with file watching
-- Use `rstest list` to list all test files and test names
-- Use `rstest -u` to update snapshots
-- Use `--reporter=verbose` when debugging test failures for detailed output
-- Use `--config` (`-c`) to specify a custom config file path
+- Use `defineConfig` from `@rstest/core` and a config file extension compatible with the package's module mode.
+- Prefer explicit imports from `@rstest/core` over `globals: true`.
+- Use `setupFiles` for shared matchers and cleanup; use `plugins`, `resolve`, or `source` for ordinary build integration and low-level `tools` only when necessary.
+- Set `include` explicitly when the package's test layout is non-standard; do not assume the default discovery pattern.
+- Use `node` for server/SSR tests, `happy-dom` or `jsdom` for simulated DOM tests, and Browser Mode for real-browser behavior; install the selected environment package explicitly.
+- For React or Vue component tests, register the matching build plugin, use the corresponding Testing Library, and centralize matcher extension and cleanup in a setup file.
+- Use multiple test projects only when environments or configurations genuinely differ; keep global options such as reporters, coverage, pool, isolation, and bail at the root.
 
 ## Test writing
 
-- Import test APIs from `@rstest/core`: `test`, `describe`, `expect`, `beforeEach`, `afterEach`, etc.
-- Use `test` or `it` for test cases; use `describe` for grouping related tests
-- Use `.only` to focus on specific tests during development, but never commit `.only` to the codebase
-- Use `.skip` or `.todo` to mark incomplete or temporarily skipped tests
-- Prefer small, focused test cases that test a single behavior
-- For async error paths, prefer `await expect(fn()).rejects.toThrow(ErrorClass)` (or `.rejects.toMatchObject({ ... })`) over `try/catch` with `expect.fail` or `.catch(e => e)` patterns — the matcher form fails clearly if the promise unexpectedly resolves, keeps the assertion in one chain, and avoids forgetting to assert the throw at all
-- For async happy paths, use `await expect(fn()).resolves.toEqual(...)` for the same reason
-- Use `includeSource` for in-source testing of small utility functions (Rust-style `import.meta.rstest`)
-- For in-source tests, wrap test code in `if (import.meta.rstest) { ... }` and define `import.meta.rstest` as `false` in production build config
-
-## Test environment
-
-- Use `testEnvironment: 'node'` (default) for Node.js / server-side code
-- Use `testEnvironment: 'jsdom'` or `testEnvironment: 'happy-dom'` for DOM / browser API testing
-- Install `jsdom` or `happy-dom` as a dev dependency when using DOM environments
-- Prefer `happy-dom` for faster DOM testing; use `jsdom` when better browser API compatibility is needed
-- For real browser testing, use `@rstest/browser` with Playwright
-- Use inline project configs to run different test environments within one project (e.g., `node` and `jsdom` projects)
-
-## React / Vue testing
-
-- For React: use `@rsbuild/plugin-react` plugin and `@testing-library/react` for component testing
-- For Vue: use `@rsbuild/plugin-vue` plugin and `@testing-library/vue` for component testing
-- Create a `rstest.setup.ts` with `expect.extend(jestDomMatchers)` and `afterEach(() => cleanup())` for Testing Library
-- Add the setup file to `setupFiles` in config
-- For SSR testing, use `testEnvironment: 'node'` and test with `react-dom/server` or framework-specific SSR APIs
+- Prefer small tests that verify one public behavior; use `.skip` or `.todo` intentionally and never commit `.only`.
+- Keep test APIs and test files in the same module system as the project; do not mix ESM/CJS assumptions without verifying the runtime and bundler behavior.
+- Prefer `await expect(promise).resolves...` and `.rejects...` over `try/catch` patterns that can miss assertions.
+- Use `includeSource` only for small utilities, guard tests with `import.meta.rstest`, and define it as `false` in production builds.
 
 ## Mocking
 
-- Use `rs.mock('./module')` to mock modules
-- Use `rs.fn()` to create mock functions
-- Use `rs.spyOn(object, 'method')` to spy on methods
-- Prefer `clearMocks`, `resetMocks`, or `restoreMocks` config options to automatically clean up mocks between tests
-- Use factory functions in `rs.mock('./module', () => ({ ... }))` to provide mock implementations
+- Use `rs.fn()` for functions, `rs.spyOn()` for object methods, and `rs.mock()` factories for modules; mock external boundaries rather than the subject under test.
+- Choose `clearMocks`, `resetMocks`, or `restoreMocks` according to whether calls, implementations, or original methods must be restored between tests.
+- Choose the module-mocking API that matches the module system; verify the exact request string and register hoisted/static mocks before the module under test is evaluated.
+- Module mocks replace runtime behavior but do not necessarily remove the real dependency from the Rspack build graph. Use aliases or narrowly scoped externals only when the build still traverses an unwanted or unavailable dependency, and verify the runtime externalization format.
 
-## Snapshot testing
+## Snapshots and coverage
 
-- Use `toMatchSnapshot()` for general snapshot testing
-- Use `toMatchInlineSnapshot()` for small, readable inline snapshots
-- Use `toMatchFileSnapshot()` for large or structured outputs (e.g., HTML, generated code)
-- Keep snapshots concise — only include relevant data, avoid timestamps and session IDs
-- Use `expect.addSnapshotSerializer()` to mask paths or sensitive data in snapshots
-- Use `path-serializer` to normalize file paths across platforms
-- Review snapshot changes carefully in code review
+- Keep snapshots small and deterministic: use inline snapshots for short output, file snapshots for large structured output, and serializers for paths or unstable data. Review every update.
+- Enable coverage with `--coverage` or `coverage.enabled`.
+- Choose a coverage provider supported by the installed Rstest version and add its package explicitly; do not copy a V8 or Istanbul provider choice without checking project needs.
+- Set `coverage.include` deliberately before adding thresholds; choose reporters for humans and CI artifacts separately.
 
-## Coverage
+## Running and CI
 
-- Enable coverage with `--coverage` CLI flag or `coverage.enabled: true` in config
-- Install `@rstest/coverage-istanbul` for the Istanbul coverage provider
-- Use `coverage.include` to specify source files for coverage (e.g., `['src/**/*.{js,ts,tsx}']`)
-- Use `coverage.thresholds` to enforce minimum coverage requirements
-- Use `coverage.reporters` to generate reports in different formats (e.g., `text`, `lcov`, `html`)
+- Use `rstest` for a single run; `rstest run` is an optional explicit equivalent. Use `rstest --watch` or `rstest watch` only for local development.
+- Use `rstest list` to verify discovery, positional filters or `-t` for focused runs, `-u` for intentional snapshot updates, and `-c` for a non-default config.
+- In CI, never use watch mode. Use sharding with blob reports and `rstest merge-reports` when distributing tests; use JUnit when the CI system requires machine-readable results.
+- If passing-test logs are too noisy, consider `silent: 'passed-only'`; disable it temporarily when diagnosing setup or runtime output.
 
-## Multi-project testing
+## First-line debugging
 
-- Use `projects` field in root config to define multiple test projects
-- For monorepos, use glob patterns like `'packages/*'` to auto-discover sub-projects
-- Use `defineProject` helper in sub-project configs
-- Extract shared config and use `mergeRstestConfig` to compose project configs
-- Global options (`reporters`, `pool`, `isolate`, `coverage`, `bail`) must be set at the root level, not in projects
-
-## CI integration
-
-- Use `rstest run` (not `rstest watch`) in CI
-- Use `--shard` for parallel test execution across CI machines (e.g., `--shard 1/3`)
-- Use `--reporter=blob` with `rstest merge-reports` to combine sharded results
-- Use `--reporter=junit` with `outputPath` for CI report integration
-- The `github-actions` reporter is auto-enabled in GitHub Actions for inline error annotations
-- Use `--bail` to stop early on first failure when appropriate
-
-## Performance
-
-- Disable `isolate` (`--no-isolate`) when tests have no side effects for faster execution via module cache reuse
-- Use `pool.maxWorkers` to control parallelism based on available resources
-- Keep test build fast by avoiding unnecessary Rspack plugins in test config
-- Use test filtering (`rstest <pattern>` or `-t <name>`) to run only relevant tests during development
-- Leverage watch mode's incremental re-runs for fast local feedback
-
-## Debugging
-
-- Run with `DEBUG=rstest` to enable debug mode, which writes final configs and build outputs to disk
-- Read generated files in `dist/.rstest-temp/.rsbuild/` to confirm final Rstest/Rsbuild/Rspack config
-- Use VS Code's JavaScript Debug Terminal to run `rstest` with breakpoints
-- Use `--reporter=verbose` for detailed per-test output
-- Use `--printConsoleTrace` to trace console calls to their source
-- Add VS Code launch config for debugging specific test files with `@rstest/core/bin/rstest.js`
-
-## Profiling
-
-- Use Rsdoctor with `RSDOCTOR=true rstest run` to analyze test build performance
-- Use `samply` for native profiling of both main and worker processes
-- Use Node.js `--heap-prof` for memory profiling
-
-## Toolchain integration
-
-- Use the official VS Code extension (`rstack.rstest`) for in-editor test running and debugging
-- For Rslib libraries, use `@rstest/adapter-rslib` for config reuse
-- For Rsbuild apps, use `@rstest/adapter-rsbuild` for config reuse
-- Use `process.env.RSTEST` to detect test environment and apply test-specific config
+- Start with a focused repro and `--reporter=verbose`; use `--printConsoleTrace` for noisy or unclear console output.
+- Use `DEBUG=rstest` and inspect `dist/.rstest-temp/.rsbuild/` to verify final Rstest/Rsbuild/Rspack configuration and generated build output.
+- Use breakpoints through the Rstest VS Code extension or a JavaScript Debug Terminal for runtime failures.
+- Use `rstest-debugging` for systematic startup, build, runtime, logging, memory, or performance diagnosis.
 
 ## Documentation
 

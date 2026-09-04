@@ -27,7 +27,6 @@ import {
   type ViewUpdate,
 } from '@codemirror/view';
 import { basicSetup, minimalSetup } from 'codemirror';
-import type { StyleSpec } from 'style-mod';
 import {
   type App,
   type ComputedRef,
@@ -44,6 +43,8 @@ import {
   type WritableComputedRef,
   watch,
 } from 'vue-demi';
+
+import type { StyleSpec } from 'style-mod';
 
 import h, { slot } from '@/helpers/h-demi';
 import { Meta } from '@/types/Meta';
@@ -474,11 +475,11 @@ const CodeMirror = defineComponent({
         );
       }
       /** Keymap */
-      let keymaps: KeyBinding[] = [];
-      if (props.keymap && props.keymap.length > 0) {
-        // If keymap is specified, use it.
-        keymaps = props.keymap;
-      }
+      const keymaps: KeyBinding[] = props.keymap?.length
+        ? [
+            ...props.keymap,
+          ]
+        : [];
       if (props.tab) {
         // If tab is enabled, add indentWithTab to keymap.
         keymaps.push(indentWithTab);

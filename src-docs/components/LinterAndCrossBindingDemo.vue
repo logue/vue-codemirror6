@@ -1,4 +1,8 @@
-<script setup vapor lang="ts">
+<script
+  lang="ts"
+  setup
+  vapor
+>
 import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
@@ -52,62 +56,77 @@ const onFocus = (f: boolean): void => {
   <div class="row">
     <div class="col-6">
       <code-mirror
+        basic
+        class="mb-3"
+        gutter
+        wrap
         ref="cm"
         v-model="value"
         :dark="dark"
         :lang="javascript()"
         :linter="linter"
-        class="mb-3"
-        basic
-        gutter
-        wrap
         @focus="onFocus"
       />
       <div class="row mb-3">
         <div class="col-4">
           <div class="input-group">
-            <label for="count" class="input-group-text">Count</label>
+            <label
+              class="input-group-text"
+              for="count"
+              >Count</label
+            >
             <input
-              id="count"
-              :value="cm?.length"
-              type="text"
               class="form-control"
+              id="count"
               readonly
+              type="text"
+              :value="cm?.length"
             />
           </div>
         </div>
         <div class="col-5">
           <div class="input-group">
-            <label for="diagnosticCount" class="input-group-text">
+            <label
+              class="input-group-text"
+              for="diagnosticCount"
+            >
               Diagnostic Count
             </label>
             <input
-              id="diagnosticCount"
-              :value="cm?.diagnosticCount"
-              type="number"
               class="form-control"
+              id="diagnosticCount"
               readonly
+              type="number"
+              :value="cm?.diagnosticCount"
             />
           </div>
         </div>
         <div class="col-3">
           <div class="form-check form-check-inline">
             <input
-              id="focused"
-              v-model="focused"
-              class="form-check-input"
-              type="checkbox"
               checked
+              class="form-check-input"
               disabled
+              id="focused"
+              type="checkbox"
+              v-model="focused"
             />
-            <label class="form-check-label" for="focused">Focused</label>
+            <label
+              class="form-check-label"
+              for="focused"
+              >Focused</label
+            >
           </div>
         </div>
       </div>
     </div>
     <div class="col-6">
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
-      <textarea v-model="value" rows="4" class="form-control"></textarea>
+      <textarea
+        class="form-control"
+        rows="4"
+        v-model="value"
+      ></textarea>
     </div>
   </div>
   <p>
