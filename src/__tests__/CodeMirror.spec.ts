@@ -525,7 +525,7 @@ describe('CodeMirror Component', () => {
       vm.view?.dispatch({
         changes: {
           from: 0,
-          // to: vm.view.state.doc.length,
+          to: vm.view?.state.doc.length,
           insert: 'changed',
         },
       });
