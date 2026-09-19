@@ -2,41 +2,48 @@ name: NodeJS with Vite/Rspack
 
 on:
   push:
-    branches: ['master']
-  pull_request:
-    branches: ['master']
+    branches:
+      - master
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [24.x]
-
     steps:
       - name: Checkout ✅
         uses: actions/checkout@v6
 
-      - name: Use Node.js ${{ matrix.node-version }} ⚡
+      - name: Use Node.js ⚡
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.x
+          cache: pnpm
 
       - name: Install pnpm 🎁
         uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.2
 
-      - name: Build 🔧
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build demo 🔧
+        run: pnpm run build:demo
+
+      - name: Verify demo output 🔍
         run: |
-          pnpm install
-          pnpm run build:demo
-          ls -la
-          ls -la demo
+          test -d demo
+          test -f demo/index.html
+          test "$(find demo -type f | wc -l)" -gt 1
+          find demo -maxdepth 2 -type f -print
 
       - name: Deploy to gh-pages 🚀
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: demo # The folder the action should deploy.
           clean: true
+          single-commit: true
