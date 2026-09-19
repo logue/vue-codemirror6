@@ -16,16 +16,16 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v6
 
+      - name: Install pnpm 🎁
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.2
+
       - name: Use Node.js ⚡
         uses: actions/setup-node@v6
         with:
           node-version: 24.x
           cache: pnpm
-
-      - name: Install pnpm 🎁
-        uses: pnpm/action-setup@v6
-        with:
-          version: 12.4.2
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: demo # The folder the action should deploy.
+          branch: gh-pages
+          folder: demo
           clean: true
           single-commit: true
