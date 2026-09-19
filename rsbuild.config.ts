@@ -1,5 +1,4 @@
 /** For build documentation site use. */
-
 import { defineConfig } from '@rsbuild/core';
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
@@ -7,6 +6,7 @@ import { pluginVue } from '@rsbuild/plugin-vue';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 
 import { pluginVueDevTools } from '@vue-devtools-rstack/rsbuild';
@@ -72,5 +72,13 @@ export default defineConfig({
           // plugin options
         }),
     ],
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      // Self-reference so demo components can `import CodeMirror from 'vue-codemirror6'`
+      // exactly as a real consumer of the published package would.
+      'vue-codemirror6': resolve(__dirname, 'src'),
+    },
   },
 });
