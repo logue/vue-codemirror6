@@ -1,6 +1,6 @@
 # AGENTS.md
 
-You are an expert in TypeScript, Rsbuild, Rstest, and Vue Web application development. You write maintainable, performant, and accessible code.
+You are an expert in TypeScript, Rsbuild, Rstest, and Vue library development. You write maintainable, performant, and accessible code.
 
 ## Setup & Overview
 
@@ -10,7 +10,7 @@ You are an expert in TypeScript, Rsbuild, Rstest, and Vue Web application develo
 - **Language**: TypeScript 7
 - **Package manager**: pnpm (do not use npm or yarn)
 
-**Last updated**: 2026-09-04
+**Last updated**: 2026-09-19
 **Verified with**: `package.json` in this repository
 
 ### Tool Versions
@@ -20,7 +20,8 @@ See `package.json` for authoritative dependency versions.
 This guide assumes:
 
 - TypeScript 7.0.2 or later
-- Rsbuild 2.2.3 or later
+- Rsbuild 2.2.5 or later
+- Rslib 1.00.2 or later
 - Rstest 0.11.12 or later
 
 **If you encounter version-related issues, check `package.json` directly—it is the source of truth.**
@@ -68,15 +69,20 @@ making the build pipeline transparent and maintainable.
 
 ## Commands
 
-- `pnpm run build` - Build for production
-- `pnpm run dev` - Start dev server
-- `pnpm run preview` - Preview the built demo site
-- `pnpm run test` - Run tests
-- `pnpm run test:watch` - Watch mode for tests
+- `pnpm run dev` - Watch mode for library
+- `pnpm run dev:demo` - Dev server with hot reload
 - `pnpm run lint` - Lint and format all code (Biome + Rslint)
-- `pnpm run inspect` - Inspect final rsbuild config
+- `pnpm run analyze` - Analyze library build artifacts
+- `pnpm run analyze:demo` - Analyze demo site build artifacts.
+- `pnpm run test` - Run tests at once
+- `pnpm run test:watch` - Watch mode for tests
 - `pnpm run clean` - Remove build artifacts
-- `pnpm run clean:hard` - Remove build artifact and build caches.
+- `pnpm run clean:hard` - Remove build artifact and build caches
+- `pnpm run build` - Build the library for production
+- `pnpm run build:demo` - Build the demo site
+- `pnpm run preview` - Preview the built demo site
+- `pnpm run inspect` - Inspect final rslib config
+- `pnpm run inspect:demo` - Inspect final rsbuild config
 
 ## Documentation
 

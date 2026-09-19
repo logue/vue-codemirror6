@@ -1,8 +1,4 @@
-<script
-  lang="ts"
-  setup
-  vapor
->
+<script lang="ts" setup vapor>
 import { markdown } from '@codemirror/lang-markdown';
 import { type Ref, ref } from 'vue';
 

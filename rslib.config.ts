@@ -1,10 +1,9 @@
 /** For build library use */
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
+import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import { defineConfig } from '@rslib/core';
 
 import { readFileSync } from 'node:fs';
-
-import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 
 /**
  * The UMD name is used for the global variable name when the library
@@ -51,23 +50,6 @@ const bannerText = `/**
 export default defineConfig({
   plugins: [
     pluginTypeCheck(),
-    pluginModuleFederation({
-      exposes: {
-        '.': './src/index.ts',
-      },
-      name: umdName,
-      shared: {
-        react: {
-          singleton: true,
-        },
-        'react-dom': {
-          singleton: true,
-        },
-        vue: {
-          singleton: true,
-        },
-      },
-    }),
   ],
   banner: {
     css: bannerText,
@@ -111,11 +93,6 @@ export default defineConfig({
       syntax: 'es2020',
       umdName,
     },
-    {
-      // Module Federation
-      format: 'mf',
-      splitChunks: false,
-    },
   ],
   source: {
     define: {
@@ -123,5 +100,15 @@ export default defineConfig({
       __BUILD_DATE__: JSON.stringify(buildDate),
     },
     tsconfigPath: './tsconfig.rslib.json',
+  },
+  tools: {
+    rspack: {
+      plugins: [
+        process.env.RSDOCTOR === 'true' &&
+          new RsdoctorRspackPlugin({
+            // plugin options
+          }),
+      ],
+    },
   },
 });

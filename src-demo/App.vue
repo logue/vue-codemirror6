@@ -1,24 +1,13 @@
-<script
-  lang="ts"
-  setup
-  vapor
->
+<script lang="ts" setup vapor>
 import ToggleTheme from './components/ToggleTheme.vue';
 import DemoPage from './DemoPage.vue';
 </script>
 
 <!-- eslint-disable vuejs-accessibility/anchor-has-content -->
 <template>
-  <nav
-    class="navbar navbar-expand-md bg-dark"
-    data-bs-theme="dark"
-  >
+  <nav class="navbar navbar-expand-md bg-dark" data-bs-theme="dark">
     <div class="container-fluid d-flex justify-content-between">
-      <a
-        class="navbar-brand"
-        href="#"
-        >Vue CodeMirror6</a
-      >
+      <a class="navbar-brand" href="#">Vue CodeMirror6</a>
       <button
         aria-controls="navbarCollapse"
         aria-expanded="false"
@@ -30,16 +19,10 @@ import DemoPage from './DemoPage.vue';
       >
         <span class="navbar-toggler-icon" />
       </button>
-      <div
-        class="collapse navbar-collapse flex-grow-0"
-        id="navbarCollapse"
-      >
+      <div class="collapse navbar-collapse flex-grow-0" id="navbarCollapse">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a
-              class="nav-link"
-              href="https://github.com/logue/vue-codemirror6"
-            >
+            <a class="nav-link" href="https://github.com/logue/vue-codemirror6">
               <svg
                 class="bi bi-github"
                 fill="currentColor"
@@ -56,10 +39,7 @@ import DemoPage from './DemoPage.vue';
             </a>
           </li>
           <li class="nav-item">
-            <toggle-theme
-              attribute="data-bs-theme"
-              class="nav-link"
-            />
+            <toggle-theme attribute="data-bs-theme" class="nav-link" />
           </li>
         </ul>
       </div>

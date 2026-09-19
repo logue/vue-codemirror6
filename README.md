@@ -217,7 +217,7 @@ If you're using Nuxt 3, you can use the component directly:
   <code-mirror v-model="value" :lang="lang" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from "vue";
 import CodeMirror from "vue-codemirror6";
 import { javascript } from "@codemirror/lang-javascript";
@@ -242,7 +242,7 @@ For Nuxt 2 or if you encounter any issues, you can wrap the component with `<Cli
 When using as a Markdown editor on [vite-vue3-ts-starter](https://github.com/logue/vite-vue3-ts-starter).
 
 ```vue
-<script lang="ts" setup>
+<script lang="ts" setup vapor>
 import { ref, defineComponent, type Ref } from "vue";
 
 // Load component
@@ -338,7 +338,7 @@ const phrases: Record<string, string> = {
 ## Parameter / Function
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref, onMounted, type Ref, type PropType } from "vue";
 import CodeMirror from "vue-codemirror6";
 
@@ -384,6 +384,20 @@ Since the above method is usually sufficient, its **active use is not recommende
 | setSelection(anchor: number, head?: number)                         | Set a single selection range.                                                                    |
 | setSelections(ranges: readonly SelectionRange[], primary?: number)  | Sets a new set of selections.                                                                    |
 | extendSelectionsBy(f: Function)                                     | Applies the given function to all existing selections, and calls extendSelections on the result. |
+
+## WebComponents Feature (Experimental)
+
+By importing it with CodeMirror, it can also be used as a Web Component.
+
+```js
+import { CodeMirror } from "vue-codemirror6";
+
+customElements.define("code-mirror", CodeMirror);
+```
+
+```html
+<code-mirror></code-mirror>
+```
 
 ## Recommendations
 

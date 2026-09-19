@@ -4,7 +4,7 @@ import {
   js,
   jsxA11yPlugin,
   promisePlugin,
-  reactHooksPlugin,
+  // reactHooksPlugin,
   reactPlugin,
   rstestPlugin,
   ts,
@@ -72,7 +72,7 @@ export default defineConfig([
   promisePlugin.configs.recommended,
   unicornPlugin.configs.recommended,
   reactPlugin.configs.recommended,
-  reactHooksPlugin.configs.recommended,
+  // reactHooksPlugin.configs.recommended,
   jsxA11yPlugin.configs.recommended,
 
   {
@@ -146,7 +146,7 @@ export default defineConfig([
             {
               group: 'builtin',
               pattern:
-                '{@rsbuild/**,@rslint/**,@rslib/*,@rspack/**,@rstest/**}',
+                '{@rsbuild/**,@rsdoctor/**,@rslint/**,@rslib/*,@rspack/**,@rstest/**}',
               position: 'before',
             },
             {
@@ -162,6 +162,7 @@ export default defineConfig([
       ],
       // File names should, in principle, be in PascalCase, with some exceptions.
       'unicorn/filename-case': 'off',
+      'unicorn/no-this-outside-of-class': 'off',
     },
     settings: {
       'import/resolver': {

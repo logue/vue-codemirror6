@@ -158,7 +158,7 @@
       "enabled": true,
       // To prevent indentation shifts and resulting differences
       // when adding or deleting items.
-      "attributePosition": "multiline",
+      "attributePosition": "auto",
       // Do not omit the slash (/) for empty elements.
       // e.g. <br /> instead of <br>
       "selfCloseVoidElements": "always",

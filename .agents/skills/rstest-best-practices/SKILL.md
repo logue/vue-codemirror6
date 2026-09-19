@@ -1,9 +1,9 @@
 ---
 name: rstest-best-practices
-description: Rstest best practices for project setup, configuration, CLI workflow, test writing, mocking, snapshot testing, DOM testing, coverage, multi-project setup, and CI integration. Use when setting up, writing, or reviewing Rstest tests and test projects. For systematic startup, build, runtime, logging, memory, or performance diagnosis, use rstest-debugging.
+description: Set up, write, or review Rstest tests and configuration, including environments, mocks, snapshots, coverage, and CI.
 ---
 
-# Rstest Best Practices
+# Rstest best practices
 
 Apply these rules when setting up, writing, or reviewing Rstest projects.
 

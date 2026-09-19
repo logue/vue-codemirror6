@@ -1,8 +1,4 @@
-<script
-  lang="ts"
-  setup
-  vapor
->
+<script lang="ts" setup vapor>
 import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
@@ -70,11 +66,7 @@ const onFocus = (f: boolean): void => {
       <div class="row mb-3">
         <div class="col-4">
           <div class="input-group">
-            <label
-              class="input-group-text"
-              for="count"
-              >Count</label
-            >
+            <label class="input-group-text" for="count">Count</label>
             <input
               class="form-control"
               id="count"
@@ -86,10 +78,7 @@ const onFocus = (f: boolean): void => {
         </div>
         <div class="col-5">
           <div class="input-group">
-            <label
-              class="input-group-text"
-              for="diagnosticCount"
-            >
+            <label class="input-group-text" for="diagnosticCount">
               Diagnostic Count
             </label>
             <input
@@ -111,22 +100,14 @@ const onFocus = (f: boolean): void => {
               type="checkbox"
               v-model="focused"
             />
-            <label
-              class="form-check-label"
-              for="focused"
-              >Focused</label
-            >
+            <label class="form-check-label" for="focused">Focused</label>
           </div>
         </div>
       </div>
     </div>
     <div class="col-6">
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
-      <textarea
-        class="form-control"
-        rows="4"
-        v-model="value"
-      ></textarea>
+      <textarea class="form-control" rows="4" v-model="value"></textarea>
     </div>
   </div>
   <p>

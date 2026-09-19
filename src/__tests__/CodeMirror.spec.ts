@@ -192,7 +192,7 @@ describe('CodeMirror Component', () => {
       const readyEvents = wrapper.emitted('ready');
       expect(readyEvents).toBeTruthy();
       expect(readyEvents?.length).toBeGreaterThan(0);
-      const firstEvent = readyEvents![0]?.[0];
+      const firstEvent = readyEvents?.[0]?.[0];
       expect(firstEvent).toHaveProperty('view');
       expect(firstEvent).toHaveProperty('state');
       expect(firstEvent).toHaveProperty('container');

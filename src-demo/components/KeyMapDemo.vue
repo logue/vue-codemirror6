@@ -1,8 +1,4 @@
-<script
-  lang="ts"
-  setup
-  vapor
->
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 
 // biome-igonore - lint/suspicious/noConsole  -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
