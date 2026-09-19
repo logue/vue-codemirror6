@@ -1,27 +1,32 @@
-name: NodeJS with Vite/Rspack
+name: Build and deploy demo
 
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout ✅
+      - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install pnpm 🎁
+      - name: Install pnpm
         uses: pnpm/action-setup@v6
         with:
           version: 12.4.2
 
-      - name: Use Node.js ⚡
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24.x
@@ -30,20 +35,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build demo 🔧
+      - name: Build demo
         run: pnpm run build:demo
 
-      - name: Verify demo output 🔍
+      - name: Verify demo output
         run: |
-          test -d demo
+          set -eux
           test -f demo/index.html
+          find demo -type f -print
           test "$(find demo -type f | wc -l)" -gt 1
-          find demo -maxdepth 2 -type f -print
 
-      - name: Deploy to gh-pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          branch: gh-pages
-          folder: demo
-          clean: true
-          single-commit: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./demo
+          force_orphan: true
+          enable_jekyll: false
