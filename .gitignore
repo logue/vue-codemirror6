@@ -51,6 +51,7 @@ pids
 *.swp
 .vscode/*
 !.vscode/extensions.json
+!.vscode/mcp.json
 !.vscode/settings.json
 
 # Local

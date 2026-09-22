@@ -37,7 +37,7 @@ describe('CodeMirror Web Component', () => {
   describe('Rendering', () => {
     it('should attach an open shadow root containing the editor root', async () => {
       const el = document.createElement(TAG);
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       expect(el.shadowRoot).toBeTruthy();
@@ -49,7 +49,7 @@ describe('CodeMirror Web Component', () => {
         tag?: string;
       };
       el.tag = 'section';
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       expect(
@@ -59,7 +59,7 @@ describe('CodeMirror Web Component', () => {
 
     it('should mount a CodeMirror EditorView inside the shadow root', async () => {
       const el = document.createElement(TAG);
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       expect(el.shadowRoot?.querySelector('.cm-editor')).toBeTruthy();
@@ -72,7 +72,7 @@ describe('CodeMirror Web Component', () => {
         modelValue?: string;
       };
       el.modelValue = 'const x = 1;';
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const exposed = el as unknown as CodeMirrorExposed;
@@ -83,7 +83,7 @@ describe('CodeMirror Web Component', () => {
       const el = document.createElement(TAG);
       el.setAttribute('readonly', '');
       el.setAttribute('dark', '');
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const exposed = el as unknown as CodeMirrorExposed;
@@ -99,7 +99,7 @@ describe('CodeMirror Web Component', () => {
           'data-testid': 'from-extension',
         }),
       ];
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const exposed = el as unknown as CodeMirrorExposed;
@@ -112,7 +112,7 @@ describe('CodeMirror Web Component', () => {
   describe('Exposed instance API', () => {
     it('should forward the composable return value onto the element instance', async () => {
       const el = document.createElement(TAG);
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const exposed = el as unknown as CodeMirrorExposed;
@@ -126,7 +126,7 @@ describe('CodeMirror Web Component', () => {
         modelValue?: string;
       };
       el.modelValue = 'hello world';
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const exposed = el as unknown as CodeMirrorExposed;
@@ -145,7 +145,7 @@ describe('CodeMirror Web Component', () => {
           once: true,
         });
       });
-      document.body.appendChild(el);
+      document.body.append(el);
 
       const event = await ready;
       expect(event.detail[0]).toHaveProperty('view');
@@ -158,7 +158,7 @@ describe('CodeMirror Web Component', () => {
         modelValue?: string;
       };
       el.modelValue = 'initial';
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const updated: Promise<CustomEvent> = new Promise((resolve) => {
@@ -186,7 +186,7 @@ describe('CodeMirror Web Component', () => {
 
     it('should dispatch a native "destroy" CustomEvent when removed from the DOM', async () => {
       const el = document.createElement(TAG);
-      document.body.appendChild(el);
+      document.body.append(el);
       await Promise.resolve();
 
       const destroyed: Promise<void> = new Promise((resolve) => {

@@ -83,8 +83,8 @@
     "@codemirror/language": "^6.12.4",
     "@codemirror/lint": "^6.9.7",
     "@codemirror/search": "^6.7.2",
-    "@codemirror/state": "^6.7.5",
-    "@codemirror/view": "^6.43.12",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.13",
     "@eslint/markdown": "^8.0.3",
     "@logue/biome-plugins": "^0.0.3",
     "@microsoft/api-extractor": "^7.59.1",
@@ -95,7 +95,7 @@
     "@rsbuild/plugin-vue": "^2.0.1",
     "@rsdoctor/rspack-plugin": "^1.6.4",
     "@rslib/core": "^1.0.1",
-    "@rslint/core": "^0.9.2",
+    "@rslint/core": "^0.9.3",
     "@rstest/adapter-rsbuild": "^0.12.0",
     "@rstest/adapter-rslib": "^0.12.0",
     "@rstest/core": "^0.12.0",
@@ -135,5 +135,5 @@
     "style-mod": "^4.0.0",
     "vue": "^2.7.14 || ^3.3.4"
   },
-  "packageManager": "pnpm@12.4.2"
+  "packageManager": "pnpm@12.5.1"
 }
