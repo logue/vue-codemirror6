@@ -50,4 +50,5 @@ jobs:
           publish_branch: gh-pages
           publish_dir: ./demo
           force_orphan: true
+          allow_empty_commit: true
           enable_jekyll: false
