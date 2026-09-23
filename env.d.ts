@@ -1,14 +1,26 @@
 /* rslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/correctness/noUnusedVariables: define variables use. */
 /** biome-ignore-all lint/suspicious/noExplicitAny: for custom file type (such as yaml, vue etc.) reading. */
 
 // see rslib.config.ts for details
-declare const __APP_VERSION__: string;
-declare const __BUILD_DATE__: string;
+interface ImportMetaEnv {
+  readonly APP_VERSION: string;
+  readonly BUILD_DATE: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
 
 declare module '*.vue' {
-  import Vue from 'vue';
-
-  export default Vue;
+  import type { DefineComponent } from 'vue';
+  // rslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/ban-types
+  const component: DefineComponent<
+    Record<string, never>,
+    Record<string, never>,
+    any
+  >;
+  export default component;
 }
 
 declare module '*?source' {

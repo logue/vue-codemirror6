@@ -49,10 +49,10 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         when you want to use columns. (Enable text wrapping)
       </p>
       <code-mirror
+        v-model="markdownDemoSrc"
         basic
         readonly
         wrap
-        v-model="markdownDemoSrc"
         :dark="dark"
         :lang="vue()"
       />
@@ -79,13 +79,21 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         </div>
         <div>
           The process of converting Markdown to HTML uses
-          <a href="https://github.com/logue/vue-markdown-wasm" target="_blank">
+          <a
+            href="https://github.com/logue/vue-markdown-wasm"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             vue-markdown-wasm
           </a>
           .
           <br />
           Full demo is
-          <a href="https://logue.dev/vue-markdown-wasm" target="_blank">
+          <a
+            href="https://logue.dev/vue-markdown-wasm"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             vue-markdown-wasm
           </a>
           .
@@ -107,10 +115,10 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         .
       </p>
       <code-mirror
+        v-model="slotDemoSrc"
         basic
         readonly
         wrap
-        v-model="slotDemoSrc"
         :dark="dark"
         :lang="vue()"
       />
@@ -136,10 +144,10 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         for the eslint linter.
       </p>
       <code-mirror
+        v-model="linterAndCrossBindingDemoSrc"
         basic
         readonly
         wrap
-        v-model="linterAndCrossBindingDemoSrc"
         :dark="dark"
         :lang="vue()"
       />
@@ -161,6 +169,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         In this demo code, the
         <a
           href="https://codemirror.net/docs/ref/#lint.diagnosticCount"
+          rel="noopener noreferrer"
           target="_blank"
         >
           diagnosticCount
@@ -191,6 +200,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         (Inverse value of
         <a
           href="https://codemirror.net/docs/ref/#view.EditorView%5Eeditable"
+          rel="noopener noreferrer"
           target="_blank"
         >
           <code>editable</code>
@@ -202,10 +212,10 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <div class="row">
         <div class="col-sm">
           <code-mirror
+            v-model="readonlyAndDisabledDemoSrc"
             basic
             readonly
             wrap
-            v-model="readonlyAndDisabledDemoSrc"
             :dark="dark"
             :lang="vue()"
           />
@@ -233,10 +243,10 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <div class="row">
         <div class="col-sm">
           <code-mirror
+            v-model="keyMapDemoSrc"
             basic
             readonly
             wrap
-            v-model="keyMapDemoSrc"
             :dark="dark"
             :lang="vue()"
           />

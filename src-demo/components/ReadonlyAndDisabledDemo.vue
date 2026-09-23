@@ -20,22 +20,22 @@ defineProps<{
 <template>
   <div class="form-check form-switch">
     <input
-      class="form-check-input"
       id="readonly"
+      v-model="isReadonly"
+      class="form-check-input"
       role="switch"
       type="checkbox"
-      v-model="isReadonly"
       :aria-checked="isReadonly"
     />
     <label class="form-check-label" for="readonly">Readonly</label>
   </div>
   <div class="form-check form-switch">
     <input
-      class="form-check-input"
       id="disabled"
+      v-model="isDisabled"
+      class="form-check-input"
       role="switch"
       type="checkbox"
-      v-model="isDisabled"
       :aria-checked="isDisabled"
     />
     <label class="form-check-label" for="disabled">Disabled</label>

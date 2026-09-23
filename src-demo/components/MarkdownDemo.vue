@@ -23,19 +23,19 @@ defineProps<{
   <div class="row">
     <div class="col-6">
       <code-mirror
-        basic
-        wrap
         ref="cm"
         v-model="input"
         :dark="dark"
         :lang="markdown()"
+        basic
+        wrap
       />
     </div>
     <div class="col-6">
       <vue-markdown
-        class="markdown-body"
         v-model="input"
         :data-color-mode="dark ? 'dark' : 'light'"
+        class="markdown-body"
       />
     </div>
   </div>

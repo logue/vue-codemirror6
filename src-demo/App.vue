@@ -19,7 +19,7 @@ import DemoPage from './DemoPage.vue';
       >
         <span class="navbar-toggler-icon" />
       </button>
-      <div class="collapse navbar-collapse flex-grow-0" id="navbarCollapse">
+      <div id="navbarCollapse" class="collapse navbar-collapse flex-grow-0">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" href="https://github.com/logue/vue-codemirror6">

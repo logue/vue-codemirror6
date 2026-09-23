@@ -9,9 +9,9 @@ const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');
 
 <template>
   <code-mirror
+    v-model="temp"
     basic
     tab
-    v-model="temp"
     :keymap="[
       {
         key: 'Shift-Ctrl-Enter',

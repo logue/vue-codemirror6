@@ -96,8 +96,8 @@ export default defineConfig({
   ],
   source: {
     define: {
-      __APP_VERSION__: JSON.stringify(pkg.version),
-      __BUILD_DATE__: JSON.stringify(buildDate),
+      'import.meta.env.APP_VERSION': JSON.stringify(pkg.version),
+      'import.meta.env.BUILD_DATE': JSON.stringify(buildDate),
     },
     tsconfigPath: './tsconfig.rslib.json',
   },
@@ -107,8 +107,9 @@ export default defineConfig({
         process.env.RSDOCTOR === 'true' &&
           new RsdoctorRspackPlugin({
             // plugin options
+            // @see https://rsdoctor.rs/config/options/options
           }),
-      ],
+      ].filter(Boolean),
     },
   },
 });

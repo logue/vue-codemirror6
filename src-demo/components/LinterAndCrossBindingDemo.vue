@@ -52,15 +52,15 @@ const onFocus = (f: boolean): void => {
   <div class="row">
     <div class="col-6">
       <code-mirror
-        basic
-        class="mb-3"
-        gutter
-        wrap
         ref="cm"
         v-model="value"
         :dark="dark"
         :lang="javascript()"
         :linter="linter"
+        basic
+        class="mb-3"
+        gutter
+        wrap
         @focus="onFocus"
       />
       <div class="row mb-3">
@@ -68,8 +68,8 @@ const onFocus = (f: boolean): void => {
           <div class="input-group">
             <label class="input-group-text" for="count">Count</label>
             <input
-              class="form-control"
               id="count"
+              class="form-control"
               readonly
               type="text"
               :value="cm?.length"
@@ -82,8 +82,8 @@ const onFocus = (f: boolean): void => {
               Diagnostic Count
             </label>
             <input
-              class="form-control"
               id="diagnosticCount"
+              class="form-control"
               readonly
               type="number"
               :value="cm?.diagnosticCount"
@@ -93,12 +93,12 @@ const onFocus = (f: boolean): void => {
         <div class="col-3">
           <div class="form-check form-check-inline">
             <input
+              id="focused"
+              v-model="focused"
               checked
               class="form-check-input"
               disabled
-              id="focused"
               type="checkbox"
-              v-model="focused"
             />
             <label class="form-check-label" for="focused">Focused</label>
           </div>
@@ -107,7 +107,7 @@ const onFocus = (f: boolean): void => {
     </div>
     <div class="col-6">
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
-      <textarea class="form-control" rows="4" v-model="value"></textarea>
+      <textarea v-model="value" class="form-control" rows="4"></textarea>
     </div>
   </div>
   <p>

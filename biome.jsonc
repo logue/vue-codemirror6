@@ -61,8 +61,8 @@
         "useSortedProperties": "on",
         // Sort package.json.
         "useSortedPackageJson": "on",
-        // Sort html(like) attributes.
-        "useSortedAttributes": "on"
+        // Attribute ordering is handled by Rslint's vue/attributes-order.
+        "useSortedAttributes": "off"
       }
     }
   },
