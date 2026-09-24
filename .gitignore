@@ -1,8 +1,0 @@
-.agents
-.claude
-.rstack
-dist
-node_modules
-src
-
-.DS_Store
