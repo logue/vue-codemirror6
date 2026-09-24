@@ -3,8 +3,8 @@ import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
 import { type Ref, ref } from 'vue';
-// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
-import type CodeMirror from 'vue-codemirror6';
+// biome-ignore lint/style/useImportType: This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
 defineProps<{
@@ -106,8 +106,13 @@ const onFocus = (f: boolean): void => {
       </div>
     </div>
     <div class="col-6">
-      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label, vue/html-self-closing -->
-      <textarea v-model="value" class="form-control" rows="4"></textarea>
+      <label for="sync">Sync</label>
+      <textarea
+        id="sync"
+        v-model="value"
+        class="form-control"
+        rows="4"
+      ></textarea>
     </div>
   </div>
   <p>
