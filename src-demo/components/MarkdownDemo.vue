@@ -20,11 +20,11 @@ defineProps<{
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-6">
-      <code-mirror ref="cm" v-model="input" :dark="dark" :lang="markdown()" basic wrap />
+  <div class="demo-split">
+    <div>
+      <code-mirror v-model="input" :dark="dark" :lang="markdown()" basic wrap />
     </div>
-    <div class="col-6">
+    <div>
       <vue-markdown
         v-model="input"
         :data-color-mode="dark ? 'dark' : 'light'"

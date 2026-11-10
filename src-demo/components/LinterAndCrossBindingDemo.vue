@@ -3,7 +3,7 @@ import { esLint, javascript } from '@codemirror/lang-javascript';
 // Uses linter.mjs
 import eslint from 'eslint-linter-browserify';
 import { type Ref, ref } from 'vue';
-// biome-ignore lint/style/useImportType: This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
@@ -42,12 +42,16 @@ const linter = esLint(new eslint.Linter(), {
 const onFocus = (f: boolean): void => {
   focused.value = f;
 };
+
+/** Sync from the Carbon textarea back to the editor */
+const onInput = (event: Event): void => {
+  value.value = (event.target as HTMLTextAreaElement).value;
+};
 </script>
 
-<!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
-  <div class="row">
-    <div class="col-6">
+  <div class="demo-split">
+    <div class="demo-stack">
       <code-mirror
         ref="cm"
         v-model="value"
@@ -55,56 +59,31 @@ const onFocus = (f: boolean): void => {
         :lang="javascript()"
         :linter="linter"
         basic
-        class="mb-3"
         gutter
         wrap
         @focus="onFocus"
       />
-      <div class="row mb-3">
-        <div class="col-4">
-          <div class="input-group">
-            <label class="input-group-text" for="count">Count</label>
-            <input id="count" class="form-control" readonly type="text" :value="cm?.length" />
-          </div>
-        </div>
-        <div class="col-5">
-          <div class="input-group">
-            <label class="input-group-text" for="diagnosticCount"> Diagnostic Count </label>
-            <input
-              id="diagnosticCount"
-              class="form-control"
-              readonly
-              type="number"
-              :value="cm?.diagnosticCount"
-            />
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="form-check form-check-inline">
-            <input
-              id="focused"
-              v-model="focused"
-              checked
-              class="form-check-input"
-              disabled
-              type="checkbox"
-            />
-            <label class="form-check-label" for="focused">Focused</label>
-          </div>
-        </div>
+      <div class="demo-inline">
+        <cds-text-input label="Count" readonly size="sm" :value="String(cm?.length ?? 0)" />
+        <cds-text-input
+          label="Diagnostic count"
+          readonly
+          size="sm"
+          :value="String(cm?.diagnosticCount ?? 0)"
+        />
+        <cds-checkbox disabled label-text="Focused" :checked="focused" />
       </div>
     </div>
-    <div class="col-6">
-      <label for="sync">Sync</label>
-      <textarea id="sync" v-model="value" class="form-control" rows="4"></textarea>
+    <div>
+      <cds-textarea label="Sync" rows="6" :value="value" @input="onInput" />
     </div>
   </div>
   <p>
     <kbd>Ctrl-Shift-m</kbd>
     (
     <kbd>Cmd-Shift-m</kbd>
-    on macOS) to show lint panel.
+    on macOS) shows the lint panel.
     <kbd>F8</kbd>
-    key shows the next error.
+    jumps to the next error.
   </p>
 </template>

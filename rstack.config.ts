@@ -169,7 +169,19 @@ define.lib({
  * @see {@link https://rsbuild.rs/config | Rsbuild Config}
  */
 define.app({
-  plugins: [pluginTypeCheck(), pluginVue(), pluginVueDevTools(), pluginNodePolyfill()],
+  plugins: [
+    pluginTypeCheck(),
+    pluginVue({
+      vueLoaderOptions: {
+        compilerOptions: {
+          // Carbon Web Components (`<cds-*>`) are native custom elements, not Vue components.
+          isCustomElement: tag => tag.startsWith('cds-')
+        }
+      }
+    }),
+    pluginVueDevTools(),
+    pluginNodePolyfill()
+  ],
   output: {
     assetPrefix: './',
     distPath: {

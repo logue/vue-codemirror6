@@ -1,7 +1,6 @@
 <script lang="ts" setup vapor>
 import { type Ref, ref } from 'vue';
 
-// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
 import CodeMirror from 'vue-codemirror6';
 
 /** Readonly */
@@ -16,35 +15,30 @@ defineProps<{
 </script>
 
 <!-- eslint-disable no-irregular-whitespace -->
-<!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
-  <div class="form-check form-switch">
-    <input
-      id="readonly"
-      v-model="isReadonly"
-      class="form-check-input"
-      role="switch"
-      type="checkbox"
-      :aria-checked="isReadonly"
-    />
-    <label class="form-check-label" for="readonly">Readonly</label>
-  </div>
-  <div class="form-check form-switch">
-    <input
-      id="disabled"
-      v-model="isDisabled"
-      class="form-check-input"
-      role="switch"
-      type="checkbox"
-      :aria-checked="isDisabled"
-    />
-    <label class="form-check-label" for="disabled">Disabled</label>
-  </div>
-  <code-mirror basic :dark="dark" :disabled="isDisabled" :readonly="isReadonly">
-    <pre>
+  <div class="demo-stack">
+    <div class="demo-inline">
+      <cds-toggle
+        label-a="On"
+        label-b="Off"
+        label-text="Readonly"
+        :toggled="isReadonly"
+        @cds-toggle-changed="isReadonly = $event.detail.checked"
+      />
+      <cds-toggle
+        label-a="On"
+        label-b="Off"
+        label-text="Disabled"
+        :toggled="isDisabled"
+        @cds-toggle-changed="isDisabled = $event.detail.checked"
+      />
+    </div>
+    <code-mirror basic :dark="dark" :disabled="isDisabled" :readonly="isReadonly">
+      <pre>
 色は匂へど　散りぬるを
 我が世誰そ　常ならむ
 有為の奥山　今日越えて
 浅き夢見じ　酔ひもせず</pre>
-  </code-mirror>
+    </code-mirror>
+  </div>
 </template>

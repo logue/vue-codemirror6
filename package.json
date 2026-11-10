@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "vue-codemirror6",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "CodeMirror6 Component for vue2 and vue3.",
   "keywords": [
     "vuejs",
@@ -62,13 +62,14 @@
     "test:watch": "rs test --watch",
     "clean": "rimraf demo dist docs",
     "clean:hard": "rimraf .rstack/cache .rstack/.rsdoctor demo dist docs node_modules/.tmp node_modules/.cache",
-    "build": "rs lib",
+    "build": "run-p type-check rs lib",
     "build:demo": "rs build",
     "build:docs": "pnpm run build:demo && pnpm run build:rspress",
     "build:rspress": "rs doc build",
     "preview": "rs preview",
     "preview:docs": "rs doc preview",
     "analyze": "cross-env RSDOCTOR=true rs lib",
+    "type-check": "vize check --tsconfig tsconfig.rslib.json",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "skills:install": "npx --no-install skills --version >/dev/null 2>&1 && npx skills experimental_install --yes || echo '\\033[1;33m⚠️  [Warning] skills command not found. Skipped auto-installation of agent skills.\\033[0m'",
     "skills:update": "npx skills update",
@@ -121,7 +122,7 @@
     "rstack": "^0.9.0",
     "taze": "^21.3.0",
     "typescript": "^7.0.2",
-    "vize": "^0.731.0",
+    "vize": "^0.732.0",
     "vue": "^3.5.45",
     "vue-eslint-parser": "^10.4.2",
     "vue-markdown-wasm": "^1.0.1"

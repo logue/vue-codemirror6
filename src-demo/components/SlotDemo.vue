@@ -1,6 +1,6 @@
 <script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
-// eslint-disable-next-line import-x/no-unresolved -- This is a demo component, and the CodeMirror component is only used here for demonstration purposes. It is not intended to be imported in other components.
+
 import CodeMirror from 'vue-codemirror6';
 
 // Sync Dark mode
