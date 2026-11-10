@@ -1,0 +1,35 @@
+---
+title: API の概要
+description: vue-codemirror6 の API(props、イベント、テンプレート ref から使えるインスタンス API)の概要です。
+---
+
+# API の概要
+
+`CodeMirror` コンポーネントの API は 3 種類あります。
+
+| ページ                         | 内容                                                       |
+| ------------------------------ | ---------------------------------------------------------- |
+| [Props](./props)               | エディタの設定。変更はエディタを作り直さずに反映されます。 |
+| [イベント](./events)           | 読み込み完了、フォーカス、テキストの変更、破棄の通知       |
+| [インスタンス API](./instance) | テンプレート ref から使えるプロパティとメソッド            |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```

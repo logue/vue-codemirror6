@@ -1,0 +1,35 @@
+---
+title: API 概览
+description: vue-codemirror6 的 API 概览:props、事件,以及通过模板 ref 访问的实例 API。
+---
+
+# API 概览
+
+`CodeMirror` 组件提供三类 API:
+
+| 页面                   | 内容                                                 |
+| ---------------------- | ---------------------------------------------------- |
+| [Props](./props)       | 配置编辑器的选项。修改后无需重新创建编辑器即可生效。 |
+| [事件](./events)       | 加载完成、焦点变化、文本变更和销毁的通知。           |
+| [实例 API](./instance) | 通过模板 ref 可以使用的属性和方法。                  |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```

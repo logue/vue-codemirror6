@@ -239,7 +239,10 @@ define.doc({
   // If the package name and repository name are different, correct them as needed.
   base: `/${packageJson.name.slice(packageJson.name.lastIndexOf('/') + 1)}/`,
   route: {
-    exclude: ['components/**']
+    exclude: ['components/**'],
+    // Redirect by browser language only when an English (default) page is opened,
+    // so explicit links to /ja/ or /zh/ pages are respected.
+    localeRedirect: 'only-default-lang'
   },
   themeConfig: {
     socialLinks: [
@@ -255,12 +258,25 @@ define.doc({
   description: packageJson.description,
   head: [['meta', { name: 'author', content: packageJson.author.name }]],
   lang: 'en',
+  // `en` is the default locale (served without a prefix); `ja` and `zh` live under `/ja/` and `/zh/`.
   locales: [
     {
       lang: 'en',
       label: 'English',
-      title: 'My Site',
-      description: 'My site description'
+      title: 'vue-codemirror6',
+      description: 'CodeMirror 6 component for Vue 2 and Vue 3.'
+    },
+    {
+      lang: 'ja',
+      label: '日本語',
+      title: 'vue-codemirror6',
+      description: 'Vue 2 / Vue 3 で使える CodeMirror 6 コンポーネント'
+    },
+    {
+      lang: 'zh',
+      label: '简体中文',
+      title: 'vue-codemirror6',
+      description: '适用于 Vue 2 和 Vue 3 的 CodeMirror 6 组件'
     }
   ],
   // generate llms.txt

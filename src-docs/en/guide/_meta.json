@@ -1,0 +1,11 @@
+[
+  { "type": "section-header", "label": "Getting Started" },
+  "introduction",
+  "getting-started",
+  { "type": "section-header", "label": "Guides" },
+  "usage",
+  "languages-and-themes",
+  "ssr",
+  "web-components",
+  "bundling"
+]

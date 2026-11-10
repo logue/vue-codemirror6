@@ -1,0 +1,47 @@
+---
+description: vue-codemirror6 是适用于 Vue 2.7 和 Vue 3 的 CodeMirror 6 编辑器组件,支持 v-model、代码检查和 SSR。
+pageType: home
+
+hero:
+  name: vue-codemirror6
+  text: 在 Vue 中使用 CodeMirror 6
+  tagline: 一个轻量的封装组件,让 CodeMirror 6 编辑器可以在 Vue 2.7 和 Vue 3 中使用。
+  actions:
+    - theme: brand
+      text: 快速开始
+      link: /zh/guide/getting-started
+    - theme: alt
+      text: 演练场
+      link: /zh/playground
+    - theme: alt
+      text: GitHub
+      link: https://github.com/logue/vue-codemirror6
+  image:
+    src: https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png
+    alt: vue-codemirror6 标志
+features:
+  - title: 支持 Vue 2.7 和 Vue 3
+    details: 基于 vue-demi 构建,同一个组件可以在 Vue 2.7 和 Vue 3 项目中使用。
+    icon: 💚
+    link: /zh/guide/introduction
+  - title: 双向绑定
+    details: 像原生输入框一样使用 v-model 绑定文本。外部更新时还可以保持滚动位置。
+    icon: 🔁
+    link: /zh/guide/usage
+  - title: 语言、代码检查与主题
+    details: 通过 props 传入 CodeMirror 的 LanguageSupport、LintSource 或主题,也可以添加任意扩展。
+    icon: 🎨
+    link: /zh/guide/languages-and-themes
+  - title: 支持 SSR
+    details: CodeMirror 只在客户端初始化,因此可以在 Nuxt 等 SSR 框架中安全渲染。
+    icon: 🌐
+    link: /zh/guide/ssr
+  - title: Web Component
+    details: 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用(实验性)。
+    icon: 🧩
+    link: /zh/guide/web-components
+  - title: 完整的编辑器 API
+    details: 通过模板 ref 访问 EditorView、选区以及兼容 CodeMirror 5 的辅助方法。
+    icon: 🛠️
+    link: /zh/api/instance
+---

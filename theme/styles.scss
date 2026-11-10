@@ -15,7 +15,6 @@
 }
 
 body {
-  font-family: var(--font-sans);
   /*
     Carbon's reset sets body { background: var(--cds-background) } using the
     default white theme. Override with Rspress's own vars so the dark/light
@@ -23,6 +22,7 @@ body {
   */
   background-color: var(--rp-c-bg);
   color: var(--rp-c-text-1);
+  font-family: var(--font-sans);
 }
 
 code,
@@ -35,13 +35,13 @@ var {
 
 /* ─── Carbon tag / notification sizing inside prose ─────────────────────── */
 cds-tag {
-  vertical-align: middle;
   margin-inline: 0.125rem;
+  vertical-align: middle;
 }
 
 cds-inline-notification {
-  margin-block: 1rem;
   max-inline-size: 100%;
+  margin-block: 1rem;
 }
 
 /* ─── Code block: square corners (Carbon style) ──────────────────────────── */

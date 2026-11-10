@@ -1,0 +1,21 @@
+[
+  {
+    "text": "ガイド",
+    "link": "/guide/introduction",
+    "activeMatch": "/guide/"
+  },
+  {
+    "text": "API",
+    "link": "/api/",
+    "activeMatch": "/api/"
+  },
+  {
+    "text": "Playground",
+    "link": "/playground",
+    "activeMatch": "/playground"
+  },
+  {
+    "text": "変更履歴",
+    "link": "https://github.com/logue/vue-codemirror6/blob/master/CHANGELOG.md"
+  }
+]

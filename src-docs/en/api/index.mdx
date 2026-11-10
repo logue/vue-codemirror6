@@ -1,7 +1,35 @@
 ---
 title: API Overview
-description: Overview page for the Rspress starter API section and available reference pages.
-overview: true
+description: Overview of the vue-codemirror6 API — props, events, and the instance API exposed through a template ref.
 ---
 
-This is an API Overview page which outlines all the available APIs.
+# API Overview
+
+The `CodeMirror` component has three kinds of API:
+
+| Page                       | Content                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------- |
+| [Props](./props)           | Options that configure the editor. Changes are applied without recreating it. |
+| [Events](./events)         | Notifications for loading, focus, document changes, and destruction.          |
+| [Instance API](./instance) | Properties and methods available through a template ref.                      |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```

@@ -1,44 +1,47 @@
 ---
-description: Rspress starter homepage with guide, MDX, search, AI, SSG, and theme customization links.
+description: vue-codemirror6 is a CodeMirror 6 editor component for Vue 2.7 and Vue 3 with v-model binding, linting, and SSR support.
 pageType: home
 
 hero:
-  name: My Site
-  text: A cool website!
-  tagline: This is the tagline
+  name: vue-codemirror6
+  text: CodeMirror 6 for Vue
+  tagline: A lightweight wrapper component that brings the CodeMirror 6 editor to Vue 2.7 and Vue 3.
   actions:
     - theme: brand
-      text: Quick Start
-      link: /guide/start/introduction
+      text: Get Started
+      link: /guide/getting-started
+    - theme: alt
+      text: Playground
+      link: /playground
     - theme: alt
       text: GitHub
-      link: https://github.com/web-infra-dev/rspress
+      link: https://github.com/logue/vue-codemirror6
   image:
-    src: /rspress-icon.png
-    alt: Logo
+    src: https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png
+    alt: vue-codemirror6 logo
 features:
-  - title: Blazing fast build speed
-    details: The core compilation module is based on the Rust front-end toolchain, providing a more ultimate development experience.
-    icon: 🏃🏻‍♀️
-    link: /guide/start/introduction
-  - title: Support for MDX content writing
-    details: MDX is a powerful way to write content, allowing you to use React components in Markdown.
-    icon: 📦
-    link: /guide/use-mdx/components
-  - title: Built-in full-text search
-    details: Automatically generates a full-text search index for you during construction, providing out-of-the-box full-text search capabilities.
+  - title: Vue 2.7 & Vue 3
+    details: Built on vue-demi, so the same component works in both Vue 2.7 and Vue 3 projects.
+    icon: 💚
+    link: /guide/introduction
+  - title: Two-way binding
+    details: Bind the document with v-model just like a native input. External updates can keep the scroll position.
+    icon: 🔁
+    link: /guide/usage
+  - title: Languages, linters, and themes
+    details: Pass any CodeMirror LanguageSupport, LintSource, or theme through props, or add raw extensions.
     icon: 🎨
-    link: https://rspress.rs/guide/advanced/custom-search
-  - title: AI-friendly
-    details: Generate llms.txt and Markdown files compliant with the llms.txt specification through SSG-MD, making it easier for large language models to understand and use your documentation.
-    icon: 🤖
-    link: https://rspress.rs/guide/basic/ssg-md
-  - title: Static site generation
-    details: In production, it automatically builds into static HTML files, which can be easily deployed anywhere.
-    icon: 🌈
-    link: https://rspress.rs/guide/basic/ssg
-  - title: Providing multiple custom capabilities
-    details: Through its extension mechanism, you can easily extend theme UI and build process.
-    icon: 🔥
-    link: https://rspress.rs/guide/basic/custom-theme
+    link: /guide/languages-and-themes
+  - title: SSR ready
+    details: CodeMirror is only initialized on the client, so the component renders safely in Nuxt and other SSR frameworks.
+    icon: 🌐
+    link: /guide/ssr
+  - title: Web Component
+    details: The same component is also exported as a custom element for use outside Vue (experimental).
+    icon: 🧩
+    link: /guide/web-components
+  - title: Full editor API
+    details: Access the EditorView, selection, and CodeMirror 5 style helper methods through a template ref.
+    icon: 🛠️
+    link: /api/instance
 ---

@@ -64,18 +64,18 @@ const onInput = (event: Event): void => {
         @focus="onFocus"
       />
       <div class="demo-inline">
-        <cds-text-input label="Count" readonly size="sm" :value="String(cm?.length ?? 0)" />
+        <cds-text-input :value="String(cm?.length ?? 0)" label="Count" readonly size="sm" />
         <cds-text-input
+          :value="String(cm?.diagnosticCount ?? 0)"
           label="Diagnostic count"
           readonly
           size="sm"
-          :value="String(cm?.diagnosticCount ?? 0)"
         />
         <cds-checkbox disabled label-text="Focused" :checked="focused" />
       </div>
     </div>
     <div>
-      <cds-textarea label="Sync" rows="6" :value="value" @input="onInput" />
+      <cds-textarea :value="value" label="Sync" rows="6" @input="onInput" />
     </div>
   </div>
   <p>

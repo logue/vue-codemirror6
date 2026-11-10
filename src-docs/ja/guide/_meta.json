@@ -1,0 +1,11 @@
+[
+  { "type": "section-header", "label": "はじめに" },
+  "introduction",
+  "getting-started",
+  { "type": "section-header", "label": "ガイド" },
+  "usage",
+  "languages-and-themes",
+  "ssr",
+  "web-components",
+  "bundling"
+]

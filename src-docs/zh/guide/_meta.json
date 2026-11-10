@@ -1,0 +1,11 @@
+[
+  { "type": "section-header", "label": "开始" },
+  "introduction",
+  "getting-started",
+  { "type": "section-header", "label": "指南" },
+  "usage",
+  "languages-and-themes",
+  "ssr",
+  "web-components",
+  "bundling"
+]

@@ -1,7 +1,7 @@
 [
   {
     "text": "Guide",
-    "link": "/guide/start/introduction",
+    "link": "/guide/introduction",
     "activeMatch": "/guide/"
   },
   {
@@ -15,7 +15,7 @@
     "activeMatch": "/playground"
   },
   {
-    "text": "Document",
-    "link": "https://rspress.rs/"
+    "text": "Changelog",
+    "link": "https://github.com/logue/vue-codemirror6/blob/master/CHANGELOG.md"
   }
 ]

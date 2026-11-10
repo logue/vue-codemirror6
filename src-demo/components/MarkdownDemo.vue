@@ -27,8 +27,8 @@ defineProps<{
     <div>
       <vue-markdown
         v-model="input"
-        :data-color-mode="dark ? 'dark' : 'light'"
         class="markdown-body"
+        :data-color-mode="dark ? 'dark' : 'light'"
       />
     </div>
   </div>

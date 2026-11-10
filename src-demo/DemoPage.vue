@@ -57,8 +57,8 @@ const sources: Record<TabId, string> = {
         v-for="tab in tabs"
         :id="`tab-${tab.id}`"
         :key="tab.id"
-        :aria-controls="`panel-${tab.id}`"
         :value="tab.id"
+        :aria-controls="`panel-${tab.id}`"
       >
         {{ tab.label }}
       </cds-tab>
@@ -69,9 +69,9 @@ const sources: Record<TabId, string> = {
   <section
     v-if="selected === 'markdown'"
     id="panel-markdown"
-    aria-labelledby="tab-markdown"
     class="cds--css-grid demo-panel"
     role="tabpanel"
+    aria-labelledby="tab-markdown"
   >
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <h2>Markdown Editor</h2>
@@ -94,10 +94,10 @@ const sources: Record<TabId, string> = {
     </div>
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <cds-inline-notification
+        title="Markdown rendering"
         hide-close-button
         kind="info"
         low-contrast
-        title="Markdown rendering"
       >
         <span slot="subtitle">
           Markdown is converted to HTML with
@@ -119,9 +119,9 @@ const sources: Record<TabId, string> = {
   <section
     v-else-if="selected === 'slot'"
     id="panel-slot"
-    aria-labelledby="tab-slot"
     class="cds--css-grid demo-panel"
     role="tabpanel"
+    aria-labelledby="tab-slot"
   >
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <h2>Slot Method</h2>
@@ -150,9 +150,9 @@ const sources: Record<TabId, string> = {
   <section
     v-else-if="selected === 'linter'"
     id="panel-linter"
-    aria-labelledby="tab-linter"
     class="cds--css-grid demo-panel"
     role="tabpanel"
+    aria-labelledby="tab-linter"
   >
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <h2>Linter and Cross Binding</h2>
@@ -191,9 +191,9 @@ const sources: Record<TabId, string> = {
   <section
     v-else-if="selected === 'readonly'"
     id="panel-readonly"
-    aria-labelledby="tab-readonly"
     class="cds--css-grid demo-panel"
     role="tabpanel"
+    aria-labelledby="tab-readonly"
   >
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <h2>
@@ -236,9 +236,9 @@ const sources: Record<TabId, string> = {
   <section
     v-else-if="selected === 'keymap'"
     id="panel-keymap"
-    aria-labelledby="tab-keymap"
     class="cds--css-grid demo-panel"
     role="tabpanel"
+    aria-labelledby="tab-keymap"
   >
     <div class="cds--sm:col-span-4 cds--md:col-span-8 cds--lg:col-span-16">
       <h2>Key Map</h2>

@@ -16,6 +16,8 @@
 
 Vueで[CodeMirror6](https://codemirror.net/6/)を使用するためのコンポーネントです。このコンポーネントはVue2とVue3の両方で動作します。
 
+詳細は[ドキュメント](https://logue.dev/vue-codemirror6/)を見てください。
+
 - [変更履歴](./CHANGELOG.md)
 
 ## 使い方

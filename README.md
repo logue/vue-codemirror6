@@ -14,9 +14,11 @@ English | [日本語](README.ja.md)
 [![X Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://x.com/logue256)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/logue?label=Sponsor&logo=github&color=ea4aaa)](https://github.com/sponsors/logue)
 
-A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. This component works in both Vue2 and Vue3.
+A component for using [CodeMirror6](https://codemirror.net/6/) with Vue. This component works in both Vue2.7 and Vue3.
 
 - [CHANGELOG](./CHANGELOG.md)
+
+See [documentation](https://logue.dev/vue-codemirror6/) more detail.
 
 ## Usage
 
