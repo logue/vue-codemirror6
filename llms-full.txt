@@ -1,0 +1,895 @@
+---
+url: /vue-codemirror6/guide/introduction.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Introduction
+
+**vue-codemirror6** is a component for using [CodeMirror 6](https://codemirror.net/6/) in Vue. It is built on [vue-demi](https://github.com/vueuse/vue-demi), so the same component works in both Vue 2.7 and Vue 3.
+
+CodeMirror 6 is a modular code editor. Instead of exposing every CodeMirror concept directly, this component turns the most common settings into props and keeps the rest available through `extensions` and the editor instance.
+
+## Features
+
+- **`v-model` binding** for the document text.
+- **Common settings as props**: `basic` / `minimal` setup, line wrapping, tab indentation, read-only and disabled modes, placeholder, dark mode, and more.
+- **Language, linter, and theme props** that accept any CodeMirror package.
+- **Events** for `ready`, `focus`, `update`, `change`, and `destroy`.
+- **Instance API** to access the [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView), selection, cursor, lint diagnostics, and CodeMirror 5 style helpers.
+- **SSR compatibility**: the editor is only created on the client.
+- **Web Component build** of the same component (experimental).
+
+## Supported environments
+
+| Environment | Version                     |
+| ----------- | --------------------------- |
+| Vue         | `^2.7.14` or `^3.3.4`       |
+| CodeMirror  | `codemirror` `^6.0.0`       |
+| Output      | ESM (default) and UMD build |
+
+The `@codemirror/*` packages (`state`, `view`, `language`, `lint`, `commands`, `autocomplete`, `search`) are peer dependencies. They are installed together with the `codemirror` package.
+
+## Next steps
+
+- [Getting Started](/vue-codemirror6/guide/getting-started.md) — install the package and render your first editor.
+- [Playground](/vue-codemirror6/playground.md) — try the live demo.
+- [Props](/vue-codemirror6/api/props.md) — the full list of options.
+
+
+
+---
+url: /vue-codemirror6/guide/getting-started.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Getting Started
+
+## Installation
+
+Install the component together with `codemirror`:
+
+```sh
+pnpm add vue-codemirror6 codemirror
+```
+
+Language support, linters, and themes are separate packages. Install the ones you need, for example:
+
+```sh
+pnpm add @codemirror/lang-javascript
+```
+
+## Minimal example
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('Cozy lummox gives smart squid who asks for job pen.');
+</script>
+
+<template>
+  <code-mirror v-model="value" />
+</template>
+```
+
+This renders a plain editor without line numbers or key bindings. Add the `basic` prop to enable CodeMirror's [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup) (line numbers, history, bracket matching, search, and more):
+
+```vue
+<template>
+  <code-mirror v-model="value" basic />
+</template>
+```
+
+:::tip
+Use `minimal` instead of `basic` for [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup). If both are set, `basic` takes precedence.
+:::
+
+## Adding a language
+
+Pass a `LanguageSupport` object to the `lang` prop to enable syntax highlighting:
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## Global registration
+
+The package exports an `install` function that registers the component as `CodeMirror`:
+
+```ts
+import { createApp } from 'vue';
+import { install as CodeMirror } from 'vue-codemirror6';
+
+import App from './App.vue';
+
+createApp(App).use(CodeMirror).mount('#app');
+```
+
+After that, `<code-mirror>` can be used in any template without importing it.
+
+## Package exports
+
+| Export                | Description                                                |
+| --------------------- | ---------------------------------------------------------- |
+| `default`             | The Vue component.                                         |
+| `install`             | Vue plugin function that registers the component globally. |
+| `CodeMirror`          | The component wrapped with `defineCustomElement`.          |
+| `CodeMirrorExposed`   | Type of the instance API exposed through a template ref.   |
+| `Meta`                | Package version and build date.                            |
+| `vue-codemirror6/umd` | UMD build for loading with a `<script>` tag.               |
+
+## Next steps
+
+- [Usage](/vue-codemirror6/guide/usage.md) — `v-model`, slots, read-only mode, and key bindings.
+- [Languages, Linters & Themes](/vue-codemirror6/guide/languages-and-themes.md)
+
+
+
+---
+url: /vue-codemirror6/guide/usage.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Usage
+
+## Two-way binding with `v-model`
+
+The document is bound through `modelValue` (not `value`), so `v-model` works as with any Vue component.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic placeholder="Type something…" />
+  <pre>{{ value }}</pre>
+</template>
+```
+
+When `modelValue` is changed from outside, the editor content is replaced. Two props control how the view behaves at that moment:
+
+- `scroll-into-view` (default `true`) scrolls the editor to the updated selection.
+- `preserve-scroll-position` (default `false`) keeps the current scroll position, which is useful when text is appended continuously (logs, streaming output, and so on).
+
+## Initial text from a slot
+
+Instead of `v-model`, you can place the initial text inside the component. Only the text of the first child node is used.
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic readonly :lang="json()" :linter="jsonParseLinter()">
+    <pre>
+{
+  "key": "value"
+}</pre>
+  </code-mirror>
+</template>
+```
+
+:::warning
+
+- Slot content overwrites the `v-model` value, so do not combine the two. The slot method is intended for simple read-only highlighting.
+- Wrap the text in `<pre>` so that whitespace is not collapsed.
+- The slot method does not work with Vue 2.7.
+
+:::
+
+## Read-only and disabled
+
+| Prop       | Editable | Focusable / selectable | CodeMirror option                                                                             |
+| ---------- | -------- | ---------------------- | --------------------------------------------------------------------------------------------- |
+| `readonly` | No       | Yes                    | [`EditorState.readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly)         |
+| `disabled` | No       | No                     | Inverse of [`EditorView.editable`](https://codemirror.net/docs/ref/#view.EditorView^editable) |
+
+Use `disabled` when the editor is only a syntax highlighter.
+
+```vue
+<template>
+  <code-mirror v-model="value" basic :readonly="isReadonly" :disabled="isDisabled" />
+</template>
+```
+
+## Editing behavior
+
+| Prop                        | Effect                                                      |
+| --------------------------- | ----------------------------------------------------------- |
+| `wrap`                      | Enables line wrapping.                                      |
+| `tab`                       | Indents with the Tab key instead of moving focus.           |
+| `tab-size`                  | Width of a tab character.                                   |
+| `indent-unit`               | Indentation unit, for example `"  "` or `"\t"`.             |
+| `allow-multiple-selections` | Allows multiple selections (e.g. with Ctrl/Cmd + click).    |
+| `line-separator`            | Line separator used for the document. Defaults to `\n`.     |
+| `placeholder`               | Text or an `HTMLElement` shown while the document is empty. |
+
+:::tip
+The `tab` prop traps the Tab key inside the editor. Keyboard users can still leave the editor by pressing Escape followed by Tab.
+:::
+
+## Custom key bindings
+
+Pass an array of [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) objects to `keymap`. If `run` returns `true`, the default behavior for that key is skipped.
+
+```vue
+<script setup lang="ts">
+import type { KeyBinding } from '@codemirror/view';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+
+const keymap: KeyBinding[] = [
+  {
+    key: 'Mod-s',
+    run: () => {
+      console.log('save', value.value);
+      return true;
+    }
+  }
+];
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :keymap="keymap" />
+</template>
+```
+
+## Listening to events
+
+```vue
+<template>
+  <code-mirror
+    v-model="value"
+    @ready="({ view }) => console.log('ready', view)"
+    @focus="focused => (isFocused = focused)"
+    @update="update => console.log(update.docChanged)"
+  />
+</template>
+```
+
+See [Events](/vue-codemirror6/api/events.md) for the payload of each event.
+
+## Translating the editor UI
+
+Use `phrases` to translate the text shown by CodeMirror (search panel, lint panel, folding markers, …). See the CodeMirror [translation example](https://codemirror.net/examples/translate/) for the available keys.
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const phrases: Record<string, string> = {
+  Find: 'Suchen',
+  Replace: 'Ersetzen',
+  next: 'nächste',
+  previous: 'vorherige',
+  close: 'schließen'
+};
+</script>
+
+<template>
+  <code-mirror basic :phrases="phrases" />
+</template>
+```
+
+:::tip
+When combining with vue-i18n, make `phrases` reactive (for example a `computed`) so the editor updates when the locale changes.
+:::
+
+
+
+---
+url: /vue-codemirror6/guide/languages-and-themes.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Languages, Linters & Themes
+
+## Languages
+
+Install a language package and pass its `LanguageSupport` object to `lang`:
+
+```vue
+<script setup lang="ts">
+import { markdown } from '@codemirror/lang-markdown';
+import CodeMirror from 'vue-codemirror6';
+
+const lang = markdown();
+</script>
+
+<template>
+  <code-mirror basic wrap :lang="lang" />
+</template>
+```
+
+Official language packages include:
+
+`@codemirror/lang-angular`, `lang-cpp`, `lang-css`, `lang-html`, `lang-java`, `lang-javascript`, `lang-json`, `lang-lezer`, `lang-markdown`, `lang-php`, `lang-python`, `lang-rust`, `lang-sql`, `lang-vue`, `lang-wast`, `lang-xml`
+
+Many community packages are also available. See the [CodeMirror language list](https://codemirror.net/#languages) and the [README](https://github.com/logue/vue-codemirror6#supported-languages).
+
+## Linters
+
+Pass a [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource) to `linter`. Add `gutter` to show a marker on lines with problems.
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('{ "key": "value", }');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic gutter :lang="json()" :linter="jsonParseLinter()" />
+</template>
+```
+
+For JavaScript, `@codemirror/lang-javascript` provides `esLint()`, which can be combined with [eslint-linter-browserify](https://github.com/UziTech/eslint-linter-browserify):
+
+```ts
+import { esLint } from '@codemirror/lang-javascript';
+import eslint from 'eslint-linter-browserify';
+
+const linter = esLint(new eslint.Linter(), {
+  languageOptions: {
+    parserOptions: { ecmaVersion: 2022, sourceType: 'module' }
+  },
+  rules: { semi: ['error', 'never'] }
+});
+```
+
+| Prop            | Description                                                                                  |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| `linter`        | The lint source.                                                                             |
+| `linter-config` | [Linter configuration](https://codemirror.net/docs/ref/#lint.linter^config) such as `delay`. |
+| `force-linting` | Runs the linter immediately instead of waiting for the editor to become idle.                |
+| `gutter`        | Shows the lint gutter. Has no effect without `linter`.                                       |
+| `gutter-config` | [Lint gutter configuration](https://codemirror.net/docs/ref/#lint.lintGutter^config).        |
+
+The number of diagnostics is available as `diagnosticCount` on the [instance](/vue-codemirror6/api/instance.md), and `lint()` runs the linter on demand.
+
+:::tip
+In the editor, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> on macOS) opens the lint panel and <kbd>F8</kbd> jumps to the next diagnostic.
+:::
+
+## Themes and dark mode
+
+- `dark` tells CodeMirror that the editor has a dark background, so built-in UI such as the selection and panels use dark colors.
+- `theme` accepts a style spec object passed to [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme).
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const theme = {
+  '&': { fontSize: '14px' },
+  '.cm-content': { fontFamily: 'Menlo, monospace' },
+  '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
+};
+</script>
+
+<template>
+  <code-mirror basic :dark="isDark" :theme="theme" />
+</template>
+```
+
+Ready-made themes are usually distributed as extensions. Add them through `extensions`:
+
+```vue
+<script setup lang="ts">
+import { oneDark } from '@codemirror/theme-one-dark';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic dark :extensions="[oneDark]" />
+</template>
+```
+
+Examples: [`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one-dark), [`@uiw/codemirror-themes`](https://github.com/uiwjs/react-codemirror/tree/master/themes), [`codemirror6-bootstrap-theme`](https://github.com/logue/codemirror6-bootstrap-theme).
+
+## Other extensions
+
+Any CodeMirror [`Extension`](https://codemirror.net/docs/ref/#state.Extension) can be passed through `extensions`. They are combined with the extensions generated from the other props.
+
+```vue
+<script setup lang="ts">
+import { EditorView } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
+</script>
+
+<template>
+  <code-mirror basic :extensions="extensions" />
+</template>
+```
+
+:::info
+`lang` and `linter` could also be passed through `extensions`. They are separate props for type safety and for compatibility with earlier versions.
+:::
+
+When props change, the component reconfigures the editor automatically. If you change something the component cannot detect, call `forceReconfigure()` on the instance.
+
+
+
+---
+url: /vue-codemirror6/guide/ssr.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Server-Side Rendering
+
+The component is SSR compatible. CodeMirror is only created in the browser (in `onMounted`), so during server rendering the component outputs its empty container element without touching `window` or `document`.
+
+## Nuxt 3 / Nuxt 4
+
+Use the component directly:
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## Nuxt 2 or when problems occur
+
+Wrap the component with `<ClientOnly>` so that it is rendered only in the browser:
+
+```vue
+<template>
+  <client-only>
+    <code-mirror v-model="value" basic :lang="lang" />
+  </client-only>
+</template>
+```
+
+:::info
+Because the editor is created after hydration, the instance properties (`view`, `selection`, …) are `undefined` on the server and until the `ready` event is emitted on the client.
+:::
+
+
+
+---
+url: /vue-codemirror6/guide/web-components.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Web Component
+
+:::warning Experimental
+The Web Component build is experimental and its behavior may change.
+:::
+
+The package also exports the component wrapped with Vue's [`defineCustomElement`](https://vuejs.org/guide/extras/web-components.html). Register it under any tag name:
+
+```ts
+import { CodeMirror } from 'vue-codemirror6';
+
+customElements.define('code-mirror', CodeMirror);
+```
+
+```html
+<code-mirror></code-mirror>
+```
+
+The editor is rendered inside an open shadow root.
+
+## Setting props
+
+- **Primitive props** (`string`, `boolean`, `number`) can be set as attributes or as DOM properties.
+- **Object, array, and function props** (`lang`, `linter`, `extensions`, `theme`, `keymap`, …) can only be set as DOM properties.
+
+Set properties before the element is connected to apply them on the first render:
+
+```ts
+import { javascript } from '@codemirror/lang-javascript';
+
+const element = document.createElement('code-mirror');
+element.setAttribute('readonly', '');
+element.modelValue = 'const x = 1;';
+element.lang = javascript();
+
+document.body.append(element);
+```
+
+## Events
+
+Vue emits are dispatched as native `CustomEvent`s. The emitted arguments are available as an array in `event.detail`.
+
+```ts
+element.addEventListener('ready', event => {
+  const [{ view }] = (event as CustomEvent).detail;
+  console.log(view);
+});
+
+element.addEventListener('update:model-value', event => {
+  const [value] = (event as CustomEvent).detail;
+  console.log(value);
+});
+```
+
+## Instance API
+
+The [instance API](/vue-codemirror6/api/instance.md) is exposed directly on the element:
+
+```ts
+import type { CodeMirrorExposed } from 'vue-codemirror6';
+
+const editor = element as unknown as CodeMirrorExposed;
+editor.replaceRange('bye', 0, 5);
+console.log(editor.view?.state.doc.toString());
+```
+
+
+
+---
+url: /vue-codemirror6/guide/bundling.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Bundling Tips
+
+CodeMirror and its language packages are relatively large. Splitting them into their own chunks keeps your main bundle small and lets browsers cache the editor separately.
+
+## Vite
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          codemirror: ['vue-codemirror6'],
+          'codemirror-lang': [
+            // Add the languages you use.
+            '@codemirror/lang-html',
+            '@codemirror/lang-javascript',
+            '@codemirror/lang-markdown'
+          ]
+        }
+      }
+    }
+  }
+});
+```
+
+## Rsbuild
+
+```ts
+// rsbuild.config.ts
+import { defineConfig } from '@rsbuild/core';
+
+export default defineConfig({
+  splitChunks: {
+    cacheGroups: {
+      codemirror: {
+        test: /node_modules[\\/](@codemirror|codemirror|@lezer)[\\/]/,
+        name: 'codemirror',
+        chunks: 'all'
+      }
+    }
+  }
+});
+```
+
+## Lazy loading
+
+If the editor is not needed on the first screen, load it asynchronously:
+
+```ts
+import { defineAsyncComponent } from 'vue';
+
+const CodeMirror = defineAsyncComponent(() => import('vue-codemirror6'));
+```
+
+
+
+---
+url: /vue-codemirror6/api/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# API Overview
+
+The `CodeMirror` component has three kinds of API:
+
+| Page                                             | Content                                                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------------------- |
+| [Props](/vue-codemirror6/api/props.md)           | Options that configure the editor. Changes are applied without recreating it. |
+| [Events](/vue-codemirror6/api/events.md)         | Notifications for loading, focus, document changes, and destruction.          |
+| [Instance API](/vue-codemirror6/api/instance.md) | Properties and methods available through a template ref.                      |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```
+
+
+
+---
+url: /vue-codemirror6/api/props.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Props
+
+Props are written in kebab-case in templates (`tab-size`) and camelCase in JavaScript (`tabSize`).
+
+## Content
+
+| Prop          | Type                    | Default     | Description                                                                                              |
+| ------------- | ----------------------- | ----------- | -------------------------------------------------------------------------------------------------------- |
+| `model-value` | `string \| Text`        | `''`        | The document. Use with `v-model`. (Not `value`.)                                                         |
+| `placeholder` | `string \| HTMLElement` | `undefined` | Shown while the document is empty. See [placeholder](https://codemirror.net/docs/ref/#view.placeholder). |
+| `tag`         | `string`                | `'div'`     | Tag name of the root element.                                                                            |
+
+## Setup
+
+| Prop      | Type      | Default | Description                                                                                                   |
+| --------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| `basic`   | `boolean` | `false` | Enables [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup).                               |
+| `minimal` | `boolean` | `false` | Enables [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup). `basic` takes precedence. |
+
+## Editing
+
+| Prop                        | Type           | Default     | Description                                                                                                                          |
+| --------------------------- | -------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `readonly`                  | `boolean`      | `false`     | Prevents changes but keeps the editor focusable. See [`readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly).      |
+| `disabled`                  | `boolean`      | `false`     | Makes the editor non-editable and non-focusable. Inverse of [`editable`](https://codemirror.net/docs/ref/#view.EditorView^editable). |
+| `wrap`                      | `boolean`      | `false`     | Enables [line wrapping](https://codemirror.net/docs/ref/#view.EditorView^lineWrapping).                                              |
+| `tab`                       | `boolean`      | `false`     | Indents with the Tab key ([`indentWithTab`](https://codemirror.net/examples/tab/)).                                                  |
+| `tab-size`                  | `number`       | `undefined` | [Tab size](https://codemirror.net/docs/ref/#state.EditorState^tabSize).                                                              |
+| `indent-unit`               | `string`       | `undefined` | [Indentation unit](https://codemirror.net/docs/ref/#language.indentUnit).                                                            |
+| `allow-multiple-selections` | `boolean`      | `false`     | [Allows multiple selections](https://codemirror.net/docs/ref/#state.EditorState^allowMultipleSelections).                            |
+| `line-separator`            | `string`       | `undefined` | [Line separator](https://codemirror.net/docs/ref/#state.EditorState^lineSeparator). `\n` when not set.                               |
+| `keymap`                    | `KeyBinding[]` | `[]`        | Custom [key bindings](https://codemirror.net/docs/ref/#view.KeyBinding).                                                             |
+
+## Language and linting
+
+| Prop            | Type              | Default     | Description                                                                                           |
+| --------------- | ----------------- | ----------- | ----------------------------------------------------------------------------------------------------- |
+| `lang`          | `LanguageSupport` | `undefined` | Language for syntax highlighting. See [languages](https://codemirror.net/#languages).                 |
+| `linter`        | `LintSource`      | `undefined` | Lint source, e.g. `jsonParseLinter()` or `esLint(...)`.                                               |
+| `linter-config` | `object`          | `{}`        | [Linter config](https://codemirror.net/docs/ref/#lint.linter^config).                                 |
+| `force-linting` | `boolean`         | `false`     | Runs the linter right away. See [`forceLinting`](https://codemirror.net/docs/ref/#lint.forceLinting). |
+| `gutter`        | `boolean`         | `false`     | Shows the [lint gutter](https://codemirror.net/docs/ref/#lint.lintGutter). Requires `linter`.         |
+| `gutter-config` | `object`          | `undefined` | [Lint gutter config](https://codemirror.net/docs/ref/#lint.lintGutter^config).                        |
+
+## Appearance
+
+| Prop      | Type                        | Default     | Description                                                                                        |
+| --------- | --------------------------- | ----------- | -------------------------------------------------------------------------------------------------- |
+| `dark`    | `boolean`                   | `false`     | Marks the editor theme as dark.                                                                    |
+| `theme`   | `Record<string, StyleSpec>` | `{}`        | Style spec passed to [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme). |
+| `phrases` | `Record<string, string>`    | `undefined` | [UI translations](https://codemirror.net/examples/translate/).                                     |
+
+## Scrolling
+
+| Prop                       | Type      | Default | Description                                                                                                                                                      |
+| -------------------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scroll-into-view`         | `boolean` | `true`  | Scrolls to the selection when `modelValue` is updated externally. See [`scrollIntoView`](https://codemirror.net/docs/ref/#state.TransactionSpec.scrollIntoView). |
+| `preserve-scroll-position` | `boolean` | `false` | Keeps the scroll position when `modelValue` is updated externally. See [`scrollSnapshot`](https://codemirror.net/docs/ref/#view.EditorView.scrollSnapshot).      |
+
+## Extensions
+
+| Prop         | Type          | Default | Description                                                                                                              |
+| ------------ | ------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `extensions` | `Extension[]` | `[]`    | Additional [extensions](https://codemirror.net/docs/ref/#state.Extension), appended after the ones generated from props. |
+
+
+
+---
+url: /vue-codemirror6/api/events.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Events
+
+| Event               | Payload                                                             | Emitted when                                                    |
+| ------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `update:modelValue` | `string \| Text`                                                    | The document changed. Used by `v-model`.                        |
+| `ready`             | `{ view: EditorView; state: EditorState; container: HTMLElement }`  | The editor has been created (after mount, client side only).    |
+| `focus`             | `boolean`                                                           | The editor gained (`true`) or lost (`false`) focus.             |
+| `update`            | [`ViewUpdate`](https://codemirror.net/docs/ref/#view.ViewUpdate)    | Any update of the view: document, selection, focus, viewport, … |
+| `change`            | [`EditorState`](https://codemirror.net/docs/ref/#state.EditorState) | The document changed. Receives the new state.                   |
+| `destroy`           | —                                                                   | The editor was destroyed (component unmounted).                 |
+
+```vue
+<script setup lang="ts">
+import type { EditorState } from '@codemirror/state';
+import type { ViewUpdate } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const onUpdate = (update: ViewUpdate) => {
+  if (update.selectionSet) {
+    console.log('selection', update.state.selection.main);
+  }
+};
+
+const onChange = (state: EditorState) => {
+  console.log('lines', state.doc.lines);
+};
+</script>
+
+<template>
+  <code-mirror basic @update="onUpdate" @change="onChange" />
+</template>
+```
+
+When the component is used as a [Web Component](/vue-codemirror6/guide/web-components.md), these are dispatched as native `CustomEvent`s and the payload is available as `event.detail[0]`. The model event is named `update:model-value`.
+
+
+
+---
+url: /vue-codemirror6/api/instance.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Instance API
+
+Access the instance through a template ref. Use the `CodeMirrorExposed` type for type checking.
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const cm = ref<CodeMirrorExposed>();
+
+const insertDate = () => {
+  cm.value?.replaceSelection(new Date().toISOString());
+};
+</script>
+
+<template>
+  <code-mirror ref="cm" basic />
+  <button type="button" @click="insertDate">Insert date</button>
+</template>
+```
+
+:::info
+The editor is created after mount. Until the `ready` event, `view` and the values derived from it are `undefined` or empty.
+:::
+
+## Properties
+
+| Property          | Type                                  | Description                                                                                                             |
+| ----------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `view`            | `EditorView \| undefined`             | The [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView). Use it for anything not wrapped by the component. |
+| `editor`          | `HTMLElement \| undefined`            | The root element that contains the editor.                                                                              |
+| `dom`             | `Element \| undefined`                | The editable content element.                                                                                           |
+| `selection`       | `EditorSelection \| undefined`        | Gets or sets the [selection](https://codemirror.net/docs/ref/#state.EditorSelection).                                   |
+| `cursor`          | `number`                              | Gets or sets the cursor position.                                                                                       |
+| `focus`           | `boolean`                             | Gets or sets the focus state.                                                                                           |
+| `length`          | `number`                              | Length of the document.                                                                                                 |
+| `json`            | `Record<string, StateField<unknown>>` | Gets or sets the state as a JSON-serializable object.                                                                   |
+| `diagnosticCount` | `number`                              | Number of lint diagnostics. See [`diagnosticCount`](https://codemirror.net/docs/ref/#lint.diagnosticCount).             |
+
+## Methods
+
+| Method               | Description                                                            |
+| -------------------- | ---------------------------------------------------------------------- |
+| `lint()`             | Runs the linter immediately. Only works when the `linter` prop is set. |
+| `forceReconfigure()` | Removes and re-registers all extensions.                               |
+
+## CodeMirror 5 compatible methods
+
+These methods are provided for users familiar with [CodeMirror 5](https://codemirror.net/5/). The properties above and `view` are usually sufficient, so **active use is not recommended**.
+
+| Method                                                               | Description                                   |
+| -------------------------------------------------------------------- | --------------------------------------------- |
+| `getRange(from?: number, to?: number)`                               | Gets the text between the given positions.    |
+| `getLine(number: number)`                                            | Gets the content of a line.                   |
+| `lineCount()`                                                        | Gets the number of lines.                     |
+| `getCursor()`                                                        | Gets one end of the primary selection.        |
+| `listSelections()`                                                   | Gets all current selection ranges.            |
+| `getSelection()`                                                     | Gets the selected text.                       |
+| `getSelections()`                                                    | Gets the text of every selection range.       |
+| `somethingSelected()`                                                | Returns `true` if any text is selected.       |
+| `replaceRange(replacement: string \| Text, from, to)`                | Replaces the text between `from` and `to`.    |
+| `replaceSelection(replacement: string \| Text)`                      | Replaces the selection(s).                    |
+| `setCursor(position: number)`                                        | Sets the cursor position.                     |
+| `setSelection(anchor: number, head?: number)`                        | Sets a single selection range.                |
+| `setSelections(ranges: readonly SelectionRange[], primary?: number)` | Sets multiple selection ranges.               |
+| `extendSelectionsBy(f: (range: SelectionRange) => number)`           | Extends every selection by the result of `f`. |
+
+
+
+---
+url: /vue-codemirror6/playground.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# Playground
+
+Try vue-codemirror6 in your browser. Each tab shows a live demo together with its source code.
+
+
+
+
+---
+url: /vue-codemirror6/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/llms.txt, the full documentation bundle is available at /vue-codemirror6/llms-full.txt.
+
+# vue-codemirror6
+
+CodeMirror 6 for Vue
+
+> A lightweight wrapper component that brings the CodeMirror 6 editor to Vue 2.7 and Vue 3.
+
+[Get Started](/guide/getting-started) | [Playground](/playground) | [GitHub](https://github.com/logue/vue-codemirror6)
+
+## Features
+
+- [💚 **Vue 2.7 & Vue 3**](/guide/introduction): Built on vue-demi, so the same component works in both Vue 2.7 and Vue 3 projects.
+- [🔁 **Two-way binding**](/guide/usage): Bind the document with v-model just like a native input. External updates can keep the scroll position.
+- [🎨 **Languages, linters, and themes**](/guide/languages-and-themes): Pass any CodeMirror LanguageSupport, LintSource, or theme through props, or add raw extensions.
+- [🌐 **SSR ready**](/guide/ssr): CodeMirror is only initialized on the client, so the component renders safely in Nuxt and other SSR frameworks.
+- [🧩 **Web Component**](/guide/web-components): The same component is also exported as a custom element for use outside Vue (experimental).
+- [🛠️ **Full editor API**](/api/instance): Access the EditorView, selection, and CodeMirror 5 style helper methods through a template ref.
+
+

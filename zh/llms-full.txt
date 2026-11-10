@@ -1,0 +1,907 @@
+---
+url: /vue-codemirror6/zh/guide/introduction.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 简介
+
+**vue-codemirror6** 是一个在 Vue 中使用 [CodeMirror 6](https://codemirror.net/6/) 的组件。它基于 [vue-demi](https://github.com/vueuse/vue-demi) 构建,因此同一个组件可以同时在 Vue 2.7 和 Vue 3 中运行。
+
+CodeMirror 6 是一个模块化的代码编辑器。本组件没有直接暴露 CodeMirror 的所有概念,而是把最常用的设置整理成 props,其余功能仍可通过 `extensions` 和编辑器实例使用。
+
+## 功能
+
+- 文本的 **`v-model` 绑定**
+- **常用设置即 props**:`basic` / `minimal` 预设、自动换行、Tab 缩进、只读与禁用模式、占位文本、深色模式等
+- 可传入任意 CodeMirror 包的 **语言、代码检查和主题 props**
+- `ready`、`focus`、`update`、`change`、`destroy` **事件**
+- 可访问 [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)、选区、光标、代码检查结果以及兼容 CodeMirror 5 的辅助方法的 **实例 API**
+- **SSR 兼容**:编辑器只在客户端创建
+- 同一组件的 **Web Component 版本**(实验性)
+
+## 运行环境
+
+| 环境         | 版本                    |
+| ---------- | --------------------- |
+| Vue        | `^2.7.14` 或 `^3.3.4`  |
+| CodeMirror | `codemirror` `^6.0.0` |
+| 输出格式       | ESM(默认)和 UMD 构建       |
+
+`@codemirror/*` 系列包(`state`、`view`、`language`、`lint`、`commands`、`autocomplete`、`search`)是 peer dependencies,安装 `codemirror` 包时会一并安装。
+
+## 下一步
+
+- [快速开始](/vue-codemirror6/zh/guide/getting-started.md) — 安装并渲染第一个编辑器。
+- [演练场](/vue-codemirror6/zh/playground.md) — 在线体验演示。
+- [Props](/vue-codemirror6/zh/api/props.md) — 所有选项的列表。
+
+
+
+---
+url: /vue-codemirror6/zh/guide/getting-started.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 快速开始
+
+## 安装
+
+将组件与 `codemirror` 一起安装:
+
+```sh
+pnpm add vue-codemirror6 codemirror
+```
+
+语言支持、代码检查和主题都是独立的包,请按需安装,例如:
+
+```sh
+pnpm add @codemirror/lang-javascript
+```
+
+## 最简示例
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('Cozy lummox gives smart squid who asks for job pen.');
+</script>
+
+<template>
+  <code-mirror v-model="value" />
+</template>
+```
+
+这样会渲染一个没有行号和快捷键的简单编辑器。添加 `basic` 即可启用 CodeMirror 的 [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup)(行号、撤销历史、括号匹配、搜索等):
+
+```vue
+<template>
+  <code-mirror v-model="value" basic />
+</template>
+```
+
+:::tip
+使用 `minimal` 代替 `basic` 可启用 [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup)。两者同时指定时以 `basic` 为准。
+:::
+
+## 添加语言
+
+向 `lang` 传入 `LanguageSupport` 对象即可启用语法高亮:
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## 全局注册
+
+包中导出的 `install` 函数会将组件注册为 `CodeMirror`:
+
+```ts
+import { createApp } from 'vue';
+import { install as CodeMirror } from 'vue-codemirror6';
+
+import App from './App.vue';
+
+createApp(App).use(CodeMirror).mount('#app');
+```
+
+注册后,无需导入即可在任意模板中使用 `<code-mirror>`。
+
+## 包的导出
+
+| 导出                    | 说明                             |
+| --------------------- | ------------------------------ |
+| `default`             | Vue 组件                         |
+| `install`             | 全局注册组件的 Vue 插件函数               |
+| `CodeMirror`          | 用 `defineCustomElement` 包装后的组件 |
+| `CodeMirrorExposed`   | 通过模板 ref 访问的实例 API 类型          |
+| `Meta`                | 包的版本号和构建日期                     |
+| `vue-codemirror6/umd` | 用于 `<script>` 标签加载的 UMD 构建     |
+
+## 下一步
+
+- [基本用法](/vue-codemirror6/zh/guide/usage.md) — `v-model`、插槽、只读模式和快捷键
+- [语言、代码检查与主题](/vue-codemirror6/zh/guide/languages-and-themes.md)
+
+
+
+---
+url: /vue-codemirror6/zh/guide/usage.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 基本用法
+
+## 使用 `v-model` 双向绑定
+
+文本通过 `modelValue`(而不是 `value`)绑定,因此可以像其他 Vue 组件一样使用 `v-model`。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic placeholder="请输入内容…" />
+  <pre>{{ value }}</pre>
+</template>
+```
+
+从外部修改 `modelValue` 时,编辑器的内容会被替换。以下两个 props 控制此时视图的行为:
+
+- `scroll-into-view`(默认 `true`):滚动到更新后的选区位置。
+- `preserve-scroll-position`(默认 `false`):保持当前滚动位置。适用于持续追加文本的场景(日志、流式输出等)。
+
+## 通过插槽设置初始文本
+
+除了 `v-model`,也可以把初始文本写在组件内部。只会使用第一个子节点的文本。
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic readonly :lang="json()" :linter="jsonParseLinter()">
+    <pre>
+{
+  "key": "value"
+}</pre>
+  </code-mirror>
+</template>
+```
+
+:::warning
+
+- 插槽内容会覆盖 `v-model` 的值,请不要同时使用。插槽方式适用于只读的简单语法高亮。
+- 请用 `<pre>` 包裹文本,避免空白被合并。
+- 插槽方式在 Vue 2.7 中无效。
+
+:::
+
+## 只读与禁用
+
+| Prop       | 可编辑 | 可聚焦 / 可选择 | CodeMirror 选项                                                                          |
+| ---------- | --- | --------- | -------------------------------------------------------------------------------------- |
+| `readonly` | 否   | 是         | [`EditorState.readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly)  |
+| `disabled` | 否   | 否         | [`EditorView.editable`](https://codemirror.net/docs/ref/#view.EditorView^editable) 的反值 |
+
+仅用于语法高亮展示时,请使用 `disabled`。
+
+```vue
+<template>
+  <code-mirror v-model="value" basic :readonly="isReadonly" :disabled="isDisabled" />
+</template>
+```
+
+## 编辑行为
+
+| Prop                        | 作用                          |
+| --------------------------- | --------------------------- |
+| `wrap`                      | 启用自动换行。                     |
+| `tab`                       | 按 Tab 键缩进,而不是移动焦点。          |
+| `tab-size`                  | 制表符的宽度。                     |
+| `indent-unit`               | 缩进单位,例如 `"  "` 或 `"\t"`。    |
+| `allow-multiple-selections` | 允许多重选区(例如 Ctrl / Cmd + 点击)。 |
+| `line-separator`            | 文档使用的换行符,默认为 `\n`。          |
+| `placeholder`               | 文本为空时显示的字符串或 `HTMLElement`。 |
+
+:::tip
+启用 `tab` 后,Tab 键会被编辑器占用。键盘用户可以先按 Esc 再按 Tab 离开编辑器。
+:::
+
+## 自定义快捷键
+
+向 `keymap` 传入 [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) 数组。如果 `run` 返回 `true`,该按键的默认行为将不会执行。
+
+```vue
+<script setup lang="ts">
+import type { KeyBinding } from '@codemirror/view';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+
+const keymap: KeyBinding[] = [
+  {
+    key: 'Mod-s',
+    run: () => {
+      console.log('save', value.value);
+      return true;
+    }
+  }
+];
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :keymap="keymap" />
+</template>
+```
+
+## 监听事件
+
+```vue
+<template>
+  <code-mirror
+    v-model="value"
+    @ready="({ view }) => console.log('ready', view)"
+    @focus="focused => (isFocused = focused)"
+    @update="update => console.log(update.docChanged)"
+  />
+</template>
+```
+
+各事件的参数请参阅 [事件](/vue-codemirror6/zh/api/events.md)。
+
+## 翻译编辑器界面
+
+使用 `phrases` 可以翻译 CodeMirror 显示的文字(搜索面板、代码检查面板、折叠标记等)。可用的键请参阅 CodeMirror 的 [翻译示例](https://codemirror.net/examples/translate/)。
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const phrases: Record<string, string> = {
+  // @codemirror/search
+  'Go to line': '跳转到行',
+  go: '确定',
+  Find: '查找',
+  Replace: '替换',
+  next: '下一个',
+  previous: '上一个',
+  all: '全部',
+  'match case': '区分大小写',
+  'by word': '全字匹配',
+  regexp: '正则表达式',
+  replace: '替换',
+  'replace all': '全部替换',
+  close: '关闭',
+  // @codemirror/lint
+  Diagnostics: '诊断',
+  'No diagnostics': '无诊断信息'
+};
+</script>
+
+<template>
+  <code-mirror basic :phrases="phrases" />
+</template>
+```
+
+:::tip
+与 vue-i18n 结合使用时,请将 `phrases` 设为响应式(例如 `computed`),以便在切换语言时更新编辑器。
+:::
+
+
+
+---
+url: /vue-codemirror6/zh/guide/languages-and-themes.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 语言、代码检查与主题
+
+## 语言
+
+安装语言包,并将其 `LanguageSupport` 对象传给 `lang`:
+
+```vue
+<script setup lang="ts">
+import { markdown } from '@codemirror/lang-markdown';
+import CodeMirror from 'vue-codemirror6';
+
+const lang = markdown();
+</script>
+
+<template>
+  <code-mirror basic wrap :lang="lang" />
+</template>
+```
+
+官方语言包包括:
+
+`@codemirror/lang-angular`、`lang-cpp`、`lang-css`、`lang-html`、`lang-java`、`lang-javascript`、`lang-json`、`lang-lezer`、`lang-markdown`、`lang-php`、`lang-python`、`lang-rust`、`lang-sql`、`lang-vue`、`lang-wast`、`lang-xml`
+
+社区也提供了许多语言包。请参阅 [CodeMirror 语言列表](https://codemirror.net/#languages) 和 [README](https://github.com/logue/vue-codemirror6#supported-languages)。
+
+## 代码检查
+
+向 `linter` 传入 [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource)。添加 `gutter` 后,有问题的行会显示标记。
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('{ "key": "value", }');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic gutter :lang="json()" :linter="jsonParseLinter()" />
+</template>
+```
+
+对于 JavaScript,可以将 `@codemirror/lang-javascript` 提供的 `esLint()` 与 [eslint-linter-browserify](https://github.com/UziTech/eslint-linter-browserify) 结合使用:
+
+```ts
+import { esLint } from '@codemirror/lang-javascript';
+import eslint from 'eslint-linter-browserify';
+
+const linter = esLint(new eslint.Linter(), {
+  languageOptions: {
+    parserOptions: { ecmaVersion: 2022, sourceType: 'module' }
+  },
+  rules: { semi: ['error', 'never'] }
+});
+```
+
+| Prop            | 说明                                                                       |
+| --------------- | ------------------------------------------------------------------------ |
+| `linter`        | 代码检查源。                                                                   |
+| `linter-config` | `delay` 等 [代码检查配置](https://codemirror.net/docs/ref/#lint.linter^config)。 |
+| `force-linting` | 立即运行代码检查,而不是等待编辑器空闲。                                                     |
+| `gutter`        | 显示检查边栏。未指定 `linter` 时无效。                                                 |
+| `gutter-config` | [检查边栏配置](https://codemirror.net/docs/ref/#lint.lintGutter^config)。       |
+
+诊断数量可通过 [实例](/vue-codemirror6/zh/api/instance.md) 的 `diagnosticCount` 获取,调用 `lint()` 可随时运行代码检查。
+
+:::tip
+在编辑器中按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>(macOS 上为 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>)可打开检查面板,按 <kbd>F8</kbd> 跳转到下一个问题。
+:::
+
+## 主题与深色模式
+
+- `dark` 告诉 CodeMirror 编辑器背景为深色,选区、面板等内置界面会使用深色配色。
+- `theme` 接受传给 [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) 的样式定义对象。
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const theme = {
+  '&': { fontSize: '14px' },
+  '.cm-content': { fontFamily: 'Menlo, monospace' },
+  '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
+};
+</script>
+
+<template>
+  <code-mirror basic :dark="isDark" :theme="theme" />
+</template>
+```
+
+现成的主题通常以扩展的形式发布,通过 `extensions` 添加:
+
+```vue
+<script setup lang="ts">
+import { oneDark } from '@codemirror/theme-one-dark';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic dark :extensions="[oneDark]" />
+</template>
+```
+
+示例:[`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one-dark)、[`@uiw/codemirror-themes`](https://github.com/uiwjs/react-codemirror/tree/master/themes)、[`codemirror6-bootstrap-theme`](https://github.com/logue/codemirror6-bootstrap-theme)
+
+## 其他扩展
+
+任何 CodeMirror [`Extension`](https://codemirror.net/docs/ref/#state.Extension) 都可以通过 `extensions` 传入,它们会与其他 props 生成的扩展一起生效。
+
+```vue
+<script setup lang="ts">
+import { EditorView } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
+</script>
+
+<template>
+  <code-mirror basic :extensions="extensions" />
+</template>
+```
+
+:::info
+`lang` 和 `linter` 也可以通过 `extensions` 传入。将它们作为独立的 props,是为了类型安全以及与旧版本保持兼容。
+:::
+
+props 变化时,组件会自动重新配置编辑器。如果做了组件无法检测到的更改,请调用实例的 `forceReconfigure()`。
+
+
+
+---
+url: /vue-codemirror6/zh/guide/ssr.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 服务端渲染
+
+本组件兼容 SSR。CodeMirror 只在浏览器中(`onMounted` 时)创建,因此在服务端渲染时,组件只会输出空的容器元素,不会访问 `window` 或 `document`。
+
+## Nuxt 3 / Nuxt 4
+
+直接使用即可:
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## Nuxt 2 或遇到问题时
+
+用 `<ClientOnly>` 包裹组件,使其只在浏览器中渲染:
+
+```vue
+<template>
+  <client-only>
+    <code-mirror v-model="value" basic :lang="lang" />
+  </client-only>
+</template>
+```
+
+:::info
+编辑器在水合之后才会创建。因此在服务端,以及客户端触发 `ready` 事件之前,实例属性(`view`、`selection` 等)均为 `undefined`。
+:::
+
+
+
+---
+url: /vue-codemirror6/zh/guide/web-components.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# Web Component
+
+:::warning 实验性功能
+Web Component 版本仍处于实验阶段,行为可能会发生变化。
+:::
+
+本包还导出了用 Vue 的 [`defineCustomElement`](https://cn.vuejs.org/guide/extras/web-components.html) 包装的组件。可以用任意标签名注册:
+
+```ts
+import { CodeMirror } from 'vue-codemirror6';
+
+customElements.define('code-mirror', CodeMirror);
+```
+
+```html
+<code-mirror></code-mirror>
+```
+
+编辑器渲染在一个 open 模式的 Shadow Root 中。
+
+## 设置 props
+
+- **基本类型的 props**(`string`、`boolean`、`number`)可以通过属性(attribute)或 DOM 属性(property)设置。
+- **对象、数组和函数类型的 props**(`lang`、`linter`、`extensions`、`theme`、`keymap` 等)只能通过 DOM 属性设置。
+
+在元素插入文档之前设置属性,即可在首次渲染时生效:
+
+```ts
+import { javascript } from '@codemirror/lang-javascript';
+
+const element = document.createElement('code-mirror');
+element.setAttribute('readonly', '');
+element.modelValue = 'const x = 1;';
+element.lang = javascript();
+
+document.body.append(element);
+```
+
+## 事件
+
+Vue 的 emit 会以原生 `CustomEvent` 的形式派发,emit 的参数以数组形式放在 `event.detail` 中。
+
+```ts
+element.addEventListener('ready', event => {
+  const [{ view }] = (event as CustomEvent).detail;
+  console.log(view);
+});
+
+element.addEventListener('update:model-value', event => {
+  const [value] = (event as CustomEvent).detail;
+  console.log(value);
+});
+```
+
+## 实例 API
+
+[实例 API](/vue-codemirror6/zh/api/instance.md) 直接暴露在元素上:
+
+```ts
+import type { CodeMirrorExposed } from 'vue-codemirror6';
+
+const editor = element as unknown as CodeMirrorExposed;
+editor.replaceRange('bye', 0, 5);
+console.log(editor.view?.state.doc.toString());
+```
+
+
+
+---
+url: /vue-codemirror6/zh/guide/bundling.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 打包建议
+
+CodeMirror 及其语言包体积相对较大。将它们拆分为独立的 chunk,可以减小主包体积,并让浏览器单独缓存编辑器部分。
+
+## Vite
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          codemirror: ['vue-codemirror6'],
+          'codemirror-lang': [
+            // 按需添加使用的语言。
+            '@codemirror/lang-html',
+            '@codemirror/lang-javascript',
+            '@codemirror/lang-markdown'
+          ]
+        }
+      }
+    }
+  }
+});
+```
+
+## Rsbuild
+
+```ts
+// rsbuild.config.ts
+import { defineConfig } from '@rsbuild/core';
+
+export default defineConfig({
+  splitChunks: {
+    cacheGroups: {
+      codemirror: {
+        test: /node_modules[\\/](@codemirror|codemirror|@lezer)[\\/]/,
+        name: 'codemirror',
+        chunks: 'all'
+      }
+    }
+  }
+});
+```
+
+## 懒加载
+
+如果首屏不需要编辑器,可以异步加载:
+
+```ts
+import { defineAsyncComponent } from 'vue';
+
+const CodeMirror = defineAsyncComponent(() => import('vue-codemirror6'));
+```
+
+
+
+---
+url: /vue-codemirror6/zh/api/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# API 概览
+
+`CodeMirror` 组件提供三类 API:
+
+| 页面                                            | 内容                         |
+| --------------------------------------------- | -------------------------- |
+| [Props](/vue-codemirror6/zh/api/props.md)     | 配置编辑器的选项。修改后无需重新创建编辑器即可生效。 |
+| [事件](/vue-codemirror6/zh/api/events.md)       | 加载完成、焦点变化、文本变更和销毁的通知。      |
+| [实例 API](/vue-codemirror6/zh/api/instance.md) | 通过模板 ref 可以使用的属性和方法。       |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```
+
+
+
+---
+url: /vue-codemirror6/zh/api/props.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# Props
+
+在模板中使用短横线命名(`tab-size`),在 JavaScript 中使用驼峰命名(`tabSize`)。
+
+## 内容
+
+| Prop          | 类型                      | 默认值         | 说明                                                                           |
+| ------------- | ----------------------- | ----------- | ---------------------------------------------------------------------------- |
+| `model-value` | `string \| Text`        | `''`        | 文本内容。配合 `v-model` 使用(不是 `value`)。                                            |
+| `placeholder` | `string \| HTMLElement` | `undefined` | 文本为空时显示。参见 [placeholder](https://codemirror.net/docs/ref/#view.placeholder)。 |
+| `tag`         | `string`                | `'div'`     | 根元素的标签名。                                                                     |
+
+## 预设
+
+| Prop      | 类型        | 默认值     | 说明                                                                                          |
+| --------- | --------- | ------- | ------------------------------------------------------------------------------------------- |
+| `basic`   | `boolean` | `false` | 启用 [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup)。                  |
+| `minimal` | `boolean` | `false` | 启用 [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup)。以 `basic` 为准。 |
+
+## 编辑
+
+| Prop                        | 类型             | 默认值         | 说明                                                                                       |
+| --------------------------- | -------------- | ----------- | ---------------------------------------------------------------------------------------- |
+| `readonly`                  | `boolean`      | `false`     | 禁止修改,但仍可聚焦。参见 [`readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly)。 |
+| `disabled`                  | `boolean`      | `false`     | 不可编辑且不可聚焦。为 [`editable`](https://codemirror.net/docs/ref/#view.EditorView^editable) 的反值。 |
+| `wrap`                      | `boolean`      | `false`     | 启用 [自动换行](https://codemirror.net/docs/ref/#view.EditorView^lineWrapping)。                |
+| `tab`                       | `boolean`      | `false`     | 按 Tab 键缩进([`indentWithTab`](https://codemirror.net/examples/tab/))。                      |
+| `tab-size`                  | `number`       | `undefined` | [制表符宽度](https://codemirror.net/docs/ref/#state.EditorState^tabSize)。                     |
+| `indent-unit`               | `string`       | `undefined` | [缩进单位](https://codemirror.net/docs/ref/#language.indentUnit)。                            |
+| `allow-multiple-selections` | `boolean`      | `false`     | [允许多重选区](https://codemirror.net/docs/ref/#state.EditorState^allowMultipleSelections)。    |
+| `line-separator`            | `string`       | `undefined` | [换行符](https://codemirror.net/docs/ref/#state.EditorState^lineSeparator)。未指定时为 `\n`。      |
+| `keymap`                    | `KeyBinding[]` | `[]`        | 自定义 [快捷键](https://codemirror.net/docs/ref/#view.KeyBinding)。                             |
+
+## 语言与代码检查
+
+| Prop            | 类型                | 默认值         | 说明                                                                                |
+| --------------- | ----------------- | ----------- | --------------------------------------------------------------------------------- |
+| `lang`          | `LanguageSupport` | `undefined` | 语法高亮的语言。参见 [语言列表](https://codemirror.net/#languages)。                             |
+| `linter`        | `LintSource`      | `undefined` | 代码检查源,例如 `jsonParseLinter()` 或 `esLint(...)`。                                     |
+| `linter-config` | `object`          | `{}`        | [代码检查配置](https://codemirror.net/docs/ref/#lint.linter^config)。                    |
+| `force-linting` | `boolean`         | `false`     | 立即运行代码检查。参见 [`forceLinting`](https://codemirror.net/docs/ref/#lint.forceLinting)。 |
+| `gutter`        | `boolean`         | `false`     | 显示 [检查边栏](https://codemirror.net/docs/ref/#lint.lintGutter)。需要 `linter`。          |
+| `gutter-config` | `object`          | `undefined` | [检查边栏配置](https://codemirror.net/docs/ref/#lint.lintGutter^config)。                |
+
+## 外观
+
+| Prop      | 类型                          | 默认值         | 说明                                                                                     |
+| --------- | --------------------------- | ----------- | -------------------------------------------------------------------------------------- |
+| `dark`    | `boolean`                   | `false`     | 将编辑器主题标记为深色。                                                                           |
+| `theme`   | `Record<string, StyleSpec>` | `{}`        | 传给 [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) 的样式定义。 |
+| `phrases` | `Record<string, string>`    | `undefined` | [界面翻译](https://codemirror.net/examples/translate/)。                                    |
+
+## 滚动
+
+| Prop                       | 类型        | 默认值     | 说明                                                                                                                     |
+| -------------------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `scroll-into-view`         | `boolean` | `true`  | 外部更新 `modelValue` 时滚动到选区。参见 [`scrollIntoView`](https://codemirror.net/docs/ref/#state.TransactionSpec.scrollIntoView)。 |
+| `preserve-scroll-position` | `boolean` | `false` | 外部更新 `modelValue` 时保持滚动位置。参见 [`scrollSnapshot`](https://codemirror.net/docs/ref/#view.EditorView.scrollSnapshot)。      |
+
+## 扩展
+
+| Prop         | 类型            | 默认值  | 说明                                                                             |
+| ------------ | ------------- | ---- | ------------------------------------------------------------------------------ |
+| `extensions` | `Extension[]` | `[]` | 额外的 [扩展](https://codemirror.net/docs/ref/#state.Extension),追加在由 props 生成的扩展之后。 |
+
+
+
+---
+url: /vue-codemirror6/zh/api/events.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 事件
+
+| 事件                  | 参数                                                                  | 触发时机                          |
+| ------------------- | ------------------------------------------------------------------- | ----------------------------- |
+| `update:modelValue` | `string \| Text`                                                    | 文本发生变化时。供 `v-model` 使用。       |
+| `ready`             | `{ view: EditorView; state: EditorState; container: HTMLElement }`  | 编辑器创建完成时(挂载后,仅客户端)。           |
+| `focus`             | `boolean`                                                           | 编辑器获得(`true`)或失去(`false`)焦点时。 |
+| `update`            | [`ViewUpdate`](https://codemirror.net/docs/ref/#view.ViewUpdate)    | 视图有任何更新时:文本、选区、焦点、视口等。        |
+| `change`            | [`EditorState`](https://codemirror.net/docs/ref/#state.EditorState) | 文本发生变化时,参数为新的状态。              |
+| `destroy`           | —                                                                   | 编辑器被销毁时(组件卸载时)。               |
+
+```vue
+<script setup lang="ts">
+import type { EditorState } from '@codemirror/state';
+import type { ViewUpdate } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const onUpdate = (update: ViewUpdate) => {
+  if (update.selectionSet) {
+    console.log('selection', update.state.selection.main);
+  }
+};
+
+const onChange = (state: EditorState) => {
+  console.log('lines', state.doc.lines);
+};
+</script>
+
+<template>
+  <code-mirror basic @update="onUpdate" @change="onChange" />
+</template>
+```
+
+作为 [Web Component](/vue-codemirror6/zh/guide/web-components.md) 使用时,这些事件以原生 `CustomEvent` 派发,参数可通过 `event.detail[0]` 获取。模型事件名为 `update:model-value`。
+
+
+
+---
+url: /vue-codemirror6/zh/api/instance.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 实例 API
+
+通过模板 ref 访问实例。类型检查时请使用 `CodeMirrorExposed` 类型。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const cm = ref<CodeMirrorExposed>();
+
+const insertDate = () => {
+  cm.value?.replaceSelection(new Date().toISOString());
+};
+</script>
+
+<template>
+  <code-mirror ref="cm" basic />
+  <button type="button" @click="insertDate">插入日期</button>
+</template>
+```
+
+:::info
+编辑器在挂载后创建。在 `ready` 事件触发之前,`view` 以及由它派生的值为 `undefined` 或空值。
+:::
+
+## 属性
+
+| 属性                | 类型                                    | 说明                                                                                       |
+| ----------------- | ------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `view`            | `EditorView \| undefined`             | [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)。用于组件未封装的功能。             |
+| `editor`          | `HTMLElement \| undefined`            | 包含编辑器的根元素。                                                                               |
+| `dom`             | `Element \| undefined`                | 可编辑的内容元素。                                                                                |
+| `selection`       | `EditorSelection \| undefined`        | 获取或设置 [选区](https://codemirror.net/docs/ref/#state.EditorSelection)。                      |
+| `cursor`          | `number`                              | 获取或设置光标位置。                                                                               |
+| `focus`           | `boolean`                             | 获取或设置焦点状态。                                                                               |
+| `length`          | `number`                              | 文本长度。                                                                                    |
+| `json`            | `Record<string, StateField<unknown>>` | 以可 JSON 序列化的对象获取或设置状态。                                                                   |
+| `diagnosticCount` | `number`                              | 代码检查的诊断数量。参见 [`diagnosticCount`](https://codemirror.net/docs/ref/#lint.diagnosticCount)。 |
+
+## 方法
+
+| 方法                   | 说明                           |
+| -------------------- | ---------------------------- |
+| `lint()`             | 立即运行代码检查。仅在指定了 `linter` 时有效。 |
+| `forceReconfigure()` | 移除并重新注册所有扩展。                 |
+
+## 兼容 CodeMirror 5 的方法
+
+这些方法面向熟悉 [CodeMirror 5](https://codemirror.net/5/) 的用户。通常使用上面的属性和 `view` 就足够了,因此 **不建议主动使用**。
+
+| 方法                                                                   | 说明                      |
+| -------------------------------------------------------------------- | ----------------------- |
+| `getRange(from?: number, to?: number)`                               | 获取指定位置之间的文本。            |
+| `getLine(number: number)`                                            | 获取指定行的内容。               |
+| `lineCount()`                                                        | 获取行数。                   |
+| `getCursor()`                                                        | 获取主选区的一端。               |
+| `listSelections()`                                                   | 获取当前所有选区。               |
+| `getSelection()`                                                     | 获取选中的文本。                |
+| `getSelections()`                                                    | 获取每个选区的文本。              |
+| `somethingSelected()`                                                | 有文本被选中时返回 `true`。       |
+| `replaceRange(replacement: string \| Text, from, to)`                | 替换 `from` 到 `to` 之间的文本。 |
+| `replaceSelection(replacement: string \| Text)`                      | 替换选区内容。                 |
+| `setCursor(position: number)`                                        | 设置光标位置。                 |
+| `setSelection(anchor: number, head?: number)`                        | 设置单个选区。                 |
+| `setSelections(ranges: readonly SelectionRange[], primary?: number)` | 设置多个选区。                 |
+| `extendSelectionsBy(f: (range: SelectionRange) => number)`           | 将每个选区扩展到 `f` 的返回值。      |
+
+
+
+---
+url: /vue-codemirror6/zh/playground.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# 演练场
+
+在浏览器中体验 vue-codemirror6。每个标签页都包含演示及其源代码(演示中的说明为英文)。
+
+
+
+
+---
+url: /vue-codemirror6/zh/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/zh/llms.txt, the full documentation bundle is available at /vue-codemirror6/zh/llms-full.txt.
+
+# vue-codemirror6
+
+在 Vue 中使用 CodeMirror 6
+
+> 一个轻量的封装组件,让 CodeMirror 6 编辑器可以在 Vue 2.7 和 Vue 3 中使用。
+
+[快速开始](/zh/guide/getting-started) | [演练场](/zh/playground) | [GitHub](https://github.com/logue/vue-codemirror6)
+
+## Features
+
+- [💚 **支持 Vue 2.7 和 Vue 3**](/zh/guide/introduction): 基于 vue-demi 构建,同一个组件可以在 Vue 2.7 和 Vue 3 项目中使用。
+- [🔁 **双向绑定**](/zh/guide/usage): 像原生输入框一样使用 v-model 绑定文本。外部更新时还可以保持滚动位置。
+- [🎨 **语言、代码检查与主题**](/zh/guide/languages-and-themes): 通过 props 传入 CodeMirror 的 LanguageSupport、LintSource 或主题,也可以添加任意扩展。
+- [🌐 **支持 SSR**](/zh/guide/ssr): CodeMirror 只在客户端初始化,因此可以在 Nuxt 等 SSR 框架中安全渲染。
+- [🧩 **Web Component**](/zh/guide/web-components): 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用(实验性)。
+- [🛠️ **完整的编辑器 API**](/zh/api/instance): 通过模板 ref 访问 EditorView、选区以及兼容 CodeMirror 5 的辅助方法。
+
+

@@ -1,0 +1,907 @@
+---
+url: /vue-codemirror6/ja/guide/introduction.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# はじめに
+
+**vue-codemirror6** は、[CodeMirror 6](https://codemirror.net/6/) を Vue で使うためのコンポーネントです。[vue-demi](https://github.com/vueuse/vue-demi) をベースにしているため、同じコンポーネントが Vue 2.7 と Vue 3 の両方で動作します。
+
+CodeMirror 6 はモジュール構成のコードエディタです。このコンポーネントは CodeMirror のすべての概念をそのまま公開するのではなく、よく使う設定を props にまとめ、それ以外は `extensions` やエディタのインスタンスから利用できるようにしています。
+
+## 機能
+
+- テキストの **`v-model` バインディング**
+- **よく使う設定を props で指定**:`basic` / `minimal` セットアップ、折り返し、Tab キーでのインデント、読み取り専用・無効化、プレースホルダー、ダークモードなど
+- 任意の CodeMirror パッケージを渡せる **言語・リンター・テーマの props**
+- `ready`、`focus`、`update`、`change`、`destroy` の **イベント**
+- [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)、選択範囲、カーソル、リンターの診断結果、CodeMirror 5 互換のヘルパーにアクセスできる **インスタンス API**
+- **SSR 対応**:エディタはクライアント側でのみ生成されます
+- 同じコンポーネントの **Web Component 版**(実験的機能)
+
+## 動作環境
+
+| 環境         | バージョン                  |
+| ---------- | ---------------------- |
+| Vue        | `^2.7.14` または `^3.3.4` |
+| CodeMirror | `codemirror` `^6.0.0`  |
+| 出力形式       | ESM(デフォルト)と UMD ビルド    |
+
+`@codemirror/*` パッケージ(`state`、`view`、`language`、`lint`、`commands`、`autocomplete`、`search`)は peer dependencies です。`codemirror` パッケージをインストールすると一緒に入ります。
+
+## 次のステップ
+
+- [はじめかた](/vue-codemirror6/ja/guide/getting-started.md) — パッケージをインストールして最初のエディタを表示します。
+- [Playground](/vue-codemirror6/ja/playground.md) — ブラウザで動作を試せます。
+- [Props](/vue-codemirror6/ja/api/props.md) — 指定できるオプションの一覧です。
+
+
+
+---
+url: /vue-codemirror6/ja/guide/getting-started.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# はじめかた
+
+## インストール
+
+コンポーネントと `codemirror` をあわせてインストールします。
+
+```sh
+pnpm add vue-codemirror6 codemirror
+```
+
+言語サポート、リンター、テーマはそれぞれ別のパッケージです。必要なものをインストールしてください。
+
+```sh
+pnpm add @codemirror/lang-javascript
+```
+
+## 最小構成の例
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('Cozy lummox gives smart squid who asks for job pen.');
+</script>
+
+<template>
+  <code-mirror v-model="value" />
+</template>
+```
+
+この状態では、行番号やキーバインドのないシンプルなエディタが表示されます。`basic` を付けると CodeMirror の [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup)(行番号、履歴、括弧の対応表示、検索など)が有効になります。
+
+```vue
+<template>
+  <code-mirror v-model="value" basic />
+</template>
+```
+
+:::tip
+`basic` の代わりに `minimal` を指定すると [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup) になります。両方を指定した場合は `basic` が優先されます。
+:::
+
+## 言語を追加する
+
+`lang` に `LanguageSupport` オブジェクトを渡すとシンタックスハイライトが有効になります。
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## グローバル登録
+
+パッケージが書き出している `install` 関数を使うと、コンポーネントを `CodeMirror` という名前で登録できます。
+
+```ts
+import { createApp } from 'vue';
+import { install as CodeMirror } from 'vue-codemirror6';
+
+import App from './App.vue';
+
+createApp(App).use(CodeMirror).mount('#app');
+```
+
+登録後は、import しなくてもすべてのテンプレートで `<code-mirror>` を使えます。
+
+## パッケージの export
+
+| Export                | 内容                                  |
+| --------------------- | ----------------------------------- |
+| `default`             | Vue コンポーネント                         |
+| `install`             | コンポーネントをグローバル登録する Vue プラグイン関数       |
+| `CodeMirror`          | `defineCustomElement` でラップしたコンポーネント |
+| `CodeMirrorExposed`   | テンプレート ref から使えるインスタンス API の型       |
+| `Meta`                | パッケージのバージョンとビルド日時                   |
+| `vue-codemirror6/umd` | `<script>` タグで読み込むための UMD ビルド       |
+
+## 次のステップ
+
+- [使い方](/vue-codemirror6/ja/guide/usage.md) — `v-model`、スロット、読み取り専用、キーバインド
+- [言語・リンター・テーマ](/vue-codemirror6/ja/guide/languages-and-themes.md)
+
+
+
+---
+url: /vue-codemirror6/ja/guide/usage.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# 使い方
+
+## `v-model` による双方向バインディング
+
+テキストは `value` ではなく `modelValue` でバインドされるので、ほかの Vue コンポーネントと同じように `v-model` を使えます。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic placeholder="何か入力してください…" />
+  <pre>{{ value }}</pre>
+</template>
+```
+
+`modelValue` を外部から変更すると、エディタの内容が置き換わります。そのときの表示は次の 2 つの props で制御できます。
+
+- `scroll-into-view`(デフォルト `true`):更新後の選択位置までスクロールします。
+- `preserve-scroll-position`(デフォルト `false`):現在のスクロール位置を保ちます。ログやストリーミング出力のように、テキストを追記し続ける場合に便利です。
+
+## スロットで初期テキストを指定する
+
+`v-model` の代わりに、コンポーネントの中に初期テキストを書くこともできます。使われるのは最初の子ノードのテキストだけです。
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic readonly :lang="json()" :linter="jsonParseLinter()">
+    <pre>
+{
+  "key": "value"
+}</pre>
+  </code-mirror>
+</template>
+```
+
+:::warning
+
+- スロットの内容は `v-model` の値を上書きするので、両方を同時に使わないでください。スロットは、読み取り専用でシンタックスハイライトを表示するだけの用途を想定しています。
+- 空白が詰められないように、テキストは `<pre>` で囲んでください。
+- スロットは Vue 2.7 では動作しません。
+
+:::
+
+## 読み取り専用と無効化
+
+| Prop       | 編集 | フォーカス・選択 | CodeMirror のオプション                                                                       |
+| ---------- | -- | -------- | --------------------------------------------------------------------------------------- |
+| `readonly` | 不可 | 可        | [`EditorState.readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly)   |
+| `disabled` | 不可 | 不可       | [`EditorView.editable`](https://codemirror.net/docs/ref/#view.EditorView^editable) の反転値 |
+
+シンタックスハイライトの表示だけに使う場合は `disabled` を指定してください。
+
+```vue
+<template>
+  <code-mirror v-model="value" basic :readonly="isReadonly" :disabled="isDisabled" />
+</template>
+```
+
+## 編集の挙動
+
+| Prop                        | 効果                                 |
+| --------------------------- | ---------------------------------- |
+| `wrap`                      | 行を折り返します。                          |
+| `tab`                       | Tab キーでフォーカスを移動する代わりにインデントします。     |
+| `tab-size`                  | タブ文字の幅                             |
+| `indent-unit`               | インデントの単位(例:`"  "` や `"\t"`)        |
+| `allow-multiple-selections` | 複数選択を許可します(Ctrl / Cmd + クリックなど)。   |
+| `line-separator`            | 改行文字。デフォルトは `\n` です。               |
+| `placeholder`               | テキストが空のときに表示する文字列または `HTMLElement` |
+
+:::tip
+`tab` を指定すると Tab キーがエディタ内で使われます。キーボード操作の場合は、Esc を押してから Tab を押すとエディタの外に移動できます。
+:::
+
+## キーバインドの追加
+
+`keymap` に [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) の配列を渡します。`run` が `true` を返すと、そのキーのデフォルトの動作は実行されません。
+
+```vue
+<script setup lang="ts">
+import type { KeyBinding } from '@codemirror/view';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('');
+
+const keymap: KeyBinding[] = [
+  {
+    key: 'Mod-s',
+    run: () => {
+      console.log('save', value.value);
+      return true;
+    }
+  }
+];
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :keymap="keymap" />
+</template>
+```
+
+## イベントを受け取る
+
+```vue
+<template>
+  <code-mirror
+    v-model="value"
+    @ready="({ view }) => console.log('ready', view)"
+    @focus="focused => (isFocused = focused)"
+    @update="update => console.log(update.docChanged)"
+  />
+</template>
+```
+
+各イベントの引数は [イベント](/vue-codemirror6/ja/api/events.md) を参照してください。
+
+## エディタの UI を翻訳する
+
+`phrases` を使うと、CodeMirror が表示する文字列(検索パネル、リンターのパネル、折りたたみマーカーなど)を翻訳できます。指定できるキーは CodeMirror の [翻訳の例](https://codemirror.net/examples/translate/) を参照してください。
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const phrases: Record<string, string> = {
+  // @codemirror/search
+  'Go to line': '行き先の行',
+  go: 'OK',
+  Find: '検索',
+  Replace: '置き換え',
+  next: '▼',
+  previous: '▲',
+  all: 'すべて',
+  'match case': '大文字と小文字を区別',
+  'by word': '単語単位',
+  regexp: '正規表現',
+  replace: '置き換え',
+  'replace all': 'すべて置き換え',
+  close: '閉じる',
+  // @codemirror/lint
+  Diagnostics: 'エラー',
+  'No diagnostics': 'エラーなし'
+};
+</script>
+
+<template>
+  <code-mirror basic :phrases="phrases" />
+</template>
+```
+
+:::tip
+vue-i18n と組み合わせる場合は、ロケールの切り替えに追従するよう `phrases` をリアクティブ(`computed` など)にしてください。
+:::
+
+
+
+---
+url: /vue-codemirror6/ja/guide/languages-and-themes.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# 言語・リンター・テーマ
+
+## 言語
+
+言語パッケージをインストールし、その `LanguageSupport` オブジェクトを `lang` に渡します。
+
+```vue
+<script setup lang="ts">
+import { markdown } from '@codemirror/lang-markdown';
+import CodeMirror from 'vue-codemirror6';
+
+const lang = markdown();
+</script>
+
+<template>
+  <code-mirror basic wrap :lang="lang" />
+</template>
+```
+
+公式の言語パッケージには次のものがあります。
+
+`@codemirror/lang-angular`、`lang-cpp`、`lang-css`、`lang-html`、`lang-java`、`lang-javascript`、`lang-json`、`lang-lezer`、`lang-markdown`、`lang-php`、`lang-python`、`lang-rust`、`lang-sql`、`lang-vue`、`lang-wast`、`lang-xml`
+
+コミュニティ製のパッケージも多数あります。[CodeMirror の言語一覧](https://codemirror.net/#languages) と [README](https://github.com/logue/vue-codemirror6/blob/master/README.ja.md) を参照してください。
+
+## リンター
+
+`linter` に [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource) を渡します。`gutter` を付けると、問題のある行にマーカーが表示されます。
+
+```vue
+<script setup lang="ts">
+import { json, jsonParseLinter } from '@codemirror/lang-json';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('{ "key": "value", }');
+</script>
+
+<template>
+  <code-mirror v-model="value" basic gutter :lang="json()" :linter="jsonParseLinter()" />
+</template>
+```
+
+JavaScript の場合、`@codemirror/lang-javascript` の `esLint()` と [eslint-linter-browserify](https://github.com/UziTech/eslint-linter-browserify) を組み合わせて使えます。
+
+```ts
+import { esLint } from '@codemirror/lang-javascript';
+import eslint from 'eslint-linter-browserify';
+
+const linter = esLint(new eslint.Linter(), {
+  languageOptions: {
+    parserOptions: { ecmaVersion: 2022, sourceType: 'module' }
+  },
+  rules: { semi: ['error', 'never'] }
+});
+```
+
+| Prop            | 説明                                                                         |
+| --------------- | -------------------------------------------------------------------------- |
+| `linter`        | リンターのソース                                                                   |
+| `linter-config` | `delay` などの [リンターの設定](https://codemirror.net/docs/ref/#lint.linter^config) |
+| `force-linting` | エディタがアイドル状態になるのを待たずに、すぐにリンターを実行します。                                        |
+| `gutter`        | リンターのガターを表示します。`linter` を指定していない場合は効果がありません。                               |
+| `gutter-config` | [ガターの設定](https://codemirror.net/docs/ref/#lint.lintGutter^config)          |
+
+診断結果の件数は [インスタンス](/vue-codemirror6/ja/api/instance.md) の `diagnosticCount` で取得でき、`lint()` で任意のタイミングでリンターを実行できます。
+
+:::tip
+エディタ内で <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>(macOS では <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>)を押すとリンターのパネルが開き、<kbd>F8</kbd> で次の問題に移動できます。
+:::
+
+## テーマとダークモード
+
+- `dark` は、エディタの背景が暗いことを CodeMirror に伝えます。選択範囲やパネルなどの組み込み UI が暗い配色になります。
+- `theme` には [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) に渡すスタイル定義のオブジェクトを指定します。
+
+```vue
+<script setup lang="ts">
+import CodeMirror from 'vue-codemirror6';
+
+const theme = {
+  '&': { fontSize: '14px' },
+  '.cm-content': { fontFamily: 'Menlo, monospace' },
+  '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
+};
+</script>
+
+<template>
+  <code-mirror basic :dark="isDark" :theme="theme" />
+</template>
+```
+
+配布されているテーマの多くは拡張機能の形式なので、`extensions` で追加します。
+
+```vue
+<script setup lang="ts">
+import { oneDark } from '@codemirror/theme-one-dark';
+import CodeMirror from 'vue-codemirror6';
+</script>
+
+<template>
+  <code-mirror basic dark :extensions="[oneDark]" />
+</template>
+```
+
+例:[`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one-dark)、[`@uiw/codemirror-themes`](https://github.com/uiwjs/react-codemirror/tree/master/themes)、[`codemirror6-bootstrap-theme`](https://github.com/logue/codemirror6-bootstrap-theme)
+
+## その他の拡張機能
+
+CodeMirror の [`Extension`](https://codemirror.net/docs/ref/#state.Extension) は何でも `extensions` で渡せます。ほかの props から生成される拡張機能と組み合わせて適用されます。
+
+```vue
+<script setup lang="ts">
+import { EditorView } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
+</script>
+
+<template>
+  <code-mirror basic :extensions="extensions" />
+</template>
+```
+
+:::info
+`lang` と `linter` も `extensions` で指定できます。これらが独立した props になっているのは、型付けと以前のバージョンとの互換性のためです。
+:::
+
+props が変わるとコンポーネントはエディタを自動的に再設定します。コンポーネントが検知できない変更をした場合は、インスタンスの `forceReconfigure()` を呼び出してください。
+
+
+
+---
+url: /vue-codemirror6/ja/guide/ssr.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# サーバーサイドレンダリング
+
+このコンポーネントは SSR に対応しています。CodeMirror はブラウザ上(`onMounted`)でのみ生成されるため、サーバーでのレンダリング中は `window` や `document` に触れずに、空のコンテナ要素だけを出力します。
+
+## Nuxt 3 / Nuxt 4
+
+そのまま使えます。
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror from 'vue-codemirror6';
+
+const value = ref('console.log("Hello, World!");');
+const lang = javascript();
+</script>
+
+<template>
+  <code-mirror v-model="value" basic :lang="lang" />
+</template>
+```
+
+## Nuxt 2 の場合や問題が起きる場合
+
+コンポーネントを `<ClientOnly>` で囲んで、ブラウザでのみレンダリングするようにします。
+
+```vue
+<template>
+  <client-only>
+    <code-mirror v-model="value" basic :lang="lang" />
+  </client-only>
+</template>
+```
+
+:::info
+エディタはハイドレーションの後に生成されます。そのため、サーバー上や、クライアントで `ready` イベントが発火するまでの間は、インスタンスのプロパティ(`view`、`selection` など)は `undefined` です。
+:::
+
+
+
+---
+url: /vue-codemirror6/ja/guide/web-components.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# Web Component
+
+:::warning 実験的機能
+Web Component 版は実験的な機能です。動作は今後変わる可能性があります。
+:::
+
+このパッケージは、Vue の [`defineCustomElement`](https://ja.vuejs.org/guide/extras/web-components.html) でラップしたコンポーネントも書き出しています。任意のタグ名で登録して使います。
+
+```ts
+import { CodeMirror } from 'vue-codemirror6';
+
+customElements.define('code-mirror', CodeMirror);
+```
+
+```html
+<code-mirror></code-mirror>
+```
+
+エディタは open な Shadow Root の中に描画されます。
+
+## props の指定
+
+- **プリミティブな props**(`string`、`boolean`、`number`)は、属性と DOM プロパティのどちらでも指定できます。
+- **オブジェクト・配列・関数の props**(`lang`、`linter`、`extensions`、`theme`、`keymap` など)は、DOM プロパティでのみ指定できます。
+
+最初の描画に反映させるには、要素を DOM に追加する前にプロパティを設定してください。
+
+```ts
+import { javascript } from '@codemirror/lang-javascript';
+
+const element = document.createElement('code-mirror');
+element.setAttribute('readonly', '');
+element.modelValue = 'const x = 1;';
+element.lang = javascript();
+
+document.body.append(element);
+```
+
+## イベント
+
+Vue の emit はネイティブの `CustomEvent` として発火します。emit の引数は配列として `event.detail` に入ります。
+
+```ts
+element.addEventListener('ready', event => {
+  const [{ view }] = (event as CustomEvent).detail;
+  console.log(view);
+});
+
+element.addEventListener('update:model-value', event => {
+  const [value] = (event as CustomEvent).detail;
+  console.log(value);
+});
+```
+
+## インスタンス API
+
+[インスタンス API](/vue-codemirror6/ja/api/instance.md) は要素から直接使えます。
+
+```ts
+import type { CodeMirrorExposed } from 'vue-codemirror6';
+
+const editor = element as unknown as CodeMirrorExposed;
+editor.replaceRange('bye', 0, 5);
+console.log(editor.view?.state.doc.toString());
+```
+
+
+
+---
+url: /vue-codemirror6/ja/guide/bundling.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# バンドルのヒント
+
+CodeMirror と言語パッケージは比較的サイズが大きいです。別のチャンクに分けると、メインのバンドルを小さく保てるうえ、ブラウザがエディタ部分を個別にキャッシュできます。
+
+## Vite
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          codemirror: ['vue-codemirror6'],
+          'codemirror-lang': [
+            // 使う言語を追加してください。
+            '@codemirror/lang-html',
+            '@codemirror/lang-javascript',
+            '@codemirror/lang-markdown'
+          ]
+        }
+      }
+    }
+  }
+});
+```
+
+## Rsbuild
+
+```ts
+// rsbuild.config.ts
+import { defineConfig } from '@rsbuild/core';
+
+export default defineConfig({
+  splitChunks: {
+    cacheGroups: {
+      codemirror: {
+        test: /node_modules[\\/](@codemirror|codemirror|@lezer)[\\/]/,
+        name: 'codemirror',
+        chunks: 'all'
+      }
+    }
+  }
+});
+```
+
+## 遅延読み込み
+
+最初の画面でエディタが不要な場合は、非同期で読み込めます。
+
+```ts
+import { defineAsyncComponent } from 'vue';
+
+const CodeMirror = defineAsyncComponent(() => import('vue-codemirror6'));
+```
+
+
+
+---
+url: /vue-codemirror6/ja/api/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# API の概要
+
+`CodeMirror` コンポーネントの API は 3 種類あります。
+
+| ページ                                               | 内容                            |
+| ------------------------------------------------- | ----------------------------- |
+| [Props](/vue-codemirror6/ja/api/props.md)         | エディタの設定。変更はエディタを作り直さずに反映されます。 |
+| [イベント](/vue-codemirror6/ja/api/events.md)         | 読み込み完了、フォーカス、テキストの変更、破棄の通知    |
+| [インスタンス API](/vue-codemirror6/ja/api/instance.md) | テンプレート ref から使えるプロパティとメソッド    |
+
+```vue
+<script setup lang="ts">
+import { javascript } from '@codemirror/lang-javascript';
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const value = ref('');
+const cm = ref<CodeMirrorExposed>();
+</script>
+
+<template>
+  <code-mirror
+    ref="cm"
+    v-model="value"
+    basic
+    :lang="javascript()"
+    @ready="() => cm?.view?.focus()"
+  />
+</template>
+```
+
+
+
+---
+url: /vue-codemirror6/ja/api/props.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# Props
+
+テンプレートではケバブケース(`tab-size`)、JavaScript ではキャメルケース(`tabSize`)で記述します。
+
+## コンテンツ
+
+| Prop          | 型                       | デフォルト       | 説明                                                                                    |
+| ------------- | ----------------------- | ----------- | ------------------------------------------------------------------------------------- |
+| `model-value` | `string \| Text`        | `''`        | テキスト。`v-model` で使います(`value` ではありません)。                                                |
+| `placeholder` | `string \| HTMLElement` | `undefined` | テキストが空のときに表示します。[placeholder](https://codemirror.net/docs/ref/#view.placeholder) を参照。 |
+| `tag`         | `string`                | `'div'`     | ルート要素のタグ名                                                                             |
+
+## セットアップ
+
+| Prop      | 型         | デフォルト   | 説明                                                                                                  |
+| --------- | --------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `basic`   | `boolean` | `false` | [`basicSetup`](https://codemirror.net/docs/ref/#codemirror.basicSetup) を有効にします。                     |
+| `minimal` | `boolean` | `false` | [`minimalSetup`](https://codemirror.net/docs/ref/#codemirror.minimalSetup) を有効にします。`basic` が優先されます。 |
+
+## 編集
+
+| Prop                        | 型              | デフォルト       | 説明                                                                                                 |
+| --------------------------- | -------------- | ----------- | -------------------------------------------------------------------------------------------------- |
+| `readonly`                  | `boolean`      | `false`     | 変更を禁止します。フォーカスは可能です。[`readOnly`](https://codemirror.net/docs/ref/#state.EditorState^readOnly) を参照。 |
+| `disabled`                  | `boolean`      | `false`     | 編集もフォーカスもできなくします。[`editable`](https://codemirror.net/docs/ref/#view.EditorView^editable) の反転値です。   |
+| `wrap`                      | `boolean`      | `false`     | [行を折り返します](https://codemirror.net/docs/ref/#view.EditorView^lineWrapping)。                         |
+| `tab`                       | `boolean`      | `false`     | Tab キーでインデントします([`indentWithTab`](https://codemirror.net/examples/tab/))。                          |
+| `tab-size`                  | `number`       | `undefined` | [タブの幅](https://codemirror.net/docs/ref/#state.EditorState^tabSize)                                 |
+| `indent-unit`               | `string`       | `undefined` | [インデントの単位](https://codemirror.net/docs/ref/#language.indentUnit)                                   |
+| `allow-multiple-selections` | `boolean`      | `false`     | [複数選択を許可します](https://codemirror.net/docs/ref/#state.EditorState^allowMultipleSelections)。          |
+| `line-separator`            | `string`       | `undefined` | [改行文字](https://codemirror.net/docs/ref/#state.EditorState^lineSeparator)。未指定の場合は `\n` です。          |
+| `keymap`                    | `KeyBinding[]` | `[]`        | 独自の [キーバインド](https://codemirror.net/docs/ref/#view.KeyBinding)                                     |
+
+## 言語とリンター
+
+| Prop            | 型                 | デフォルト       | 説明                                                                                      |
+| --------------- | ----------------- | ----------- | --------------------------------------------------------------------------------------- |
+| `lang`          | `LanguageSupport` | `undefined` | シンタックスハイライトの言語。[言語一覧](https://codemirror.net/#languages) を参照。                           |
+| `linter`        | `LintSource`      | `undefined` | リンターのソース(`jsonParseLinter()`、`esLint(...)` など)                                          |
+| `linter-config` | `object`          | `{}`        | [リンターの設定](https://codemirror.net/docs/ref/#lint.linter^config)                          |
+| `force-linting` | `boolean`         | `false`     | すぐにリンターを実行します。[`forceLinting`](https://codemirror.net/docs/ref/#lint.forceLinting) を参照。 |
+| `gutter`        | `boolean`         | `false`     | [リンターのガター](https://codemirror.net/docs/ref/#lint.lintGutter) を表示します。`linter` が必要です。     |
+| `gutter-config` | `object`          | `undefined` | [ガターの設定](https://codemirror.net/docs/ref/#lint.lintGutter^config)                       |
+
+## 外観
+
+| Prop      | 型                           | デフォルト       | 説明                                                                                     |
+| --------- | --------------------------- | ----------- | -------------------------------------------------------------------------------------- |
+| `dark`    | `boolean`                   | `false`     | エディタのテーマを暗い配色として扱います。                                                                  |
+| `theme`   | `Record<string, StyleSpec>` | `{}`        | [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) に渡すスタイル定義 |
+| `phrases` | `Record<string, string>`    | `undefined` | [UI の翻訳](https://codemirror.net/examples/translate/)                                   |
+
+## スクロール
+
+| Prop                       | 型         | デフォルト   | 説明                                                                                                                                      |
+| -------------------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `scroll-into-view`         | `boolean` | `true`  | `modelValue` が外部から更新されたときに選択位置までスクロールします。[`scrollIntoView`](https://codemirror.net/docs/ref/#state.TransactionSpec.scrollIntoView) を参照。 |
+| `preserve-scroll-position` | `boolean` | `false` | `modelValue` が外部から更新されたときにスクロール位置を保ちます。[`scrollSnapshot`](https://codemirror.net/docs/ref/#view.EditorView.scrollSnapshot) を参照。         |
+
+## 拡張機能
+
+| Prop         | 型             | デフォルト | 説明                                                                                       |
+| ------------ | ------------- | ----- | ---------------------------------------------------------------------------------------- |
+| `extensions` | `Extension[]` | `[]`  | 追加の [拡張機能](https://codemirror.net/docs/ref/#state.Extension)。props から生成される拡張機能の後に追加されます。 |
+
+
+
+---
+url: /vue-codemirror6/ja/api/events.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# イベント
+
+| イベント                | 引数                                                                  | 発火するタイミング                              |
+| ------------------- | ------------------------------------------------------------------- | -------------------------------------- |
+| `update:modelValue` | `string \| Text`                                                    | テキストが変更されたとき。`v-model` で使われます。         |
+| `ready`             | `{ view: EditorView; state: EditorState; container: HTMLElement }`  | エディタが生成されたとき(マウント後、クライアント側のみ)          |
+| `focus`             | `boolean`                                                           | エディタがフォーカスを得た(`true`)または失った(`false`)とき |
+| `update`            | [`ViewUpdate`](https://codemirror.net/docs/ref/#view.ViewUpdate)    | テキスト、選択範囲、フォーカス、表示領域などビューが更新されたとき      |
+| `change`            | [`EditorState`](https://codemirror.net/docs/ref/#state.EditorState) | テキストが変更されたとき。新しい状態を受け取ります。             |
+| `destroy`           | —                                                                   | エディタが破棄されたとき(コンポーネントのアンマウント時)          |
+
+```vue
+<script setup lang="ts">
+import type { EditorState } from '@codemirror/state';
+import type { ViewUpdate } from '@codemirror/view';
+import CodeMirror from 'vue-codemirror6';
+
+const onUpdate = (update: ViewUpdate) => {
+  if (update.selectionSet) {
+    console.log('selection', update.state.selection.main);
+  }
+};
+
+const onChange = (state: EditorState) => {
+  console.log('lines', state.doc.lines);
+};
+</script>
+
+<template>
+  <code-mirror basic @update="onUpdate" @change="onChange" />
+</template>
+```
+
+[Web Component](/vue-codemirror6/ja/guide/web-components.md) として使う場合、これらはネイティブの `CustomEvent` として発火し、引数は `event.detail[0]` で取得できます。モデルのイベント名は `update:model-value` です。
+
+
+
+---
+url: /vue-codemirror6/ja/api/instance.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# インスタンス API
+
+テンプレート ref からインスタンスにアクセスします。型チェックには `CodeMirrorExposed` 型を使ってください。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+
+const cm = ref<CodeMirrorExposed>();
+
+const insertDate = () => {
+  cm.value?.replaceSelection(new Date().toISOString());
+};
+</script>
+
+<template>
+  <code-mirror ref="cm" basic />
+  <button type="button" @click="insertDate">日付を挿入</button>
+</template>
+```
+
+:::info
+エディタはマウント後に生成されます。`ready` イベントが発火するまでは、`view` やそこから得られる値は `undefined` または空です。
+:::
+
+## プロパティ
+
+| プロパティ             | 型                                     | 説明                                                                                           |
+| ----------------- | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `view`            | `EditorView \| undefined`             | [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)。コンポーネントがラップしていない機能に使います。    |
+| `editor`          | `HTMLElement \| undefined`            | エディタを含むルート要素                                                                                 |
+| `dom`             | `Element \| undefined`                | 編集可能なコンテンツ要素                                                                                 |
+| `selection`       | `EditorSelection \| undefined`        | [選択範囲](https://codemirror.net/docs/ref/#state.EditorSelection) を取得・設定します。                    |
+| `cursor`          | `number`                              | カーソル位置を取得・設定します。                                                                             |
+| `focus`           | `boolean`                             | フォーカス状態を取得・設定します。                                                                            |
+| `length`          | `number`                              | テキストの長さ                                                                                      |
+| `json`            | `Record<string, StateField<unknown>>` | 状態を JSON シリアライズ可能なオブジェクトとして取得・設定します。                                                         |
+| `diagnosticCount` | `number`                              | リンターの診断結果の件数。[`diagnosticCount`](https://codemirror.net/docs/ref/#lint.diagnosticCount) を参照。 |
+
+## メソッド
+
+| メソッド                 | 説明                                       |
+| -------------------- | ---------------------------------------- |
+| `lint()`             | すぐにリンターを実行します。`linter` を指定している場合のみ動作します。 |
+| `forceReconfigure()` | すべての拡張機能を外してから登録し直します。                   |
+
+## CodeMirror 5 互換のメソッド
+
+[CodeMirror 5](https://codemirror.net/5/) に慣れている方向けの互換メソッドです。通常は上記のプロパティと `view` で足りるため、**積極的な使用はおすすめしません**。
+
+| メソッド                                                                 | 説明                             |
+| -------------------------------------------------------------------- | ------------------------------ |
+| `getRange(from?: number, to?: number)`                               | 指定した位置の間のテキストを取得します。           |
+| `getLine(number: number)`                                            | 指定した行の内容を取得します。                |
+| `lineCount()`                                                        | 行数を取得します。                      |
+| `getCursor()`                                                        | 主選択範囲の一方の端を取得します。              |
+| `listSelections()`                                                   | 現在のすべての選択範囲を取得します。             |
+| `getSelection()`                                                     | 選択中のテキストを取得します。                |
+| `getSelections()`                                                    | すべての選択範囲のテキストを取得します。           |
+| `somethingSelected()`                                                | テキストが選択されていれば `true` を返します。    |
+| `replaceRange(replacement: string \| Text, from, to)`                | `from` から `to` までのテキストを置き換えます。 |
+| `replaceSelection(replacement: string \| Text)`                      | 選択範囲を置き換えます。                   |
+| `setCursor(position: number)`                                        | カーソル位置を設定します。                  |
+| `setSelection(anchor: number, head?: number)`                        | 単一の選択範囲を設定します。                 |
+| `setSelections(ranges: readonly SelectionRange[], primary?: number)` | 複数の選択範囲を設定します。                 |
+| `extendSelectionsBy(f: (range: SelectionRange) => number)`           | すべての選択範囲を `f` の結果まで拡張します。      |
+
+
+
+---
+url: /vue-codemirror6/ja/playground.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# Playground
+
+ブラウザで vue-codemirror6 を試せます。各タブにはデモとそのソースコードがあります(デモの説明文は英語です)。
+
+
+
+
+---
+url: /vue-codemirror6/ja/index.md
+---
+
+> For AI agents: the complete documentation index is available at /vue-codemirror6/ja/llms.txt, the full documentation bundle is available at /vue-codemirror6/ja/llms-full.txt.
+
+# vue-codemirror6
+
+Vue で使う CodeMirror 6
+
+> CodeMirror 6 エディタを Vue 2.7 と Vue 3 で使えるようにする軽量なラッパーコンポーネント
+
+[はじめる](/ja/guide/getting-started) | [Playground](/ja/playground) | [GitHub](https://github.com/logue/vue-codemirror6)
+
+## Features
+
+- [💚 **Vue 2.7 と Vue 3 に対応**](/ja/guide/introduction): vue-demi をベースにしているため、同じコンポーネントを Vue 2.7 と Vue 3 のどちらでも使えます。
+- [🔁 **双方向バインディング**](/ja/guide/usage): 通常の入力欄と同じように v-model でテキストをバインドできます。外部からの更新時にスクロール位置を保つこともできます。
+- [🎨 **言語・リンター・テーマ**](/ja/guide/languages-and-themes): CodeMirror の LanguageSupport、LintSource、テーマを props で渡せます。任意の拡張機能も追加できます。
+- [🌐 **SSR 対応**](/ja/guide/ssr): CodeMirror はクライアント側でのみ初期化されるため、Nuxt などの SSR フレームワークでも安全にレンダリングできます。
+- [🧩 **Web Component**](/ja/guide/web-components): 同じコンポーネントをカスタム要素としても書き出しているので、Vue 以外の環境でも使えます(実験的機能)。
+- [🛠️ **エディタ API**](/ja/api/instance): テンプレート ref から EditorView や選択範囲、CodeMirror 5 互換のヘルパーメソッドにアクセスできます。
+
+

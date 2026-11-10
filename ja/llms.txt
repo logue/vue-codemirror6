@@ -1,0 +1,24 @@
+# vue-codemirror6
+
+> CodeMirror6 Component for vue2 and vue3.
+
+## ガイド
+
+- [はじめに](/vue-codemirror6/ja/guide/introduction.md): vue-codemirror6 の概要、対応する Vue のバージョン、CodeMirror 6 に対して提供する機能について説明します。
+- [はじめかた](/vue-codemirror6/ja/guide/getting-started.md): vue-codemirror6 のインストール、最小構成のエディタの表示、グローバル登録の方法を説明します。
+- [使い方](/vue-codemirror6/ja/guide/usage.md): vue-codemirror6 の基本的な使い方。v-model、スロット、読み取り専用と無効化、キーバインド、イベント、UI の翻訳について説明します。
+- [言語・リンター・テーマ](/vue-codemirror6/ja/guide/languages-and-themes.md): vue-codemirror6 でのシンタックスハイライト、リンター、ガター、テーマ、ダークモード、独自の拡張機能の設定方法を説明します。
+- [サーバーサイドレンダリング](/vue-codemirror6/ja/guide/ssr.md): Nuxt などのサーバーサイドレンダリング環境で vue-codemirror6 を使う方法を説明します。
+- [Web Component](/vue-codemirror6/ja/guide/web-components.md): vue-codemirror6 を Vue のテンプレート以外でネイティブのカスタム要素として使う方法を説明します(実験的機能)。
+- [バンドルのヒント](/vue-codemirror6/ja/guide/bundling.md): vue-codemirror6 を使うアプリケーションで、CodeMirror をメインのバンドルから分離するためのヒントです。
+
+## API
+
+- [API の概要](/vue-codemirror6/ja/api/index.md): vue-codemirror6 の API(props、イベント、テンプレート ref から使えるインスタンス API)の概要です。
+- [Props](/vue-codemirror6/ja/api/props.md): vue-codemirror6 コンポーネントの props の一覧です。型、デフォルト値、対応する CodeMirror のオプションを記載しています。
+- [イベント](/vue-codemirror6/ja/api/events.md): vue-codemirror6 コンポーネントが発火するイベントとその引数です。
+- [インスタンス API](/vue-codemirror6/ja/api/instance.md): vue-codemirror6 コンポーネントのインスタンスが公開しているプロパティとメソッド(CodeMirror 5 互換のヘルパーを含む)です。
+
+## Playground
+
+- [Playground](/vue-codemirror6/ja/playground.md): vue-codemirror6 のライブデモです。Markdown の編集、スロット、リンター、読み取り専用、キーバインドを試せます。
