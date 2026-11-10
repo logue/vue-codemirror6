@@ -1,0 +1,50 @@
+/*
+  Carbon Web Components self-style via Shadow DOM — no global @import needed.
+  We only define typography tokens and map Rspress CSS variables here.
+*/
+@use '@carbon/styles' with (
+  $use-per-family-plex: true,
+  $use-akamai-cdn: true
+);
+
+/* ─── IBM Plex fonts ─────────────────────────────────────────────────────── */
+:root {
+  --font-sans:
+    'IBM Plex Sans', 'IBM Plex Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  /*
+    Carbon's reset sets body { background: var(--cds-background) } using the
+    default white theme. Override with Rspress's own vars so the dark/light
+    toggle keeps working. Rspress sets these correctly for each theme.
+  */
+  background-color: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+}
+
+code,
+pre,
+kbd,
+samp,
+var {
+  font-family: var(--font-mono);
+}
+
+/* ─── Carbon tag / notification sizing inside prose ─────────────────────── */
+cds-tag {
+  vertical-align: middle;
+  margin-inline: 0.125rem;
+}
+
+cds-inline-notification {
+  margin-block: 1rem;
+  max-inline-size: 100%;
+}
+
+/* ─── Code block: square corners (Carbon style) ──────────────────────────── */
+.rspress-doc pre {
+  border-radius: 0;
+}

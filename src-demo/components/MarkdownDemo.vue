@@ -22,14 +22,7 @@ defineProps<{
 <template>
   <div class="row">
     <div class="col-6">
-      <code-mirror
-        ref="cm"
-        v-model="input"
-        :dark="dark"
-        :lang="markdown()"
-        basic
-        wrap
-      />
+      <code-mirror ref="cm" v-model="input" :dark="dark" :lang="markdown()" basic wrap />
     </div>
     <div class="col-6">
       <vue-markdown

@@ -18,8 +18,8 @@ const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');
         run: () => {
           console.log('Shift+Ctrl+Enter');
           return true;
-        },
-      },
+        }
+      }
     ]"
   />
 </template>

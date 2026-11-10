@@ -1,8 +1,8 @@
-import { afterEach, beforeAll, describe, expect, it } from '@rstest/core';
+import { afterEach, beforeAll, describe, expect, it } from 'rstack/test';
 
 import { EditorView } from '@codemirror/view';
 
-import { CodeMirror, type CodeMirrorExposed } from '../index';
+import { CodeMirror, type CodeMirrorExposed } from '@/index';
 
 /**
  * Tests for the Web Component build produced by `defineCustomElement`.
@@ -18,6 +18,17 @@ import { CodeMirror, type CodeMirrorExposed } from '../index';
 
 /** Tag name used only by this spec, to avoid clashing with other suites/registries. */
 const TAG = 'code-mirror-test-element';
+
+/**
+ * `<code-mirror>` element instance. Vue types the reflected props as read-only,
+ * but on a custom element they are writable DOM properties.
+ */
+type CodeMirrorElement = {
+  -readonly [K in keyof InstanceType<typeof CodeMirror>]: InstanceType<typeof CodeMirror>[K];
+};
+
+/** Create an (unconnected) instance of the custom element under test. */
+const createElement = (): CodeMirrorElement => document.createElement(TAG) as CodeMirrorElement;
 
 describe('CodeMirror Web Component', () => {
   beforeAll(() => {
@@ -36,100 +47,88 @@ describe('CodeMirror Web Component', () => {
 
   describe('Rendering', () => {
     it('should attach an open shadow root containing the editor root', async () => {
-      const el = document.createElement(TAG);
-      document.body.append(el);
+      const element = createElement();
+      document.body.append(element);
       await Promise.resolve();
 
-      expect(el.shadowRoot).toBeTruthy();
-      expect(el.shadowRoot?.querySelector('.vue-codemirror')).toBeTruthy();
+      expect(element.shadowRoot).toBeTruthy();
+      expect(element.shadowRoot?.querySelector('.vue-codemirror')).toBeTruthy();
     });
 
     it('should render the custom tag when the tag property is set before connecting', async () => {
-      const el = document.createElement(TAG) as HTMLElement & {
-        tag?: string;
-      };
-      el.tag = 'section';
-      document.body.append(el);
+      const element = createElement();
+      element.tag = 'section';
+      document.body.append(element);
       await Promise.resolve();
 
-      expect(
-        el.shadowRoot?.querySelector('section.vue-codemirror'),
-      ).toBeTruthy();
+      expect(element.shadowRoot?.querySelector('section.vue-codemirror')).toBeTruthy();
     });
 
     it('should mount a CodeMirror EditorView inside the shadow root', async () => {
-      const el = document.createElement(TAG);
-      document.body.append(el);
+      const element = createElement();
+      document.body.append(element);
       await Promise.resolve();
 
-      expect(el.shadowRoot?.querySelector('.cm-editor')).toBeTruthy();
+      expect(element.shadowRoot?.querySelector('.cm-editor')).toBeTruthy();
     });
   });
 
   describe('Property binding', () => {
     it('should use the modelValue property set before connecting as the initial document', async () => {
-      const el = document.createElement(TAG) as HTMLElement & {
-        modelValue?: string;
-      };
-      el.modelValue = 'const x = 1;';
-      document.body.append(el);
+      const element = createElement();
+      element.modelValue = 'const x = 1;';
+      document.body.append(element);
       await Promise.resolve();
 
-      const exposed = el as unknown as CodeMirrorExposed;
+      const exposed = element as unknown as CodeMirrorExposed;
       expect(exposed.view?.state.doc.toString()).toBe('const x = 1;');
     });
 
     it('should reflect primitive props set as HTML attributes', async () => {
-      const el = document.createElement(TAG);
-      el.setAttribute('readonly', '');
-      el.setAttribute('dark', '');
-      document.body.append(el);
+      const element = createElement();
+      element.setAttribute('readonly', '');
+      element.setAttribute('dark', '');
+      document.body.append(element);
       await Promise.resolve();
 
-      const exposed = el as unknown as CodeMirrorExposed;
+      const exposed = element as unknown as CodeMirrorExposed;
       expect(exposed.view?.state.readOnly).toBe(true);
     });
 
     it('should accept non-primitive props (extensions) only as a JS property', async () => {
-      const el = document.createElement(TAG) as HTMLElement & {
-        extensions?: unknown[];
-      };
-      el.extensions = [
+      const element = createElement();
+      element.extensions = [
         EditorView.contentAttributes.of({
-          'data-testid': 'from-extension',
-        }),
+          'data-testid': 'from-extension'
+        })
       ];
-      document.body.append(el);
+      document.body.append(element);
       await Promise.resolve();
 
-      const exposed = el as unknown as CodeMirrorExposed;
-      expect(exposed.view?.contentDOM.getAttribute('data-testid')).toBe(
-        'from-extension',
-      );
+      const exposed = element as unknown as CodeMirrorExposed;
+      expect(exposed.view?.contentDOM.getAttribute('data-testid')).toBe('from-extension');
     });
   });
 
   describe('Exposed instance API', () => {
     it('should forward the composable return value onto the element instance', async () => {
-      const el = document.createElement(TAG);
-      document.body.append(el);
+      const element = createElement();
+      document.body.append(element);
       await Promise.resolve();
 
-      const exposed = el as unknown as CodeMirrorExposed;
+      const exposed = element as unknown as CodeMirrorExposed;
       expect(exposed.view).toBeInstanceOf(EditorView);
       expect(typeof exposed.getRange).toBe('function');
       expect(typeof exposed.lint).toBe('function');
     });
 
     it('should read and update the document through exposed methods', async () => {
-      const el = document.createElement(TAG) as HTMLElement & {
-        modelValue?: string;
-      };
-      el.modelValue = 'hello world';
-      document.body.append(el);
+      const element = createElement();
+      element.modelValue = 'hello world';
+      document.body.append(element);
       await Promise.resolve();
 
-      const exposed = el as unknown as CodeMirrorExposed;
+      const exposed = element as unknown as CodeMirrorExposed;
       expect(exposed.getRange(0, 5)).toBe('hello');
 
       exposed.replaceRange('bye', 0, 5);
@@ -139,13 +138,19 @@ describe('CodeMirror Web Component', () => {
 
   describe('Events', () => {
     it('should dispatch a native "ready" CustomEvent after mount', async () => {
-      const el = document.createElement(TAG);
-      const ready: Promise<CustomEvent> = new Promise((resolve) => {
-        el.addEventListener('ready', (event) => resolve(event as CustomEvent), {
-          once: true,
-        });
+      const element = createElement();
+      const ready: Promise<CustomEvent<unknown[]>> = new Promise(resolve => {
+        element.addEventListener(
+          'ready',
+          event => {
+            resolve(event as CustomEvent<unknown[]>);
+          },
+          {
+            once: true
+          }
+        );
       });
-      document.body.append(el);
+      document.body.append(element);
 
       const event = await ready;
       expect(event.detail[0]).toHaveProperty('view');
@@ -154,30 +159,30 @@ describe('CodeMirror Web Component', () => {
     });
 
     it('should dispatch a native "update:model-value" CustomEvent on text change', async () => {
-      const el = document.createElement(TAG) as HTMLElement & {
-        modelValue?: string;
-      };
-      el.modelValue = 'initial';
-      document.body.append(el);
+      const element = createElement();
+      element.modelValue = 'initial';
+      document.body.append(element);
       await Promise.resolve();
 
-      const updated: Promise<CustomEvent> = new Promise((resolve) => {
-        el.addEventListener(
+      const updated: Promise<CustomEvent<unknown[]>> = new Promise(resolve => {
+        element.addEventListener(
           'update:model-value',
-          (event) => resolve(event as CustomEvent),
-          {
-            once: true,
+          event => {
+            resolve(event as CustomEvent<unknown[]>);
           },
+          {
+            once: true
+          }
         );
       });
 
-      const exposed = el as unknown as CodeMirrorExposed;
+      const exposed = element as unknown as CodeMirrorExposed;
       exposed.view?.dispatch({
         changes: {
           from: 0,
           to: exposed.view.state.doc.length,
-          insert: 'changed',
-        },
+          insert: 'changed'
+        }
       });
 
       const event = await updated;
@@ -185,17 +190,23 @@ describe('CodeMirror Web Component', () => {
     });
 
     it('should dispatch a native "destroy" CustomEvent when removed from the DOM', async () => {
-      const el = document.createElement(TAG);
-      document.body.append(el);
+      const element = createElement();
+      document.body.append(element);
       await Promise.resolve();
 
-      const destroyed: Promise<void> = new Promise((resolve) => {
-        el.addEventListener('destroy', () => resolve(), {
-          once: true,
-        });
+      const destroyed: Promise<void> = new Promise(resolve => {
+        element.addEventListener(
+          'destroy',
+          () => {
+            resolve();
+          },
+          {
+            once: true
+          }
+        );
       });
 
-      el.remove();
+      element.remove();
 
       await expect(destroyed).resolves.toBeUndefined();
     });

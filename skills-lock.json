@@ -7,17 +7,41 @@
       "skillPath": "skills/rsbuild-best-practices/SKILL.md",
       "computedHash": "370b2405efb009d4bc4b7f009c8ea2661a375abe59a0d873fe9af619bfc80733"
     },
+    "rsdoctor-analysis": {
+      "source": "rstackjs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rsdoctor-analysis/SKILL.md",
+      "computedHash": "6b5ea016ec7dbc34f155e367c15dc7d776b8b8106db55e1d8236ea4db0694177"
+    },
+    "rslib-best-practices": {
+      "source": "rstackjs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rslib-best-practices/SKILL.md",
+      "computedHash": "ea5f0620d7c542358a73624a5a339f4d3f6290778accbfe5fc5e1dacf8a8e920"
+    },
+    "rslib-modern-package": {
+      "source": "rstackjs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rslib-modern-package/SKILL.md",
+      "computedHash": "11096504136dfb50a564d60b7375de4b0958e6ff7d3d0a27debc35e5c5079b4e"
+    },
+    "rspress-docs-generator": {
+      "source": "rstackjs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rspress-docs-generator/SKILL.md",
+      "computedHash": "ac15a47048425a68fc671cf3754eef2b857e41db08354d09deb98f3bed1d6a1d"
+    },
+    "rstack-cli-docs": {
+      "source": "rstackjs/rstack-cli",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/rstack-cli-docs/SKILL.md",
+      "computedHash": "8b5451af88d29195dc2f257543013ad66aa14a7791e401ab4cffdb11941cf27a"
+    },
     "rstest-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rstest-best-practices/SKILL.md",
       "computedHash": "2657c33744b26c4d2cde2c238a6ad52e92532f240f345d0f798b3252a729fcbb"
-    },
-    "vue-best-practices": {
-      "source": "vuejs-ai/skills",
-      "sourceType": "github",
-      "skillPath": "skills/vue-best-practices/SKILL.md",
-      "computedHash": "3df585ad31aec78fe55c56c1411262737e6b231677a3153dec512a882fde80cd"
     }
   }
 }

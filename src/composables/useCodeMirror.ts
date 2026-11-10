@@ -6,7 +6,7 @@ import {
   type LintSource,
   linter,
   diagnosticCount as linterDiagnosticCount,
-  lintGutter,
+  lintGutter
 } from '@codemirror/lint';
 import {
   Compartment,
@@ -17,14 +17,14 @@ import {
   StateEffect,
   type StateField,
   type Text,
-  type Transaction,
+  type Transaction
 } from '@codemirror/state';
 import {
   EditorView,
   type KeyBinding,
   keymap,
   placeholder,
-  type ViewUpdate,
+  type ViewUpdate
 } from '@codemirror/view';
 import { basicSetup, minimalSetup } from 'codemirror';
 import {
@@ -40,7 +40,7 @@ import {
   type ShallowRef,
   shallowRef,
   type WritableComputedRef,
-  watch,
+  watch
 } from 'vue-demi';
 
 import type { StyleSpec } from 'style-mod';
@@ -50,7 +50,7 @@ export const codeMirrorProps = {
   /** Model value */
   modelValue: {
     type: String as PropType<string | Text>,
-    default: '',
+    default: ''
   },
   /**
    * Theme
@@ -61,12 +61,12 @@ export const codeMirrorProps = {
     type: Object as PropType<Record<string, StyleSpec>>,
     default: () => {
       return {};
-    },
+    }
   },
   /** Dark Mode */
   dark: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Use Basic Setup
@@ -77,7 +77,7 @@ export const codeMirrorProps = {
    */
   basic: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Use Minimal Setup (The basic setting has priority.)
@@ -86,7 +86,7 @@ export const codeMirrorProps = {
    */
   minimal: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Placeholder
@@ -95,7 +95,7 @@ export const codeMirrorProps = {
    */
   placeholder: {
     type: String as PropType<string | HTMLElement>,
-    default: undefined,
+    default: undefined
   },
   /**
    * Line wrapping
@@ -106,7 +106,7 @@ export const codeMirrorProps = {
    */
   wrap: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Allow tab key indent.
@@ -117,7 +117,7 @@ export const codeMirrorProps = {
    */
   tab: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Tab character
@@ -129,7 +129,7 @@ export const codeMirrorProps = {
    */
   indentUnit: {
     type: String,
-    default: undefined,
+    default: undefined
   },
   /**
    * Allow Multiple Selection.
@@ -143,7 +143,7 @@ export const codeMirrorProps = {
    */
   allowMultipleSelections: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Tab size
@@ -156,7 +156,7 @@ export const codeMirrorProps = {
    */
   tabSize: {
     type: Number,
-    default: undefined,
+    default: undefined
   },
   /**
    * Set line break (separetor) char.
@@ -168,7 +168,7 @@ export const codeMirrorProps = {
    */
   lineSeparator: {
     type: String,
-    default: undefined,
+    default: undefined
   },
   /**
    * Readonly
@@ -182,7 +182,7 @@ export const codeMirrorProps = {
    */
   readonly: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Disable input.
@@ -194,7 +194,7 @@ export const codeMirrorProps = {
    */
   disabled: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Additional Extension
@@ -207,7 +207,7 @@ export const codeMirrorProps = {
     type: Array as PropType<Extension[]>,
     default: () => {
       return [];
-    },
+    }
   },
   /**
    * Language Phreses
@@ -220,7 +220,7 @@ export const codeMirrorProps = {
    */
   phrases: {
     type: Object as PropType<Record<string, string>>,
-    default: undefined,
+    default: undefined
   },
   /**
    * CodeMirror Language
@@ -233,7 +233,7 @@ export const codeMirrorProps = {
    */
   lang: {
     type: Object as PropType<LanguageSupport>,
-    default: undefined,
+    default: undefined
   },
   /**
    * CodeMirror Linter
@@ -247,7 +247,7 @@ export const codeMirrorProps = {
    */
   linter: {
     type: Function as PropType<LintSource>,
-    default: undefined,
+    default: undefined
   },
   /**
    * Linter Config
@@ -262,7 +262,7 @@ export const codeMirrorProps = {
     type: Object,
     default: () => {
       return {};
-    },
+    }
   },
   /**
    * Forces any linters configured to run when the editor is idle to run right away.
@@ -273,7 +273,7 @@ export const codeMirrorProps = {
    */
   forceLinting: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Show Linter Gutter
@@ -285,7 +285,7 @@ export const codeMirrorProps = {
    */
   gutter: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Gutter Config
@@ -298,14 +298,14 @@ export const codeMirrorProps = {
    */
   gutterConfig: {
     type: Object,
-    default: undefined,
+    default: undefined
   },
   /**
    * Using tag
    */
   tag: {
     type: String,
-    default: 'div',
+    default: 'div'
   },
   /**
    * Allows an external update to scroll the form.
@@ -318,7 +318,7 @@ export const codeMirrorProps = {
    */
   scrollIntoView: {
     type: Boolean,
-    default: true,
+    default: true
   },
   /**
    * Preserve the current scroll position on external updates.
@@ -330,7 +330,7 @@ export const codeMirrorProps = {
    */
   preserveScrollPosition: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /**
    * Key map
@@ -341,8 +341,8 @@ export const codeMirrorProps = {
    */
   keymap: {
     type: Array as PropType<KeyBinding[]>,
-    default: () => [],
-  },
+    default: () => []
+  }
 } as const;
 
 /** Resolved prop types for {@link codeMirrorProps}. */
@@ -355,17 +355,13 @@ export const codeMirrorEmits = {
   /** CodeMirror ViewUpdate */
   update: (_value: ViewUpdate) => true,
   /** CodeMirror onReady */
-  ready: (_value: {
-    view: EditorView;
-    state: EditorState;
-    container: HTMLElement;
-  }) => true,
+  ready: (_value: { view: EditorView; state: EditorState; container: HTMLElement }) => true,
   /** CodeMirror onFocus */
   focus: (_value: boolean) => true,
   /** State Changed */
   change: (_value: EditorState) => true,
   /** CodeMirror onDestroy */
-  destroy: () => true,
+  destroy: () => true
 };
 
 /** Typed `emit` function matching {@link codeMirrorEmits}. */
@@ -378,7 +374,7 @@ export type CodeMirrorEmit = {
       view: EditorView;
       state: EditorState;
       container: HTMLElement;
-    },
+    }
   ): void;
   (event: 'focus', value: boolean): void;
   (event: 'change', value: EditorState): void;
@@ -401,7 +397,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
   const editor: Ref<HTMLElement | undefined> = ref();
 
   /** Internal value */
-  const doc: Ref<string | Text> = ref(props.modelValue);
+  const document_: Ref<string | Text> = ref(props.modelValue);
 
   /**
    * CodeMirror Editor View
@@ -417,11 +413,11 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
    */
   const focus: WritableComputedRef<boolean> = computed({
     get: () => view.value?.hasFocus ?? false,
-    set: (f) => {
+    set: f => {
       if (f && view.value) {
         view.value.focus();
       }
-    },
+    }
   });
 
   /**
@@ -431,39 +427,37 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
    */
   const selection: WritableComputedRef<EditorSelection | undefined> = computed({
     get: () => view.value?.state.selection,
-    set: (selection) => {
+    set: selection => {
       if (view.value && selection) {
         view.value.dispatch({
-          selection,
+          selection
         });
       }
-    },
+    }
   });
 
   /** Cursor Position */
   const cursor: WritableComputedRef<number> = computed({
     get: () => view.value?.state.selection.main.head ?? 0,
-    set: (anchor) => {
+    set: anchor => {
       if (view.value) {
         view.value.dispatch({
           selection: {
-            anchor,
-          },
+            anchor
+          }
         });
       }
-    },
+    }
   });
 
   /** JSON */
-  const json: WritableComputedRef<
-    Record<string, StateField<unknown>> | undefined
-  > = computed({
-    get: () => view.value?.state.toJSON(),
-    set: (j) => {
-      if (view.value && j) {
-        view.value.setState(EditorState.fromJSON(j));
+  const json: WritableComputedRef<Record<string, StateField<unknown>> | undefined> = computed({
+    get: () => view.value?.state.toJSON() as Record<string, StateField<unknown>> | undefined,
+    set: index => {
+      if (view.value && index) {
+        view.value.setState(EditorState.fromJSON(index));
       }
-    },
+    }
   });
 
   /** Text length */
@@ -483,16 +477,10 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     const language = new Compartment();
     const tabSize = new Compartment();
     if (props.basic && props.minimal) {
-      throw new Error(
-        '[Vue CodeMirror] Both basic and minimal cannot be specified.',
-      );
+      throw new Error('[Vue CodeMirror] Both basic and minimal cannot be specified.');
     }
     /** Keymap */
-    const keymaps: KeyBinding[] = props.keymap?.length
-      ? [
-          ...props.keymap,
-        ]
-      : [];
+    const keymaps: KeyBinding[] = [...props.keymap];
     if (props.tab) {
       // If tab is enabled, add indentWithTab to keymap.
       keymaps.push(indentWithTab);
@@ -513,7 +501,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
         emit('focus', view.value.hasFocus);
 
         // Update count
-        length.value = view.value.state.doc?.length;
+        length.value = view.value.state.doc.length;
 
         if (update.changes.empty || !update.docChanged) {
           // Suppress event firing if no change
@@ -526,15 +514,13 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
             forceLinting(view.value);
           }
           // Count diagnostics.
-          diagnosticCount.value = (
-            props.linter(view.value) as readonly Diagnostic[]
-          ).length;
+          diagnosticCount.value = (props.linter(view.value) as readonly Diagnostic[]).length;
         }
         emit('update', update);
       }),
       // Toggle light/dark mode.
       EditorView.theme(props.theme, {
-        dark: props.dark,
+        dark: props.dark
       }),
       // Toggle line wrapping
       props.wrap ? EditorView.lineWrapping : undefined,
@@ -543,9 +529,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       // Allow Multiple Selections
       EditorState.allowMultipleSelections.of(props.allowMultipleSelections),
       // Indent tab size
-      props.tabSize
-        ? tabSize.of(EditorState.tabSize.of(props.tabSize))
-        : undefined,
+      props.tabSize ? tabSize.of(EditorState.tabSize.of(props.tabSize)) : undefined,
       // locale settings
       props.phrases ? EditorState.phrases.of(props.phrases) : undefined,
       // Readonly option
@@ -553,9 +537,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       // Editable option
       EditorView.editable.of(!props.disabled),
       // Set Line break char
-      props.lineSeparator
-        ? EditorState.lineSeparator.of(props.lineSeparator)
-        : undefined,
+      props.lineSeparator ? EditorState.lineSeparator.of(props.lineSeparator) : undefined,
       // Lang
       props.lang ? language.of(props.lang) : undefined,
       // Append Linter settings
@@ -567,33 +549,32 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       // Keymap and Indent with Tab
       keymaps.length > 0 ? keymap.of(keymaps) : undefined,
       // Append Extensions
-      ...props.extensions,
+      ...props.extensions
     ].filter((extension): extension is Extension => Boolean(extension)); // Filter undefined
   });
 
   // Extension (mostly props) Changed
   watch(
     extensions,
-    (exts) =>
+    extensions_ =>
       view.value?.dispatch({
-        effects: StateEffect.reconfigure.of(exts),
+        effects: StateEffect.reconfigure.of(extensions_)
       }),
     {
-      immediate: true,
-    },
+      immediate: true
+    }
   );
 
   // for parent-to-child binding.
   watch(
     () => props.modelValue,
-    async (value) => {
+    value => {
       if (!view.value) {
         return;
       }
       if (
         view.value.composing || // IME fix
-        view.value.state.doc.toJSON().join(props.lineSeparator ?? '\n') ===
-          value // don't need to update
+        view.value.state.doc.toJSON().join(props.lineSeparator ?? '\n') === value // don't need to update
       ) {
         // Do not commit CodeMirror's store.
         return;
@@ -602,14 +583,14 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       // Range Fix ?
       // https://github.com/logue/vue-codemirror6/issues/27
       const isSelectionOutOfRange = !view.value.state.selection.ranges.every(
-        (range) => range.anchor < value.length && range.head < value.length,
+        range => range.anchor < value.length && range.head < value.length
       );
 
       /** Scroll Fix */
       const changes = {
         from: 0,
         to: view.value.state.doc.length,
-        insert: value,
+        insert: value
       };
       // If preserveScrollPosition is enabled, create a scroll snapshot before updating the document.
       const scrollSnapshot = props.preserveScrollPosition
@@ -622,40 +603,37 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
         selection: isSelectionOutOfRange
           ? {
               anchor: 0,
-              head: 0,
+              head: 0
             }
           : view.value.state.selection,
         scrollIntoView: props.scrollIntoView,
-        effects: scrollSnapshot
-          ? [
-              scrollSnapshot,
-            ]
-          : undefined,
+        effects: scrollSnapshot ? [scrollSnapshot] : undefined
       });
     },
     {
-      immediate: true,
-    },
+      immediate: true
+    }
   );
 
   /** When loaded */
   onMounted(async () => {
     // Skip initialization in SSR environment
+    // rslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `window` is missing in SSR.
     if (globalThis.window === undefined || !editor.value) {
       return;
     }
 
     /** Initial value */
-    let value: string | Text = doc.value;
+    let value: string | Text = document_.value;
 
-    if (editor.value.childNodes[0]) {
+    if (editor.value.firstChild) {
       // when slot mode, overwrite initial value
-      if (doc.value !== '') {
+      if (document_.value !== '') {
         console.warn(
-          '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.',
+          '[CodeMirror.vue] The <code-mirror> tag contains child elements that overwrite the `v-model` values.'
         );
       }
-      value = (editor.value.childNodes[0] as HTMLElement).innerText.trim();
+      value = (editor.value.firstChild as HTMLElement).innerText.trim();
     }
 
     // Register Codemirror
@@ -663,15 +641,13 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       parent: editor.value,
       state: EditorState.create({
         doc: value,
-        extensions: extensions.value,
+        extensions: extensions.value
       }),
       dispatch: (tr: Transaction) => {
         if (!view.value) {
           return;
         }
-        view.value.update([
-          tr,
-        ]);
+        view.value.update([tr]);
         if (tr.changes.empty || !tr.docChanged) {
           // if not change value, no fire emit event
           return;
@@ -682,7 +658,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
         emit('update:modelValue', tr.state.doc.toString());
         // Emit EditorState
         emit('change', tr.state);
-      },
+      }
     });
 
     await nextTick();
@@ -690,7 +666,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     emit('ready', {
       view: view.value,
       state: view.value.state,
-      container: editor.value,
+      container: editor.value
     });
   });
 
@@ -725,11 +701,11 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
   const forceReconfigure = (): void => {
     // Deconfigure all Extensions
     view.value?.dispatch({
-      effects: StateEffect.reconfigure.of([]),
+      effects: StateEffect.reconfigure.of([])
     });
     // Register extensions
     view.value?.dispatch({
-      effects: StateEffect.appendConfig.of(extensions.value),
+      effects: StateEffect.appendConfig.of(extensions.value)
     });
   };
 
@@ -765,7 +741,7 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     }
     return view.value.state.sliceDoc(
       view.value.state.selection.main.from,
-      view.value.state.selection.main.to,
+      view.value.state.selection.main.to
     );
   };
   /**
@@ -778,15 +754,11 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       return [];
     }
 
-    return s.selection.ranges.map((r: { from: number; to: number }) =>
-      s.sliceDoc(r.from, r.to),
-    );
+    return s.selection.ranges.map((r: { from: number; to: number }) => s.sliceDoc(r.from, r.to));
   };
   /** Return true if any text is selected. */
   const somethingSelected = (): boolean =>
-    view.value?.state.selection.ranges.some(
-      (r: { empty: boolean }) => !r.empty,
-    ) ?? false;
+    view.value?.state.selection.ranges.some((r: { empty: boolean }) => !r.empty) ?? false;
 
   /**
    * Replace the part of the document between from and to with the given string.
@@ -795,18 +767,14 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
    * @param from - start string at position
    * @param to -  insert the string at position
    */
-  const replaceRange = (
-    replacement: string | Text,
-    from: number,
-    to: number,
-  ): void => {
+  const replaceRange = (replacement: string | Text, from: number, to: number): void => {
     if (view.value) {
       view.value.dispatch({
         changes: {
           from,
           to,
-          insert: replacement,
-        },
+          insert: replacement
+        }
       });
     }
   };
@@ -830,8 +798,8 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     if (view.value) {
       view.value.dispatch({
         selection: {
-          anchor: position,
-        },
+          anchor: position
+        }
       });
     }
   };
@@ -846,8 +814,8 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
       view.value.dispatch({
         selection: {
           anchor,
-          head,
-        },
+          head
+        }
       });
     }
   };
@@ -857,13 +825,10 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
    * @param ranges - Selection range
    * @param primary -
    */
-  const setSelections = (
-    ranges: readonly SelectionRange[],
-    primary?: number,
-  ): void => {
+  const setSelections = (ranges: readonly SelectionRange[], primary?: number): void => {
     if (view.value) {
       view.value.dispatch({
-        selection: EditorSelection.create(ranges, primary),
+        selection: EditorSelection.create(ranges, primary)
       });
     }
   };
@@ -876,8 +841,8 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     if (view.value && selection.value) {
       view.value.dispatch({
         selection: EditorSelection.create(
-          selection.value.ranges.map((r: SelectionRange) => r.extend(f(r))),
-        ),
+          selection.value.ranges.map((r: SelectionRange) => r.extend(f(r)))
+        )
       });
     }
   };
@@ -908,6 +873,6 @@ export function useCodeMirror(props: CodeMirrorProps, emit: CodeMirrorEmit) {
     setCursor,
     setSelection,
     setSelections,
-    extendSelectionsBy,
+    extendSelectionsBy
   };
 }

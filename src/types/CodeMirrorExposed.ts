@@ -1,9 +1,4 @@
-import type {
-  EditorSelection,
-  SelectionRange,
-  StateField,
-  Text,
-} from '@codemirror/state';
+import type { EditorSelection, SelectionRange, StateField, Text } from '@codemirror/state';
 import type { EditorView } from '@codemirror/view';
 
 /**

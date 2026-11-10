@@ -1,10 +1,6 @@
 import { type App, defineComponent, defineCustomElement } from 'vue-demi';
 
-import {
-  codeMirrorEmits,
-  codeMirrorProps,
-  useCodeMirror,
-} from '@/composables/useCodeMirror';
+import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
 import h, { slot } from '@/helpers/h-demi';
 import { Meta } from '@/types/Meta';
 
@@ -15,7 +11,7 @@ const component = defineComponent({
   /** Model Definition */
   model: {
     prop: 'modelValue',
-    event: 'update:modelValue',
+    event: 'update:modelValue'
   },
   /** Props Definition */
   props: codeMirrorProps,
@@ -44,7 +40,7 @@ const component = defineComponent({
       this.$props.tag,
       {
         ref: 'editor',
-        class: 'vue-codemirror',
+        class: 'vue-codemirror'
       },
       this.$slots.default
         ? // Hide original content
@@ -52,13 +48,13 @@ const component = defineComponent({
             'aside',
             {
               style: 'display: none;',
-              'aria-hidden': 'true',
+              'aria-hidden': 'true'
             },
-            slot(this.$slots.default),
+            slot(this.$slots.default)
           )
-        : undefined,
+        : undefined
     );
-  },
+  }
 });
 
 // Wrap the same component definition for use as a Web Component.
@@ -74,9 +70,4 @@ const installCodeMirror = (app: App): void => {
   app.component('CodeMirror', component);
 };
 export type { CodeMirrorExposed } from '@/types/CodeMirrorExposed';
-export {
-  component as default,
-  element as CodeMirror,
-  installCodeMirror as install,
-  Meta,
-};
+export { component as default, element as CodeMirror, installCodeMirror as install, Meta };

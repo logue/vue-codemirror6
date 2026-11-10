@@ -2,15 +2,23 @@
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "files": [],
   "references": [
+    // For bundler use
     {
       "path": "./tsconfig.node.json"
     },
+    // For browser demo use
     {
       "path": "./tsconfig.rsbuild.json"
     },
+    // For documentation use
+    {
+      "path": "./tsconfig.rspress.json"
+    },
+    // For build library use
     {
       "path": "./tsconfig.rslib.json"
     },
+    // For test use
     {
       "path": "./tsconfig.rstest.json"
     }

@@ -4,13 +4,7 @@
  * @see {@link https://github.com/vueuse/vue-demi/issues/65}
  */
 
-import {
-  type Component,
-  h as hDemi,
-  isVue2,
-  type VNode,
-  type VNodeProps,
-} from 'vue-demi';
+import { type Component, h as hDemi, isVue2, type VNode, type VNodeProps } from 'vue-demi';
 
 type Options = VNodeProps & {
   class?: string;
@@ -21,17 +15,11 @@ type Options = VNodeProps & {
   'aria-hidden'?: string;
 };
 
-const adaptOnsV3 = (
-  ons: Record<string, () => void>,
-): Record<string, () => void> => {
-  if (!ons) return {};
-  return Object.entries(ons).reduce<Record<string, () => void>>(
-    (ret, [key, handler]) => {
-      ret[`on${key.charAt(0).toUpperCase()}${key.slice(1)}`] = handler;
-      return ret;
-    },
-    {},
-  );
+const adaptOnsV3 = (ons: Record<string, () => void>): Record<string, () => void> => {
+  return Object.entries(ons).reduce<Record<string, () => void>>((returnValue, [key, handler]) => {
+    returnValue[`on${key.charAt(0).toUpperCase()}${key.slice(1)}`] = handler;
+    return returnValue;
+  }, {});
 };
 
 /**
@@ -46,7 +34,7 @@ const adaptOnsV3 = (
 export default function h(
   type: string | Component,
   options: Options = {},
-  children?: VNode | VNode[],
+  children?: VNode | VNode[]
 ): VNode {
   if (isVue2) {
     // Makeshift support :(
@@ -62,9 +50,9 @@ export default function h(
       ...extraOptions,
       ...props,
       ...domProps,
-      ...ons,
+      ...ons
     },
-    children,
+    children
   );
 }
 
@@ -74,7 +62,5 @@ export default function h(
  * @param defaultSlots - Default slot content or slot function.
  * @returns Resolved VNode array.
  */
-export const slot = (
-  defaultSlots: (() => VNode[]) | VNode[] | undefined,
-): VNode[] =>
+export const slot = (defaultSlots: (() => VNode[]) | VNode[] | undefined): VNode[] =>
   typeof defaultSlots === 'function' ? defaultSlots() : (defaultSlots ?? []);

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { beforeEach, describe, expect, it, rs } from 'rstack/test';
 
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
@@ -17,8 +17,8 @@ describe('CodeMirror Component', () => {
     it('should render the component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test code',
-        },
+          modelValue: 'test code'
+        }
       });
 
       expect(wrapper.exists()).toBe(true);
@@ -29,21 +29,21 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          tag: 'section',
-        },
+          tag: 'section'
+        }
       });
 
-      expect(wrapper.element.tagName.toLowerCase()).toBe('section');
+      expect((wrapper.element as HTMLElement).tagName.toLowerCase()).toBe('section');
     });
 
     it('should apply custom class', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
+          modelValue: 'test'
         },
         attrs: {
-          class: 'custom-class',
-        },
+          class: 'custom-class'
+        }
       });
 
       expect(wrapper.classes()).toContain('vue-codemirror');
@@ -56,8 +56,8 @@ describe('CodeMirror Component', () => {
       const testValue = 'const x = 42;';
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: testValue,
-        },
+          modelValue: testValue
+        }
       });
 
       expect(wrapper.props('modelValue')).toBe(testValue);
@@ -67,8 +67,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          basic: true,
-        },
+          basic: true
+        }
       });
 
       expect(wrapper.props('basic')).toBe(true);
@@ -78,8 +78,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          minimal: true,
-        },
+          minimal: true
+        }
       });
 
       expect(wrapper.props('minimal')).toBe(true);
@@ -89,8 +89,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          dark: true,
-        },
+          dark: true
+        }
       });
 
       expect(wrapper.props('dark')).toBe(true);
@@ -100,8 +100,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          readonly: true,
-        },
+          readonly: true
+        }
       });
 
       expect(wrapper.props('readonly')).toBe(true);
@@ -111,8 +111,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          disabled: true,
-        },
+          disabled: true
+        }
       });
 
       expect(wrapper.props('disabled')).toBe(true);
@@ -122,8 +122,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          wrap: true,
-        },
+          wrap: true
+        }
       });
 
       expect(wrapper.props('wrap')).toBe(true);
@@ -133,8 +133,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          tab: true,
-        },
+          tab: true
+        }
       });
 
       expect(wrapper.props('tab')).toBe(true);
@@ -145,8 +145,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: '',
-          placeholder: placeholderText,
-        },
+          placeholder: placeholderText
+        }
       });
 
       expect(wrapper.props('placeholder')).toBe(placeholderText);
@@ -157,8 +157,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'const x = 1;',
-          lang,
-        },
+          lang
+        }
       });
 
       // Just verify the prop is set, don't compare object identity
@@ -170,8 +170,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'test',
-          preserveScrollPosition: true,
-        },
+          preserveScrollPosition: true
+        }
       });
 
       expect(wrapper.props('preserveScrollPosition')).toBe(true);
@@ -182,8 +182,8 @@ describe('CodeMirror Component', () => {
     it('should emit ready event after mount', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
@@ -201,8 +201,8 @@ describe('CodeMirror Component', () => {
     it('should emit update:modelValue on text change', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'initial',
-        },
+          modelValue: 'initial'
+        }
       });
 
       await nextTick();
@@ -214,9 +214,9 @@ describe('CodeMirror Component', () => {
       vm.view?.dispatch({
         changes: {
           from: 0,
-          to: vm.view?.state.doc.length,
-          insert: 'updated',
-        },
+          to: vm.view.state.doc.length,
+          insert: 'updated'
+        }
       });
 
       await nextTick();
@@ -228,8 +228,8 @@ describe('CodeMirror Component', () => {
     it('should emit destroy event on unmount', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
@@ -248,8 +248,8 @@ describe('CodeMirror Component', () => {
       // In happy-dom, window exists, but we test the defensive coding
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       expect(wrapper.exists()).toBe(true);
@@ -258,9 +258,9 @@ describe('CodeMirror Component', () => {
     it('should not initialize EditorView before mount', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
+          modelValue: 'test'
         },
-        attachTo: document.body,
+        attachTo: document.body
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -269,11 +269,11 @@ describe('CodeMirror Component', () => {
       wrapper.unmount();
     });
 
-    it('should safely handle view operations when view is undefined', async () => {
+    it('should safely handle view operations when view is undefined', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -296,8 +296,8 @@ describe('CodeMirror Component', () => {
     it('should expose editor ref', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
@@ -309,8 +309,8 @@ describe('CodeMirror Component', () => {
     it('should expose view', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
@@ -324,8 +324,8 @@ describe('CodeMirror Component', () => {
     it('should expose cursor getter/setter', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test code',
-        },
+          modelValue: 'test code'
+        }
       });
 
       await nextTick();
@@ -340,8 +340,8 @@ describe('CodeMirror Component', () => {
       const testValue = 'hello world';
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: testValue,
-        },
+          modelValue: testValue
+        }
       });
 
       await nextTick();
@@ -355,8 +355,8 @@ describe('CodeMirror Component', () => {
     it('should expose getRange method', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'hello world',
-        },
+          modelValue: 'hello world'
+        }
       });
 
       await nextTick();
@@ -371,8 +371,8 @@ describe('CodeMirror Component', () => {
     it('should expose lineCount method', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'line1\nline2\nline3',
-        },
+          modelValue: 'line1\nline2\nline3'
+        }
       });
 
       await nextTick();
@@ -387,8 +387,8 @@ describe('CodeMirror Component', () => {
     it('should expose getLine method', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'first line\nsecond line',
-        },
+          modelValue: 'first line\nsecond line'
+        }
       });
 
       await nextTick();
@@ -403,29 +403,33 @@ describe('CodeMirror Component', () => {
     it('should expose lint method', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
       await nextTick();
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
-      expect(() => vm.lint()).not.toThrow();
+      expect(() => {
+        vm.lint();
+      }).not.toThrow();
     });
 
     it('should expose forceReconfigure method', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       await nextTick();
       await nextTick();
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
-      expect(() => vm.forceReconfigure()).not.toThrow();
+      expect(() => {
+        vm.forceReconfigure();
+      }).not.toThrow();
     });
   });
 
@@ -435,13 +439,10 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: modelValue.value,
-          'onUpdate:modelValue': (
-            value?: string | import('@codemirror/state').Text,
-          ) => {
-            modelValue.value =
-              typeof value === 'string' ? value : (value?.toString() ?? '');
-          },
-        },
+          'onUpdate:modelValue': (value?: string | import('@codemirror/state').Text) => {
+            modelValue.value = typeof value === 'string' ? value : (value?.toString() ?? '');
+          }
+        }
       });
 
       await nextTick();
@@ -450,7 +451,7 @@ describe('CodeMirror Component', () => {
       // Update the prop
       modelValue.value = 'updated';
       await wrapper.setProps({
-        modelValue: modelValue.value,
+        modelValue: modelValue.value
       });
       await nextTick();
 
@@ -461,23 +462,22 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'initial',
-          preserveScrollPosition: true,
-        },
+          preserveScrollPosition: true
+        }
       });
 
       await nextTick();
       await nextTick();
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
-      expect(vm.view).toBeDefined();
+      if (!vm.view) {
+        throw new Error('EditorView is not initialized');
+      }
 
-      const scrollSnapshotSpy = rs.spyOn(
-        vm.view as EditorView,
-        'scrollSnapshot',
-      );
+      const scrollSnapshotSpy = rs.spyOn(vm.view, 'scrollSnapshot');
 
       await wrapper.setProps({
-        modelValue: 'initial\nupdated',
+        modelValue: 'initial\nupdated'
       });
       await nextTick();
 
@@ -487,23 +487,22 @@ describe('CodeMirror Component', () => {
     it('should not preserve scroll position on external updates by default', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'initial',
-        },
+          modelValue: 'initial'
+        }
       });
 
       await nextTick();
       await nextTick();
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
-      expect(vm.view).toBeDefined();
+      if (!vm.view) {
+        throw new Error('EditorView is not initialized');
+      }
 
-      const scrollSnapshotSpy = rs.spyOn(
-        vm.view as EditorView,
-        'scrollSnapshot',
-      );
+      const scrollSnapshotSpy = rs.spyOn(vm.view, 'scrollSnapshot');
 
       await wrapper.setProps({
-        modelValue: 'initial\nupdated',
+        modelValue: 'initial\nupdated'
       });
       await nextTick();
 
@@ -513,8 +512,8 @@ describe('CodeMirror Component', () => {
     it('should emit update:modelValue when content changes', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'initial',
-        },
+          modelValue: 'initial'
+        }
       });
 
       await nextTick();
@@ -525,9 +524,9 @@ describe('CodeMirror Component', () => {
       vm.view?.dispatch({
         changes: {
           from: 0,
-          to: vm.view?.state.doc.length,
-          insert: 'changed',
-        },
+          to: vm.view.state.doc.length,
+          insert: 'changed'
+        }
       });
 
       await nextTick();
@@ -542,11 +541,11 @@ describe('CodeMirror Component', () => {
     it('should render slot content', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: '',
+          modelValue: ''
         },
         slots: {
-          default: '<pre>Slot Content</pre>',
-        },
+          default: '<pre>Slot Content</pre>'
+        }
       });
 
       expect(wrapper.html()).toContain('Slot Content');
@@ -555,11 +554,11 @@ describe('CodeMirror Component', () => {
     it('should hide slot content with aria-hidden', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: '',
+          modelValue: ''
         },
         slots: {
-          default: '<pre>Hidden Content</pre>',
-        },
+          default: '<pre>Hidden Content</pre>'
+        }
       });
 
       const aside = wrapper.find('aside');
@@ -572,8 +571,8 @@ describe('CodeMirror Component', () => {
     it('should handle empty modelValue', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: '',
-        },
+          modelValue: ''
+        }
       });
 
       expect(wrapper.props('modelValue')).toBe('');
@@ -583,8 +582,8 @@ describe('CodeMirror Component', () => {
       const longContent = 'x'.repeat(10000);
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: longContent,
-        },
+          modelValue: longContent
+        }
       });
 
       await nextTick();
@@ -600,8 +599,8 @@ describe('CodeMirror Component', () => {
       const specialContent = '日本語\n한글\n中文\n😀🎉';
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: specialContent,
-        },
+          modelValue: specialContent
+        }
       });
 
       expect(wrapper.props('modelValue')).toBe(specialContent);
@@ -611,8 +610,8 @@ describe('CodeMirror Component', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'line1\nline2',
-          lineSeparator: '\n',
-        },
+          lineSeparator: '\n'
+        }
       });
 
       expect(wrapper.props('lineSeparator')).toBe('\n');

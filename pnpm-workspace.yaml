@@ -1,8 +1,41 @@
-allowBuilds:
-  "@parcel/watcher": true
-  vue-demi: true
-overrides:
-  elliptic: ">=6.6.1"
 # Do not enforce minimum release age for dependencies.
 # Version selection is delegated to package.json constraints.
 minimumReleaseAge: 0
+
+allowBuilds:
+  '@carbon/colors': true
+  '@carbon/feature-flags': false
+  '@carbon/grid': false
+  '@carbon/icon-helpers': true
+  '@carbon/icons': true
+  '@carbon/layout': false
+  '@carbon/motion': false
+  '@carbon/styles': true
+  '@carbon/themes': true
+  '@carbon/type': false
+  '@carbon/utilities': true
+  '@carbon/web-components': true
+  '@ibm/plex': true
+  '@ibm/plex-mono': true
+  '@ibm/plex-sans': true
+  '@ibm/plex-sans-arabic': false
+  '@ibm/plex-sans-devanagari': false
+  '@ibm/plex-sans-hebrew': false
+  '@ibm/plex-sans-thai': false
+  '@ibm/plex-sans-thai-looped': false
+  '@ibm/plex-serif': false
+  '@parcel/watcher': true
+  unrs-resolver: true
+  vue-demi: true
+
+overrides:
+  minimatch: '>=11.0.4'
+
+# Agent skills
+skills:
+  dirs:
+    - .agents/skills
+
+permissions:
+  taze:
+    skills: true

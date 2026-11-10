@@ -36,26 +36,14 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <p>
         <code>basic</code>
         is an alias for loading
-        <a
-          href="https://codemirror.net/6/docs/ref/#basic-setup"
-          target="_blank"
-        >
-          basic-setup
-        </a>
+        <a href="https://codemirror.net/6/docs/ref/#basic-setup" target="_blank"> basic-setup </a>
         .
         <br />
         Use
         <code>wrap</code>
         when you want to use columns. (Enable text wrapping)
       </p>
-      <code-mirror
-        v-model="markdownDemoSrc"
-        basic
-        readonly
-        wrap
-        :dark="dark"
-        :lang="vue()"
-      />
+      <code-mirror v-model="markdownDemoSrc" basic readonly wrap :dark="dark" :lang="vue()" />
       <h3>Demo</h3>
       <markdown-demo class="mb-3" :dark="dark" />
       <div class="alert alert-info d-flex align-items-center my-3" role="alert">
@@ -69,9 +57,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
             xmlns="http://www.w3.org/2000/svg"
           >
             <title>info-circle</title>
-            <path
-              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-            />
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
             <path
               d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
             />
@@ -89,11 +75,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
           .
           <br />
           Full demo is
-          <a
-            href="https://logue.dev/vue-markdown-wasm"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <a href="https://logue.dev/vue-markdown-wasm" rel="noopener noreferrer" target="_blank">
             vue-markdown-wasm
           </a>
           .
@@ -105,23 +87,15 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       <p>
         In this sample, the text is put directly inside the
         <code>&lt;code-mirror&gt;</code>
-        tag to make it the initial string. On the Vue side, it is evaluated as a
-        DOM node and only the text node is used as the value. In addition, it
-        does not work with Vue2.7.
+        tag to make it the initial string. On the Vue side, it is evaluated as a DOM node and only
+        the text node is used as the value. In addition, it does not work with Vue2.7.
       </p>
       <p>
         It's just for simple syntax highlighting. Do not use with
         <code>v-model</code>
         .
       </p>
-      <code-mirror
-        v-model="slotDemoSrc"
-        basic
-        readonly
-        wrap
-        :dark="dark"
-        :lang="vue()"
-      />
+      <code-mirror v-model="slotDemoSrc" basic readonly wrap :dark="dark" :lang="vue()" />
       <h3>Sample</h3>
       <slot-demo :dark="dark" />
     </section>
@@ -135,10 +109,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       </p>
       <p>
         This sample uses
-        <a
-          href="https://github.com/UziTech/eslint-linter-browserify"
-          target="_blank"
-        >
+        <a href="https://github.com/UziTech/eslint-linter-browserify" target="_blank">
           eslint-linter-browserify
         </a>
         for the eslint linter.
@@ -157,10 +128,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         The value of
         <code>@update</code>
         gets the
-        <a
-          href="https://codemirror.net/6/docs/ref/#view.ViewUpdate"
-          target="_blank"
-        >
+        <a href="https://codemirror.net/6/docs/ref/#view.ViewUpdate" target="_blank">
           ViewUpdate
         </a>
         object at that time when there is any update in the target form.
@@ -174,8 +142,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         >
           diagnosticCount
         </a>
-        function is used to display the count of locations where grammatical
-        errors are found.
+        function is used to display the count of locations where grammatical errors are found.
       </p>
       <linter-and-cross-binding-demo :dark="dark" />
       <p>Also, make sure that changing either value reflects that value.</p>
@@ -189,10 +156,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
         a demo
       </h2>
       <p>
-        <a
-          href="https://codemirror.net/docs/ref/#view.EditorView%5Eeditable"
-          target="_blank"
-        >
+        <a href="https://codemirror.net/docs/ref/#view.EditorView%5Eeditable" target="_blank">
           <code>readonly</code>
         </a>
         a specifies whether the state is rewritable or not. Similar to
@@ -242,14 +206,7 @@ const keyMapDemoSrc = KeyMapDemoSrc.trim();
       </p>
       <div class="row">
         <div class="col-sm">
-          <code-mirror
-            v-model="keyMapDemoSrc"
-            basic
-            readonly
-            wrap
-            :dark="dark"
-            :lang="vue()"
-          />
+          <code-mirror v-model="keyMapDemoSrc" basic readonly wrap :dark="dark" :lang="vue()" />
         </div>
         <div class="col-sm">
           <h3>Demo</h3>

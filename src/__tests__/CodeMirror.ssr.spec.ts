@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from '@rstest/core';
+import { afterEach, beforeEach, describe, expect, it } from 'rstack/test';
 
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
@@ -14,8 +14,8 @@ describe('CodeMirror SSR Compatibility', () => {
 
   afterEach(() => {
     // Restore window
-    if (!(globalThis as Record<string, unknown>).window && originalWindow) {
-      (globalThis as Record<string, unknown>).window = originalWindow;
+    if (!('window' in globalThis)) {
+      Reflect.set(globalThis, 'window', originalWindow);
     }
   });
 
@@ -23,8 +23,8 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should render without errors in SSR environment', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test code for SSR',
-        },
+          modelValue: 'test code for SSR'
+        }
       });
 
       expect(wrapper.exists()).toBe(true);
@@ -34,8 +34,8 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should not initialize EditorView on server', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'server side code',
-        },
+          modelValue: 'server side code'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -52,8 +52,8 @@ describe('CodeMirror SSR Compatibility', () => {
           basic: true,
           dark: true,
           readonly: true,
-          placeholder: 'Enter code',
-        },
+          placeholder: 'Enter code'
+        }
       });
 
       expect(wrapper.props('modelValue')).toBe('ssr test');
@@ -64,7 +64,7 @@ describe('CodeMirror SSR Compatibility', () => {
     });
 
     it('should safely render with all prop combinations', () => {
-      const props = {
+      const properties = {
         modelValue: 'test',
         basic: true,
         minimal: false,
@@ -76,16 +76,16 @@ describe('CodeMirror SSR Compatibility', () => {
         placeholder: 'Type here...',
         allowMultipleSelections: true,
         tabSize: 4,
-        lineSeparator: '\n',
+        lineSeparator: '\n'
       };
 
       const wrapper = mount(CodeMirror, {
-        props,
+        props: properties
       });
 
       expect(wrapper.exists()).toBe(true);
-      for (const [key, value] of Object.entries(props)) {
-        expect(wrapper.props(key as keyof typeof props)).toBe(value);
+      for (const [key, value] of Object.entries(properties)) {
+        expect(wrapper.props(key as keyof typeof properties)).toBe(value);
       }
     });
   });
@@ -94,8 +94,8 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should return safe defaults when view is undefined', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -109,35 +109,41 @@ describe('CodeMirror SSR Compatibility', () => {
       expect(Array.isArray(vm.getSelections())).toBe(true);
       expect(vm.somethingSelected()).toBe(false);
       // getRange and getLine return string or undefined depending on whether view is initialized
-      expect([
-        'string',
-        'undefined',
-      ]).toContain(typeof vm.getRange());
-      expect([
-        'string',
-        'undefined',
-      ]).toContain(typeof vm.getLine(0));
+      expect(['string', 'undefined']).toContain(typeof vm.getRange());
+      expect(['string', 'undefined']).toContain(typeof vm.getLine(0));
     });
 
     it('should not throw when calling methods before view initialization', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
 
       // None of these should throw
-      expect(() => vm.lint()).not.toThrow();
-      expect(() => vm.forceReconfigure()).not.toThrow();
-      expect(() => vm.setCursor(0)).not.toThrow();
+      expect(() => {
+        vm.lint();
+      }).not.toThrow();
+      expect(() => {
+        vm.forceReconfigure();
+      }).not.toThrow();
+      expect(() => {
+        vm.setCursor(0);
+      }).not.toThrow();
       // setSelection and setSelections with invalid args might throw, which is expected behavior
       // These are only tested to verify they don't crash when view exists
-      expect(() => vm.replaceRange('new', 0, 3)).not.toThrow();
-      expect(() => vm.replaceSelection('new')).not.toThrow();
+      expect(() => {
+        vm.replaceRange('new', 0, 3);
+      }).not.toThrow();
+      expect(() => {
+        vm.replaceSelection('new');
+      }).not.toThrow();
       // extendSelectionsBy should be safe
-      expect(() => vm.extendSelectionsBy(noopExtendSelectionsBy)).not.toThrow();
+      expect(() => {
+        vm.extendSelectionsBy(noopExtendSelectionsBy);
+      }).not.toThrow();
     });
 
     // Move to outer scope
@@ -148,8 +154,8 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle computed properties safely', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -165,9 +171,9 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should initialize view after mount in browser', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'hydration test',
+          modelValue: 'hydration test'
         },
-        attachTo: document.body,
+        attachTo: document.body
       });
 
       await nextTick(); // Wait for onMounted to complete
@@ -183,9 +189,9 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should emit ready event after client-side initialization', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'ready test',
+          modelValue: 'ready test'
         },
-        attachTo: document.body,
+        attachTo: document.body
       });
 
       await nextTick();
@@ -199,15 +205,15 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle modelValue updates after hydration', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'initial',
+          modelValue: 'initial'
         },
-        attachTo: document.body,
+        attachTo: document.body
       });
 
       await nextTick();
 
       await wrapper.setProps({
-        modelValue: 'updated',
+        modelValue: 'updated'
       });
       await nextTick();
 
@@ -222,8 +228,8 @@ describe('CodeMirror SSR Compatibility', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: '',
-          placeholder: 'Enter your code here',
-        },
+          placeholder: 'Enter your code here'
+        }
       });
 
       expect(wrapper.props('placeholder')).toBe('Enter your code here');
@@ -233,8 +239,8 @@ describe('CodeMirror SSR Compatibility', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'readonly content',
-          readonly: true,
-        },
+          readonly: true
+        }
       });
 
       expect(wrapper.props('readonly')).toBe(true);
@@ -244,8 +250,8 @@ describe('CodeMirror SSR Compatibility', () => {
       const wrapper = mount(CodeMirror, {
         props: {
           modelValue: 'disabled content',
-          disabled: true,
-        },
+          disabled: true
+        }
       });
 
       expect(wrapper.props('disabled')).toBe(true);
@@ -254,11 +260,11 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle slots in SSR', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: '',
+          modelValue: ''
         },
         slots: {
-          default: '<pre>SSR Slot Content</pre>',
-        },
+          default: '<pre>SSR Slot Content</pre>'
+        }
       });
 
       expect(wrapper.html()).toContain('SSR Slot Content');
@@ -269,8 +275,8 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle missing editor ref', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       const vm = wrapper.vm as unknown as CodeMirrorExposed;
@@ -281,19 +287,19 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle rapid prop changes before initialization', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'v1',
-        },
+          modelValue: 'v1'
+        }
       });
 
       // Rapidly change props before view is initialized
       await wrapper.setProps({
-        modelValue: 'v2',
+        modelValue: 'v2'
       });
       await wrapper.setProps({
-        modelValue: 'v3',
+        modelValue: 'v3'
       });
       await wrapper.setProps({
-        modelValue: 'v4',
+        modelValue: 'v4'
       });
 
       expect(wrapper.props('modelValue')).toBe('v4');
@@ -302,29 +308,31 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should handle unmount before initialization', () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test',
-        },
+          modelValue: 'test'
+        }
       });
 
       // Unmount immediately without waiting for initialization
-      expect(() => wrapper.unmount()).not.toThrow();
+      expect(() => {
+        wrapper.unmount();
+      }).not.toThrow();
     });
 
     it('should handle multiple instances', () => {
       const wrapper1 = mount(CodeMirror, {
         props: {
-          modelValue: 'instance 1',
-        },
+          modelValue: 'instance 1'
+        }
       });
       const wrapper2 = mount(CodeMirror, {
         props: {
-          modelValue: 'instance 2',
-        },
+          modelValue: 'instance 2'
+        }
       });
       const wrapper3 = mount(CodeMirror, {
         props: {
-          modelValue: 'instance 3',
-        },
+          modelValue: 'instance 3'
+        }
       });
 
       expect(wrapper1.props('modelValue')).toBe('instance 1');
@@ -341,9 +349,9 @@ describe('CodeMirror SSR Compatibility', () => {
     it('should clean up properly on unmount', async () => {
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'cleanup test',
+          modelValue: 'cleanup test'
         },
-        attachTo: document.body,
+        attachTo: document.body
       });
 
       await nextTick();
@@ -355,13 +363,13 @@ describe('CodeMirror SSR Compatibility', () => {
       expect(destroyEvents).toBeTruthy();
     });
 
-    it('should handle multiple mount/unmount cycles', async () => {
-      for (let i = 0; i < 5; i++) {
+    it('should handle multiple mount/unmount cycles', () => {
+      for (let index = 0; index < 5; index++) {
         const wrapper = mount(CodeMirror, {
           props: {
-            modelValue: `cycle ${i}`,
+            modelValue: `cycle ${String(index)}`
           },
-          attachTo: document.body,
+          attachTo: document.body
         });
 
         expect(wrapper.exists()).toBe(true);

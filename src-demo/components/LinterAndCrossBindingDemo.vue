@@ -31,15 +31,12 @@ const linter = esLint(new eslint.Linter(), {
   languageOptions: {
     parserOptions: {
       ecmaVersion: 2022,
-      sourceType: 'module',
-    },
+      sourceType: 'module'
+    }
   },
   rules: {
-    semi: [
-      'error',
-      'never',
-    ],
-  },
+    semi: ['error', 'never']
+  }
 });
 
 const onFocus = (f: boolean): void => {
@@ -67,20 +64,12 @@ const onFocus = (f: boolean): void => {
         <div class="col-4">
           <div class="input-group">
             <label class="input-group-text" for="count">Count</label>
-            <input
-              id="count"
-              class="form-control"
-              readonly
-              type="text"
-              :value="cm?.length"
-            />
+            <input id="count" class="form-control" readonly type="text" :value="cm?.length" />
           </div>
         </div>
         <div class="col-5">
           <div class="input-group">
-            <label class="input-group-text" for="diagnosticCount">
-              Diagnostic Count
-            </label>
+            <label class="input-group-text" for="diagnosticCount"> Diagnostic Count </label>
             <input
               id="diagnosticCount"
               class="form-control"
@@ -107,12 +96,7 @@ const onFocus = (f: boolean): void => {
     </div>
     <div class="col-6">
       <label for="sync">Sync</label>
-      <textarea
-        id="sync"
-        v-model="value"
-        class="form-control"
-        rows="4"
-      ></textarea>
+      <textarea id="sync" v-model="value" class="form-control" rows="4"></textarea>
     </div>
   </div>
   <p>

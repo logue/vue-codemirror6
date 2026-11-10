@@ -1,0 +1,29 @@
+{
+  "extends": "@tsconfig/node-lts/tsconfig.json",
+  "include": ["env.d.ts", "src-docs/**/*", "theme/**/*"],
+  "exclude": ["**/node_modules", "**/.*/"],
+  "compilerOptions": {
+    "lib": ["DOM", "ES2023"],
+    "jsx": "react-jsx",
+    "target": "ES2023",
+    "noEmit": true,
+    "useDefineForClassFields": true,
+
+    /* modules */
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+
+    /* type checking */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "tsBuildInfoFile": "./.rstack/tsconfig.rspress.tsbuildinfo"
+  },
+  "mdx": {
+    "checkMdx": true
+  }
+}

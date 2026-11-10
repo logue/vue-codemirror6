@@ -1,34 +1,38 @@
-/* rslint-disable @typescript-eslint/no-explicit-any */
-/** biome-ignore-all lint/correctness/noUnusedVariables: define variables use. */
-/** biome-ignore-all lint/suspicious/noExplicitAny: for custom file type (such as yaml, vue etc.) reading. */
+// declare module '*.css';
+declare module '*.scss';
 
-// see rslib.config.ts for details
 interface ImportMetaEnv {
+  /** package.json version value. */
   readonly APP_VERSION: string;
+  /** Last build date */
   readonly BUILD_DATE: string;
+  /** Static Site Generation to Markdown */
+  readonly SSG_MD: boolean;
 }
-
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
-  // rslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/ban-types
-  const component: DefineComponent<
-    Record<string, never>,
-    Record<string, never>,
-    any
-  >;
+  const component: DefineComponent<Record<string, never>, Record<string, never>, any>;
   export default component;
 }
 
-declare module '*?source' {
-  const content: string;
-  export default content;
-}
-
+/** Raw SFC source loaded via `src-demo/loaders/vue-source-loader.js`. */
 declare module '*.vue?source' {
   const content: string;
   export default content;
 }
+
+/*
+// Example when you are using rsbuild-plugin-yaml, comment out below:
+declare module '*.yml' {
+  const content: Record<string, any>;
+  export default content;
+}
+declare module '*.yaml' {
+  const content: Record<string, any>;
+  export default content;
+}
+*/

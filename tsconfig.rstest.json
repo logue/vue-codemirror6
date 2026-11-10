@@ -1,14 +1,13 @@
 {
   "extends": "./tsconfig.rslib.json",
-  "include": [
-    "src/**/__tests__/*",
-    "env.d.ts"
-  ],
-  "exclude": [
-    "**/node_modules",
-    "**/.*/"
-  ],
+  "include": ["env.d.ts", "src/**/__tests__/*"],
+  "exclude": ["**/node_modules", "**/.*/"],
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.rstest.tsbuildinfo"
+    "noImplicitAny": false,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "tsBuildInfoFile": "./.rstack/tsconfig.rstest.tsbuildinfo",
+    "types": ["rstack/test/globals", "rstack/test/importMeta", "node"]
   }
 }
