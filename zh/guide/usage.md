@@ -162,5 +162,5 @@ const phrases: Record<string, string> = {
 ```
 
 :::tip
-与 vue-i18n 结合使用时,请将 `phrases` 设为响应式(例如 `computed`),以便在切换语言时更新编辑器。
+与 vue-i18n 结合使用时,请将 `phrases` 设为响应式(例如 `computed`),以便在切换语言时更新编辑器。完整的翻译表和 vue-i18n 示例请参阅 [国际化](/vue-codemirror6/zh/guide/i18n.md)。
 :::

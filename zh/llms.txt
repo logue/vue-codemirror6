@@ -8,6 +8,7 @@
 - [快速开始](/vue-codemirror6/zh/guide/getting-started.md): 安装 vue-codemirror6、渲染最简单的编辑器,以及全局注册组件。
 - [基本用法](/vue-codemirror6/zh/guide/usage.md): vue-codemirror6 的日常用法:v-model、插槽内容、只读与禁用模式、快捷键、事件以及界面翻译。
 - [语言、代码检查与主题](/vue-codemirror6/zh/guide/languages-and-themes.md): 在 vue-codemirror6 中配置语法高亮、代码检查、检查边栏、主题、深色模式以及自定义 CodeMirror 扩展。
+- [国际化](/vue-codemirror6/zh/guide/i18n.md): 使用 phrases 属性翻译 CodeMirror 的界面(搜索面板、折叠、代码检查面板等)。
 - [服务端渲染](/vue-codemirror6/zh/guide/ssr.md): 在 Nuxt 等服务端渲染框架中使用 vue-codemirror6。
 - [Web Component](/vue-codemirror6/zh/guide/web-components.md): 在 Vue 模板之外,将 vue-codemirror6 作为原生自定义元素使用(实验性)。
 - [打包建议](/vue-codemirror6/zh/guide/bundling.md): 构建使用 vue-codemirror6 的应用时,将 CodeMirror 从主包中拆分出来的技巧。

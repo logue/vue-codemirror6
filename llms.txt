@@ -8,6 +8,7 @@
 - [Getting Started](/vue-codemirror6/guide/getting-started.md): Install vue-codemirror6, render a minimal editor, and register the component globally.
 - [Usage](/vue-codemirror6/guide/usage.md): Everyday usage of vue-codemirror6 — v-model, slot content, read-only and disabled modes, key bindings, events, and UI translation.
 - [Languages, Linters & Themes](/vue-codemirror6/guide/languages-and-themes.md): Configure syntax highlighting, linters, the lint gutter, themes, dark mode, and custom CodeMirror extensions in vue-codemirror6.
+- [Internationalization](/vue-codemirror6/guide/i18n.md): Translate the CodeMirror UI (search panel, folding, lint panel, …) with the phrases prop.
 - [Server-Side Rendering](/vue-codemirror6/guide/ssr.md): Using vue-codemirror6 with server-side rendering frameworks such as Nuxt.
 - [Web Component](/vue-codemirror6/guide/web-components.md): Use vue-codemirror6 as a native custom element outside of Vue templates (experimental).
 - [Bundling Tips](/vue-codemirror6/guide/bundling.md): Tips for keeping CodeMirror out of your main bundle when building an application that uses vue-codemirror6.
