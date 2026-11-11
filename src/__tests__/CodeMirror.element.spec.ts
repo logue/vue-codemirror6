@@ -41,21 +41,17 @@ describe('CodeMirror Web Component', () => {
     document.body.innerHTML = '';
   });
 
-  it('should auto-register <code-mirror> on import', () => {
-    expect(customElements.get('code-mirror')).toBe(CodeMirror);
-    expect(document.createElement('code-mirror')).toBeInstanceOf(CodeMirror);
+  it('should register the element under the given tag name', () => {
+    expect(customElements.get(TAG)).toBe(CodeMirror);
+    expect(createElement()).toBeInstanceOf(CodeMirror);
   });
 
-  it('should register additional tag names via register()', () => {
-    const Ctor = customElements.get(TAG);
-    expect(Ctor).toBeDefined();
-    expect(Ctor).not.toBe(CodeMirror);
-    expect(createElement()).toBeInstanceOf(CodeMirror);
+  it('should not register <code-mirror> automatically', () => {
+    expect(customElements.get('code-mirror')).toBeUndefined();
   });
 
   it('should ignore repeated registration of the same tag name', () => {
     expect(() => {
-      register();
       register(TAG);
     }).not.toThrow();
   });

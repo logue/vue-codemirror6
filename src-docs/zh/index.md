@@ -37,7 +37,7 @@ features:
     icon: 🌐
     link: /zh/guide/ssr
   - title: Web Component
-    details: 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用(实验性)。
+    details: 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用。
     icon: 🧩
     link: /zh/guide/web-components
   - title: 完整的编辑器 API

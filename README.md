@@ -42,6 +42,60 @@ const value = ref('Hello, CodeMirror!');
 
 Props, events, languages, themes, SSR, Web Component usage and more are covered in the [documentation](https://logue.dev/vue-codemirror6/).
 
+## Using from a CDN (jsDelivr)
+
+The Web Component build (`vue-codemirror6/wc-auto`, Vue 3, version 1.8.0 or later) can be used without a bundler. Load the ESM files from jsDelivr through an [import map](https://developer.mozilla.org/docs/Web/HTML/Reference/Elements/script/type/importmap):
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "vue-codemirror6/wc-auto": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/wc-auto.es.js",
+      "vue": "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
+      "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/v3/index.mjs",
+      "codemirror": "https://cdn.jsdelivr.net/npm/codemirror@6/dist/index.js",
+      "@codemirror/autocomplete": "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6/dist/index.js",
+      "@codemirror/commands": "https://cdn.jsdelivr.net/npm/@codemirror/commands@6/dist/index.js",
+      "@codemirror/language": "https://cdn.jsdelivr.net/npm/@codemirror/language@6/dist/index.js",
+      "@codemirror/lint": "https://cdn.jsdelivr.net/npm/@codemirror/lint@6/dist/index.js",
+      "@codemirror/search": "https://cdn.jsdelivr.net/npm/@codemirror/search@6/dist/index.js",
+      "@codemirror/state": "https://cdn.jsdelivr.net/npm/@codemirror/state@6/dist/index.js",
+      "@codemirror/streamparser": "https://cdn.jsdelivr.net/npm/@codemirror/streamparser@6/dist/index.js",
+      "@codemirror/view": "https://cdn.jsdelivr.net/npm/@codemirror/view@6/dist/index.js",
+      "@lezer/common": "https://cdn.jsdelivr.net/npm/@lezer/common@1/dist/index.js",
+      "@lezer/highlight": "https://cdn.jsdelivr.net/npm/@lezer/highlight@1/dist/index.js",
+      "@lezer/lr": "https://cdn.jsdelivr.net/npm/@lezer/lr@1/dist/index.js",
+      "@marijn/find-cluster-break": "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1/src/index.js",
+      "crelt": "https://cdn.jsdelivr.net/npm/crelt@1/index.js",
+      "style-mod": "https://cdn.jsdelivr.net/npm/style-mod@4/src/style-mod.js",
+      "w3c-keyname": "https://cdn.jsdelivr.net/npm/w3c-keyname@2/index.js",
+
+      "@codemirror/lang-javascript": "https://cdn.jsdelivr.net/npm/@codemirror/lang-javascript@6/dist/index.js",
+      "@lezer/javascript": "https://cdn.jsdelivr.net/npm/@lezer/javascript@1/dist/index.js"
+    }
+  }
+</script>
+
+<code-mirror></code-mirror>
+
+<script type="module">
+  import 'vue-codemirror6/wc-auto';
+  import { javascript } from '@codemirror/lang-javascript';
+
+  const editor = document.querySelector('code-mirror');
+  editor.basic = true;
+  editor.lang = javascript();
+  editor.modelValue = 'console.log("Hello, CodeMirror!");';
+</script>
+```
+
+- Map every CodeMirror package to **one** URL, as above. Loading two copies of `@codemirror/state` (or Vue) breaks the editor, so avoid jsDelivr's `/+esm` URLs here; they pin dependency versions independently per package.
+- The last two entries are for `@codemirror/lang-javascript`. Add the language packages you use (and their `@lezer/*` parsers) the same way.
+- To register a different tag name, map `vue-codemirror6/wc` (`…/dist/wc.es.js`) instead and call `register('my-editor')`.
+- The `*.umd.js` files are for CommonJS / AMD loaders and cannot be used from a plain `<script>` tag.
+
+See [Web Component](https://logue.dev/vue-codemirror6/guide/web-components) for details.
+
 ## Links
 
 - [Documentation](https://logue.dev/vue-codemirror6/)

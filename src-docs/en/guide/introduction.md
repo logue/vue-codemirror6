@@ -16,7 +16,7 @@ CodeMirror 6 is a modular code editor. Instead of exposing every CodeMirror conc
 - **Events** for `ready`, `focus`, `update`, `change`, and `destroy`.
 - **Instance API** to access the [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView), selection, cursor, lint diagnostics, and CodeMirror 5 style helpers.
 - **SSR compatibility**: the editor is only created on the client.
-- **Web Component build** of the same component (experimental).
+- **Web Component build** of the same component.
 
 ## Supported environments
 

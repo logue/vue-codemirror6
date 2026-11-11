@@ -37,7 +37,7 @@ features:
     icon: 🌐
     link: /ja/guide/ssr
   - title: Web Component
-    details: 同じコンポーネントをカスタム要素としても書き出しているので、Vue 以外の環境でも使えます(実験的機能)。
+    details: 同じコンポーネントをカスタム要素としても書き出しているので、Vue 以外の環境でも使えます。
     icon: 🧩
     link: /ja/guide/web-components
   - title: エディタ API

@@ -52,36 +52,20 @@ const CodeMirrorElement = defineCustomElement({
   }
 });
 
-/** Tag name registered automatically on import. */
-const DEFAULT_TAG_NAME = 'code-mirror';
-
 /**
- * Register the element as a custom element.
+ * Register the element as a custom element under the given tag name.
  *
- * `<code-mirror>` is registered automatically on import; call this to use an additional tag name.
- * A constructor can only be defined once per registry, so additional tag names get a subclass.
+ * Does nothing if the tag name is already defined. A constructor can only be defined once per
+ * custom element registry, so register a single tag name per page and do not combine this with
+ * `vue-codemirror6/wc-auto` (which registers `<code-mirror>`).
  *
- * @param tagName - Custom element tag name
+ * @param tagName - Custom element tag name (must contain a hyphen)
  */
-export function register(tagName = DEFAULT_TAG_NAME): void {
+export function register(tagName: string): void {
   if (customElements.get(tagName)) {
     return;
   }
-  customElements.define(
-    tagName,
-    tagName === DEFAULT_TAG_NAME ? CodeMirrorElement : class extends CodeMirrorElement {}
-  );
-}
-
-// Auto-register `<code-mirror>` on import (skipped where `customElements` is unavailable, e.g. SSR).
-if (typeof customElements !== 'undefined') {
-  register();
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'code-mirror': InstanceType<typeof CodeMirrorElement>;
-  }
+  customElements.define(tagName, CodeMirrorElement);
 }
 
 export { CodeMirrorElement as default };

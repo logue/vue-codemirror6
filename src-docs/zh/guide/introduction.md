@@ -16,7 +16,7 @@ CodeMirror 6 是一个模块化的代码编辑器。本组件没有直接暴露 
 - `ready`、`focus`、`update`、`change`、`destroy` **事件**
 - 可访问 [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)、选区、光标、代码检查结果以及兼容 CodeMirror 5 的辅助方法的 **实例 API**
 - **SSR 兼容**:编辑器只在客户端创建
-- 同一组件的 **Web Component 版本**(实验性)
+- 同一组件的 **Web Component 版本**
 
 ## 运行环境
 

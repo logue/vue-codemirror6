@@ -34,7 +34,9 @@
     "url": "https://logue.dev/"
   },
   "sideEffects": [
-    "./dist/wc.es.js"
+    "./dist/wc-auto.es.js",
+    "./src/wc-auto.ts",
+    "./dist/wc-auto.umd.js"
   ],
   "type": "module",
   "exports": {
@@ -48,9 +50,22 @@
       "import": "./dist/wc.es.js",
       "default": "./dist/wc.es.js"
     },
+    "./wc-auto": {
+      "types": "./dist/wc-auto.d.ts",
+      "import": "./dist/wc-auto.es.js",
+      "default": "./dist/wc-auto.es.js"
+    },
     "./umd": {
       "import": "./dist/index.umd.js",
       "default": "./dist/index.umd.js"
+    },
+    "./wc/umd": {
+      "import": "./dist/wc.umd.js",
+      "default": "./dist/wc.umd.js"
+    },
+    "./wc-auto/umd": {
+      "import": "./dist/wc-auto.umd.js",
+      "default": "./dist/wc-auto.umd.js"
     },
     "./package.json": "./package.json"
   },
@@ -67,11 +82,11 @@
     "lint:prettier": "rs fmt .",
     "test": "rs test",
     "test:watch": "rs test --watch",
-    "clean": "rimraf dist docs",
+    "clean": "rimraf dist docs src-docs/public/demo",
     "clean:hard": "rimraf .rstack/cache .rstack/.rsdoctor demo dist docs node_modules/.tmp node_modules/.cache",
     "build": "run-p type-check \"build-only {@}\" --",
     "build:demo": "rs build",
-    "build:docs": "run-s build:rspress build:demo",
+    "build:docs": "run-s build:demo build:rspress",
     "build:rspress": "rs doc build",
     "preview": "rs preview",
     "preview:docs": "rs doc preview",
@@ -105,7 +120,7 @@
     "@rsbuild/plugin-vue": "^2.0.1",
     "@rsdoctor/agent-cli": "^0.1.1",
     "@rsdoctor/core": "^2.0.2",
-    "@rspress/core": "^2.1.1",
+    "@rspress/core": "^2.1.2",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/vue": "^8.1.0",

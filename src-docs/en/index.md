@@ -37,7 +37,7 @@ features:
     icon: 🌐
     link: /guide/ssr
   - title: Web Component
-    details: The same component is also exported as a custom element for use outside Vue (experimental).
+    details: The same component is also exported as a custom element for use outside Vue.
     icon: 🧩
     link: /guide/web-components
   - title: Full editor API

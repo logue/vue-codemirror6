@@ -95,6 +95,32 @@ const APP_FILES = ['**/*.{ts,mts,tsx,js,mjs,jsx,json,jsonc,vue,astro,svelte}'];
 const TEST_FILES = ['**/*.{test,spec}.{ts,mts,tsx,js,mjs,jsx}'];
 
 /**
+ * Create a UMD build config for a single entry.
+ *
+ * @param name - Entry name (output: `dist/<name>.umd.js`)
+ * @param entry - Entry source path
+ * @param globalName - Global variable name used when loaded via a <script> tag
+ */
+const createUmdConfig = (name: string, entry: string, globalName: string) => ({
+  format: 'umd' as const,
+  source: {
+    entry: {
+      [name]: entry
+    }
+  },
+  output: {
+    cleanDistPath: false,
+    filename: {
+      js: `${name}.umd.js`
+    },
+    minify: true,
+    sourceMap: false
+  },
+  syntax: 'es2020' as const,
+  umdName: globalName
+});
+
+/**
  * Rslib Config
  * @see {@link https://rslib.rs/config/ | Rslib Config}
  */
@@ -107,6 +133,10 @@ define.lib({
   },
   bundle: true,
   syntax: 'esnext',
+  source: {
+    define: createBuildDefines(),
+    tsconfigPath: './tsconfig.rslib.json'
+  },
   output: {
     target: 'node',
     autoExternal: true
@@ -125,7 +155,8 @@ define.lib({
           index: './src/index.ts',
           // Web Component entry (Vue 3 only). Kept separate so the Vue component
           // entry does not pull in `defineCustomElement`.
-          wc: './src/wc.ts'
+          wc: './src/wc.ts',
+          'wc-auto': './src/wc-auto.ts'
         }
       },
       output: {
@@ -135,31 +166,13 @@ define.lib({
         sourceMap: true
       }
     },
-    {
-      // Compatibility-only browser build. npm consumers should prefer the ESM entry
-      // above, which is the default package export and the primary distribution target.
-      format: 'umd',
-      source: {
-        entry: {
-          index: './src/index.ts'
-        }
-      },
-      output: {
-        cleanDistPath: false,
-        filename: {
-          js: 'index.umd.js'
-        },
-        minify: true,
-        sourceMap: false
-      },
-      syntax: 'es2020',
-      umdName
-    }
+    // Compatibility-only browser builds. npm consumers should prefer the ESM entries
+    // above, which are the default package exports and the primary distribution target.
+    // UMD accepts a single entry per output, so each entry gets its own config.
+    createUmdConfig('index', './src/index.ts', umdName),
+    createUmdConfig('wc', './src/wc.ts', `${umdName}Element`),
+    createUmdConfig('wc-auto', './src/wc-auto.ts', `${umdName}Element`)
   ],
-  source: {
-    define: createBuildDefines(),
-    tsconfigPath: './tsconfig.rslib.json'
-  },
   tools: {
     rspack: {
       plugins: [
@@ -197,12 +210,13 @@ define.app({
     pluginVueDevTools(),
     pluginNodePolyfill()
   ],
-  output: {
-    assetPrefix: './',
-    distPath: {
-      root: './docs/demo/'
+  source: {
+    define: createBuildDefines(),
+    entry: {
+      index: './src-demo/index.ts'
     },
-    filenameHash: true
+    include: ['./src'],
+    tsconfigPath: './tsconfig.rsbuild.json'
   },
   html: {
     template: './src-demo/index.html'
@@ -214,6 +228,13 @@ define.app({
       // exactly as a real consumer of the published package would.
       'vue-codemirror6': path.resolve(import.meta.dirname, 'src')
     }
+  },
+  output: {
+    assetPrefix: './',
+    distPath: {
+      root: './src-docs/public/demo/'
+    },
+    filenameHash: true
   },
   tools: {
     rspack: config => {
@@ -229,14 +250,6 @@ define.app({
       });
       return config;
     }
-  },
-  source: {
-    define: createBuildDefines(),
-    entry: {
-      index: './src-demo/index.ts'
-    },
-    include: ['./src'],
-    tsconfigPath: './tsconfig.rsbuild.json'
   }
 });
 

@@ -238,8 +238,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(@types/node@26.6.6)
       '@rspress/core':
-        specifier: ^2.1.1
-        version: 2.1.1(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: ^2.1.2
+        version: 2.1.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@testing-library/dom':
         specifier: ^10.4.2
         version: 10.4.2
@@ -311,7 +311,7 @@ importers:
         version: 6.1.4
       rstack:
         specifier: ^0.9.1
-        version: 0.9.1(@rspress/core@2.1.1(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0))(happy-dom@21.0.4)(jiti@2.7.0)(typescript@7.0.2)
+        version: 0.9.1(@rspress/core@2.1.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0))(happy-dom@21.0.4)(jiti@2.7.0)(typescript@7.0.2)
       taze:
         specifier: ^21.3.0
         version: 21.3.0
@@ -1551,13 +1551,13 @@ packages:
       '@rspack/core':
         optional: true
 
-  '@rspress/core@2.1.1':
-    resolution: {integrity: sha512-GArybZxyifQ/wC8N2SzVyFi5JCJpUXgajITV4if8ylOImjZr8j9Cgy+6o55tXEtq85r6XYYE5fbcEz2nxxCpnA==}
+  '@rspress/core@2.1.2':
+    resolution: {integrity: sha512-3ghPRkZFwbuO3tr2Rb5cxi6QfSFWOcxoZ5p4pv21lbN5DxAzMduITFlfgBMTArIQbehXrfXw3OUXe1l422b0RA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  '@rspress/shared@2.1.1':
-    resolution: {integrity: sha512-U+OEPt/Ze+ryJdLHvpJJv9hxiRp03rknn5pvhh6v0enjib9SuUrsku/cPzneal3EsNyDZB5kncghpH1iwVKxnA==}
+  '@rspress/shared@2.1.2':
+    resolution: {integrity: sha512-W34tT1fdP3PrdbXpZNKqOGZMOw+RYL70Z9vnkbT1HTTbtX4uMIDE+SU7ByihG0S0LYBsT3kPxA2cXj696253Uw==}
 
   '@rstackjs/cli-darwin-arm64@0.9.1':
     resolution: {integrity: sha512-apUQklMrSR+2ytWI/ksWzSeJvgsOYs3/tphnGTZrUrMhbrv4OLA4dmKNuS+2VLWRN3bTBDKVzFjxulzoigm73A==}
@@ -5993,13 +5993,13 @@ snapshots:
     optionalDependencies:
       '@rspack/core': 2.3.2(@swc/helpers@0.5.24)
 
-  '@rspress/core@2.1.1(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@rspress/core@2.1.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@mdx-js/mdx': 3.1.1(supports-color@7.2.0)
       '@mdx-js/react': 3.1.1(@types/react@19.3.0)(react@19.3.1)
       '@rsbuild/core': 2.3.2
       '@rsbuild/plugin-react': 2.1.1(@rsbuild/core@2.3.2)(@rspack/core@2.3.2(@swc/helpers@0.5.24))
-      '@rspress/shared': 2.1.1(supports-color@7.2.0)
+      '@rspress/shared': 2.1.2(supports-color@7.2.0)
       '@shikijs/rehype': 4.6.0
       '@shikijs/transformers': 4.6.0
       '@types/mdast': 4.0.4
@@ -6042,7 +6042,7 @@ snapshots:
       - micromark-util-types
       - supports-color
 
-  '@rspress/shared@2.1.1(supports-color@7.2.0)':
+  '@rspress/shared@2.1.2(supports-color@7.2.0)':
     dependencies:
       '@rsbuild/core': 2.3.2
       '@shikijs/rehype': 4.6.0
@@ -8959,7 +8959,7 @@ snapshots:
       '@vue/compiler-sfc': 3.5.45
       vue: 3.5.45(typescript@7.0.2)
 
-  rstack@0.9.1(@rspress/core@2.1.1(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0))(happy-dom@21.0.4)(jiti@2.7.0)(typescript@7.0.2):
+  rstack@0.9.1(@rspress/core@2.1.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0))(happy-dom@21.0.4)(jiti@2.7.0)(typescript@7.0.2):
     dependencies:
       '@rsbuild/core': 2.3.2
       '@rslib/core': 1.0.6(typescript@7.0.2)
@@ -8969,7 +8969,7 @@ snapshots:
       prettier: 3.9.10
       tinypool: 2.2.0
     optionalDependencies:
-      '@rspress/core': 2.1.1(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@rspress/core': 2.1.2(@rspack/core@2.3.2(@swc/helpers@0.5.24))(micromark-util-types@2.0.3)(micromark@4.0.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@rstackjs/cli-darwin-arm64': 0.9.1
       '@rstackjs/cli-darwin-x64': 0.9.1
       '@rstackjs/cli-linux-arm64-gnu': 0.9.1
