@@ -81,14 +81,77 @@ createApp(App).use(CodeMirror).mount('#app');
 
 ## 包的导出
 
-| 导出                  | 说明                                  |
-| --------------------- | ------------------------------------- |
-| `default`             | Vue 组件                              |
-| `install`             | 全局注册组件的 Vue 插件函数           |
-| `CodeMirror`          | 用 `defineCustomElement` 包装后的组件 |
-| `CodeMirrorExposed`   | 通过模板 ref 访问的实例 API 类型      |
-| `Meta`                | 包的版本号和构建日期                  |
-| `vue-codemirror6/umd` | 用于 `<script>` 标签加载的 UMD 构建   |
+| 导出                                                                           | 说明                                                                                             |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `default`                                                                      | Vue 组件                                                                                         |
+| `install`                                                                      | 全局注册组件的 Vue 插件函数                                                                      |
+| `CodeMirrorExposed`                                                            | 通过模板 ref 访问的实例 API 类型                                                                 |
+| `Meta`                                                                         | 包的版本号和构建日期                                                                             |
+| `vue-codemirror6/wc`                                                           | 用 `defineCustomElement` 包装后的组件以及 `register()`。请参阅 [Web Component](./web-components) |
+| `vue-codemirror6/wc-auto`                                                      | 与 `vue-codemirror6/wc` 相同,但导入时会注册 `<code-mirror>`                                      |
+| `vue-codemirror6/umd`、`vue-codemirror6/wc/umd`、`vue-codemirror6/wc-auto/umd` | 用于 CommonJS / AMD 加载器的 UMD 构建                                                            |
+
+## 通过 CDN(jsDelivr)使用
+
+vue-codemirror6 1.8.0 或更高版本无需打包工具即可使用(仅支持 Vue 3)。通过 [import map](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Elements/script/type/importmap) 从 jsDelivr 加载 ESM 文件,并在应用中注册组件:
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "vue-codemirror6": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/index.es.js",
+      "vue": "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
+      "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/v3/index.mjs",
+      "codemirror": "https://cdn.jsdelivr.net/npm/codemirror@6/dist/index.js",
+      "@codemirror/autocomplete": "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6/dist/index.js",
+      "@codemirror/commands": "https://cdn.jsdelivr.net/npm/@codemirror/commands@6/dist/index.js",
+      "@codemirror/language": "https://cdn.jsdelivr.net/npm/@codemirror/language@6/dist/index.js",
+      "@codemirror/lint": "https://cdn.jsdelivr.net/npm/@codemirror/lint@6/dist/index.js",
+      "@codemirror/search": "https://cdn.jsdelivr.net/npm/@codemirror/search@6/dist/index.js",
+      "@codemirror/state": "https://cdn.jsdelivr.net/npm/@codemirror/state@6/dist/index.js",
+      "@codemirror/streamparser": "https://cdn.jsdelivr.net/npm/@codemirror/streamparser@6/dist/index.js",
+      "@codemirror/view": "https://cdn.jsdelivr.net/npm/@codemirror/view@6/dist/index.js",
+      "@lezer/common": "https://cdn.jsdelivr.net/npm/@lezer/common@1/dist/index.js",
+      "@lezer/highlight": "https://cdn.jsdelivr.net/npm/@lezer/highlight@1/dist/index.js",
+      "@lezer/lr": "https://cdn.jsdelivr.net/npm/@lezer/lr@1/dist/index.js",
+      "@marijn/find-cluster-break": "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1/src/index.js",
+      "crelt": "https://cdn.jsdelivr.net/npm/crelt@1/index.js",
+      "style-mod": "https://cdn.jsdelivr.net/npm/style-mod@4/src/style-mod.js",
+      "w3c-keyname": "https://cdn.jsdelivr.net/npm/w3c-keyname@2/index.js",
+
+      "@codemirror/lang-javascript": "https://cdn.jsdelivr.net/npm/@codemirror/lang-javascript@6/dist/index.js",
+      "@lezer/javascript": "https://cdn.jsdelivr.net/npm/@lezer/javascript@1/dist/index.js"
+    }
+  }
+</script>
+
+<div id="app">
+  <code-mirror v-model="value" basic :lang="lang"></code-mirror>
+</div>
+
+<script type="module">
+  import { createApp, ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+
+  createApp({
+    components: { CodeMirror },
+    setup() {
+      const value = ref('console.log("Hello, CodeMirror!");');
+      const lang = javascript();
+      return { value, lang };
+    }
+  }).mount('#app');
+</script>
+```
+
+:::warning 每个依赖只加载一次
+如果加载了两份 `@codemirror/state`(或其他 `@codemirror/*` 包),CodeMirror 将无法工作;如果加载了两份 Vue,响应式系统将会失效。请像上面的示例那样把每个包映射到唯一的 URL,并且不要使用 jsDelivr 的 `/+esm` URL:它会为每个包分别固定依赖版本,容易导致重复加载。
+:::
+
+- `vue.esm-browser.prod.js` 包含模板编译器,因此可以使用上面示例中的 DOM 内模板。
+- import map 的最后两项用于 `@codemirror/lang-javascript`。请以同样的方式添加你使用的语言包及其 `@lezer/*` 解析器包。
+- 如需在不使用 Vue 应用的情况下作为自定义元素使用,请参阅 [Web Component](./web-components#通过-cdnjsdelivr使用)。
 
 ## 下一步
 

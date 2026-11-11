@@ -1,4 +1,4 @@
-name: Build and deploy to gh-pages
+name: Build and deploy to GitHub Pages
 
 on:
   workflow_dispatch: {}
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-slim
     steps:
       - name: Checkout ✔
@@ -38,11 +38,24 @@ jobs:
       - name: Install dependencies 🧩
         run: pnpm install --frozen-lockfile
 
-      - name: Build 🔧
-        run: pnpm run build:docs
+      - name: Build demo and docs 🔧
+        run: |
+          pnpm run build:demo
+          pnpm run build:rspress
 
-      - name: Deploy to gh-pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload Pages artifact 📜
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: docs
+          path: docs
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-slim
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4

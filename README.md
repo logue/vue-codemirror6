@@ -44,12 +44,14 @@ Props, events, languages, themes, SSR, Web Component usage and more are covered 
 
 ## Using from a CDN (jsDelivr)
 
-The Web Component build (`vue-codemirror6/wc-auto`, Vue 3, version 1.8.0 or later) can be used without a bundler. Load the ESM files from jsDelivr through an [import map](https://developer.mozilla.org/docs/Web/HTML/Reference/Elements/script/type/importmap):
+vue-codemirror6 1.8.0 or later can be used without a bundler (Vue 3 only). Load the ESM files from jsDelivr through an [import map](https://developer.mozilla.org/docs/Web/HTML/Reference/Elements/script/type/importmap):
 
 ```html
 <script type="importmap">
   {
     "imports": {
+      "vue-codemirror6": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/index.es.js",
+      "vue-codemirror6/wc": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/wc.es.js",
       "vue-codemirror6/wc-auto": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/wc-auto.es.js",
       "vue": "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
       "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/v3/index.mjs",
@@ -75,7 +77,41 @@ The Web Component build (`vue-codemirror6/wc-auto`, Vue 3, version 1.8.0 or late
     }
   }
 </script>
+```
 
+- Map every package to **one** URL, as above. Loading two copies of `@codemirror/state` (or Vue) breaks the editor, so avoid jsDelivr's `/+esm` URLs here; they pin dependency versions independently per package.
+- The last two entries are for `@codemirror/lang-javascript`. Add the language packages you use (and their `@lezer/*` parsers) the same way.
+- You only need the `vue-codemirror6*` entries you actually import.
+- The `*.umd.js` files are for CommonJS / AMD loaders and cannot be used from a plain `<script>` tag.
+
+### As a Vue component
+
+```html
+<div id="app">
+  <code-mirror v-model="value" basic :lang="lang"></code-mirror>
+</div>
+
+<script type="module">
+  import { createApp, ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+
+  createApp({
+    components: { CodeMirror },
+    setup() {
+      const value = ref('console.log("Hello, CodeMirror!");');
+      const lang = javascript();
+      return { value, lang };
+    }
+  }).mount('#app');
+</script>
+```
+
+`vue.esm-browser.prod.js` includes the template compiler, so in-DOM templates like the one above work.
+
+### As a Web Component
+
+```html
 <code-mirror></code-mirror>
 
 <script type="module">
@@ -89,12 +125,9 @@ The Web Component build (`vue-codemirror6/wc-auto`, Vue 3, version 1.8.0 or late
 </script>
 ```
 
-- Map every CodeMirror package to **one** URL, as above. Loading two copies of `@codemirror/state` (or Vue) breaks the editor, so avoid jsDelivr's `/+esm` URLs here; they pin dependency versions independently per package.
-- The last two entries are for `@codemirror/lang-javascript`. Add the language packages you use (and their `@lezer/*` parsers) the same way.
-- To register a different tag name, map `vue-codemirror6/wc` (`…/dist/wc.es.js`) instead and call `register('my-editor')`.
-- The `*.umd.js` files are for CommonJS / AMD loaders and cannot be used from a plain `<script>` tag.
+To register a different tag name, import `register` from `vue-codemirror6/wc` and call `register('my-editor')`.
 
-See [Web Component](https://logue.dev/vue-codemirror6/guide/web-components) for details.
+See the [documentation](https://logue.dev/vue-codemirror6/guide/getting-started#using-from-a-cdn-jsdelivr) for details.
 
 ## Links
 
