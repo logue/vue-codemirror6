@@ -1,8 +1,7 @@
 // Rspress v2: named import from theme-original (no default export)
+import { useDark } from '@rspress/core/runtime';
 import { Layout as DefaultLayout } from '@rspress/core/theme-original';
 import { useEffect } from 'react';
-// rslint-disable-next-line import/no-unresolved
-import './styles.scss';
 
 /**
  * Register Carbon Web Components in the browser.
@@ -20,6 +19,10 @@ async function loadCarbonComponents(): Promise<void> {
 }
 
 export function Layout() {
+  const isDark = useDark();
+
+  const carbonThemeClass = isDark ? 'cds--g100' : 'cds--white';
+
   useEffect(() => {
     // Apply Carbon g100 (dark) theme to the document root
     document.documentElement.dataset.carbonTheme = 'g100';
@@ -28,5 +31,9 @@ export function Layout() {
     });
   }, []);
 
-  return <DefaultLayout />;
+  return (
+    <div className={carbonThemeClass}>
+      <DefaultLayout />
+    </div>
+  );
 }

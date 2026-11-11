@@ -51,7 +51,7 @@ const onInput = (event: Event): void => {
 
 <template>
   <div class="demo-split">
-    <div class="demo-stack">
+    <cds-stack gap="5">
       <code-mirror
         ref="cm"
         v-model="value"
@@ -73,7 +73,7 @@ const onInput = (event: Event): void => {
         />
         <cds-checkbox disabled label-text="Focused" :checked="focused" />
       </div>
-    </div>
+    </cds-stack>
     <div>
       <cds-textarea :value="value" label="Sync" rows="6" @input="onInput" />
     </div>

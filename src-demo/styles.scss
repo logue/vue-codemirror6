@@ -1,0 +1,151 @@
+@use '@carbon/styles' with (
+  $use-per-family-plex: true,
+  $use-akamai-cdn: true
+);
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/type';
+
+// Include type reset
+@include type.reset();
+// Include default type styles, targets h1, h2, h3, etc
+@include type.default-type();
+// Include utility classes for type-related properties
+@include type.type-classes();
+/*
+ * Carbon's reset, type and theme rules take precedence; only demo-specific layout is defined here.
+ * The theme is applied by toggling the `cds--white` / `cds--g100` zone class on <html>
+ * (see useDemoHost.ts), so everything below follows it through Carbon's CSS custom properties.
+ */
+
+/* Header (only shown when the demo is opened standalone, not inside the docs iframe) */
+.demo-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-05;
+  padding: $spacing-05;
+  background-color: var(--cds-layer-01);
+  border-bottom: 1px solid var(--cds-border-subtle-01);
+}
+
+.demo-header__title {
+  @include type.type-style('heading-03');
+}
+
+.demo-header__actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-06;
+}
+
+.demo-main {
+  padding-block: $spacing-05 $spacing-07;
+}
+
+.demo-tabs {
+  padding-inline: $spacing-05;
+}
+
+/* Tab panels */
+.demo-panel {
+  padding-block-start: $spacing-06;
+
+  h2 {
+    @include type.type-style('heading-04');
+
+    margin-block-end: $spacing-05;
+  }
+
+  h3 {
+    @include type.type-style('heading-02');
+
+    margin-block: $spacing-05 $spacing-03;
+  }
+
+  p {
+    @include type.type-style('body-01');
+  }
+
+  code,
+  kbd {
+    @include type.type-style('code-01');
+  }
+
+  kbd {
+    padding: 0 $spacing-02;
+    border: 1px solid var(--cds-border-strong-01);
+    background-color: var(--cds-layer-01);
+  }
+}
+
+.demo-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: $spacing-05;
+}
+
+.demo-inline > cds-text-input {
+  flex: 1 1 10rem;
+}
+
+/* Two equal columns (editor + preview), stacked on narrow screens */
+.demo-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: $spacing-05;
+}
+
+.vue-codemirror {
+  border: 1px solid var(--cds-border-subtle-01);
+
+  .cm-editor,
+  .cm-scroller {
+    @include type.type-style('code-02');
+  }
+}
+
+.markdown-body {
+  height: 100%;
+  padding: $spacing-05;
+  border: 1px solid var(--cds-border-subtle-01);
+  box-sizing: border-box;
+}
+
+/* Override prefers-color-scheme so github-markdown-css follows the demo's theme */
+@media (prefers-color-scheme: dark) {
+  .markdown-body[data-color-mode='light'] {
+    color-scheme: light;
+    --color-fg-default: #24292f;
+    --color-fg-muted: #57606a;
+    --color-fg-subtle: #6e7781;
+    --color-canvas-default: #ffffff;
+    --color-canvas-subtle: #f6f8fa;
+    --color-border-default: #d0d7de;
+    --color-border-muted: hsla(210, 18%, 87%, 1);
+    --color-neutral-muted: rgba(175, 184, 193, 0.2);
+    --color-accent-fg: #0969da;
+    --color-accent-emphasis: #0969da;
+    --color-attention-subtle: #fff8c5;
+    --color-danger-fg: #cf222e;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .markdown-body[data-color-mode='dark'] {
+    color-scheme: dark;
+    --color-fg-default: #c9d1d9;
+    --color-fg-muted: #8b949e;
+    --color-fg-subtle: #6e7681;
+    --color-canvas-default: #0d1117;
+    --color-canvas-subtle: #161b22;
+    --color-border-default: #30363d;
+    --color-border-muted: #21262d;
+    --color-neutral-muted: rgba(110, 118, 129, 0.4);
+    --color-accent-fg: #58a6ff;
+    --color-accent-emphasis: #1f6feb;
+    --color-attention-subtle: rgba(187, 128, 9, 0.15);
+    --color-danger-fg: #f85149;
+  }
+}

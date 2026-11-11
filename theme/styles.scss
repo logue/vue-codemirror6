@@ -6,23 +6,148 @@
   $use-per-family-plex: true,
   $use-akamai-cdn: true
 );
+@use '@carbon/type';
+@use '@carbon/styles/scss/theme' as carbon-theme;
+@use '@carbon/styles/scss/themes' as carbon-themes;
 
-/* ─── IBM Plex fonts ─────────────────────────────────────────────────────── */
-:root {
-  --font-sans:
-    'IBM Plex Sans', 'IBM Plex Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+// Include type reset
+@include type.reset();
+// Include default type styles, targets h1, h2, h3, etc
+@include type.default-type();
+// Include utility classes for type-related properties
+@include type.type-classes();
+
+/* ─── Carbon theme tokens on the document root ──────────────────────────────
+  Carbon only emits --cds-* tokens on .cds--white / .cds--g100 etc.
+  Emit them on <html> as well so the --rp-* mappings below (declared on :root)
+  resolve correctly, switching with Rspress's dark mode class.
+*/
+html {
+  @include carbon-theme.theme(carbon-themes.$white);
 }
 
-body {
-  /*
-    Carbon's reset sets body { background: var(--cds-background) } using the
-    default white theme. Override with Rspress's own vars so the dark/light
-    toggle keeps working. Rspress sets these correctly for each theme.
-  */
-  background-color: var(--rp-c-bg);
-  color: var(--rp-c-text-1);
-  font-family: var(--font-sans);
+html.rp-dark {
+  @include carbon-theme.theme(carbon-themes.$g100);
+}
+
+/* ─── IBM Plex fonts + Rspress variable overrides ───────────────────────── */
+:root {
+  --font-sans:
+    'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+
+  /* override rspress css variables */
+  --rp-font-family-base: var(--font-sans);
+  --rp-font-family-mono: var(--font-mono);
+  --rp-radius: 0;
+  --rp-radius-small: 0;
+  --rp-radius-large: 0;
+
+  /* base-vars */
+  --rp-c-bg: var(--cds-background);
+  --rp-c-bg-soft: var(--cds-layer-01);
+  --rp-c-bg-mute: var(--cds-layer-accent-01);
+  --rp-c-bg-alt: var(--cds-layer-02);
+  --rp-c-divider: var(--cds-border-strong-01);
+  --rp-c-divider-light: var(--cds-border-subtle-01);
+  --rp-c-text-0: var(--cds-text-primary);
+  --rp-c-text-1: var(--cds-text-primary);
+  --rp-c-text-2: var(--cds-text-secondary);
+  --rp-c-text-3: var(--cds-text-placeholder);
+  --rp-c-text-4: var(--cds-text-disabled);
+  --rp-c-text-code: var(--cds-text-primary);
+  --rp-c-text-code-bg: var(--cds-layer-01);
+  --rp-c-text-code-border: var(--cds-border-subtle-01);
+  --rp-c-link: var(--cds-link-primary);
+
+  /* gray scale */
+  --rp-c-gray: var(--cds-icon-secondary);
+  --rp-c-gray-light-1: var(--cds-border-strong-01);
+  --rp-c-gray-light-2: var(--cds-border-subtle-01);
+  --rp-c-gray-light-3: var(--cds-layer-accent-01);
+  --rp-c-gray-light-4: var(--cds-layer-hover-01);
+  --rp-c-gray-light-5: var(--cds-layer-01);
+
+  /* brand-vars */
+  --rp-c-brand: var(--cds-interactive);
+  --rp-c-brand-light: var(--cds-link-primary);
+  --rp-c-brand-lighter: var(--cds-highlight);
+  --rp-c-brand-dark: var(--cds-button-primary-hover);
+  --rp-c-brand-darker: var(--cds-button-primary-active);
+  --rp-c-brand-tint: color-mix(in srgb, var(--cds-interactive) 16%, transparent);
+
+  /* container-vars (:::tip, :::info, :::warning, :::danger, …) */
+  --rp-container-tip-text: var(--cds-support-success);
+  --rp-container-tip-bg: var(--cds-notification-background-success);
+  --rp-container-tip-border: var(--cds-support-success);
+  --rp-container-tip-code-bg: color-mix(in srgb, var(--cds-support-success) 10%, transparent);
+
+  --rp-container-info-text: var(--cds-support-info);
+  --rp-container-info-bg: var(--cds-notification-background-info);
+  --rp-container-info-border: var(--cds-support-info);
+  --rp-container-info-code-bg: color-mix(in srgb, var(--cds-support-info) 10%, transparent);
+
+  --rp-container-warning-text: var(--cds-text-primary);
+  --rp-container-warning-bg: var(--cds-notification-background-warning);
+  --rp-container-warning-border: var(--cds-support-warning);
+  --rp-container-warning-code-bg: color-mix(in srgb, var(--cds-support-warning) 10%, transparent);
+
+  --rp-container-danger-text: var(--cds-text-error);
+  --rp-container-danger-bg: var(--cds-notification-background-error);
+  --rp-container-danger-border: var(--cds-support-error);
+  --rp-container-danger-code-bg: color-mix(in srgb, var(--cds-support-error) 10%, transparent);
+
+  --rp-container-important-text: var(--cds-tag-color-purple);
+  --rp-container-important-bg: var(--cds-tag-background-purple);
+  --rp-container-important-border: var(--cds-status-purple);
+  --rp-container-important-code-bg: color-mix(in srgb, var(--cds-status-purple) 10%, transparent);
+
+  --rp-container-note-text: var(--cds-text-primary);
+  --rp-container-note-bg: var(--cds-layer-01);
+  --rp-container-note-border: var(--cds-border-subtle-01);
+  --rp-container-note-code-bg: var(--cds-layer-accent-01);
+  --rp-container-note-link: var(--cds-link-primary);
+
+  --rp-container-details-text: var(--cds-text-primary);
+  --rp-container-details-bg: var(--cds-layer-01);
+  --rp-container-details-border: var(--cds-border-subtle-01);
+  --rp-container-details-code-bg: var(--cds-layer-accent-01);
+
+  /* code-vars */
+  --rp-code-font-size: 0.875rem;
+  --rp-code-title-bg: var(--cds-layer-02);
+  --rp-code-block-color: var(--cds-text-primary);
+  --rp-code-block-bg: var(--cds-layer-01);
+  --rp-code-block-border: 1px solid var(--cds-border-subtle-01);
+  --rp-code-block-shadow: none;
+
+  /* home-vars */
+  --rp-home-hero-secondary-color: var(--cds-status-purple);
+  --rp-home-hero-title-color: transparent;
+  --rp-home-hero-title-bg: linear-gradient(
+    90deg,
+    var(--rp-c-brand) 0%,
+    var(--rp-c-brand) 30%,
+    var(--rp-home-hero-secondary-color) 100%
+  );
+  --rp-home-background-bg: var(--cds-background);
+  --rp-home-feature-bg: var(--cds-layer-01);
+
+  /* shiki-vars */
+  --shiki-foreground: inherit;
+  --shiki-background: transparent;
+  --shiki-token-constant: var(--cds-syntax-constant);
+  --shiki-token-string: var(--cds-syntax-string);
+  --shiki-token-comment: var(--cds-syntax-comment);
+  --shiki-token-keyword: var(--cds-syntax-keyword);
+  --shiki-token-parameter: var(--cds-syntax-variable);
+  --shiki-token-function: var(--cds-syntax-function);
+  --shiki-token-string-expression: var(--cds-syntax-tag-name);
+  --shiki-token-punctuation: var(--cds-syntax-punctuation);
+  --shiki-token-link: var(--cds-syntax-link);
+  --shiki-token-deleted: var(--cds-syntax-deleted);
+  --shiki-token-inserted: var(--cds-syntax-inserted);
 }
 
 code,
@@ -31,6 +156,10 @@ kbd,
 samp,
 var {
   font-family: var(--font-mono);
+}
+
+.rp-doc :not(:where(.rp-not-doc, .rp-not-doc *)):where(:not(pre) > code) {
+  padding: 0 0.25rem !important;
 }
 
 /* ─── Carbon tag / notification sizing inside prose ─────────────────────── */

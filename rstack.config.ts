@@ -1,4 +1,5 @@
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
+import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { pluginVue } from '@rsbuild/plugin-vue';
 import { RsdoctorRspackPlugin } from '@rsdoctor/core';
@@ -170,6 +171,7 @@ define.lib({
  */
 define.app({
   plugins: [
+    pluginSass(),
     pluginTypeCheck(),
     pluginVue({
       vueLoaderOptions: {
@@ -253,6 +255,10 @@ define.doc({
       }
     ]
   },
+  builderConfig: {
+    plugins: [pluginSass()]
+  },
+  globalStyles: path.join(__dirname, 'theme/styles.scss'),
   // Site information settings
   title: packageJson.name,
   description: packageJson.description,

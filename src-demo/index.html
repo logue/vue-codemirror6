@@ -5,18 +5,16 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="light dark" name="color-scheme" />
     <link href="/favicon.ico" rel="icon" />
+    <!--
+      GitHub Markdown CSS (used in MarkdownDemo).
+      Loaded here instead of via `@import url()` in styles.scss: Rspack drops an external
+      `@import` together with the rule that follows it (Carbon's reset).
+    -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.1.0/github-markdown.min.css"
+      rel="stylesheet"
+    />
     <title>Vue CodeMirror6 Demo</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y2FW3QEG4"></script>
-    <script>
-      'use strict';
-      window.dataLayer = window.dataLayer || [];
-      function gtag(...arr) {
-        dataLayer.push(arr);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-2Y2FW3QEG4');
-    </script>
   </head>
 
   <body>

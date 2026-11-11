@@ -16,7 +16,7 @@ defineProps<{
 
 <!-- eslint-disable no-irregular-whitespace -->
 <template>
-  <div class="demo-stack">
+  <cds-stack gap="5">
     <div class="demo-inline">
       <cds-toggle
         label-a="On"
@@ -40,5 +40,5 @@ defineProps<{
 有為の奥山　今日越えて
 浅き夢見じ　酔ひもせず</pre>
     </code-mirror>
-  </div>
+  </cds-stack>
 </template>
