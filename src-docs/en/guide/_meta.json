@@ -5,6 +5,7 @@
   { "type": "section-header", "label": "Guides" },
   "usage",
   "languages-and-themes",
+  "i18n",
   "ssr",
   "web-components",
   "bundling"

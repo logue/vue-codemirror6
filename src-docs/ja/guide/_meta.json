@@ -5,6 +5,7 @@
   { "type": "section-header", "label": "ガイド" },
   "usage",
   "languages-and-themes",
+  "i18n",
   "ssr",
   "web-components",
   "bundling"

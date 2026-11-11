@@ -1,4 +1,4 @@
-import { type App, defineComponent, defineCustomElement } from 'vue-demi';
+import { type App, defineComponent } from 'vue-demi';
 
 import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
 import h, { slot } from '@/helpers/h-demi';
@@ -57,10 +57,6 @@ const component = defineComponent({
   }
 });
 
-// Wrap the same component definition for use as a Web Component.
-// @see {@link https://vuejs.org/guide/extras/web-components.html#defineCustomElement}
-const element = defineCustomElement(component);
-
 /**
  * Vue plugin install function that registers the CodeMirror component globally.
  *
@@ -70,4 +66,4 @@ const installCodeMirror = (app: App): void => {
   app.component('CodeMirror', component);
 };
 export type { CodeMirrorExposed } from '@/types/CodeMirrorExposed';
-export { component as default, element as CodeMirror, installCodeMirror as install, Meta };
+export { component as default, installCodeMirror as install, Meta };

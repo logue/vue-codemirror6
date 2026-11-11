@@ -152,5 +152,5 @@ const phrases: Record<string, string> = {
 ```
 
 :::tip
-When combining with vue-i18n, make `phrases` reactive (for example a `computed`) so the editor updates when the locale changes.
+When combining with vue-i18n, make `phrases` reactive (for example a `computed`) so the editor updates when the locale changes. See [Internationalization](./i18n) for a full translation table and a vue-i18n example.
 :::

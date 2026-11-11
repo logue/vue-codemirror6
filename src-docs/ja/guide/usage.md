@@ -164,5 +164,5 @@ const phrases: Record<string, string> = {
 ```
 
 :::tip
-vue-i18n と組み合わせる場合は、ロケールの切り替えに追従するよう `phrases` をリアクティブ(`computed` など)にしてください。
+vue-i18n と組み合わせる場合は、ロケールの切り替えに追従するよう `phrases` をリアクティブ(`computed` など)にしてください。翻訳表の全体と vue-i18n の例は [多言語化](./i18n) を参照してください。
 :::

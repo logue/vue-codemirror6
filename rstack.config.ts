@@ -120,9 +120,17 @@ define.lib({
         autoExtension: true,
         tsgo: true // Enable TypeScript 7 native compiler
       },
+      source: {
+        entry: {
+          index: './src/index.ts',
+          // Web Component entry (Vue 3 only). Kept separate so the Vue component
+          // entry does not pull in `defineCustomElement`.
+          wc: './src/wc.ts'
+        }
+      },
       output: {
         filename: {
-          js: 'index.es.js'
+          js: '[name].es.js'
         },
         sourceMap: true
       }
@@ -131,6 +139,11 @@ define.lib({
       // Compatibility-only browser build. npm consumers should prefer the ESM entry
       // above, which is the default package export and the primary distribution target.
       format: 'umd',
+      source: {
+        entry: {
+          index: './src/index.ts'
+        }
+      },
       output: {
         cleanDistPath: false,
         filename: {

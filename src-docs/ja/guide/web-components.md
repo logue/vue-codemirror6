@@ -8,17 +8,40 @@ description: vue-codemirror6 を Vue のテンプレート以外でネイティ�
 Web Component 版は実験的な機能です。動作は今後変わる可能性があります。
 :::
 
-このパッケージは、Vue の [`defineCustomElement`](https://ja.vuejs.org/guide/extras/web-components.html) でラップしたコンポーネントも書き出しています。任意のタグ名で登録して使います。
+Web Component 版は別のエントリポイント `vue-codemirror6/wc` として提供しています(Vue 3 のみ)。Vue の [`defineCustomElement`](https://ja.vuejs.org/guide/extras/web-components.html) でコンポーネントをラップしたもので、import するだけで `<code-mirror>` が自動で登録されます。
 
 ```ts
-import { CodeMirror } from 'vue-codemirror6';
-
-customElements.define('code-mirror', CodeMirror);
+import 'vue-codemirror6/wc';
 ```
 
 ```html
 <code-mirror></code-mirror>
 ```
+
+別のタグ名でも使いたい場合は `register()` を呼びます。同じコンストラクタは1つのレジストリに一度しか登録できないため、追加のタグ名はサブクラスとして登録されます。
+
+```ts
+import { register } from 'vue-codemirror6/wc';
+
+register('my-editor');
+```
+
+:::warning 追加したタグ名の型定義
+`HTMLElementTagNameMap` に追加されるのは `code-mirror` だけです。`register('my-editor')` で登録したタグには要素の型が付かないため、自分で宣言してください。
+
+```ts
+import type CodeMirrorElement from 'vue-codemirror6/wc';
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'my-editor': InstanceType<typeof CodeMirrorElement>;
+  }
+}
+```
+
+:::
+
+Vue のテンプレート内で使う場合は、`compilerOptions.isCustomElement`(例: `tag => tag === 'code-mirror'`)でカスタム要素として扱うよう設定してください。
 
 エディタは open な Shadow Root の中に描画されます。
 

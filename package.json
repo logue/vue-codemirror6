@@ -33,13 +33,20 @@
     "email": "logue@hotmail.co.jp",
     "url": "https://logue.dev/"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/wc.es.js"
+  ],
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
       "default": "./dist/index.es.js"
+    },
+    "./wc": {
+      "types": "./dist/wc.d.ts",
+      "import": "./dist/wc.es.js",
+      "default": "./dist/wc.es.js"
     },
     "./umd": {
       "import": "./dist/index.umd.js",
@@ -54,21 +61,22 @@
   ],
   "scripts": {
     "dev": "rs dev --open",
-    "dev:docs": "pnpm run build:demo & rs doc",
+    "dev:docs": "pnpm run build:demo && rs doc",
     "lint": "run-s 'lint:*' --",
     "lint:rslint": "rs lint . --fix",
     "lint:prettier": "rs fmt .",
     "test": "rs test",
     "test:watch": "rs test --watch",
-    "clean": "rimraf demo dist docs",
+    "clean": "rimraf dist docs",
     "clean:hard": "rimraf .rstack/cache .rstack/.rsdoctor demo dist docs node_modules/.tmp node_modules/.cache",
-    "build": "run-p type-check rs lib",
+    "build": "run-p type-check \"build-only {@}\" --",
     "build:demo": "rs build",
-    "build:docs": "run-p build:demo build:rspress",
+    "build:docs": "run-s build:demo build:rspress",
     "build:rspress": "rs doc build",
     "preview": "rs preview",
     "preview:docs": "rs doc preview",
     "analyze": "cross-env RSDOCTOR=true rs lib",
+    "build-only": "rs lib",
     "type-check": "vize check --tsconfig tsconfig.rslib.json",
     "version": "auto-changelog -p && git add CHANGELOG.md",
     "skills:install": "npx --no-install skills --version >/dev/null 2>&1 && npx skills experimental_install --yes || echo '\\033[1;33m⚠️  [Warning] skills command not found. Skipped auto-installation of agent skills.\\033[0m'",

@@ -2,7 +2,9 @@ import { afterEach, beforeAll, describe, expect, it } from 'rstack/test';
 
 import { EditorView } from '@codemirror/view';
 
-import { CodeMirror, type CodeMirrorExposed } from '@/index';
+import type { CodeMirrorExposed } from '@/index';
+
+import CodeMirror, { register } from '@/wc';
 
 /**
  * Tests for the Web Component build produced by `defineCustomElement`.
@@ -32,17 +34,30 @@ const createElement = (): CodeMirrorElement => document.createElement(TAG) as Co
 
 describe('CodeMirror Web Component', () => {
   beforeAll(() => {
-    if (!customElements.get(TAG)) {
-      customElements.define(TAG, CodeMirror);
-    }
+    register(TAG);
   });
 
   afterEach(() => {
     document.body.innerHTML = '';
   });
 
-  it('should be registered as a custom element constructor', () => {
-    expect(customElements.get(TAG)).toBe(CodeMirror);
+  it('should auto-register <code-mirror> on import', () => {
+    expect(customElements.get('code-mirror')).toBe(CodeMirror);
+    expect(document.createElement('code-mirror')).toBeInstanceOf(CodeMirror);
+  });
+
+  it('should register additional tag names via register()', () => {
+    const Ctor = customElements.get(TAG);
+    expect(Ctor).toBeDefined();
+    expect(Ctor).not.toBe(CodeMirror);
+    expect(createElement()).toBeInstanceOf(CodeMirror);
+  });
+
+  it('should ignore repeated registration of the same tag name', () => {
+    expect(() => {
+      register();
+      register(TAG);
+    }).not.toThrow();
   });
 
   describe('Rendering', () => {

@@ -8,17 +8,40 @@ description: 在 Vue 模板之外,将 vue-codemirror6 作为原生自定义元�
 Web Component 版本仍处于实验阶段,行为可能会发生变化。
 :::
 
-本包还导出了用 Vue 的 [`defineCustomElement`](https://cn.vuejs.org/guide/extras/web-components.html) 包装的组件。可以用任意标签名注册:
+Web Component 版本作为独立的入口 `vue-codemirror6/wc` 提供(仅支持 Vue 3),它使用 Vue 的 [`defineCustomElement`](https://cn.vuejs.org/guide/extras/web-components.html) 包装组件。导入后会自动注册 `<code-mirror>`:
 
 ```ts
-import { CodeMirror } from 'vue-codemirror6';
-
-customElements.define('code-mirror', CodeMirror);
+import 'vue-codemirror6/wc';
 ```
 
 ```html
 <code-mirror></code-mirror>
 ```
+
+如需使用其他标签名,请调用 `register()`。由于同一个构造函数在一个注册表中只能定义一次,额外的标签名会以子类的形式注册:
+
+```ts
+import { register } from 'vue-codemirror6/wc';
+
+register('my-editor');
+```
+
+:::warning 额外标签名的类型定义
+只有 `code-mirror` 会被添加到 `HTMLElementTagNameMap`。通过 `register('my-editor')` 注册的标签没有元素类型,请自行声明:
+
+```ts
+import type CodeMirrorElement from 'vue-codemirror6/wc';
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'my-editor': InstanceType<typeof CodeMirrorElement>;
+  }
+}
+```
+
+:::
+
+在 Vue 模板中使用时,请通过 `compilerOptions.isCustomElement`(例如 `tag => tag === 'code-mirror'`)将其标记为自定义元素。
 
 编辑器渲染在一个 open 模式的 Shadow Root 中。
 
