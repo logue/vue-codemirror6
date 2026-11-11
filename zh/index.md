@@ -14,5 +14,5 @@
 - [🔁 **双向绑定**](/zh/guide/usage): 像原生输入框一样使用 v-model 绑定文本。外部更新时还可以保持滚动位置。
 - [🎨 **语言、代码检查与主题**](/zh/guide/languages-and-themes): 通过 props 传入 CodeMirror 的 LanguageSupport、LintSource 或主题,也可以添加任意扩展。
 - [🌐 **支持 SSR**](/zh/guide/ssr): CodeMirror 只在客户端初始化,因此可以在 Nuxt 等 SSR 框架中安全渲染。
-- [🧩 **Web Component**](/zh/guide/web-components): 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用(实验性)。
+- [🧩 **Web Component**](/zh/guide/web-components): 同一组件也以自定义元素的形式导出,可以在 Vue 之外使用。
 - [🛠️ **完整的编辑器 API**](/zh/api/instance): 通过模板 ref 访问 EditorView、选区以及兼容 CodeMirror 5 的辅助方法。

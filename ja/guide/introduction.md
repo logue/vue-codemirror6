@@ -14,7 +14,7 @@ CodeMirror 6 はモジュール構成のコードエディタです。このコ�
 - `ready`、`focus`、`update`、`change`、`destroy` の **イベント**
 - [`EditorView`](https://codemirror.net/docs/ref/#view.EditorView)、選択範囲、カーソル、リンターの診断結果、CodeMirror 5 互換のヘルパーにアクセスできる **インスタンス API**
 - **SSR 対応**:エディタはクライアント側でのみ生成されます
-- 同じコンポーネントの **Web Component 版**(実験的機能)
+- 同じコンポーネントの **Web Component 版**
 
 ## 動作環境
 

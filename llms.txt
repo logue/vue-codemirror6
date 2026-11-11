@@ -10,7 +10,7 @@
 - [Languages, Linters & Themes](/vue-codemirror6/guide/languages-and-themes.md): Configure syntax highlighting, linters, the lint gutter, themes, dark mode, and custom CodeMirror extensions in vue-codemirror6.
 - [Internationalization](/vue-codemirror6/guide/i18n.md): Translate the CodeMirror UI (search panel, folding, lint panel, …) with the phrases prop.
 - [Server-Side Rendering](/vue-codemirror6/guide/ssr.md): Using vue-codemirror6 with server-side rendering frameworks such as Nuxt.
-- [Web Component](/vue-codemirror6/guide/web-components.md): Use vue-codemirror6 as a native custom element outside of Vue templates (experimental).
+- [Web Component](/vue-codemirror6/guide/web-components.md): Use vue-codemirror6 as a native custom element outside of Vue templates.
 - [Bundling Tips](/vue-codemirror6/guide/bundling.md): Tips for keeping CodeMirror out of your main bundle when building an application that uses vue-codemirror6.
 
 ## API

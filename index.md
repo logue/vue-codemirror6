@@ -14,5 +14,5 @@ CodeMirror 6 for Vue
 - [🔁 **Two-way binding**](/guide/usage): Bind the document with v-model just like a native input. External updates can keep the scroll position.
 - [🎨 **Languages, linters, and themes**](/guide/languages-and-themes): Pass any CodeMirror LanguageSupport, LintSource, or theme through props, or add raw extensions.
 - [🌐 **SSR ready**](/guide/ssr): CodeMirror is only initialized on the client, so the component renders safely in Nuxt and other SSR frameworks.
-- [🧩 **Web Component**](/guide/web-components): The same component is also exported as a custom element for use outside Vue (experimental).
+- [🧩 **Web Component**](/guide/web-components): The same component is also exported as a custom element for use outside Vue.
 - [🛠️ **Full editor API**](/api/instance): Access the EditorView, selection, and CodeMirror 5 style helper methods through a template ref.

@@ -14,5 +14,5 @@ Vue で使う CodeMirror 6
 - [🔁 **双方向バインディング**](/ja/guide/usage): 通常の入力欄と同じように v-model でテキストをバインドできます。外部からの更新時にスクロール位置を保つこともできます。
 - [🎨 **言語・リンター・テーマ**](/ja/guide/languages-and-themes): CodeMirror の LanguageSupport、LintSource、テーマを props で渡せます。任意の拡張機能も追加できます。
 - [🌐 **SSR 対応**](/ja/guide/ssr): CodeMirror はクライアント側でのみ初期化されるため、Nuxt などの SSR フレームワークでも安全にレンダリングできます。
-- [🧩 **Web Component**](/ja/guide/web-components): 同じコンポーネントをカスタム要素としても書き出しているので、Vue 以外の環境でも使えます(実験的機能)。
+- [🧩 **Web Component**](/ja/guide/web-components): 同じコンポーネントをカスタム要素としても書き出しているので、Vue 以外の環境でも使えます。
 - [🛠️ **エディタ API**](/ja/api/instance): テンプレート ref から EditorView や選択範囲、CodeMirror 5 互換のヘルパーメソッドにアクセスできます。

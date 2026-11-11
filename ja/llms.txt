@@ -10,7 +10,7 @@
 - [言語・リンター・テーマ](/vue-codemirror6/ja/guide/languages-and-themes.md): vue-codemirror6 でのシンタックスハイライト、リンター、ガター、テーマ、ダークモード、独自の拡張機能の設定方法を説明します。
 - [多言語化](/vue-codemirror6/ja/guide/i18n.md): phrases プロパティで CodeMirror の UI(検索パネル、折りたたみ、リンターのパネルなど)を翻訳する方法を説明します。
 - [サーバーサイドレンダリング](/vue-codemirror6/ja/guide/ssr.md): Nuxt などのサーバーサイドレンダリング環境で vue-codemirror6 を使う方法を説明します。
-- [Web Component](/vue-codemirror6/ja/guide/web-components.md): vue-codemirror6 を Vue のテンプレート以外でネイティブのカスタム要素として使う方法を説明します(実験的機能)。
+- [Web Component](/vue-codemirror6/ja/guide/web-components.md): vue-codemirror6 を Vue のテンプレート以外でネイティブのカスタム要素として使う方法を説明します。
 - [バンドルのヒント](/vue-codemirror6/ja/guide/bundling.md): vue-codemirror6 を使うアプリケーションで、CodeMirror をメインのバンドルから分離するためのヒントです。
 
 ## API
