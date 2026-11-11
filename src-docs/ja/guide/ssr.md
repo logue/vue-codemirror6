@@ -11,7 +11,7 @@ description: Nuxt などのサーバーサイドレンダリング環境で vue-
 そのまま使えます。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

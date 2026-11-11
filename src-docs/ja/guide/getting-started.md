@@ -21,7 +21,7 @@ pnpm add @codemirror/lang-javascript
 ## 最小構成の例
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -50,7 +50,7 @@ const value = ref('Cozy lummox gives smart squid who asks for job pen.');
 `lang` に `LanguageSupport` オブジェクトを渡すとシンタックスハイライトが有効になります。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

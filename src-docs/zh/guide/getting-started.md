@@ -21,7 +21,7 @@ pnpm add @codemirror/lang-javascript
 ## 最简示例
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -50,7 +50,7 @@ const value = ref('Cozy lummox gives smart squid who asks for job pen.');
 向 `lang` 传入 `LanguageSupport` 对象即可启用语法高亮:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

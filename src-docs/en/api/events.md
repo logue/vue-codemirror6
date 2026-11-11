@@ -14,7 +14,7 @@ description: Events emitted by the vue-codemirror6 component and their payloads.
 | `destroy`           | —                                                                   | The editor was destroyed (component unmounted).                 |
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { EditorState } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';

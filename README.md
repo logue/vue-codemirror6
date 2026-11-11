@@ -28,7 +28,7 @@ For Vue 2.7 or below, [@vue/composition-api](https://www.npmjs.com/package/@vue/
 ## Quick Start
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -132,7 +132,7 @@ See the [documentation](https://logue.dev/vue-codemirror6/guide/getting-started#
 ## Links
 
 - [Documentation](https://logue.dev/vue-codemirror6/)
-- [Playground](https://logue.dev/vue-codemirror6/playground)
+- [Demo](https://logue.dev/vue-codemirror6/demo/)
 - [CHANGELOG](./CHANGELOG.md)
 
 ## License

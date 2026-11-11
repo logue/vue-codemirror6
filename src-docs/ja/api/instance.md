@@ -7,7 +7,7 @@ description: vue-codemirror6 コンポーネントのインスタンスが公開
 テンプレート ref からインスタンスにアクセスします。型チェックには `CodeMirrorExposed` 型を使ってください。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 

@@ -2,6 +2,7 @@ import { defineCustomElement, h } from 'vue';
 
 import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
 import { slot } from '@/helpers/h-demi';
+export { Meta } from '@/types/Meta';
 
 // Wrap the same component definition for use as a Web Component.
 // @see {@link https://vuejs.org/guide/extras/web-components.html#defineCustomElement}

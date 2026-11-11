@@ -9,7 +9,7 @@ description: Configure syntax highlighting, linters, the lint gutter, themes, da
 Install a language package and pass its `LanguageSupport` object to `lang`:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror from 'vue-codemirror6';
 
@@ -87,7 +87,7 @@ Many community packages are also available. See the [CodeMirror language list](h
 Pass a [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource) to `linter`. Add `gutter` to show a marker on lines with problems.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ In the editor, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (<kbd>Cmd</kbd>+<kb
 - `theme` accepts a style spec object passed to [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme).
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const theme = {
@@ -152,7 +152,7 @@ const theme = {
 Ready-made themes are usually distributed as extensions. Add them through `extensions`:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { oneDark } from '@codemirror/theme-one-dark';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -169,7 +169,7 @@ Examples: [`@codemirror/theme-one-dark`](https://github.com/codemirror/theme-one
 Any CodeMirror [`Extension`](https://codemirror.net/docs/ref/#state.Extension) can be passed through `extensions`. They are combined with the extensions generated from the other props.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { EditorView } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';
 

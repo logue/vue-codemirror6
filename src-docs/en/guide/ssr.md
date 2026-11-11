@@ -11,7 +11,7 @@ The component is SSR compatible. CodeMirror is only created in the browser (in `
 Use the component directly:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

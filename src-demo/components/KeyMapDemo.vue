@@ -9,8 +9,6 @@ defineProps<{
   dark?: boolean;
 }>();
 
-const temp = ref('Press Shift+Ctrl+Enter here to see the console log.');
-
 /** Custom key bindings */
 const keymap: KeyBinding[] = [
   {
@@ -24,5 +22,13 @@ const keymap: KeyBinding[] = [
 </script>
 
 <template>
-  <code-mirror v-model="temp" basic tab :dark="dark" :keymap="keymap" />
+  <code-mirror basic tab :dark="dark" :keymap="keymap">
+    <pre>
+Press Shift+Ctrl+Enter here to see the console log.
+
+山下旌旗在望，山头鼓角相闻。
+敌军围困万千重，我自岿然不动。
+早已森严壁垒，更加众志成城。
+黄洋界上炮声隆，报道敌军宵遁。</pre>
+  </code-mirror>
 </template>

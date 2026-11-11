@@ -9,7 +9,7 @@ description: 在 vue-codemirror6 中配置语法高亮、代码检查、检查�
 安装语言包,并将其 `LanguageSupport` 对象传给 `lang`:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror from 'vue-codemirror6';
 
@@ -87,7 +87,7 @@ const lang = markdown();
 向 `linter` 传入 [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource)。添加 `gutter` 后,有问题的行会显示标记。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ const linter = esLint(new eslint.Linter(), {
 - `theme` 接受传给 [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) 的样式定义对象。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const theme = {
@@ -152,7 +152,7 @@ const theme = {
 现成的主题通常以扩展的形式发布,通过 `extensions` 添加:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { oneDark } from '@codemirror/theme-one-dark';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -169,7 +169,7 @@ import CodeMirror from 'vue-codemirror6';
 任何 CodeMirror [`Extension`](https://codemirror.net/docs/ref/#state.Extension) 都可以通过 `extensions` 传入,它们会与其他 props 生成的扩展一起生效。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { EditorView } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';
 

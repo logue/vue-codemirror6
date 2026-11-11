@@ -69,7 +69,7 @@ pnpm build       # ビルド成功
   <code-mirror v-model="value" :lang="lang" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 import { javascript } from '@codemirror/lang-javascript';

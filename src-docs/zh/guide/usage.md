@@ -9,7 +9,7 @@ description: vue-codemirror6 的日常用法:v-model、插槽内容、只读与�
 文本通过 `modelValue`(而不是 `value`)绑定,因此可以像其他 Vue 组件一样使用 `v-model`。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -32,7 +32,7 @@ const value = ref('');
 除了 `v-model`,也可以把初始文本写在组件内部。只会使用第一个子节点的文本。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -91,7 +91,7 @@ import CodeMirror from 'vue-codemirror6';
 向 `keymap` 传入 [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) 数组。如果 `run` 返回 `true`,该按键的默认行为将不会执行。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { KeyBinding } from '@codemirror/view';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ const keymap: KeyBinding[] = [
 使用 `phrases` 可以翻译 CodeMirror 显示的文字(搜索面板、代码检查面板、折叠标记等)。可用的键请参阅 CodeMirror 的 [翻译示例](https://codemirror.net/examples/translate/)。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const phrases: Record<string, string> = {

@@ -1,4 +1,4 @@
-import CodeMirrorElement, { register } from '@/wc';
+import CodeMirrorElement, { register, Meta } from '@/wc';
 
 /** Tag name registered automatically on import. */
 const DEFAULT_TAG_NAME = 'code-mirror';
@@ -14,4 +14,4 @@ declare global {
   }
 }
 
-export { CodeMirrorElement as default };
+export { CodeMirrorElement as default, Meta };

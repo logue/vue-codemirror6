@@ -9,7 +9,7 @@ description: vue-codemirror6 でのシンタックスハイライト、リンタ
 言語パッケージをインストールし、その `LanguageSupport` オブジェクトを `lang` に渡します。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror from 'vue-codemirror6';
 
@@ -87,7 +87,7 @@ const lang = markdown();
 `linter` に [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource) を渡します。`gutter` を付けると、問題のある行にマーカーが表示されます。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ const linter = esLint(new eslint.Linter(), {
 - `theme` には [`EditorView.theme`](https://codemirror.net/docs/ref/#view.EditorView^theme) に渡すスタイル定義のオブジェクトを指定します。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const theme = {
@@ -152,7 +152,7 @@ const theme = {
 配布されているテーマの多くは拡張機能の形式なので、`extensions` で追加します。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { oneDark } from '@codemirror/theme-one-dark';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -169,7 +169,7 @@ import CodeMirror from 'vue-codemirror6';
 CodeMirror の [`Extension`](https://codemirror.net/docs/ref/#state.Extension) は何でも `extensions` で渡せます。ほかの props から生成される拡張機能と組み合わせて適用されます。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { EditorView } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';
 

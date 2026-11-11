@@ -1,10 +1,33 @@
+// Emoji
+@use '@sableclient/twemoji-font/index.css';
+
 /*
-  Carbon Web Components self-style via Shadow DOM — no global @import needed.
-  We only define typography tokens and map Rspress CSS variables here.
+  Carbon styles for the docs site: IBM Plex fonts, Carbon type styles, and Carbon theme tokens
+  (white / g100, following Rspress's dark mode) mapped onto the Rspress CSS variables.
 */
 @use '@carbon/styles' with (
   $use-per-family-plex: true,
-  $use-akamai-cdn: true
+  $use-akamai-cdn: true,
+  $font-families: (
+    sans: (
+      'IBM Plex Sans',
+      'IBM Plex Sans JP',
+      'IBM Plex Sans SC',
+      Twemoji,
+      'Helvetica Neue',
+      Arial,
+      sans-serif
+    ),
+    mono: (
+      'IBM Plex Mono',
+      'IBM Plex Sans JP',
+      'IBM Plex Sans SC',
+      Twemoji,
+      Menlo,
+      'DejaVu Sans Mono',
+      monospace
+    )
+  )
 );
 @use '@carbon/type';
 @use '@carbon/styles/scss/theme' as carbon-theme;
@@ -33,13 +56,13 @@ html.rp-dark {
 /* ─── IBM Plex fonts + Rspress variable overrides ───────────────────────── */
 :root {
   --font-sans:
-    'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    Twemoji, 'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI';
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas';
 
   /* override rspress css variables */
-  --rp-font-family-base: var(--font-sans);
-  --rp-font-family-mono: var(--font-mono);
+  --rp-font-family-base: var(--font-sans), sans-serif;
+  --rp-font-family-mono: var(--font-mono), var(--font-sans), monospace; // Fix for non-latain font.
   --rp-radius: 0;
   --rp-radius-small: 0;
   --rp-radius-large: 0;
@@ -160,17 +183,6 @@ var {
 
 .rp-doc :not(:where(.rp-not-doc, .rp-not-doc *)):where(:not(pre) > code) {
   padding: 0 0.25rem !important;
-}
-
-/* ─── Carbon tag / notification sizing inside prose ─────────────────────── */
-cds-tag {
-  margin-inline: 0.125rem;
-  vertical-align: middle;
-}
-
-cds-inline-notification {
-  max-inline-size: 100%;
-  margin-block: 1rem;
 }
 
 /* ─── Code block: square corners (Carbon style) ──────────────────────────── */

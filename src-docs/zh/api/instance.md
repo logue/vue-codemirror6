@@ -7,7 +7,7 @@ description: vue-codemirror6 组件实例暴露的属性和方法,包括兼容 C
 通过模板 ref 访问实例。类型检查时请使用 `CodeMirrorExposed` 类型。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 

@@ -14,7 +14,7 @@ description: vue-codemirror6 コンポーネントが発火するイベントと
 | `destroy`           | —                                                                   | エディタが破棄されたとき(コンポーネントのアンマウント時)           |
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { EditorState } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';

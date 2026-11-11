@@ -9,7 +9,7 @@ description: Everyday usage of vue-codemirror6 — v-model, slot content, read-o
 The document is bound through `modelValue` (not `value`), so `v-model` works as with any Vue component.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -32,7 +32,7 @@ When `modelValue` is changed from outside, the editor content is replaced. Two p
 Instead of `v-model`, you can place the initial text inside the component. Only the text of the first child node is used.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -91,7 +91,7 @@ The `tab` prop traps the Tab key inside the editor. Keyboard users can still lea
 Pass an array of [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) objects to `keymap`. If `run` returns `true`, the default behavior for that key is skipped.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { KeyBinding } from '@codemirror/view';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ See [Events](../api/events) for the payload of each event.
 Use `phrases` to translate the text shown by CodeMirror (search panel, lint panel, folding markers, …). See the CodeMirror [translation example](https://codemirror.net/examples/translate/) for the available keys.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const phrases: Record<string, string> = {

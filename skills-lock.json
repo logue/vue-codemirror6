@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "carbon-builder": {
+      "source": "carbon-design-system/carbon-mcp",
+      "sourceType": "github",
+      "skillPath": "public/skills/carbon-builder/SKILL.md",
+      "computedHash": "c01c7d3ee29b240a7884d90489dbfa7705297251db8a71386a3fe747fd8abcef"
+    },
     "rsbuild-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",

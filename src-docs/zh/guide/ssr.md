@@ -11,7 +11,7 @@ description: 在 Nuxt 等服务端渲染框架中使用 vue-codemirror6。
 直接使用即可:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

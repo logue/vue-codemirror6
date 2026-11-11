@@ -14,7 +14,7 @@ description: vue-codemirror6 组件触发的事件及其参数。
 | `destroy`           | —                                                                   | 编辑器被销毁时(组件卸载时)。                |
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { EditorState } from '@codemirror/state';
 import type { ViewUpdate } from '@codemirror/view';
 import CodeMirror from 'vue-codemirror6';

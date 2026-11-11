@@ -21,7 +21,7 @@ pnpm add @codemirror/lang-javascript
 ## Minimal example
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -50,7 +50,7 @@ Use `minimal` instead of `basic` for [`minimalSetup`](https://codemirror.net/doc
 Pass a `LanguageSupport` object to the `lang` prop to enable syntax highlighting:
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { javascript } from '@codemirror/lang-javascript';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';

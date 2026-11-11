@@ -1,6 +1,28 @@
+@use '@sableclient/twemoji-font/index.css';
+
 @use '@carbon/styles' with (
   $use-per-family-plex: true,
-  $use-akamai-cdn: true
+  $use-akamai-cdn: true,
+  $font-families: (
+    sans: (
+      'IBM Plex Sans',
+      'IBM Plex Sans JP',
+      'IBM Plex Sans SC',
+      Twemoji,
+      'Helvetica Neue',
+      Arial,
+      sans-serif
+    ),
+    mono: (
+      'IBM Plex Mono',
+      'IBM Plex Sans JP',
+      'IBM Plex Sans SC',
+      Twemoji,
+      Menlo,
+      'DejaVu Sans Mono',
+      monospace
+    )
+  )
 );
 @use '@carbon/styles/scss/spacing' as *;
 @use '@carbon/styles/scss/type';
@@ -23,10 +45,10 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: $spacing-05;
   padding: $spacing-05;
-  background-color: var(--cds-layer-01);
+  gap: $spacing-05;
   border-bottom: 1px solid var(--cds-border-subtle-01);
+  background-color: var(--cds-layer-01);
 }
 
 .demo-header__title {
@@ -67,15 +89,20 @@
     @include type.type-style('body-01');
   }
 
-  code,
   kbd {
     @include type.type-style('code-01');
-  }
-
-  kbd {
     padding: 0 $spacing-02;
     border: 1px solid var(--cds-border-strong-01);
     background-color: var(--cds-layer-01);
+  }
+
+  :where(:not(pre) > code) {
+    @include type.type-style('code-02');
+    font-size: 0.875em;
+    padding: 3px 6px;
+    border: 1px solid var(--cds-border-strong-02);
+    background-color: var(--cds-layer-02);
+    overflow-wrap: break-word;
   }
 }
 
@@ -99,7 +126,13 @@
 
 .vue-codemirror {
   border: 1px solid var(--cds-border-subtle-01);
-
+  .cm-editor {
+    font-family: var(--cds-code-01-font-family);
+  }
+  .cm-scroller {
+    line-height: 1.5;
+    font-family: inherit;
+  }
   .cm-editor,
   .cm-scroller {
     @include type.type-style('code-02');
@@ -107,10 +140,10 @@
 }
 
 .markdown-body {
+  box-sizing: border-box;
   height: 100%;
   padding: $spacing-05;
   border: 1px solid var(--cds-border-subtle-01);
-  box-sizing: border-box;
 }
 
 /* Override prefers-color-scheme so github-markdown-css follows the demo's theme */

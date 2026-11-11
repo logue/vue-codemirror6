@@ -9,7 +9,7 @@ description: vue-codemirror6 の基本的な使い方。v-model、スロット�
 テキストは `value` ではなく `modelValue` でバインドされるので、ほかの Vue コンポーネントと同じように `v-model` を使えます。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 
@@ -32,7 +32,7 @@ const value = ref('');
 `v-model` の代わりに、コンポーネントの中に初期テキストを書くこともできます。使われるのは最初の子ノードのテキストだけです。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import CodeMirror from 'vue-codemirror6';
 </script>
@@ -91,7 +91,7 @@ import CodeMirror from 'vue-codemirror6';
 `keymap` に [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding) の配列を渡します。`run` が `true` を返すと、そのキーのデフォルトの動作は実行されません。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import type { KeyBinding } from '@codemirror/view';
 import { ref } from 'vue';
 import CodeMirror from 'vue-codemirror6';
@@ -134,7 +134,7 @@ const keymap: KeyBinding[] = [
 `phrases` を使うと、CodeMirror が表示する文字列(検索パネル、リンターのパネル、折りたたみマーカーなど)を翻訳できます。指定できるキーは CodeMirror の [翻訳の例](https://codemirror.net/examples/translate/) を参照してください。
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import CodeMirror from 'vue-codemirror6';
 
 const phrases: Record<string, string> = {

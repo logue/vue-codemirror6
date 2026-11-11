@@ -7,7 +7,7 @@ description: Properties and methods exposed by the vue-codemirror6 component ins
 Access the instance through a template ref. Use the `CodeMirrorExposed` type for type checking.
 
 ```vue
-<script setup lang="ts">
+<script lang="ts" setup vapor>
 import { onMounted, ref } from 'vue';
 import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 
