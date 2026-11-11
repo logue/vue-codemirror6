@@ -1,6 +1,3 @@
-// Emoji
-@use '@sableclient/twemoji-font/index.css';
-
 /*
   Carbon styles for the docs site: IBM Plex fonts, Carbon type styles, and Carbon theme tokens
   (white / g100, following Rspress's dark mode) mapped onto the Rspress CSS variables.
@@ -40,6 +37,9 @@
 // Include utility classes for type-related properties
 @include type.type-classes();
 
+// Emoji
+@import 'https://cdn.jsdelivr.net/npm/@sableclient/twemoji-font@1.0.4/dist/index.min.css';
+
 /* ─── Carbon theme tokens on the document root ──────────────────────────────
   Carbon only emits --cds-* tokens on .cds--white / .cds--g100 etc.
   Emit them on <html> as well so the --rp-* mappings below (declared on :root)
@@ -56,7 +56,7 @@ html.rp-dark {
 /* ─── IBM Plex fonts + Rspress variable overrides ───────────────────────── */
 :root {
   --font-sans:
-    Twemoji, 'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', -apple-system,
+    'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', Twemoji, -apple-system,
     BlinkMacSystemFont, 'Segoe UI';
   --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas';
 
@@ -173,19 +173,11 @@ html.rp-dark {
   --shiki-token-inserted: var(--cds-syntax-inserted);
 }
 
-code,
-pre,
-kbd,
-samp,
-var {
-  font-family: var(--font-mono);
-}
-
-.rp-doc :not(:where(.rp-not-doc, .rp-not-doc *)):where(:not(pre) > code) {
+/* ─── Rspress Fixture ───────────────────────────────────────── */
+:where(:not(pre) > code) {
   padding: 0 0.25rem !important;
 }
 
-/* ─── Code block: square corners (Carbon style) ──────────────────────────── */
-.rspress-doc pre {
-  border-radius: 0;
+.rp-link::after {
+  font-family: Twemoji;
 }

@@ -1,5 +1,3 @@
-@use '@sableclient/twemoji-font/index.css';
-
 @use '@carbon/styles' with (
   $use-per-family-plex: true,
   $use-akamai-cdn: true,
@@ -33,6 +31,8 @@
 @include type.default-type();
 // Include utility classes for type-related properties
 @include type.type-classes();
+// Emoji
+@import 'https://cdn.jsdelivr.net/npm/@sableclient/twemoji-font@1.0.4/dist/index.min.css';
 /*
  * Carbon's reset, type and theme rules take precedence; only demo-specific layout is defined here.
  * The theme is applied by toggling the `cds--white` / `cds--g100` zone class on <html>
