@@ -200,7 +200,7 @@ define.app({
   output: {
     assetPrefix: './',
     distPath: {
-      root: './src-docs/public/demo/'
+      root: './docs/demo/'
     },
     filenameHash: true
   },

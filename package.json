@@ -71,7 +71,7 @@
     "clean:hard": "rimraf .rstack/cache .rstack/.rsdoctor demo dist docs node_modules/.tmp node_modules/.cache",
     "build": "run-p type-check \"build-only {@}\" --",
     "build:demo": "rs build",
-    "build:docs": "run-s build:demo build:rspress",
+    "build:docs": "run-s build:rspress build:demo",
     "build:rspress": "rs doc build",
     "preview": "rs preview",
     "preview:docs": "rs doc preview",
