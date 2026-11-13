@@ -10,10 +10,10 @@ description: 在 vue-codemirror6 中配置语法高亮、代码检查、检查�
 
 ```vue
 <script lang="ts" setup vapor>
-import { markdown } from '@codemirror/lang-markdown';
-import CodeMirror from 'vue-codemirror6';
+  import { markdown } from '@codemirror/lang-markdown';
+  import CodeMirror from 'vue-codemirror6';
 
-const lang = markdown();
+  const lang = markdown();
 </script>
 
 <template>
@@ -88,11 +88,11 @@ const lang = markdown();
 
 ```vue
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('{ "key": "value", }');
+  const value = ref('{ "key": "value", }');
 </script>
 
 <template>
@@ -135,13 +135,13 @@ const linter = esLint(new eslint.Linter(), {
 
 ```vue
 <script lang="ts" setup vapor>
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-const theme = {
-  '&': { fontSize: '14px' },
-  '.cm-content': { fontFamily: 'Menlo, monospace' },
-  '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
-};
+  const theme = {
+    '&': { fontSize: '14px' },
+    '.cm-content': { fontFamily: 'Menlo, monospace' },
+    '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
+  };
 </script>
 
 <template>
@@ -153,8 +153,8 @@ const theme = {
 
 ```vue
 <script lang="ts" setup vapor>
-import { oneDark } from '@codemirror/theme-one-dark';
-import CodeMirror from 'vue-codemirror6';
+  import { oneDark } from '@codemirror/theme-one-dark';
+  import CodeMirror from 'vue-codemirror6';
 </script>
 
 <template>
@@ -170,10 +170,10 @@ import CodeMirror from 'vue-codemirror6';
 
 ```vue
 <script lang="ts" setup vapor>
-import { EditorView } from '@codemirror/view';
-import CodeMirror from 'vue-codemirror6';
+  import { EditorView } from '@codemirror/view';
+  import CodeMirror from 'vue-codemirror6';
 
-const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
+  const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
 </script>
 
 <template>

@@ -10,10 +10,10 @@ Install a language package and pass its `LanguageSupport` object to `lang`:
 
 ```vue
 <script lang="ts" setup vapor>
-import { markdown } from '@codemirror/lang-markdown';
-import CodeMirror from 'vue-codemirror6';
+  import { markdown } from '@codemirror/lang-markdown';
+  import CodeMirror from 'vue-codemirror6';
 
-const lang = markdown();
+  const lang = markdown();
 </script>
 
 <template>
@@ -88,11 +88,11 @@ Pass a [`LintSource`](https://codemirror.net/docs/ref/#lint.LintSource) to `lint
 
 ```vue
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('{ "key": "value", }');
+  const value = ref('{ "key": "value", }');
 </script>
 
 <template>
@@ -135,13 +135,13 @@ In the editor, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (<kbd>Cmd</kbd>+<kb
 
 ```vue
 <script lang="ts" setup vapor>
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-const theme = {
-  '&': { fontSize: '14px' },
-  '.cm-content': { fontFamily: 'Menlo, monospace' },
-  '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
-};
+  const theme = {
+    '&': { fontSize: '14px' },
+    '.cm-content': { fontFamily: 'Menlo, monospace' },
+    '.cm-gutters': { backgroundColor: 'transparent', border: 'none' }
+  };
 </script>
 
 <template>
@@ -153,8 +153,8 @@ Ready-made themes are usually distributed as extensions. Add them through `exten
 
 ```vue
 <script lang="ts" setup vapor>
-import { oneDark } from '@codemirror/theme-one-dark';
-import CodeMirror from 'vue-codemirror6';
+  import { oneDark } from '@codemirror/theme-one-dark';
+  import CodeMirror from 'vue-codemirror6';
 </script>
 
 <template>
@@ -170,10 +170,10 @@ Any CodeMirror [`Extension`](https://codemirror.net/docs/ref/#state.Extension) c
 
 ```vue
 <script lang="ts" setup vapor>
-import { EditorView } from '@codemirror/view';
-import CodeMirror from 'vue-codemirror6';
+  import { EditorView } from '@codemirror/view';
+  import CodeMirror from 'vue-codemirror6';
 
-const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
+  const extensions = [EditorView.contentAttributes.of({ spellcheck: 'true' })];
 </script>
 
 <template>

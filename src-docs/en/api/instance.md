@@ -8,14 +8,14 @@ Access the instance through a template ref. Use the `CodeMirrorExposed` type for
 
 ```vue
 <script lang="ts" setup vapor>
-import { onMounted, ref } from 'vue';
-import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+  import { onMounted, ref } from 'vue';
+  import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 
-const cm = ref<CodeMirrorExposed>();
+  const cm = ref<CodeMirrorExposed>();
 
-const insertDate = () => {
-  cm.value?.replaceSelection(new Date().toISOString());
-};
+  const insertDate = () => {
+    cm.value?.replaceSelection(new Date().toISOString());
+  };
 </script>
 
 <template>

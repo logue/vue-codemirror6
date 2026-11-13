@@ -10,10 +10,10 @@ description: vue-codemirror6 の基本的な使い方。v-model、スロット�
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 </script>
 
 <template>
@@ -33,8 +33,8 @@ const value = ref('');
 
 ```vue
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import CodeMirror from 'vue-codemirror6';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import CodeMirror from 'vue-codemirror6';
 </script>
 
 <template>
@@ -92,21 +92,21 @@ import CodeMirror from 'vue-codemirror6';
 
 ```vue
 <script lang="ts" setup vapor>
-import type { KeyBinding } from '@codemirror/view';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import type { KeyBinding } from '@codemirror/view';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 
-const keymap: KeyBinding[] = [
-  {
-    key: 'Mod-s',
-    run: () => {
-      console.log('save', value.value);
-      return true;
+  const keymap: KeyBinding[] = [
+    {
+      key: 'Mod-s',
+      run: () => {
+        console.log('save', value.value);
+        return true;
+      }
     }
-  }
-];
+  ];
 </script>
 
 <template>
@@ -135,27 +135,27 @@ const keymap: KeyBinding[] = [
 
 ```vue
 <script lang="ts" setup vapor>
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-const phrases: Record<string, string> = {
-  // @codemirror/search
-  'Go to line': '行き先の行',
-  go: 'OK',
-  Find: '検索',
-  Replace: '置き換え',
-  next: '▼',
-  previous: '▲',
-  all: 'すべて',
-  'match case': '大文字と小文字を区別',
-  'by word': '単語単位',
-  regexp: '正規表現',
-  replace: '置き換え',
-  'replace all': 'すべて置き換え',
-  close: '閉じる',
-  // @codemirror/lint
-  Diagnostics: 'エラー',
-  'No diagnostics': 'エラーなし'
-};
+  const phrases: Record<string, string> = {
+    // @codemirror/search
+    'Go to line': '行き先の行',
+    go: 'OK',
+    Find: '検索',
+    Replace: '置き換え',
+    next: '▼',
+    previous: '▲',
+    all: 'すべて',
+    'match case': '大文字と小文字を区別',
+    'by word': '単語単位',
+    regexp: '正規表現',
+    replace: '置き換え',
+    'replace all': 'すべて置き換え',
+    close: '閉じる',
+    // @codemirror/lint
+    Diagnostics: 'エラー',
+    'No diagnostics': 'エラーなし'
+  };
 </script>
 
 <template>

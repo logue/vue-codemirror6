@@ -1,56 +1,56 @@
 <script lang="ts" setup vapor>
-import { vue } from '@codemirror/lang-vue';
-import { type Ref, ref } from 'vue';
+  import { vue } from '@codemirror/lang-vue';
+  import { type Ref, ref } from 'vue';
 
-import CodeMirror from '@/index';
+  import CodeMirror from '@/index';
 
-import KeyMapDemo from './components/KeyMapDemo.vue';
-import KeyMapDemoSrc from './components/KeyMapDemo.vue?source';
-import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
-import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?source';
-import MarkdownDemo from './components/MarkdownDemo.vue';
-import MarkdownDemoSrc from './components/MarkdownDemo.vue?source';
-import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
-import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?source';
-import SlotDemo from './components/SlotDemo.vue';
-import SlotDemoSrc from './components/SlotDemo.vue?source';
+  import KeyMapDemo from './components/KeyMapDemo.vue';
+  import KeyMapDemoSrc from './components/KeyMapDemo.vue?source';
+  import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
+  import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?source';
+  import MarkdownDemo from './components/MarkdownDemo.vue';
+  import MarkdownDemoSrc from './components/MarkdownDemo.vue?source';
+  import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
+  import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?source';
+  import SlotDemo from './components/SlotDemo.vue';
+  import SlotDemoSrc from './components/SlotDemo.vue?source';
 
-defineProps<{
-  dark: boolean;
-}>();
+  defineProps<{
+    dark: boolean;
+  }>();
 
-/** Tab identifiers, in display order. */
-type TabId = 'markdown' | 'slot' | 'linter' | 'readonly' | 'keymap';
+  /** Tab identifiers, in display order. */
+  type TabId = 'markdown' | 'slot' | 'linter' | 'readonly' | 'keymap';
 
-const tabs: { id: TabId; label: string }[] = [
-  { id: 'markdown', label: 'Markdown' },
-  { id: 'slot', label: 'Slot' },
-  { id: 'linter', label: 'Linter & Binding' },
-  { id: 'readonly', label: 'Readonly & Disabled' },
-  { id: 'keymap', label: 'Key Map' }
-];
+  const tabs: { id: TabId; label: string }[] = [
+    { id: 'markdown', label: 'Markdown' },
+    { id: 'slot', label: 'Slot' },
+    { id: 'linter', label: 'Linter & Binding' },
+    { id: 'readonly', label: 'Readonly & Disabled' },
+    { id: 'keymap', label: 'Key Map' }
+  ];
 
-const isTabId = (value: string | null): value is TabId => tabs.some(tab => tab.id === value);
+  const isTabId = (value: string | null): value is TabId => tabs.some(tab => tab.id === value);
 
-/** Currently selected tab (`?tab=<id>` selects the initial tab) */
-const initialTab = new URLSearchParams(globalThis.location.search).get('tab');
-const selected: Ref<TabId> = ref(isTabId(initialTab) ? initialTab : 'markdown');
+  /** Currently selected tab (`?tab=<id>` selects the initial tab) */
+  const initialTab = new URLSearchParams(globalThis.location.search).get('tab');
+  const selected: Ref<TabId> = ref(isTabId(initialTab) ? initialTab : 'markdown');
 
-const onTabSelected = (event: CustomEvent<{ item: HTMLElement & { value: string } }>): void => {
-  selected.value = event.detail.item.value as TabId;
-};
+  const onTabSelected = (event: CustomEvent<{ item: HTMLElement & { value: string } }>): void => {
+    selected.value = event.detail.item.value as TabId;
+  };
 
-/** Drop the grid's max width when embedded in the docs iframe */
-const inIframe = globalThis.self !== globalThis.top;
+  /** Drop the grid's max width when embedded in the docs iframe */
+  const inIframe = globalThis.self !== globalThis.top;
 
-/** SFC sources shown next to each demo */
-const sources: Record<TabId, string> = {
-  markdown: MarkdownDemoSrc.trim(),
-  slot: SlotDemoSrc.trim(),
-  linter: LinterAndCrossBindingDemoSrc.trim(),
-  readonly: ReadonlyAndDisabledDemoSrc.trim(),
-  keymap: KeyMapDemoSrc.trim()
-};
+  /** SFC sources shown next to each demo */
+  const sources: Record<TabId, string> = {
+    markdown: MarkdownDemoSrc.trim(),
+    slot: SlotDemoSrc.trim(),
+    linter: LinterAndCrossBindingDemoSrc.trim(),
+    readonly: ReadonlyAndDisabledDemoSrc.trim(),
+    keymap: KeyMapDemoSrc.trim()
+  };
 </script>
 
 <template>

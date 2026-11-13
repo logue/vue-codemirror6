@@ -12,12 +12,12 @@ description: 在 Nuxt 等服务端渲染框架中使用 vue-codemirror6。
 
 ```vue
 <script lang="ts" setup vapor>
-import { javascript } from '@codemirror/lang-javascript';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('console.log("Hello, World!");');
-const lang = javascript();
+  const value = ref('console.log("Hello, World!");');
+  const lang = javascript();
 </script>
 
 <template>

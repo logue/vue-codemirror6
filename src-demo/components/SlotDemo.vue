@@ -1,12 +1,12 @@
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
 
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-// Sync Dark mode
-defineProps<{
-  dark?: boolean;
-}>();
+  // Sync Dark mode
+  defineProps<{
+    dark?: boolean;
+  }>();
 </script>
 
 <!-- prettier-ignore -->

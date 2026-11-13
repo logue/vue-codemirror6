@@ -10,10 +10,10 @@ The document is bound through `modelValue` (not `value`), so `v-model` works as 
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 </script>
 
 <template>
@@ -33,8 +33,8 @@ Instead of `v-model`, you can place the initial text inside the component. Only 
 
 ```vue
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import CodeMirror from 'vue-codemirror6';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import CodeMirror from 'vue-codemirror6';
 </script>
 
 <template>
@@ -92,21 +92,21 @@ Pass an array of [`KeyBinding`](https://codemirror.net/docs/ref/#view.KeyBinding
 
 ```vue
 <script lang="ts" setup vapor>
-import type { KeyBinding } from '@codemirror/view';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import type { KeyBinding } from '@codemirror/view';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 
-const keymap: KeyBinding[] = [
-  {
-    key: 'Mod-s',
-    run: () => {
-      console.log('save', value.value);
-      return true;
+  const keymap: KeyBinding[] = [
+    {
+      key: 'Mod-s',
+      run: () => {
+        console.log('save', value.value);
+        return true;
+      }
     }
-  }
-];
+  ];
 </script>
 
 <template>
@@ -135,15 +135,15 @@ Use `phrases` to translate the text shown by CodeMirror (search panel, lint pane
 
 ```vue
 <script lang="ts" setup vapor>
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-const phrases: Record<string, string> = {
-  Find: 'Suchen',
-  Replace: 'Ersetzen',
-  next: 'nächste',
-  previous: 'vorherige',
-  close: 'schließen'
-};
+  const phrases: Record<string, string> = {
+    Find: 'Suchen',
+    Replace: 'Ersetzen',
+    next: 'nächste',
+    previous: 'vorherige',
+    close: 'schließen'
+  };
 </script>
 
 <template>

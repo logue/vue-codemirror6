@@ -10,10 +10,10 @@ description: vue-codemirror6 的日常用法:v-model、插槽内容、只读与�
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 </script>
 
 <template>
@@ -33,8 +33,8 @@ const value = ref('');
 
 ```vue
 <script lang="ts" setup vapor>
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import CodeMirror from 'vue-codemirror6';
+  import { json, jsonParseLinter } from '@codemirror/lang-json';
+  import CodeMirror from 'vue-codemirror6';
 </script>
 
 <template>
@@ -92,21 +92,21 @@ import CodeMirror from 'vue-codemirror6';
 
 ```vue
 <script lang="ts" setup vapor>
-import type { KeyBinding } from '@codemirror/view';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import type { KeyBinding } from '@codemirror/view';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('');
+  const value = ref('');
 
-const keymap: KeyBinding[] = [
-  {
-    key: 'Mod-s',
-    run: () => {
-      console.log('save', value.value);
-      return true;
+  const keymap: KeyBinding[] = [
+    {
+      key: 'Mod-s',
+      run: () => {
+        console.log('save', value.value);
+        return true;
+      }
     }
-  }
-];
+  ];
 </script>
 
 <template>
@@ -135,27 +135,27 @@ const keymap: KeyBinding[] = [
 
 ```vue
 <script lang="ts" setup vapor>
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-const phrases: Record<string, string> = {
-  // @codemirror/search
-  'Go to line': '跳转到行',
-  go: '确定',
-  Find: '查找',
-  Replace: '替换',
-  next: '下一个',
-  previous: '上一个',
-  all: '全部',
-  'match case': '区分大小写',
-  'by word': '全字匹配',
-  regexp: '正则表达式',
-  replace: '替换',
-  'replace all': '全部替换',
-  close: '关闭',
-  // @codemirror/lint
-  Diagnostics: '诊断',
-  'No diagnostics': '无诊断信息'
-};
+  const phrases: Record<string, string> = {
+    // @codemirror/search
+    'Go to line': '跳转到行',
+    go: '确定',
+    Find: '查找',
+    Replace: '替换',
+    next: '下一个',
+    previous: '上一个',
+    all: '全部',
+    'match case': '区分大小写',
+    'by word': '全字匹配',
+    regexp: '正则表达式',
+    replace: '替换',
+    'replace all': '全部替换',
+    close: '关闭',
+    // @codemirror/lint
+    Diagnostics: '诊断',
+    'No diagnostics': '无诊断信息'
+  };
 </script>
 
 <template>

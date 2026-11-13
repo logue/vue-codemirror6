@@ -15,19 +15,19 @@ description: Events emitted by the vue-codemirror6 component and their payloads.
 
 ```vue
 <script lang="ts" setup vapor>
-import type { EditorState } from '@codemirror/state';
-import type { ViewUpdate } from '@codemirror/view';
-import CodeMirror from 'vue-codemirror6';
+  import type { EditorState } from '@codemirror/state';
+  import type { ViewUpdate } from '@codemirror/view';
+  import CodeMirror from 'vue-codemirror6';
 
-const onUpdate = (update: ViewUpdate) => {
-  if (update.selectionSet) {
-    console.log('selection', update.state.selection.main);
-  }
-};
+  const onUpdate = (update: ViewUpdate) => {
+    if (update.selectionSet) {
+      console.log('selection', update.state.selection.main);
+    }
+  };
 
-const onChange = (state: EditorState) => {
-  console.log('lines', state.doc.lines);
-};
+  const onChange = (state: EditorState) => {
+    console.log('lines', state.doc.lines);
+  };
 </script>
 
 <template>

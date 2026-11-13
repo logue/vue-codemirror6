@@ -1,10 +1,10 @@
 <script lang="ts" setup vapor>
-/** Carbon toggle that switches between the white and g100 themes. */
-const dark = defineModel<boolean>({ required: true });
+  /** Carbon toggle that switches between the white and g100 themes. */
+  const dark = defineModel<boolean>({ required: true });
 
-const onChange = (event: CustomEvent<{ checked: boolean }>): void => {
-  dark.value = event.detail.checked;
-};
+  const onChange = (event: CustomEvent<{ checked: boolean }>): void => {
+    dark.value = event.detail.checked;
+  };
 </script>
 
 <template>

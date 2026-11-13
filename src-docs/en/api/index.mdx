@@ -15,12 +15,12 @@ The `CodeMirror` component has three kinds of API:
 
 ```vue
 <script lang="ts" setup vapor>
-import { javascript } from '@codemirror/lang-javascript';
-import { ref } from 'vue';
-import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+  import { ref } from 'vue';
+  import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 
-const value = ref('');
-const cm = ref<CodeMirrorExposed>();
+  const value = ref('');
+  const cm = ref<CodeMirrorExposed>();
 </script>
 
 <template>

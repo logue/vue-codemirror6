@@ -1,52 +1,52 @@
 <script lang="ts" setup vapor>
-import { esLint, javascript } from '@codemirror/lang-javascript';
-// Uses linter.mjs
-import eslint from 'eslint-linter-browserify';
-import { type Ref, ref } from 'vue';
+  import { esLint, javascript } from '@codemirror/lang-javascript';
+  // Uses linter.mjs
+  import eslint from 'eslint-linter-browserify';
+  import { type Ref, ref } from 'vue';
 
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-// Sync Dark mode
-defineProps<{
-  dark?: boolean;
-}>();
+  // Sync Dark mode
+  defineProps<{
+    dark?: boolean;
+  }>();
 
-/** CodeMirror Instance */
-const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
+  /** CodeMirror Instance */
+  const cm: Ref<InstanceType<typeof CodeMirror> | undefined> = ref();
 
-/** Demo code */
-const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
+  /** Demo code */
+  const value: Ref<string> = ref(`document.querySelectorAll('.btn').forEach(
   element => ああああelement.addEventListner('click', alert('あああああ'));
 );`);
 
-const focused: Ref<boolean> = ref(false);
+  const focused: Ref<boolean> = ref(false);
 
-/**
- * JavaScript language Linter Setting.
- * Using eslint-linter-browserify
- *
- * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
- */
-const linter = esLint(new eslint.Linter(), {
-  languageOptions: {
-    parserOptions: {
-      ecmaVersion: 2022,
-      sourceType: 'module'
+  /**
+   * JavaScript language Linter Setting.
+   * Using eslint-linter-browserify
+   *
+   * @see {@link https://github.com/UziTech/eslint-linter-browserify#eslint-linter-browserify}
+   */
+  const linter = esLint(new eslint.Linter(), {
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module'
+      }
+    },
+    rules: {
+      semi: ['error', 'never']
     }
-  },
-  rules: {
-    semi: ['error', 'never']
-  }
-});
+  });
 
-const onFocus = (f: boolean): void => {
-  focused.value = f;
-};
+  const onFocus = (f: boolean): void => {
+    focused.value = f;
+  };
 
-/** Sync from the Carbon textarea back to the editor */
-const onInput = (event: Event): void => {
-  value.value = (event.target as HTMLTextAreaElement).value;
-};
+  /** Sync from the Carbon textarea back to the editor */
+  const onInput = (event: Event): void => {
+    value.value = (event.target as HTMLTextAreaElement).value;
+  };
 </script>
 
 <template>

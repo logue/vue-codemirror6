@@ -516,6 +516,8 @@ define.fmt({
   arrowParens: 'avoid',
   endOfLine: 'lf',
   plugins: ['prettier-plugin-yaml'],
+  // Vue
+  vueIndentScriptAndStyle: true,
   // Bellow is rstack options
   // see https://rstack.rs/guide/formatting
   ignorePatterns: IGNORE_PATTERNS,

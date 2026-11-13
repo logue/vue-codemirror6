@@ -12,12 +12,12 @@ Use the component directly:
 
 ```vue
 <script lang="ts" setup vapor>
-import { javascript } from '@codemirror/lang-javascript';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('console.log("Hello, World!");');
-const lang = javascript();
+  const value = ref('console.log("Hello, World!");');
+  const lang = javascript();
 </script>
 
 <template>

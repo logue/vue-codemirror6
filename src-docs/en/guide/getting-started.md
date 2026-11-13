@@ -22,10 +22,10 @@ pnpm add @codemirror/lang-javascript
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('Cozy lummox gives smart squid who asks for job pen.');
+  const value = ref('Cozy lummox gives smart squid who asks for job pen.');
 </script>
 
 <template>
@@ -51,12 +51,12 @@ Pass a `LanguageSupport` object to the `lang` prop to enable syntax highlighting
 
 ```vue
 <script lang="ts" setup vapor>
-import { javascript } from '@codemirror/lang-javascript';
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { javascript } from '@codemirror/lang-javascript';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('console.log("Hello, World!");');
-const lang = javascript();
+  const value = ref('console.log("Hello, World!");');
+  const lang = javascript();
 </script>
 
 <template>

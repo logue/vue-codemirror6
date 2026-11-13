@@ -8,14 +8,14 @@ description: vue-codemirror6 组件实例暴露的属性和方法,包括兼容 C
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror, { type CodeMirrorExposed } from 'vue-codemirror6';
 
-const cm = ref<CodeMirrorExposed>();
+  const cm = ref<CodeMirrorExposed>();
 
-const insertDate = () => {
-  cm.value?.replaceSelection(new Date().toISOString());
-};
+  const insertDate = () => {
+    cm.value?.replaceSelection(new Date().toISOString());
+  };
 </script>
 
 <template>

@@ -1,17 +1,17 @@
 <script lang="ts" setup vapor>
-import { type Ref, ref } from 'vue';
+  import { type Ref, ref } from 'vue';
 
-import CodeMirror from 'vue-codemirror6';
+  import CodeMirror from 'vue-codemirror6';
 
-/** Readonly */
-const isReadonly: Ref<boolean> = ref(true);
-/** Disabled (Not Editable) */
-const isDisabled: Ref<boolean> = ref(false);
+  /** Readonly */
+  const isReadonly: Ref<boolean> = ref(true);
+  /** Disabled (Not Editable) */
+  const isDisabled: Ref<boolean> = ref(false);
 
-// Sync dark mode
-defineProps<{
-  dark?: boolean;
-}>();
+  // Sync dark mode
+  defineProps<{
+    dark?: boolean;
+  }>();
 </script>
 
 <!-- eslint-disable no-irregular-whitespace -->

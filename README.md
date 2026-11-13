@@ -29,10 +29,10 @@ For Vue 2.7 or below, [@vue/composition-api](https://www.npmjs.com/package/@vue/
 
 ```vue
 <script lang="ts" setup vapor>
-import { ref } from 'vue';
-import CodeMirror from 'vue-codemirror6';
+  import { ref } from 'vue';
+  import CodeMirror from 'vue-codemirror6';
 
-const value = ref('Hello, CodeMirror!');
+  const value = ref('Hello, CodeMirror!');
 </script>
 
 <template>

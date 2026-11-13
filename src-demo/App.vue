@@ -1,9 +1,9 @@
 <script lang="ts" setup vapor>
-import ToggleTheme from './components/ToggleTheme.vue';
-import { useDemoHost } from './composables/useDemoHost';
-import DemoPage from './DemoPage.vue';
+  import ToggleTheme from './components/ToggleTheme.vue';
+  import { useDemoHost } from './composables/useDemoHost';
+  import DemoPage from './DemoPage.vue';
 
-const { isDark, isEmbedded } = useDemoHost();
+  const { isDark, isEmbedded } = useDemoHost();
 </script>
 
 <template>
