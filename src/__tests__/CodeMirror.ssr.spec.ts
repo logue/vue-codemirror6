@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'rstack/test';
+import { afterEach, beforeEach, describe, expect, it, rs } from 'rstack/test';
 
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
@@ -347,9 +347,13 @@ describe('CodeMirror SSR Compatibility', () => {
 
   describe('Memory Leaks Prevention', () => {
     it('should clean up properly on unmount', async () => {
+      // @vue/test-utils >= 2.6 clears `wrapper.emitted()` history on unmount,
+      // so observe the event through a listener prop instead.
+      const onDestroy = rs.fn();
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'cleanup test'
+          modelValue: 'cleanup test',
+          onDestroy
         },
         attachTo: document.body
       });
@@ -359,8 +363,7 @@ describe('CodeMirror SSR Compatibility', () => {
       wrapper.unmount();
 
       // After unmount, destroy event should be emitted
-      const destroyEvents = wrapper.emitted('destroy');
-      expect(destroyEvents).toBeTruthy();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
     });
 
     it('should handle multiple mount/unmount cycles', () => {

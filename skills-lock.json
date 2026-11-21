@@ -1,59 +1,68 @@
 {
-  "version": 1,
+  "version": 2,
   "skills": {
     "carbon-builder": {
       "source": "carbon-design-system/carbon-mcp",
       "sourceType": "github",
       "skillPath": "public/skills/carbon-builder/SKILL.md",
-      "computedHash": "c01c7d3ee29b240a7884d90489dbfa7705297251db8a71386a3fe747fd8abcef"
+      "computedHash": "f13eb7b1473da33f5684fa7d06cc8daa65333049d515256c6ddf8dbc27f7f500",
+      "commit": "c8af75506de40846f0b0c3e42e068345776a43b7"
     },
     "rsbuild-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rsbuild-best-practices/SKILL.md",
-      "computedHash": "370b2405efb009d4bc4b7f009c8ea2661a375abe59a0d873fe9af619bfc80733"
+      "computedHash": "dce08fd21a5a49c8e2ba9e3d9b621aac83ce48d317cd20a00ed133b8742e7a90",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "rsdoctor-analysis": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rsdoctor-analysis/SKILL.md",
-      "computedHash": "6b5ea016ec7dbc34f155e367c15dc7d776b8b8106db55e1d8236ea4db0694177"
+      "computedHash": "9b1b9f6415bc5c4e983390f9579ee890b55af533ca1d9bafc059bc3268c52de9",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "rslib-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rslib-best-practices/SKILL.md",
-      "computedHash": "ea5f0620d7c542358a73624a5a339f4d3f6290778accbfe5fc5e1dacf8a8e920"
+      "computedHash": "be4d50388c97224108f8902a030d649afd77572087ba467a71b938440cd03afe",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "rslib-modern-package": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rslib-modern-package/SKILL.md",
-      "computedHash": "11096504136dfb50a564d60b7375de4b0958e6ff7d3d0a27debc35e5c5079b4e"
+      "computedHash": "bd739f79afb0e77cee40bec04776c202ba90ddebfad9d6c77064dedc97e4a330",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "rspress-docs-generator": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rspress-docs-generator/SKILL.md",
-      "computedHash": "ac15a47048425a68fc671cf3754eef2b857e41db08354d09deb98f3bed1d6a1d"
+      "computedHash": "2e44ca98f9d040d8e1fc8559745d9ba7860bcb4d318dcba8e3b215e9de4debd6",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "rstack-cli-docs": {
       "source": "rstackjs/rstack-cli",
       "sourceType": "github",
       "skillPath": ".agents/skills/rstack-cli-docs/SKILL.md",
-      "computedHash": "8b5451af88d29195dc2f257543013ad66aa14a7791e401ab4cffdb11941cf27a"
+      "computedHash": "acddb59faff99d231e4a1111b08e702d4cbfa96fa83bac6187e94ccc80b3c2ab",
+      "commit": "79a2eb4a267d2747ea8a1e7b2cceae38eace4178"
     },
     "rstest-best-practices": {
       "source": "rstackjs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/rstest-best-practices/SKILL.md",
-      "computedHash": "2657c33744b26c4d2cde2c238a6ad52e92532f240f345d0f798b3252a729fcbb"
+      "computedHash": "f36e4270323b9dd7153d59040354fd2feb13c3fb59eac5a3e572fe04fdff8ffd",
+      "commit": "ad1d0235e64328bef7d5902c4665e5e441aae541"
     },
     "vue-best-practices": {
       "source": "vuejs-ai/skills",
       "sourceType": "github",
       "skillPath": "skills/vue-best-practices/SKILL.md",
-      "computedHash": "2f4da0a95f19b225e784981413f727ff03bfdec7818a1e5bb0a477aab633095e"
+      "computedHash": "2b4ee45c8b9d77d99896c510ca1c0ecb56914b7bdda84dcbd872f3941d3b9f54",
+      "commit": "198f0cd8f7f9c0a3d9b566ccc16de6677519ee78"
     }
   }
 }

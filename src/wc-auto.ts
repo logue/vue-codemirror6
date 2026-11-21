@@ -1,3 +1,4 @@
+import '@/helpers/vue-flags';
 import CodeMirrorElement, { register, Meta } from '@/wc';
 
 /** Tag name registered automatically on import. */

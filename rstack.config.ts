@@ -320,6 +320,13 @@ define.doc({
  * @see {@link https://rstest.rs/config/ | Rstest Config}
  */
 define.test({
+  // Be explicit instead of relying on the environment inferred from the library target.
+  testEnvironment: 'happy-dom',
+  include: ['src/**/__tests__/**/*.spec.ts'],
+  // Shared DOM cleanup between tests.
+  setupFiles: ['./src/__tests__/setup.ts'],
+  // Restore `rs.spyOn()` originals and reset `rs.fn()` state between tests.
+  restoreMocks: true,
   source: {
     tsconfigPath: './tsconfig.rstest.json'
   }

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, rs } from 'rstack/test';
+import { describe, expect, it, rs } from 'rstack/test';
 
 import { javascript } from '@codemirror/lang-javascript';
 import { EditorView } from '@codemirror/view';
@@ -8,11 +8,6 @@ import { nextTick, ref } from 'vue';
 import CodeMirror, { type CodeMirrorExposed } from '../index';
 
 describe('CodeMirror Component', () => {
-  beforeEach(() => {
-    // Clear any previous DOM
-    document.body.innerHTML = '';
-  });
-
   describe('Basic Rendering', () => {
     it('should render the component', () => {
       const wrapper = mount(CodeMirror, {
@@ -226,9 +221,13 @@ describe('CodeMirror Component', () => {
     });
 
     it('should emit destroy event on unmount', async () => {
+      // @vue/test-utils >= 2.6 clears `wrapper.emitted()` history on unmount,
+      // so observe the event through a listener prop instead.
+      const onDestroy = rs.fn();
       const wrapper = mount(CodeMirror, {
         props: {
-          modelValue: 'test'
+          modelValue: 'test',
+          onDestroy
         }
       });
 
@@ -237,8 +236,7 @@ describe('CodeMirror Component', () => {
 
       wrapper.unmount();
 
-      const destroyEvents = wrapper.emitted('destroy');
-      expect(destroyEvents).toBeTruthy();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
     });
   });
 

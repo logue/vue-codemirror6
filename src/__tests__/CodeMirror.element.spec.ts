@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, describe, expect, it } from 'rstack/test';
+import { beforeAll, describe, expect, it } from 'rstack/test';
 
 import { EditorView } from '@codemirror/view';
 
@@ -35,10 +35,6 @@ const createElement = (): CodeMirrorElement => document.createElement(TAG) as Co
 describe('CodeMirror Web Component', () => {
   beforeAll(() => {
     register(TAG);
-  });
-
-  afterEach(() => {
-    document.body.innerHTML = '';
   });
 
   it('should register the element under the given tag name', () => {

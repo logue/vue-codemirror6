@@ -1,3 +1,4 @@
+import '@/helpers/vue-flags';
 import { defineCustomElement, h } from 'vue';
 
 import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
