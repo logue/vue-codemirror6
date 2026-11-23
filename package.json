@@ -147,7 +147,7 @@
     "rstack": "^0.9.3",
     "taze": "^21.3.0",
     "typescript": "^7.0.2",
-    "vize": "^0.788.0",
+    "vize": "^0.790.0",
     "vue": "^3.5.46",
     "vue-eslint-parser": "^10.4.2",
     "vue-markdown-wasm": "^1.0.1"
