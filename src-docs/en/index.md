@@ -1,11 +1,11 @@
 ---
-description: vue-codemirror6 is a CodeMirror 6 editor component for Vue 2.7 and Vue 3 with v-model binding, linting, and SSR support.
+description: vue-codemirror6 is a CodeMirror 6 editor component for Vue 3 with v-model binding, linting, and SSR support.
 pageType: home
 
 hero:
   name: vue-codemirror6
-  text: CodeMirror 6 for Vue
-  tagline: A lightweight wrapper component that brings the CodeMirror 6 editor to Vue 2.7 and Vue 3.
+  text: CodeMirror 6 components for Vue 3 / Web Components
+  tagline: A lightweight wrapper component that brings the CodeMirror 6 editor to Vue 3 / Web Components.
   actions:
     - theme: brand
       text: Get Started
@@ -20,8 +20,8 @@ hero:
     src: https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png
     alt: vue-codemirror6 logo
 features:
-  - title: Vue 2.7 & Vue 3
-    details: Built on vue-demi, so the same component works in both Vue 2.7 and Vue 3 projects.
+  - title: Built for Vue 3
+    details: Uses the Composition API directly, with no compatibility layer or install scripts.
     icon: 💚
     link: /guide/introduction
   - title: Two-way binding

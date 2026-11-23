@@ -1,18 +1,12 @@
-import { type App, defineComponent } from 'vue-demi';
+import { type App, defineComponent, h } from 'vue';
 
 import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
-import h, { slot } from '@/helpers/h-demi';
 import { Meta } from '@/types/Meta';
 
 /** CodeMirror Component */
 const component = defineComponent({
   /** Component Name */
   name: 'CodeMirror',
-  /** Model Definition */
-  model: {
-    prop: 'modelValue',
-    event: 'update:modelValue'
-  },
   /** Props Definition */
   props: codeMirrorProps,
   /** Emits */
@@ -50,7 +44,7 @@ const component = defineComponent({
               style: 'display: none;',
               'aria-hidden': 'true'
             },
-            slot(this.$slots.default)
+            this.$slots.default()
           )
         : undefined
     );

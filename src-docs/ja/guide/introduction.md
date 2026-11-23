@@ -4,7 +4,7 @@ description: vue-codemirror6 の概要、対応する Vue のバージョン、C
 
 # はじめに
 
-**vue-codemirror6** は、[CodeMirror 6](https://codemirror.net/6/) を Vue で使うためのコンポーネントです。[vue-demi](https://github.com/vueuse/vue-demi) をベースにしているため、同じコンポーネントが Vue 2.7 と Vue 3 の両方で動作します。
+**vue-codemirror6** は、[CodeMirror 6](https://codemirror.net/6/) を Vue で使うためのコンポーネントです。Vue 3.3 以降に対応しています。
 
 CodeMirror 6 はモジュール構成のコードエディタです。このコンポーネントは CodeMirror のすべての概念をそのまま公開するのではなく、よく使う設定を props にまとめ、それ以外は `extensions` やエディタのインスタンスから利用できるようにしています。
 

@@ -4,7 +4,7 @@ description: What vue-codemirror6 is, which Vue versions it supports, and what i
 
 # Introduction
 
-**vue-codemirror6** is a component for using [CodeMirror 6](https://codemirror.net/6/) in Vue. It is built on [vue-demi](https://github.com/vueuse/vue-demi), so the same component works in both Vue 2.7 and Vue 3.
+**vue-codemirror6** is a component for using [CodeMirror 6](https://codemirror.net/6/) in Vue. It supports Vue 3.3 and later.
 
 CodeMirror 6 is a modular code editor. Instead of exposing every CodeMirror concept directly, this component turns the most common settings into props and keeps the rest available through `extensions` and the editor instance.
 

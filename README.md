@@ -12,7 +12,7 @@
 [![X Follow](https://img.shields.io/twitter/follow/logue256?style=plastic)](https://x.com/logue256)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/logue?label=Sponsor&logo=github&color=ea4aaa)](https://github.com/sponsors/logue)
 
-A component for using [CodeMirror 6](https://codemirror.net/6/) with Vue. Works with both Vue 2.7 and Vue 3.
+A component for using [CodeMirror 6](https://codemirror.net/6/) with Vue. Requires Vue 3.3 or later.
 
 **📖 Documentation: <https://logue.dev/vue-codemirror6/>**
 ([English](https://logue.dev/vue-codemirror6/) | [日本語](https://logue.dev/vue-codemirror6/ja/) | [简体中文](https://logue.dev/vue-codemirror6/zh/))
@@ -22,8 +22,6 @@ A component for using [CodeMirror 6](https://codemirror.net/6/) with Vue. Works 
 ```sh
 pnpm add vue-codemirror6 codemirror
 ```
-
-For Vue 2.7 or below, [@vue/composition-api](https://www.npmjs.com/package/@vue/composition-api) is also required.
 
 ## Quick Start
 
@@ -54,7 +52,6 @@ vue-codemirror6 1.8.0 or later can be used without a bundler (Vue 3 only). Load 
       "vue-codemirror6/wc": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/wc.es.js",
       "vue-codemirror6/wc-auto": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/wc-auto.es.js",
       "vue": "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
-      "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/v3/index.mjs",
       "codemirror": "https://cdn.jsdelivr.net/npm/codemirror@6/dist/index.js",
       "@codemirror/autocomplete": "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6/dist/index.js",
       "@codemirror/commands": "https://cdn.jsdelivr.net/npm/@codemirror/commands@6/dist/index.js",

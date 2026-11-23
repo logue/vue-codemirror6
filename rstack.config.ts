@@ -296,19 +296,19 @@ define.doc({
       lang: 'en',
       label: 'English',
       title: 'vue-codemirror6',
-      description: 'CodeMirror 6 component for Vue 2 and Vue 3.'
+      description: 'CodeMirror 6 component for Vue 3 / WebComponents.'
     },
     {
       lang: 'ja',
       label: '日本語',
       title: 'vue-codemirror6',
-      description: 'Vue 2 / Vue 3 で使える CodeMirror 6 コンポーネント'
+      description: 'Vue 3 / WebComponents で使える CodeMirror 6 コンポーネント'
     },
     {
       lang: 'zh',
       label: '简体中文',
       title: 'vue-codemirror6',
-      description: '适用于 Vue 2 和 Vue 3 的 CodeMirror 6 组件'
+      description: '适用于 Vue 3 / WebComponents 的 CodeMirror 6 组件'
     }
   ],
   // generate llms.txt

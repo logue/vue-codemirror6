@@ -101,7 +101,6 @@ vue-codemirror6 1.8.0 或更高版本无需打包工具即可使用(仅支持 Vu
     "imports": {
       "vue-codemirror6": "https://cdn.jsdelivr.net/npm/vue-codemirror6@1/dist/index.es.js",
       "vue": "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js",
-      "vue-demi": "https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/v3/index.mjs",
       "codemirror": "https://cdn.jsdelivr.net/npm/codemirror@6/dist/index.js",
       "@codemirror/autocomplete": "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6/dist/index.js",
       "@codemirror/commands": "https://cdn.jsdelivr.net/npm/@codemirror/commands@6/dist/index.js",

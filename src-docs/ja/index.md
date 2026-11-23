@@ -1,11 +1,11 @@
 ---
-description: vue-codemirror6 は Vue 2.7 / Vue 3 で使える CodeMirror 6 エディタコンポーネントです。v-model、リンター、SSR に対応しています。
+description: vue-codemirror6 は Vue 3 で使える CodeMirror 6 エディタコンポーネントです。v-model、リンター、SSR に対応しています。
 pageType: home
 
 hero:
   name: vue-codemirror6
-  text: Vue で使う CodeMirror 6
-  tagline: CodeMirror 6 エディタを Vue 2.7 と Vue 3 で使えるようにする軽量なラッパーコンポーネント
+  text: Vue 3 / Web Components 向け CodeMirror 6 コンポーネント
+  tagline: CodeMirror 6 エディタを Vue 3 / Web Components で使えるようにする軽量なラッパーコンポーネント
   actions:
     - theme: brand
       text: はじめる
@@ -20,8 +20,8 @@ hero:
     src: https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png
     alt: vue-codemirror6 のロゴ
 features:
-  - title: Vue 2.7 と Vue 3 に対応
-    details: vue-demi をベースにしているため、同じコンポーネントを Vue 2.7 と Vue 3 のどちらでも使えます。
+  - title: Vue 3 ネイティブ
+    details: Composition API を直接使用しており、互換レイヤーやインストールスクリプトは不要です。
     icon: 💚
     link: /ja/guide/introduction
   - title: 双方向バインディング

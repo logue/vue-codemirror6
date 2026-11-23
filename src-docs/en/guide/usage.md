@@ -51,7 +51,6 @@ Instead of `v-model`, you can place the initial text inside the component. Only 
 
 - Slot content overwrites the `v-model` value, so do not combine the two. The slot method is intended for simple read-only highlighting.
 - Wrap the text in `<pre>` so that whitespace is not collapsed.
-- The slot method does not work with Vue 2.7.
 
 :::
 

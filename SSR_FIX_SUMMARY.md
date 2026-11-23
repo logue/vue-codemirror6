@@ -108,9 +108,7 @@ pnpm build       # ビルド成功
 
 ## 互換性
 
-- ✅ Vue 2.7以上
 - ✅ Vue 3.3以上
-- ✅ Nuxt 2
 - ✅ Nuxt 3
 - ✅ その他のSSRフレームワーク（VitePress、Quasar SSRなど）
 

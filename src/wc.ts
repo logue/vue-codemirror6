@@ -2,7 +2,6 @@ import '@/helpers/vue-flags';
 import { defineCustomElement, h } from 'vue';
 
 import { codeMirrorEmits, codeMirrorProps, useCodeMirror } from '@/composables/useCodeMirror';
-import { slot } from '@/helpers/h-demi';
 export { Meta } from '@/types/Meta';
 
 // Wrap the same component definition for use as a Web Component.
@@ -47,7 +46,7 @@ const CodeMirrorElement = defineCustomElement({
               style: 'display: none;',
               'aria-hidden': 'true'
             },
-            slot(this.$slots.default)
+            this.$slots.default()
           )
         : undefined
     );

@@ -84,7 +84,6 @@ describe('New Feature', () => {
 - `**/*.d.ts` (型定義ファイル)
 - `**/*.config.*` (設定ファイル)
 - `src/Meta.ts` (自動生成ファイル)
-- `src/helpers/h-demi.ts` (Vue 2/3互換レイヤー)
 
 ## ベストプラクティス
 

@@ -41,7 +41,7 @@ import {
   shallowRef,
   type WritableComputedRef,
   watch
-} from 'vue-demi';
+} from 'vue';
 
 import type { StyleSpec } from 'style-mod';
 

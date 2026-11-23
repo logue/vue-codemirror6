@@ -4,7 +4,7 @@ description: 介绍 vue-codemirror6 是什么、支持哪些 Vue 版本,以及�
 
 # 简介
 
-**vue-codemirror6** 是一个在 Vue 中使用 [CodeMirror 6](https://codemirror.net/6/) 的组件。它基于 [vue-demi](https://github.com/vueuse/vue-demi) 构建,因此同一个组件可以同时在 Vue 2.7 和 Vue 3 中运行。
+**vue-codemirror6** 是一个在 Vue 中使用 [CodeMirror 6](https://codemirror.net/6/) 的组件。它支持 Vue 3.3 及以上版本。
 
 CodeMirror 6 是一个模块化的代码编辑器。本组件没有直接暴露 CodeMirror 的所有概念,而是把最常用的设置整理成 props,其余功能仍可通过 `extensions` 和编辑器实例使用。
 

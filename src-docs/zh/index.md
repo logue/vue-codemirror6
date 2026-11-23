@@ -1,11 +1,11 @@
 ---
-description: vue-codemirror6 是适用于 Vue 2.7 和 Vue 3 的 CodeMirror 6 编辑器组件,支持 v-model、代码检查和 SSR。
+description: vue-codemirror6 是适用于 Vue 3 的 CodeMirror 6 编辑器组件,支持 v-model、代码检查和 SSR。
 pageType: home
 
 hero:
   name: vue-codemirror6
-  text: 在 Vue 中使用 CodeMirror 6
-  tagline: 一个轻量的封装组件,让 CodeMirror 6 编辑器可以在 Vue 2.7 和 Vue 3 中使用。
+  text: CodeMirror 6 个适用于 Vue 3 / Web Components 的组件
+  tagline: 一个轻量的封装组件,让 CodeMirror 6 编辑器可以在 Vue 3 / Web Components 中使用。
   actions:
     - theme: brand
       text: 快速开始
@@ -20,8 +20,8 @@ hero:
     src: https://user-images.githubusercontent.com/480173/224358008-6ffad05d-1d97-4c18-8554-7d41b03f88ab.png
     alt: vue-codemirror6 标志
 features:
-  - title: 支持 Vue 2.7 和 Vue 3
-    details: 基于 vue-demi 构建,同一个组件可以在 Vue 2.7 和 Vue 3 项目中使用。
+  - title: 原生 Vue 3
+    details: 直接使用 Composition API,无需兼容层或安装脚本。
     icon: 💚
     link: /zh/guide/introduction
   - title: 双向绑定

@@ -1,6 +1,6 @@
 import { afterEach, beforeAll, describe, expect, it, rs } from 'rstack/test';
 
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 /** Shape of the `vue-codemirror6/wc` entry, used to type the built module. */
@@ -38,6 +38,11 @@ describe.skipIf(!existsSync(wcPath))('Built Web Component (dist/wc) standalone',
 
   afterEach(() => {
     errors.length = 0;
+  });
+
+  it('should contain the __VUE_PROD_DEVTOOLS__ feature flag in dist/wc.es.js', () => {
+    const source = readFileSync(wcPath, 'utf8');
+    expect(source).toContain('__VUE_PROD_DEVTOOLS__');
   });
 
   it('should import dist/wc.es.js and register the element manually', async () => {
