@@ -1,6 +1,5 @@
 <script lang="ts" setup vapor>
   import type { KeyBinding } from '@codemirror/view';
-  import { ref } from 'vue';
 
   import CodeMirror from 'vue-codemirror6';
 

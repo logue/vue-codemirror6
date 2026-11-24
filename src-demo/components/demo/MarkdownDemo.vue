@@ -20,16 +20,13 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 </script>
 
 <template>
-  <div class="demo-split">
-    <div>
+  <!-- Nested in a cds-column, cds-grid becomes a subgrid: side by side from md up, stacked on sm. -->
+  <cds-grid with-row-gap>
+    <cds-column sm="4" md="4" lg="8">
       <code-mirror v-model="input" :dark="dark" :lang="markdown()" basic wrap />
-    </div>
-    <div>
-      <vue-markdown
-        v-model="input"
-        class="markdown-body"
-        :data-color-mode="dark ? 'dark' : 'light'"
-      />
-    </div>
-  </div>
+    </cds-column>
+    <cds-column sm="4" md="4" lg="8">
+      <vue-markdown v-model="input" class="markdown-body" />
+    </cds-column>
+  </cds-grid>
 </template>

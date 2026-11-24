@@ -1,3 +1,10 @@
+/*
+  Global styles for the demo (Playground): IBM Plex Sans, Carbon reset/type styles,
+  and Carbon theme tokens (white / g100, switched via `data-carbon-theme`).
+*/
+// Only what the demo needs: config, IBM Plex Sans (Latin), the reset (which
+// also applies Carbon's type reset and default type styles), and theme tokens.
+// Component styles ship inside the Carbon Web Components themselves.
 @use '@carbon/styles' with (
   $use-per-family-plex: true,
   $use-akamai-cdn: true,
@@ -22,67 +29,115 @@
     )
   )
 );
-@use '@carbon/styles/scss/spacing' as *;
-@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/reset';
+@use '@carbon/styles/scss/grid';
+@use '@carbon/styles/scss/theme' as carbon-theme;
+@use '@carbon/styles/scss/themes' as carbon-themes;
+@use '@carbon/type';
+:root {
+  --font-sans:
+    'IBM Plex Sans', 'IBM Plex Sans JP', 'IBM Plex Sans SC', -apple-system, BlinkMacSystemFont,
+    'Segoe UI';
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'Monaco', 'Consolas';
+  @include carbon-theme.theme(carbon-themes.$white);
+}
 
-// Include type reset
-@include type.reset();
-// Include default type styles, targets h1, h2, h3, etc
-@include type.default-type();
-// Include utility classes for type-related properties
-@include type.type-classes();
-// Emoji
-@import 'https://cdn.jsdelivr.net/npm/@sableclient/twemoji-font@1.0.4/dist/index.min.css';
-/*
- * Carbon's reset, type and theme rules take precedence; only demo-specific layout is defined here.
- * The theme is applied by toggling the `cds--white` / `cds--g100` zone class on <html>
- * (see useDemoHost.ts), so everything below follows it through Carbon's CSS custom properties.
- */
+:root[data-carbon-theme='g100'] {
+  @include carbon-theme.theme(carbon-themes.$g100);
+}
 
-/* Header (only shown when the demo is opened standalone, not inside the docs iframe) */
-.demo-header {
+body {
+  margin: 0;
+  background: carbon-theme.$background;
+  color: carbon-theme.$text-primary;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+.app-main {
+  flex: 1;
+  // `cds-header` is fixed-positioned (48px high).
+  padding: var(--cds-spacing-15, 3rem) 0 var(--cds-spacing-05, 1rem) 0;
+}
+
+// Embedded in the documentation site (iframe): no header/footer, size to content.
+:root[data-embedded] {
+  #app {
+    min-height: 0;
+  }
+
+  .app-main {
+    padding-top: 0;
+  }
+}
+
+.app-footer {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  padding: $spacing-05;
-  gap: $spacing-05;
-  border-bottom: 1px solid var(--cds-border-subtle-01);
-  background-color: var(--cds-layer-01);
+  align-items: center;
+  gap: var(--cds-spacing-05, 1rem);
+  min-height: 3rem; /* 48px */
+  padding: var(--cds-spacing-04, 0.75rem) var(--cds-spacing-05, 1rem);
+  background-color: var(--cds-layer-01, #f4f4f4);
+  border-top: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  color: var(--cds-text-secondary, #525252);
+  font-size: var(--cds-label-01-font-size, 0.75rem);
+  line-height: var(--cds-label-01-line-height, 1.33333);
+  letter-spacing: var(--cds-label-01-letter-spacing, 0.32px);
 }
 
-.demo-header__title {
-  @include type.type-style('heading-03');
+// Light-DOM wrapper for the header's global actions. Carbon WC has no element
+// for it, and its rule lives in the ui-shell component CSS we no longer load.
+.cds--header__global {
+  display: flex;
+  flex: 1 1 0%;
+  justify-content: flex-end;
+  block-size: 100%;
 }
 
-.demo-header__actions {
+// The global action renders as a ghost button, whose icon takes the link color.
+cds-header-global-action cds-icon {
+  color: var(--cds-icon-primary, #161616);
+  fill: currentColor;
+}
+
+.header-theme-toggle {
   display: flex;
   align-items: center;
-  gap: $spacing-06;
+  height: 100%;
+  padding-inline: var(--cds-spacing-05, 1rem);
 }
 
-.demo-main {
-  padding-block: $spacing-05 $spacing-07;
+.label-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .demo-tabs {
-  padding-inline: $spacing-05;
+  padding-inline: var(--cds-spacing-05, 1rem);
 }
 
 /* Tab panels */
 .demo-panel {
-  padding-block-start: $spacing-06;
+  padding-block-start: var(--cds-spacing-05, 1.5rem);
 
   h2 {
     @include type.type-style('heading-04');
 
-    margin-block-end: $spacing-05;
+    margin-block-end: var(--cds-spacing-05, 1rem);
   }
 
   h3 {
     @include type.type-style('heading-02');
 
-    margin-block: $spacing-05 $spacing-03;
+    margin-block: var(--cds-spacing-05, 1rem) var(--cds-spacing-03, 0.5rem);
   }
 
   p {
@@ -91,7 +146,7 @@
 
   kbd {
     @include type.type-style('code-01');
-    padding: 0 $spacing-02;
+    padding: 0 var(--cds-spacing-02, 0.25rem);
     border: 1px solid var(--cds-border-strong-01);
     background-color: var(--cds-layer-01);
   }
@@ -106,28 +161,10 @@
   }
 }
 
-.demo-inline {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: $spacing-05;
-}
-
-.demo-inline > cds-text-input {
-  flex: 1 1 10rem;
-}
-
-/* Two equal columns (editor + preview), stacked on narrow screens */
-.demo-split {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: $spacing-05;
-}
-
 .vue-codemirror {
   border: 1px solid var(--cds-border-subtle-01);
   .cm-editor {
-    font-family: var(--cds-code-01-font-family);
+    font-family: var(--font-mono);
   }
   .cm-scroller {
     line-height: 1.5;
@@ -139,46 +176,44 @@
   }
 }
 
-.markdown-body {
+// github-markdown-css (v5) picks its palette from `prefers-color-scheme`, which does
+// not follow the demo's theme toggle. Map its variables onto Carbon tokens instead so
+// the preview follows `data-carbon-theme` like the rest of the page.
+// `:root` raises specificity above github-markdown-css's own `.markdown-body` rules.
+:root .markdown-body {
   box-sizing: border-box;
   height: 100%;
-  padding: $spacing-05;
+  padding: var(--cds-spacing-05, 1rem);
   border: 1px solid var(--cds-border-subtle-01);
+  color-scheme: light;
+
+  --fontStack-sansSerif: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --fontStack-monospace: 'IBM Plex Mono', Menlo, 'DejaVu Sans Mono', monospace;
+
+  --fgColor-default: var(--cds-text-primary);
+  --fgColor-muted: var(--cds-text-secondary);
+  --fgColor-accent: var(--cds-link-primary);
+  --fgColor-danger: var(--cds-text-error);
+  --fgColor-attention: var(--cds-support-warning);
+  --fgColor-success: var(--cds-support-success);
+  --fgColor-done: var(--cds-support-info);
+
+  --bgColor-default: var(--cds-background);
+  --bgColor-muted: var(--cds-layer-01);
+  --bgColor-neutral-muted: var(--cds-layer-accent-01);
+  --bgColor-attention-muted: var(--cds-notification-background-warning);
+
+  --borderColor-default: var(--cds-border-subtle-01);
+  --borderColor-muted: var(--cds-border-subtle-01);
+  --borderColor-neutral-muted: var(--cds-border-subtle-01);
+  --borderColor-accent-emphasis: var(--cds-focus);
+  --borderColor-attention-emphasis: var(--cds-support-warning);
+  --borderColor-danger-emphasis: var(--cds-support-error);
+  --borderColor-success-emphasis: var(--cds-support-success);
+  --borderColor-done-emphasis: var(--cds-support-info);
+  --focus-outlineColor: var(--cds-focus);
 }
 
-/* Override prefers-color-scheme so github-markdown-css follows the demo's theme */
-@media (prefers-color-scheme: dark) {
-  .markdown-body[data-color-mode='light'] {
-    color-scheme: light;
-    --color-fg-default: #24292f;
-    --color-fg-muted: #57606a;
-    --color-fg-subtle: #6e7781;
-    --color-canvas-default: #ffffff;
-    --color-canvas-subtle: #f6f8fa;
-    --color-border-default: #d0d7de;
-    --color-border-muted: hsla(210, 18%, 87%, 1);
-    --color-neutral-muted: rgba(175, 184, 193, 0.2);
-    --color-accent-fg: #0969da;
-    --color-accent-emphasis: #0969da;
-    --color-attention-subtle: #fff8c5;
-    --color-danger-fg: #cf222e;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  .markdown-body[data-color-mode='dark'] {
-    color-scheme: dark;
-    --color-fg-default: #c9d1d9;
-    --color-fg-muted: #8b949e;
-    --color-fg-subtle: #6e7681;
-    --color-canvas-default: #0d1117;
-    --color-canvas-subtle: #161b22;
-    --color-border-default: #30363d;
-    --color-border-muted: #21262d;
-    --color-neutral-muted: rgba(110, 118, 129, 0.4);
-    --color-accent-fg: #58a6ff;
-    --color-accent-emphasis: #1f6feb;
-    --color-attention-subtle: rgba(187, 128, 9, 0.15);
-    --color-danger-fg: #f85149;
-  }
+:root[data-carbon-theme='g100'] .markdown-body {
+  color-scheme: dark;
 }

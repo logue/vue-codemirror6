@@ -17,7 +17,7 @@
 <!-- eslint-disable no-irregular-whitespace -->
 <template>
   <cds-stack gap="5">
-    <div class="demo-inline">
+    <cds-stack gap="3">
       <cds-toggle
         label-a="On"
         label-b="Off"
@@ -32,7 +32,7 @@
         :toggled="isDisabled"
         @cds-toggle-changed="isDisabled = $event.detail.checked"
       />
-    </div>
+    </cds-stack>
     <code-mirror basic :dark="dark" :disabled="isDisabled" :readonly="isReadonly">
       <pre>
 色は匂へど　散りぬるを

@@ -24,7 +24,7 @@
   "@type": "WebSite",
   "name": "vue-codemirror6 Demo",
   "url": "https://github.com/logue/vue-codemirror6",
-  "description": "CodeMirror6 for Vue3 and Vue2 component"
+  "description": "CodeMirror6 component for Vue3"
 }</pre>
   </code-mirror>
 </template>

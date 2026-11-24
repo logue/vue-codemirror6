@@ -1,19 +1,19 @@
 <script lang="ts" setup vapor>
   import { vue } from '@codemirror/lang-vue';
   import { type Ref, ref } from 'vue';
+  import { isEmbedded } from '../composables/useEmbed';
+  import CodeMirror from 'vue-codemirror6';
 
-  import CodeMirror from '@/index';
-
-  import KeyMapDemo from './components/KeyMapDemo.vue';
-  import KeyMapDemoSrc from './components/KeyMapDemo.vue?source';
-  import LinterAndCrossBindingDemo from './components/LinterAndCrossBindingDemo.vue';
-  import LinterAndCrossBindingDemoSrc from './components/LinterAndCrossBindingDemo.vue?source';
-  import MarkdownDemo from './components/MarkdownDemo.vue';
-  import MarkdownDemoSrc from './components/MarkdownDemo.vue?source';
-  import ReadonlyAndDisabledDemo from './components/ReadonlyAndDisabledDemo.vue';
-  import ReadonlyAndDisabledDemoSrc from './components/ReadonlyAndDisabledDemo.vue?source';
-  import SlotDemo from './components/SlotDemo.vue';
-  import SlotDemoSrc from './components/SlotDemo.vue?source';
+  import KeyMapDemo from './demo/KeyMapDemo.vue';
+  import KeyMapDemoSrc from './demo/KeyMapDemo.vue?source';
+  import LinterAndCrossBindingDemo from './demo/LinterAndCrossBindingDemo.vue';
+  import LinterAndCrossBindingDemoSrc from './demo/LinterAndCrossBindingDemo.vue?source';
+  import MarkdownDemo from './demo/MarkdownDemo.vue';
+  import MarkdownDemoSrc from './demo/MarkdownDemo.vue?source';
+  import ReadonlyAndDisabledDemo from './demo/ReadonlyAndDisabledDemo.vue';
+  import ReadonlyAndDisabledDemoSrc from './demo/ReadonlyAndDisabledDemo.vue?source';
+  import SlotDemo from './demo/SlotDemo.vue';
+  import SlotDemoSrc from './demo/SlotDemo.vue?source';
 
   defineProps<{
     dark: boolean;
@@ -39,9 +39,6 @@
   const onTabSelected = (event: CustomEvent<{ item: HTMLElement & { value: string } }>): void => {
     selected.value = event.detail.item.value as TabId;
   };
-
-  /** Drop the grid's max width when embedded in the docs iframe */
-  const inIframe = globalThis.self !== globalThis.top;
 
   /** SFC sources shown next to each demo */
   const sources: Record<TabId, string> = {
@@ -76,7 +73,7 @@
     role="tabpanel"
     aria-labelledby="tab-markdown"
   >
-    <cds-grid with-row-gap :full-width="inIframe">
+    <cds-grid with-row-gap :full-width="isEmbedded">
       <cds-column sm="4" md="8" lg="16">
         <h2>Markdown Editor</h2>
         <p>
@@ -137,14 +134,14 @@
     role="tabpanel"
     aria-labelledby="tab-slot"
   >
-    <cds-grid with-row-gap :full-width="inIframe">
+    <cds-grid with-row-gap :full-width="isEmbedded">
       <cds-column sm="4" md="8" lg="16">
         <h2>Slot Method</h2>
         <p>
           The text is put directly inside the
           <code>&lt;code-mirror&gt;</code>
           tag to make it the initial string. On the Vue side, it is evaluated as a DOM node and only
-          the text node is used as the value. This does not work with Vue 2.7.
+          the text node is used as the value.
         </p>
         <p>
           It's just for simple syntax highlighting. Do not use it with
@@ -170,7 +167,7 @@
     role="tabpanel"
     aria-labelledby="tab-linter"
   >
-    <cds-grid with-row-gap :full-width="inIframe">
+    <cds-grid with-row-gap :full-width="isEmbedded">
       <cds-column sm="4" md="8" lg="16">
         <h2>Linter and Cross Binding</h2>
         <p>
@@ -213,7 +210,7 @@
     role="tabpanel"
     aria-labelledby="tab-readonly"
   >
-    <cds-grid with-row-gap :full-width="inIframe">
+    <cds-grid with-row-gap :full-width="isEmbedded">
       <cds-column sm="4" md="8" lg="16">
         <h2>
           Toggle
@@ -267,7 +264,7 @@
     role="tabpanel"
     aria-labelledby="tab-keymap"
   >
-    <cds-grid with-row-gap :full-width="inIframe">
+    <cds-grid with-row-gap :full-width="isEmbedded">
       <cds-column sm="4" md="8" lg="16">
         <h2>Key Map</h2>
         <p>

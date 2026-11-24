@@ -1,6 +1,7 @@
 /** Demo Code */
 // Carbon Web Components used by the demo.
 // They must be registered before Vue mounts so that props are set as DOM properties.
+import '@carbon/web-components/es/components/ui-shell/index.js';
 import '@carbon/web-components/es/components/checkbox/index.js';
 import '@carbon/web-components/es/components/link/index.js';
 import '@carbon/web-components/es/components/notification/index.js';
@@ -10,6 +11,7 @@ import '@carbon/web-components/es/components/textarea/index.js';
 import '@carbon/web-components/es/components/toggle/index.js';
 import '@carbon/web-components/es/components/grid/index.js';
 import '@carbon/web-components/es/components/stack/index.js';
+import '@carbon/web-components/es/components/icon/index.js';
 // Vue
 import { createApp } from 'vue';
 

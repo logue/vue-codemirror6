@@ -1,22 +1,54 @@
-<script lang="ts" setup vapor>
-  import ToggleTheme from './components/ToggleTheme.vue';
-  import { useDemoHost } from './composables/useDemoHost';
-  import DemoPage from './DemoPage.vue';
+<script setup lang="ts">
+  import { ref, watchEffect } from 'vue';
 
-  const { isDark, isEmbedded } = useDemoHost();
+  import PageContent from './components/PageContent.vue';
+  import ToggleTheme from './components/ToggleTheme.vue';
+  import { isEmbedded, useEmbed } from './composables/useEmbed';
+  import LogoGithub20 from '@carbon/icons/es/logo--github/20.js';
+
+  const dark = ref(globalThis.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  useEmbed(dark);
+
+  watchEffect(() => {
+    document.documentElement.dataset.carbonTheme = dark.value ? 'g100' : 'white';
+  });
+
+  if (isEmbedded) document.documentElement.dataset.embedded = '';
+
+  // `cds-header-global-action` only gets the header-action styling when it
+  // renders a <button> (it queries `button`), so it must not be given `href`.
+  function openRepository(): void {
+    globalThis.open('https://github.com/logue/vue-codemirror6', '_blank', 'noopener');
+  }
 </script>
 
 <template>
-  <!-- When embedded in the docs site, the site itself provides the header and theme switch. -->
-  <header v-if="!isEmbedded" class="demo-header">
-    <h1 class="demo-header__title">Vue CodeMirror6 Demo</h1>
-    <div class="demo-header__actions">
-      <cds-link href="https://github.com/logue/vue-codemirror6">GitHub</cds-link>
-      <toggle-theme v-model="isDark" />
+  <cds-header v-if="!isEmbedded" aria-label="Vue CodeMirror6 Demo">
+    <cds-header-name prefix="">Vue CodeMirror6 Demo</cds-header-name>
+    <div class="cds--header__global">
+      <div class="header-theme-toggle">
+        <ToggleTheme v-model="dark" />
+      </div>
+      <cds-header-global-action
+        tooltip-text="GitHub"
+        tooltip-alignment="right"
+        aria-label="GitHub"
+        @click="openRepository"
+      >
+        <cds-icon slot="icon" :icon="LogoGithub20" />
+      </cds-header-global-action>
     </div>
-  </header>
+  </cds-header>
 
-  <main class="demo-main">
-    <demo-page :dark="isDark" />
+  <main class="app-main">
+    <PageContent :dark="dark" />
   </main>
+
+  <footer v-if="!isEmbedded" class="app-footer">
+    <p>
+      &copy; 2026 by <a href="https://logue.dev/">Logue</a>. Licensed under the
+      <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
+    </p>
+  </footer>
 </template>
